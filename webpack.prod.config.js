@@ -19,7 +19,7 @@ module.exports = env =>
       "./src/index.js",
     ],
     output: {
-      publicPath : 'https://evys.ru/static/dist/',
+      publicPath : 'https://evys.ru/dist/',
       path: path.resolve('./dist/'),
       filename: "app_bundle.js"
     },
