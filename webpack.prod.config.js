@@ -20,7 +20,7 @@ module.exports = env =>
     ],
     output: {
       publicPath : 'https://evys.ru/static/dist/',
-      path: path.resolve('./public/dist/'),
+      path: path.resolve('./dist/'),
       filename: "app_bundle.js"
     },
     resolve: {
@@ -58,7 +58,7 @@ module.exports = env =>
         }
       }),
       new HtmlWebpackPlugin({
-        template: "./src/index.html",
+        template: "./public/index.html",
         files: {
           css: ["style.css"],
           js: [ "app_bundle.js"],
