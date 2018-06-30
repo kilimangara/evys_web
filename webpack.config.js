@@ -24,7 +24,7 @@ module.exports = env =>
     ],
     devtool: process.env.WEBPACK_DEVTOOL || "eval-source-map",
     output: {
-      publicPath : env.DEV_SERVER ? 'http://localhost:3000/' : 'http://dev-evys.ru:8000/static/dist/',
+      publicPath : env.DEV_SERVER ? 'http://localhost:3000/' : 'http://dev-evys.ru:3000/dist/',
       path: path.resolve('./dist'),
       filename: "app_bundle_dev.js"
     },
@@ -36,6 +36,12 @@ module.exports = env =>
     },
     devServer: {
       contentBase: './public',
+      proxy: {
+        '/static': {
+                    target: 'http://localhost:3000',
+                    pathRewrite: {'^/static' : ''}
+                   }
+      },
       // enable HMR
       hot: true,
       // embed the webpack-dev-server runtime into the bundle

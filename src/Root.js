@@ -25,7 +25,7 @@ class Root extends Component {
 
   handleDispatch = () => {
     const state = this.state.store.getState();
-    localStorage.setItem("storeState", JSON.stringify(state));
+    localStorage.setItem("evysMainAppState", JSON.stringify(state));
   };
 
   render() {
