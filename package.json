@@ -6,7 +6,8 @@
   "scripts": {
     "build-dev": "webpack  --env.DEV --progress --colors",
     "build-prod": "webpack --config webpack.prod.config.js --progress --colors",
-    "start": "webpack-dev-server --env.DEV --env.DEV_SERVER"
+    "start-dev": "webpack-dev-server --env.DEV --env.DEV_SERVER",
+    "start": "webpack-dev-server --env.DEV_SERVER"
   },
   "repository": {
     "type": "git",
