@@ -13,7 +13,7 @@ const enhancers = [applyMiddleware(...middlewares)];
 const reducers = combineReducers(Object.assign({}, api.reducers, moduleReducers));
 
 export default function setUpStore() {
-  const state = localStorage.getItem("storeState");
+  const state = localStorage.getItem("evysMainAppState");
   return state ? getStatedStorage(state) : getDefaultStorage();
 }
 

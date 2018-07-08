@@ -25,6 +25,17 @@ export function saveProfile(data){
   }
 }
 
+export function loadCourses(){
+  return {
+    types: actionTypesFor('show', 'account'),
+    meta: {
+      fetch: {
+        url: `~student/courses`,
+      }
+    }
+  }
+}
+
 export function exitProfile(){
   return {
     type: LOGOUT
