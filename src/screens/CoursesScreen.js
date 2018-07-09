@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadCourses } from '../actions/AccountActions'
+import { loadCourses } from '../actions/CoursesActions'
 import { List, ListItem } from 'material-ui/List'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 import Divider from 'material-ui/Divider'

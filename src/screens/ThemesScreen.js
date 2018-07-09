@@ -32,13 +32,13 @@ class CoursesScreen extends Component {
         return (
             <div>
                 <List>
-                    <Subheader inset={true}>Курсы</Subheader>
+                    <Subheader inset={true}>Темы</Subheader>
                     <ListItem
                 leftAvatar={<Avatar> 1 </Avatar>}
                 primaryText="Тема 1"
             />
              <ListItem
-                leftAvatar={<Avatar> 3 </Avatar>}
+                leftAvatar={<Avatar> 2 </Avatar>}
                 primaryText="Тема 3"
             />
              <ListItem
