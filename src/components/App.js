@@ -27,8 +27,7 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false,
-      id: 0
+      open: false
     }
   }
 
@@ -66,10 +65,6 @@ class App extends Component {
     }
   }
 
-  updateCourseId = (value) => {
-    this.setState({ id: value })
-  }
-
   goToProfile = () => {
     this.handleClose()
     this.props.history.push('/app/profile')
@@ -103,16 +98,6 @@ class App extends Component {
 
   render() {
     const { authenticated } = this.props
-
-    const WrappedCoursesScreen = (props) => {
-      return < CoursesScreen {...props} updateCourseId={this.updateCourseId} />
-    }
-
-    const WrappedThemesScreen = (props) => {
-      return < ThemesScreen {...props} id={this.state.id} />
-    }
-
-
 
     return (
       <StickyContainer style={{ display: 'flex', flexDirection: 'column' }}>
@@ -151,8 +136,8 @@ class App extends Component {
         <div style={{ flex: 1 }}>
           <Route exact path='/app' component={DashboardScreen} />
           <Route path='/app/login' component={Login} />
-          <Route path='/app/courses' component={WrappedCoursesScreen} />
-          <Route path='/app/themes' component={WrappedThemesScreen} />
+          <Route path='/app/courses' component={CoursesScreen} />
+          <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
           <Route path='/app/theme_study' component={ThemeStudyScreen} />
           <Route path='/app/profile' component={ProfileScreen} />
           <Route path='/app/tariffs' component={TariffsScreen} />

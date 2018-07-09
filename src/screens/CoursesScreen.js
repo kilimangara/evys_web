@@ -25,8 +25,7 @@ class CoursesScreen extends Component {
     }
 
     loadThemes = (id) => {
-        this.props.updateCourseId(id)
-        this.props.history.push('/app/themes')
+        this.props.history.push(`/app/course/${id}/themes`)
     }
 
     renderItem = (item, index) => {
