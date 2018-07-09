@@ -15,6 +15,8 @@ import Avatar from 'material-ui/Avatar'
 import RaisedButton from "material-ui/RaisedButton"
 import TariffsScreen from '../screens/TariffsScreen'
 import DashboardScreen from '../screens/DashboardScreen'
+import ThemesScreen from '../screens/ThemesScreen'
+import CoursesScreen from '../screens/CoursesScreen'
 import {exitProfile} from '../actions/AccountActions'
 import {blue500} from 'material-ui/styles/colors'
 import {switchUserApp} from '../actions/AppActions'
@@ -72,6 +74,11 @@ class App extends Component {
     this.props.history.push('/app/tariffs')
   }
 
+  goToCourses = () => {
+    this.handleClose()
+    this.props.history.push('/app/courses')
+  }
+
   goToDashboard = () => {
     this.handleClose()
     this.props.history.push('/app')
@@ -113,7 +120,7 @@ class App extends Component {
                 <ListItem primaryText={'Мои показатели'} leftIcon={<FontIcon className='fas fa-chart-bar'/>}
                           onClick={this.goToDashboard}/>
                 <ListItem primaryText={'Мои курсы'} leftIcon={<FontIcon className="fas fa-graduation-cap"/>}
-                          onClick={this.handleClose}/>
+                          onClick={this.goToCourses}/>
                 <ListItem primaryText={'Наши предложения'} leftIcon={<FontIcon className="fas fa-th-list"/>}
                           onClick={this.goToTariffs}/>
                 <Divider/>
@@ -127,6 +134,8 @@ class App extends Component {
           <div style={{flex:1}}>
             <Route exact path='/app' component={DashboardScreen}/>
             <Route path='/app/login' component={Login}/>
+            <Route path='/app/courses' component={CoursesScreen}/>
+            <Route path='/app/themes' component={ThemesScreen}/>
             <Route path='/app/profile' component={ProfileScreen}/>
             <Route path='/app/tariffs' component={TariffsScreen}/>
           </div>

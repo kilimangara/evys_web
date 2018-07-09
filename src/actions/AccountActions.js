@@ -25,6 +25,7 @@ export function saveProfile(data){
   }
 }
 
+
 export function exitProfile(){
   return {
     type: LOGOUT
