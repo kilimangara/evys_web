@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadCourses } from '../actions/AccountActions'
+import { loadThemes } from '../actions/CoursesActions'
 import { List, ListItem } from 'material-ui/List'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 import Divider from 'material-ui/Divider'
@@ -16,13 +16,27 @@ class ThemesScreen extends Component {
         }
     }
 
+    componentWillMount = () => {
+        this.props.loadThemes(this.props.id).then(
+            response => {
+                this.setState({ themes: response.data.data });
+            }
+        );
+    }
+
+    loadStudy = () => {
+        this.props.history.push('/app/theme_study')
+    }
+
     renderItem = (item, index) => {
         return (
             <ListItem
-                leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
-                primaryText={item.subject.subject}
+                key={index}
+                leftAvatar={<Avatar> {item.theme.name[0]} </Avatar>}
+                primaryText={item.theme.name}
+                onClick={this.loadStudy}
             />
-                )
+        )
     }
 
     render() {
@@ -30,18 +44,7 @@ class ThemesScreen extends Component {
             <div>
                 <List>
                     <Subheader inset={true}>Темы</Subheader>
-                    <ListItem
-                        leftAvatar={<Avatar> 1 </Avatar>}
-                        primaryText="Тема 1"
-                    />
-                    <ListItem
-                        leftAvatar={<Avatar> 2 </Avatar>}
-                        primaryText="Тема 3"
-                    />
-                    <ListItem
-                        leftAvatar={<Avatar> 3 </Avatar>}
-                        primaryText="Тема 3"
-                    />
+                    {this.state.themes.map(this.renderItem)}
                 </List>
             </div>
         )
@@ -55,4 +58,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { loadCourses })(ThemesScreen)
+export default connect(mapStateToProps, { loadThemes })(ThemesScreen)

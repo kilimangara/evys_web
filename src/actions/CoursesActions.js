@@ -10,3 +10,14 @@ export function loadCourses(){
       }
     }
   }
+
+  export function loadThemes(id){
+    return {
+      types: actionTypesFor('show', 'themes'),
+      meta: {
+        fetch: {
+          url: `~student/course/${id}/themes`,
+        }
+      }
+    }
+  }

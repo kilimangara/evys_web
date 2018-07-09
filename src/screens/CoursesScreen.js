@@ -24,16 +24,18 @@ class CoursesScreen extends Component {
         );
     }
 
-    loadThemes = () => {
+    loadThemes = (id) => {
+        this.props.updateCourseId(id)
         this.props.history.push('/app/themes')
     }
 
     renderItem = (item, index) => {
         return (
             <ListItem
+                key={index}
                 leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
                 primaryText={item.subject.subject}
-                onClick={this.loadThemes}
+                onClick={this.loadThemes.bind(this, item.subject.id)}
             />
         )
     }
