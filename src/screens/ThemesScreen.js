@@ -16,9 +16,6 @@ class ThemesScreen extends Component {
         }
     }
 
-    componentWillMount = () => {
-    }
-
     renderItem = (item, index) => {
         return (
             <ListItem
@@ -58,4 +55,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { loadCourses })(CoursesScreen)
+export default connect(mapStateToProps, { loadCourses })(ThemesScreen)
