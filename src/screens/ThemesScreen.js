@@ -8,7 +8,7 @@ import Subheader from 'material-ui/Subheader'
 import Avatar from 'material-ui/Avatar'
 import FileFolder from 'material-ui/svg-icons/file/folder'
 
-class CoursesScreen extends Component {
+class ThemesScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -25,7 +25,7 @@ class CoursesScreen extends Component {
                 leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
                 primaryText={item.subject.subject}
             />
-        )
+                )
     }
 
     render() {
@@ -34,17 +34,17 @@ class CoursesScreen extends Component {
                 <List>
                     <Subheader inset={true}>Темы</Subheader>
                     <ListItem
-                leftAvatar={<Avatar> 1 </Avatar>}
-                primaryText="Тема 1"
-            />
-             <ListItem
-                leftAvatar={<Avatar> 2 </Avatar>}
-                primaryText="Тема 3"
-            />
-             <ListItem
-                leftAvatar={<Avatar> 3 </Avatar>}
-                primaryText="Тема 3"
-            />
+                        leftAvatar={<Avatar> 1 </Avatar>}
+                        primaryText="Тема 1"
+                    />
+                    <ListItem
+                        leftAvatar={<Avatar> 2 </Avatar>}
+                        primaryText="Тема 3"
+                    />
+                    <ListItem
+                        leftAvatar={<Avatar> 3 </Avatar>}
+                        primaryText="Тема 3"
+                    />
                 </List>
             </div>
         )

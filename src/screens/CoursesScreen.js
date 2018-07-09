@@ -20,7 +20,6 @@ class CoursesScreen extends Component {
         this.props.loadCourses().then(
             response => {
                 this.setState({ courses: response.data.data });
-                console.log(this.state.courses);
             }
         );
     }
