@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadSubThemes } from '../actions/CoursesActions'
+import { loadThemes } from '../actions/CoursesActions'
 import { List, ListItem } from 'material-ui/List'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 import Divider from 'material-ui/Divider'
@@ -19,7 +19,7 @@ class SubThemesScreen extends Component {
     componentWillMount = () => {
         this.course_id = this.props.match.params["course_id"];
         this.theme_id = this.props.match.params["theme_id"];
-        this.props.loadSubThemes(this.course_id, this.theme_id).then(
+        this.props.loadThemes(this.course_id, this.theme_id).then(
             response => {
                 this.setState({ sub_themes: response.data.data });
             }
@@ -27,7 +27,11 @@ class SubThemesScreen extends Component {
     }
 
     loadStudy = (has_sub_themes, theme_id) => {
-        this.props.history.push(`/app/theme/${theme_id}/study`)
+        if (!has_sub_themes) {
+            this.props.history.push(`/app/theme/${theme_id}/study`)
+        } else {
+            this.props.history.push(`/app/course/${this.course_id}/theme/${theme_id}/sub_themes`)
+        }
     }
 
     renderItem = (item, index) => {
@@ -60,4 +64,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { loadSubThemes })(SubThemesScreen)
+export default connect(mapStateToProps, { loadThemes })(SubThemesScreen)

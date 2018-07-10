@@ -18,7 +18,7 @@ class ThemesScreen extends Component {
 
     componentWillMount = () => {
         this.course_id = this.props.match.params["course_id"];
-        this.props.loadThemes(this.course_id).then(
+        this.props.loadThemes(this.course_id, null).then(
             response => {
                 this.setState({ themes: response.data.data });
             }
