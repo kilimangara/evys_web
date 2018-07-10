@@ -26,12 +26,17 @@ class SubThemesScreen extends Component {
         );
     }
 
+    loadStudy = (has_sub_themes, theme_id) => {
+        this.props.history.push(`/app/theme/${theme_id}/study`)
+    }
+
     renderItem = (item, index) => {
         return (
             <ListItem
                 key={index}
                 leftAvatar={<Avatar> {item.theme.name[0]} </Avatar>}
                 primaryText={item.theme.name}
+                onClick={this.loadStudy.bind(this, item.theme.has_sub_themes, item.theme.id)}
             />
         )
     }

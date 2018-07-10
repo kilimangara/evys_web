@@ -26,34 +26,35 @@ class ThemesScreen extends Component {
     }
 
     loadStudy = (has_sub_themes, theme_id) => {
-        if (!has_sub_themes) { 
-            this.props.history.push(`/app/course/${this.course_id}/theme/${theme_id}`)
+        if (!has_sub_themes) {
+            this.props.history.push(`/app/theme/${theme_id}/study`)
         } else {
             this.props.history.push(`/app/course/${this.course_id}/theme/${theme_id}/sub_themes`)
         }
     }
 
-    renderItem = (item, index) => {
-        return (
-            <ListItem
-                key={index}
-                leftAvatar={<Avatar> {item.theme.name[0]} </Avatar>}
-                primaryText={item.theme.name}
-                onClick={this.loadStudy.bind(this, item.theme.has_sub_themes, item.theme.id)}
-            />
-        )
-    }
 
-    render() {
-        return (
-            <div>
-                <List>
-                    <Subheader inset={true}>Темы</Subheader>
-                    {this.state.themes.map(this.renderItem)}
-                </List>
-            </div>
-        )
-    }
+renderItem = (item, index) => {
+    return (
+        <ListItem
+            key={index}
+            leftAvatar={<Avatar> {item.theme.name[0]} </Avatar>}
+            primaryText={item.theme.name}
+            onClick={this.loadStudy.bind(this, item.theme.has_sub_themes, item.theme.id)}
+        />
+    )
+}
+
+render() {
+    return (
+        <div>
+            <List>
+                <Subheader inset={true}>Темы</Subheader>
+                {this.state.themes.map(this.renderItem)}
+            </List>
+        </div>
+    )
+}
 }
 
 const mapStateToProps = state => ({

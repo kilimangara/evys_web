@@ -139,7 +139,7 @@ class App extends Component {
           <Route path='/app/login' component={Login} />
           <Route path='/app/courses' component={CoursesScreen} />
           <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
-          <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)' component={ThemeStudyScreen} />
+          <Route exact path='/app/theme/:theme_id(\d+)/study' component={ThemeStudyScreen} />
           <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/sub_themes' component={SubThemesScreen} />
           <Route path='/app/profile' component={ProfileScreen} />
           <Route path='/app/tariffs' component={TariffsScreen} />
