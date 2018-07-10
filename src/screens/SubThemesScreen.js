@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadThemes } from '../actions/CoursesActions'
+import { loadSubThemes } from '../actions/CoursesActions'
 import { List, ListItem } from 'material-ui/List'
 import ActionInfo from 'material-ui/svg-icons/action/info'
 import Divider from 'material-ui/Divider'
@@ -8,29 +8,22 @@ import Subheader from 'material-ui/Subheader'
 import Avatar from 'material-ui/Avatar'
 import FileFolder from 'material-ui/svg-icons/file/folder'
 
-class ThemesScreen extends Component {
+class SubThemesScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            themes: []
+            sub_themes: []
         }
     }
 
     componentWillMount = () => {
         this.course_id = this.props.match.params["course_id"];
-        this.props.loadThemes(this.course_id).then(
+        this.theme_id = this.props.match.params["theme_id"];
+        this.props.loadSubThemes(this.course_id, this.theme_id).then(
             response => {
-                this.setState({ themes: response.data.data });
+                this.setState({ sub_themes: response.data.data });
             }
         );
-    }
-
-    loadStudy = (has_sub_themes, theme_id) => {
-        if (!has_sub_themes) { 
-            this.props.history.push(`/app/course/${this.course_id}/theme/${theme_id}`)
-        } else {
-            this.props.history.push(`/app/course/${this.course_id}/theme/${theme_id}/sub_themes`)
-        }
     }
 
     renderItem = (item, index) => {
@@ -39,7 +32,6 @@ class ThemesScreen extends Component {
                 key={index}
                 leftAvatar={<Avatar> {item.theme.name[0]} </Avatar>}
                 primaryText={item.theme.name}
-                onClick={this.loadStudy.bind(this, item.theme.has_sub_themes, item.theme.id)}
             />
         )
     }
@@ -49,7 +41,7 @@ class ThemesScreen extends Component {
             <div>
                 <List>
                     <Subheader inset={true}>Темы</Subheader>
-                    {this.state.themes.map(this.renderItem)}
+                    {this.state.sub_themes.map(this.renderItem)}
                 </List>
             </div>
         )
@@ -63,4 +55,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { loadThemes })(ThemesScreen)
+export default connect(mapStateToProps, { loadSubThemes })(SubThemesScreen)

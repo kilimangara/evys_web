@@ -16,6 +16,7 @@ import RaisedButton from "material-ui/RaisedButton"
 import TariffsScreen from '../screens/TariffsScreen'
 import DashboardScreen from '../screens/DashboardScreen'
 import ThemesScreen from '../screens/ThemesScreen'
+import SubThemesScreen from '../screens/SubThemesScreen'
 import CoursesScreen from '../screens/CoursesScreen'
 import ThemeStudyScreen from '../screens/ThemeStudyScreen'
 import { exitProfile } from '../actions/AccountActions'
@@ -138,7 +139,8 @@ class App extends Component {
           <Route path='/app/login' component={Login} />
           <Route path='/app/courses' component={CoursesScreen} />
           <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
-          <Route path='/app/theme_study' component={ThemeStudyScreen} />
+          <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)' component={ThemeStudyScreen} />
+          <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/sub_themes' component={SubThemesScreen} />
           <Route path='/app/profile' component={ProfileScreen} />
           <Route path='/app/tariffs' component={TariffsScreen} />
         </div>

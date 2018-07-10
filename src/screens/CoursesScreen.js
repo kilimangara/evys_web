@@ -34,7 +34,7 @@ class CoursesScreen extends Component {
                 key={index}
                 leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
                 primaryText={item.subject.subject}
-                onClick={this.loadThemes.bind(this, item.subject.id)}
+                onClick={this.loadThemes.bind(this, item.id)}
             />
         )
     }
