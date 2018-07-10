@@ -3,10 +3,12 @@ import fetchMiddleware, { promiseMiddleware } from "fetch-middleware-for-redux";
 import reduxThunk from "redux-thunk";
 import unwrapMiddleware from "./middlewares/unwrapMiddleware";
 import urlMiddleware from "./middlewares/urlMiddleware";
+import error401Middleware from './middlewares/error401Middleware';
+import coursesError403Middleware from './middlewares/coursesError403Middleware';
 import api from "./api";
 import moduleReducers from './modules'
 
-const middlewares = [reduxThunk, urlMiddleware, fetchMiddleware, promiseMiddleware, unwrapMiddleware];
+const middlewares = [reduxThunk, urlMiddleware, fetchMiddleware, promiseMiddleware, unwrapMiddleware, error401Middleware, coursesError403Middleware];
 
 const enhancers = [applyMiddleware(...middlewares)];
 

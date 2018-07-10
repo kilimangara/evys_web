@@ -38,6 +38,18 @@ class App extends Component {
     this.props.history.push('/app/login')
   }
 
+//  componentWillReceiveProps(nextProps) {
+ //   console.log('componentWillReceiveProps')
+ //   if (!nextProps.authenticated) {
+  //    console.log('auth')
+   //   this.props.history.push('/app/login')
+  //  }
+  //  if (!nextProps.valide_course) {
+  //    console.log('course')
+  //    this.props.history.push('/app/courses')
+  //  }
+ // }
+
   handleToggle = () => this.setState({ open: !this.state.open });
 
   handleClose = () => this.setState({ open: false });
@@ -152,6 +164,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   account: state.account.profileData || {},
   authenticated: state.auth.authenticated,
+  valide_course: state.courses.valide_course
 })
 
 export default connect(mapStateToProps, { exitProfile, switchUserApp })(App);

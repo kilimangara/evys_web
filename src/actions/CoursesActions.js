@@ -1,4 +1,5 @@
 import {actionTypesFor} from 'trivial-redux'
+import { COURSE_IS_NOT_VALIDE } from '../endpoints/courses'
 
 export function loadCourses(){
     return {
@@ -6,7 +7,8 @@ export function loadCourses(){
       meta: {
         fetch: {
           url: `~student/courses`,
-        }
+        },
+        is_course: true
       }
     }
   }
@@ -23,5 +25,11 @@ export function loadCourses(){
         },
         with_parent_theme: Boolean(theme_id)
       }
+    }
+  }
+
+  export function goToCoursesPage(){
+    return {
+      type: COURSE_IS_NOT_VALIDE
     }
   }
