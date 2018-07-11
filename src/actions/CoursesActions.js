@@ -1,5 +1,5 @@
 import { actionTypesFor } from 'trivial-redux'
-import { COURSE_IS_NOT_VALIDE, COURSE_IS_VALIDE } from '../endpoints/courses'
+import { COURSE_IS_NOT_VALID, COURSE_IS_VALID } from '../endpoints/courses'
 
 export function loadCourses() {
   return {
@@ -30,12 +30,12 @@ export function loadThemes(course_id, theme_id) {
 
 export function goToCoursesPage() {
   return {
-    type: COURSE_IS_NOT_VALIDE
+    type: COURSE_IS_NOT_VALID
   }
 }
 
 export function refreshCoursesValid() {
   return {
-    type: COURSE_IS_VALIDE
+    type: COURSE_IS_VALID
   }
 }

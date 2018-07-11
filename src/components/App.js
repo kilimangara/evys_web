@@ -41,12 +41,12 @@ class App extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.valide_course);
-    console.log(this.props.valide_course);
+    console.log(nextProps.valid_course);
+    console.log(this.props.valid_course);
     if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
       this.props.history.push('/app/login')
     }
-    if (!nextProps.valide_course && nextProps.valide_course != this.props.valide_course) {
+    if (!nextProps.valid_course && nextProps.valid_course != this.props.valid_course) {
       this.props.history.push('/app/courses')
     }
   }
@@ -165,7 +165,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   account: state.account.profileData || {},
   authenticated: state.auth.authenticated,
-  valide_course: state.courses.valide_course
+  valide_course: state.courses.valid_course
 })
 
 export default connect(mapStateToProps, { exitProfile, switchUserApp })(App);
