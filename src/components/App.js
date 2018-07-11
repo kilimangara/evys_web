@@ -34,8 +34,20 @@ class App extends Component {
 
   componentWillMount() {
     this.props.switchUserApp()
-    if (this.props.authenticated) return
-    this.props.history.push('/app/login')
+    if (!this.props.authenticated) {
+      this.props.history.push('/app/login')
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.valid_course);
+    console.log(this.props.valid_course);
+    if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
+      this.props.history.push('/app/login')
+    }
+    if (!nextProps.valid_course && nextProps.valid_course != this.props.valid_course) {
+      this.props.history.push('/app/courses')
+    }
   }
 
   handleToggle = () => this.setState({ open: !this.state.open });
@@ -152,6 +164,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   account: state.account.profileData || {},
   authenticated: state.auth.authenticated,
+  valid_course: state.courses.valid_course
 })
 
 export default connect(mapStateToProps, { exitProfile, switchUserApp })(App);
