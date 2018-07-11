@@ -1,5 +1,6 @@
 import {LOGOUT} from './auth'
-export const COURSE_IS_NOT_VALIDE = "COURSE_NOT_VALIDE";
+export const COURSE_IS_NOT_VALIDE = "COURSE_IS_NOT_VALIDE";
+export const COURSE_IS_VALIDE = "COURSE_IS_VALIDE";
 
 const initialState = {
   coursesList: [],
@@ -21,6 +22,8 @@ export default{
         return {...state, fetching: false}
       case COURSE_IS_NOT_VALIDE:
         return {...state, valide_course: false}
+      case COURSE_IS_VALIDE:
+        return {...state, valide_course: true}
       case LOGOUT:
         return initialState  
       default:
