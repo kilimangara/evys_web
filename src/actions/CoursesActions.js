@@ -7,8 +7,7 @@ export function loadCourses() {
     meta: {
       fetch: {
         url: `~student/courses`,
-      },
-      is_course: true
+      }
     }
   }
 }
@@ -23,7 +22,8 @@ export function loadThemes(course_id, theme_id) {
           parent_theme: theme_id
         }
       },
-      with_parent_theme: Boolean(theme_id)
+      with_parent_theme: Boolean(theme_id),
+      is_course: true
     }
   }
 }

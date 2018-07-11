@@ -165,7 +165,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   account: state.account.profileData || {},
   authenticated: state.auth.authenticated,
-  valide_course: state.courses.valid_course
+  valid_course: state.courses.valid_course
 })
 
 export default connect(mapStateToProps, { exitProfile, switchUserApp })(App);
