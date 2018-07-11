@@ -23,7 +23,6 @@ import { exitProfile } from '../actions/AccountActions'
 import { blue500 } from 'material-ui/styles/colors'
 import { switchUserApp } from '../actions/AppActions'
 
-
 class App extends Component {
 
   constructor(props) {
