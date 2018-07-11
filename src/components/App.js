@@ -23,6 +23,7 @@ import { exitProfile } from '../actions/AccountActions'
 import { blue500 } from 'material-ui/styles/colors'
 import { switchUserApp } from '../actions/AppActions'
 
+
 class App extends Component {
 
   constructor(props) {
@@ -34,8 +35,20 @@ class App extends Component {
 
   componentWillMount() {
     this.props.switchUserApp()
-    if (this.props.authenticated) return
-    this.props.history.push('/app/login')
+    if (!this.props.authenticated) {
+      this.props.history.push('/app/login')
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.valide_course);
+    console.log(this.props.valide_course);
+    if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
+      this.props.history.push('/app/login')
+    }
+    if (!nextProps.valide_course && nextProps.valide_course != this.props.valide_course) {
+      this.props.history.push('/app/courses')
+    }
   }
 
   handleToggle = () => this.setState({ open: !this.state.open });
@@ -152,6 +165,7 @@ class App extends Component {
 const mapStateToProps = state => ({
   account: state.account.profileData || {},
   authenticated: state.auth.authenticated,
+  valide_course: state.courses.valide_course
 })
 
 export default connect(mapStateToProps, { exitProfile, switchUserApp })(App);

@@ -7,6 +7,7 @@ import Divider from 'material-ui/Divider'
 import Subheader from 'material-ui/Subheader'
 import Avatar from 'material-ui/Avatar'
 import FileFolder from 'material-ui/svg-icons/file/folder'
+import { refreshCoursesValid } from '../actions/CoursesActions'
 
 class CoursesScreen extends Component {
     constructor(props) {
@@ -17,6 +18,7 @@ class CoursesScreen extends Component {
     }
 
     componentWillMount = () => {
+        this.props.refreshCoursesValid();
         this.props.loadCourses().then(
             response => {
                 this.setState({ courses: response.data.data });
@@ -63,4 +65,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { loadCourses })(CoursesScreen)
+export default connect(mapStateToProps, { loadCourses, refreshCoursesValid })(CoursesScreen)

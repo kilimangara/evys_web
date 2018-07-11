@@ -1,27 +1,41 @@
-import {actionTypesFor} from 'trivial-redux'
+import { actionTypesFor } from 'trivial-redux'
+import { COURSE_IS_NOT_VALIDE, COURSE_IS_VALIDE } from '../endpoints/courses'
 
-export function loadCourses(){
-    return {
-      types: actionTypesFor('show', 'courses'),
-      meta: {
-        fetch: {
-          url: `~student/courses`,
+export function loadCourses() {
+  return {
+    types: actionTypesFor('show', 'courses'),
+    meta: {
+      fetch: {
+        url: `~student/courses`,
+      },
+      is_course: true
+    }
+  }
+}
+
+export function loadThemes(course_id, theme_id) {
+  return {
+    types: actionTypesFor('show', 'themes'),
+    meta: {
+      fetch: {
+        url: `~student/course/${course_id}/themes`,
+        params: {
+          parent_theme: theme_id
         }
-      }
+      },
+      with_parent_theme: Boolean(theme_id)
     }
   }
+}
 
-  export function loadThemes(course_id, theme_id){
-    return {
-      types: actionTypesFor('show', 'themes'),
-      meta: {
-        fetch: {
-          url: `~student/course/${course_id}/themes`,
-          params: {
-            parent_theme: theme_id
-          }
-        },
-        with_parent_theme: Boolean(theme_id)
-      }
-    }
+export function goToCoursesPage() {
+  return {
+    type: COURSE_IS_NOT_VALIDE
   }
+}
+
+export function refreshCoursesValid() {
+  return {
+    type: COURSE_IS_VALIDE
+  }
+}
