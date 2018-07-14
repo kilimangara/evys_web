@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
 import HeaderAppBar from './HeaderAppBar'
-import { StickyContainer, Sticky } from 'react-sticky';
 import Login from '../screens/Login'
 import VideHost from '../screens/VideoHost'
 import ProfileScreen from '../screens/ProfileScreen'
@@ -22,6 +21,7 @@ import ThemeStudyScreen from '../screens/ThemeStudyScreen'
 import { exitProfile } from '../actions/AccountActions'
 import { blue500 } from 'material-ui/styles/colors'
 import { switchUserApp } from '../actions/AppActions'
+import LeftPanel from '../components/common/LeftPanel'
 
 class App extends Component {
 
@@ -34,9 +34,9 @@ class App extends Component {
 
   componentWillMount() {
     this.props.switchUserApp()
-    if (!this.props.authenticated) {
-      this.props.history.push('/app/login')
-    }
+    // if (!this.props.authenticated) {
+    //   this.props.history.push('/app/login')
+    // }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -113,51 +113,59 @@ class App extends Component {
     const { authenticated } = this.props
 
     return (
-      <StickyContainer style={{ display: 'flex', flexDirection: 'column' }}>
-        <Sticky>
-          {
-            ({ isSticky, wasSticky, style, distanceFromTop, distanceFromBottom, calculatedHeight }) => {
-
-              return <HeaderAppBar menuClick={this.handleToggle}
-                history={this.props.history} style={style} />
-            }
-          }
-        </Sticky>
-        <Drawer
-          docked={false}
-          width={300}
-          open={this.state.open}
-          onRequestChange={(open) => this.setState({ open })}
-        >
-          {this.renderHeader(authenticated)}
-          {authenticated &&
-            (<List>
-              <ListItem primaryText={'Мои показатели'} leftIcon={<FontIcon className='fas fa-chart-bar' />}
-                onClick={this.goToDashboard} />
-              <ListItem primaryText={'Мои курсы'} leftIcon={<FontIcon className="fas fa-graduation-cap" />}
-                onClick={this.goToCourses} />
-              <ListItem primaryText={'Наши предложения'} leftIcon={<FontIcon className="fas fa-th-list" />}
-                onClick={this.goToTariffs} />
-              <Divider />
-              <ListItem primaryText={'Профиль'} leftIcon={<FontIcon className="fas fa-user" />}
-                onClick={this.goToProfile} />
-              <ListItem primaryText={'Выход'} leftIcon={<FontIcon className="fas fa-sign-out-alt" />}
-                onClick={this.exitProfile} />
-            </List>)
-          }
-        </Drawer>
-        <div style={{ flex: 1 }}>
-          <Route exact path='/app' component={DashboardScreen} />
-          <Route path='/app/login' component={Login} />
-          <Route path='/app/courses' component={CoursesScreen} />
-          <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
-          <Route exact path='/app/theme/:theme_id(\d+)/study' component={ThemeStudyScreen} />
-          <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/sub_themes' component={SubThemesScreen} />
-          <Route path='/app/profile' component={ProfileScreen} />
-          <Route path='/app/tariffs' component={TariffsScreen} />
+      <div style={{display:'flex', height: '100%'}}>
+        <LeftPanel/>
+        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <HeaderAppBar/>
         </div>
-      </StickyContainer>
+      </div>
     )
+    // return (
+    //   <StickyContainer style={{ display: 'flex', flexDirection: 'column' }}>
+    //     <Sticky>
+    //       {
+    //         ({ isSticky, wasSticky, style, distanceFromTop, distanceFromBottom, calculatedHeight }) => {
+    //
+    //           return <HeaderAppBar menuClick={this.handleToggle}
+    //             history={this.props.history} style={style} />
+    //         }
+    //       }
+    //     </Sticky>
+    //     <Drawer
+    //       docked={false}
+    //       width={300}
+    //       open={this.state.open}
+    //       onRequestChange={(open) => this.setState({ open })}
+    //     >
+    //       {this.renderHeader(authenticated)}
+    //       {authenticated &&
+    //         (<List>
+    //           <ListItem primaryText={'Мои показатели'} leftIcon={<FontIcon className='fas fa-chart-bar' />}
+    //             onClick={this.goToDashboard} />
+    //           <ListItem primaryText={'Мои курсы'} leftIcon={<FontIcon className="fas fa-graduation-cap" />}
+    //             onClick={this.goToCourses} />
+    //           <ListItem primaryText={'Наши предложения'} leftIcon={<FontIcon className="fas fa-th-list" />}
+    //             onClick={this.goToTariffs} />
+    //           <Divider />
+    //           <ListItem primaryText={'Профиль'} leftIcon={<FontIcon className="fas fa-user" />}
+    //             onClick={this.goToProfile} />
+    //           <ListItem primaryText={'Выход'} leftIcon={<FontIcon className="fas fa-sign-out-alt" />}
+    //             onClick={this.exitProfile} />
+    //         </List>)
+    //       }
+    //     </Drawer>
+    //     <div style={{ flex: 1 }}>
+    //       <Route exact path='/app' component={DashboardScreen} />
+    //       <Route path='/app/login' component={Login} />
+    //       <Route path='/app/courses' component={CoursesScreen} />
+    //       <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
+    //       <Route exact path='/app/theme/:theme_id(\d+)/study' component={ThemeStudyScreen} />
+    //       <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/sub_themes' component={SubThemesScreen} />
+    //       <Route path='/app/profile' component={ProfileScreen} />
+    //       <Route path='/app/tariffs' component={TariffsScreen} />
+    //     </div>
+    //   </StickyContainer>
+    // )
   }
 }
 
