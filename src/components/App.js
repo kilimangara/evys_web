@@ -22,6 +22,7 @@ import { exitProfile } from '../actions/AccountActions'
 import { blue500 } from 'material-ui/styles/colors'
 import { switchUserApp } from '../actions/AppActions'
 import LeftPanel from '../components/common/LeftPanel'
+import CourseItem from '../components/courses/CourseItem'
 
 class App extends Component {
 
@@ -53,30 +54,6 @@ class App extends Component {
   handleToggle = () => this.setState({ open: !this.state.open });
 
   handleClose = () => this.setState({ open: false });
-
-  renderHeader = (authenticated) => {
-    const { full_name, phone } = this.props.account
-    if (authenticated) {
-      return (
-        <div style={{ backgroundColor: blue500, flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', padding: 16 }}>
-          <Avatar
-            src="/static/images/placeholder_avatar.png"
-            size={48} />
-          <div style={{ height: 5 }} />
-          <span style={{ fontSize: 18, color: 'white' }}>{full_name}</span>
-          <div style={{ height: 5 }} />
-          <span style={{ fontSize: 14, color: 'white' }}>{phone}</span>
-        </div>
-      )
-    }
-    else {
-      return (
-        <div style={{ backgroundColor: blue500, flexDirection: 'column', display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 16 }}>
-          <RaisedButton onClick={this.linkToLogin} primary label={'Войти'} />
-        </div>
-      )
-    }
-  }
 
   goToProfile = () => {
     this.handleClose()
@@ -117,6 +94,9 @@ class App extends Component {
         <LeftPanel/>
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <HeaderAppBar/>
+          <div style={{overflowY:'scroll', flex: 1, display: 'flex'}}>
+            <CoursesScreen/>
+          </div>
         </div>
       </div>
     )

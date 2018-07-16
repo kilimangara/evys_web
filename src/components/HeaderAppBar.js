@@ -41,7 +41,7 @@ class HeaderAppBar extends Component {
   render() {
     const {classes} = this.props
     return(
-      <div className={classes.root}>
+      <div>
         <AppBar position='sticky' color='default' classes={{colorDefault: classes.appBar}}>
           <Toolbar className={classes.toolbar}>
             <div/>
@@ -61,20 +61,6 @@ class HeaderAppBar extends Component {
         </AppBar>
       </div>
     )
-
-    // return (
-    //   <AppBar
-    //     onLeftIconButtonClick={this.handleMenuClick}
-    //     title={'Evys'}
-    //     style={{...this.props.style, backgroundColor: blue500}}
-    //     iconElementRight={!this.props.isLogged ? <Login history={this.props.history} />
-    //       : (<Avatar
-    //       src="/static/images/placeholder_avatar.png"
-    //       size={40}
-    //       style={{margin:5}}/>)
-    //     }
-    //   />
-    // );
   }
 }
 
