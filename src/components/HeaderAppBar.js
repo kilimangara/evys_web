@@ -1,74 +1,95 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import AppBar from "material-ui/AppBar";
-import IconButton from "material-ui/IconButton";
-import IconMenu from "material-ui/IconMenu";
-import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
-import PropTypes from "prop-types";
-import Avatar from 'material-ui/Avatar'
-import {blue500} from 'material-ui/styles/colors'
+import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import TextField from '@material-ui/core/TextField'
+import Icon from '@material-ui/core/Icon'
+import SearchBar from 'react-search-bar'
+import Badge from '@material-ui/core/Badge'
+import classNames from 'classnames'
+import '../screencss/SearchBar.css'
 
-
-class Login extends Component {
-  static muiName = 'FlatButton';
-
-  onPress = () => {
-    this.props.history.push('/app/login')
-  }
-
-  render() {
-    return (
-      <FlatButton onClick={this.onPress}  label="Войти" style={{color:'white'}} />
-    );
-  }
-}
-
-const Logged = (props) => (
-  <IconMenu
-    {...props}
-    iconButtonElement={
-      <IconButton><MoreVertIcon /></IconButton>
-    }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-  >
-    <MenuItem primaryText="Refresh" />
-    <MenuItem primaryText="Help" />
-    <MenuItem primaryText="Sign out" />
-  </IconMenu>
-);
-
-Logged.muiName = 'IconMenu';
 
 class HeaderAppBar extends Component {
 
-  handleMenuClick = () => {
-    this.props.menuClick && this.props.menuClick()
+  handleChange = (input) => {
+
+  }
+
+  handleOnSearch = (search) => {
+
+  }
+
+  handleOnClear = () => {
+
+  }
+
+  getStylesObject(){
+    return {
+      field: 'field',
+      focusedField: 'field--focused',
+      hasSuggestions: 'field--has-suggestions',
+      input: 'input',
+      clearButton: 'clear-button',
+      submitButton: 'submit-button',
+      suggestions: 'suggestions',
+      suggestion: 'suggestion'
+    }
   }
 
   render() {
-
-    return (
-      <AppBar
-        onLeftIconButtonClick={this.handleMenuClick}
-        title={'Evys'}
-        style={{...this.props.style, backgroundColor: blue500}}
-        iconElementRight={!this.props.isLogged ? <Login history={this.props.history} />
-          : (<Avatar
-          src="/static/images/placeholder_avatar.png"
-          size={40}
-          style={{margin:5}}/>)
-        }
-      />
-    );
+    const {classes} = this.props
+    return(
+      <div>
+        <AppBar position='sticky' color='default' classes={{colorDefault: classes.appBar}}>
+          <Toolbar className={classes.toolbar}>
+            <div/>
+            <SearchBar styles={this.getStylesObject()}
+                       renderClearButton
+                       renderSearchButton
+                       placeholder='Поиск'
+                       suggestions={[]}
+                       onSearch={this.handleOnSearch}
+                       onClear={this.handleOnClear}
+                       onChange={this.handleChange}/>
+            <Badge classes={{badge: classes.badge}} color='primary' badgeContent=''>
+              <Icon className={classNames('fa fa-bell', classes.icon)}/>
+            </Badge>
+          </Toolbar>
+          <div id='additional-toolbar'/>
+        </AppBar>
+      </div>
+    )
   }
 }
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  appBar: {
+    backgroundColor: 'white'
+  },
+  toolbar: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  icon: {
+    color: '#cecece'
+  },
+  badge: {
+      width: 12,
+      height: 12,
+      top: -4,
+      right: 0
+  }
+})
 
 const mapStateToProps = state => ({
   isLogged: state.auth.authenticated,
   profile: state.account.profileData
 });
 
-export default connect(mapStateToProps)(HeaderAppBar);
+export default connect(mapStateToProps)(withStyles(styles)(HeaderAppBar));

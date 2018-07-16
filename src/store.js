@@ -1,12 +1,12 @@
 import { createStore, applyMiddleware, compose, combineReducers } from "redux";
-import fetchMiddleware, { promiseMiddleware } from "fetch-middleware-for-redux";
+import trivialReduxMiddleware from 'trivial-redux-middleware'
 import reduxThunk from "redux-thunk";
 import unwrapMiddleware from "./middlewares/unwrapMiddleware";
 import urlMiddleware from "./middlewares/urlMiddleware";
 import api from "./api";
 import moduleReducers from './modules'
 
-const middlewares = [reduxThunk, urlMiddleware, fetchMiddleware, promiseMiddleware, unwrapMiddleware];
+const middlewares = [reduxThunk, urlMiddleware, trivialReduxMiddleware, unwrapMiddleware];
 
 const enhancers = [applyMiddleware(...middlewares)];
 

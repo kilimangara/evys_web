@@ -27,6 +27,7 @@ export function loadThemes(course_id, theme_id) {
       is_course: true
     }
   }
+}
 
 export function goToCoursesPage() {
   return {
@@ -38,3 +39,4 @@ export function refreshCoursesValid() {
   return {
     type: COURSE_IS_VALID
   }
+}  

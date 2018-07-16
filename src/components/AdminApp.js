@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
 import HeaderAppBarAdmin from './HeaderAppBarAdmin'
-import { StickyContainer, Sticky } from 'react-sticky';
 import LoginScreen from '../screens/admin/LoginScreen'
 import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import ThemesScreen from '../screens/admin/ThemesScreen'

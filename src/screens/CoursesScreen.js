@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loadCourses } from '../actions/CoursesActions'
-import { List, ListItem } from 'material-ui/List'
-import ActionInfo from 'material-ui/svg-icons/action/info'
-import Divider from 'material-ui/Divider'
-import Subheader from 'material-ui/Subheader'
-import Avatar from 'material-ui/Avatar'
-import FileFolder from 'material-ui/svg-icons/file/folder'
+import Grid from '@material-ui/core/Grid'
+
+import CourseItem from '../components/courses/CourseItem'
 
 class CoursesScreen extends Component {
     constructor(props) {
@@ -28,31 +25,79 @@ class CoursesScreen extends Component {
         this.props.history.push(`/app/course/${id}/themes`)
     }
 
-    renderItem = (item, index) => {
-        return (
-            <ListItem
-                key={index}
-                leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
-                primaryText={item.subject.subject}
-                onClick={this.loadThemes.bind(this, item.id)}
-            />
-        )
-    }
+    // renderItem = (item, index) => {
+    //     return (
+    //         <ListItem
+    //             key={index}
+    //             leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
+    //             primaryText={item.subject.subject}
+    //             onClick={this.loadThemes.bind(this, item.id)}
+    //         />
+    //     )
+    // }
 
     render() {
-        return (
-            <div style={styles.container}>
-                <List>
-                    <Subheader inset={true}>Курсы</Subheader>
-                    {this.state.courses.map(this.renderItem)}
-                </List>
-            </div>
-        )
+      return(
+        <div style={styles.container}>
+          <Grid container spacing={8}>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem active={false}/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem active={false}/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <CourseItem/>
+            </Grid>
+          </Grid>
+        </div>
+      )
+        // return (
+        //     <div style={styles.container}>
+        //         <List>
+        //             <Subheader inset={true}>Курсы</Subheader>
+        //             {this.state.courses.map(this.renderItem)}
+        //         </List>
+        //     </div>
+        // )
     }
 }
 
 const styles = {
     container: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      padding: '16px 15%',
+      flex: 1
     },
 }
 
