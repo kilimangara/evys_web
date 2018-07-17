@@ -11,7 +11,13 @@ class ThemesItem extends Component {
         <p style={{ margin: '0px' }}>Кол-во разделов: <span style={{ fontWeight: 'bold' }}><span style={{ fontWeight: 'bold' }}>{this.props.number}</span></span></p>
         <p style={{ margin: '0px' }}>Выполнено: <span style={styles.number}>{this.props.doneNumber}</span> из <span style={{ fontWeight: 'bold' }}>{this.props.number}</span></p>
         <p style={styles.status}> {this.props.percent}% </p>
-        <div style={styles.statusLine}>
+        <div style={styles.statusLine} style={{ width: `${this.props.percent}%`, 
+        backgroundColor: 'blue',
+        height: '18px',
+        borderRadius: '0 0 0px 6px',
+        left: '0px',
+        position: 'absolute',
+        bottom: '0px'}}>
             </div>
     </div>
     )
@@ -26,22 +32,14 @@ const styles = {
         padding: '15px',
         borderRadius: '6px',
         marginBottom: '10px',
-        height: '130px'
+        position: 'relative'
     },
     status: {
-        position: 'relative',
+        margin: '0px',
         fontSize: '30px',
-        float: 'right',
         color: 'blue',
+        marginLeft: '70%',
         fontWeight: 'bold'
-    },
-    statusLine: {
-        backgroundColor: 'blue',
-        height: '18px',
-        borderRadius: '0 0 0px 6px',
-        marginTop: '72px',
-        marginLeft: '-17px',
-        width: '110px'
     },
     number: {
         fontWeight: 'bold', 
