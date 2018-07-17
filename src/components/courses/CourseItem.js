@@ -21,25 +21,23 @@ class CourseItem extends Component {
              className={classes.container}
              onMouseOver={this.changeHovered.bind(this, true)}
              onMouseOut={this.changeHovered.bind(this, false)}>
-        <div>
-          <img src={courseImage} style={{maxWidth: '100%', maxHeight:'100%', objectContain: 'fill'}}/>
-          <div className={classes.metaOverlay}>
-            <div style={{backgroundColor:'#34BDF5', width:`${percent}%`, alignSelf:'flex-start' ,height: 6}}/>
-            <div style={inlineStyles.dataStyle}>
-              <span style={inlineStyles.mainText}>{name}</span>
-              <span style={inlineStyles.mainText}>Без учителя</span>
-              <div style={{display:'flex', justifyContent:'space-between'}}>
-                <span style={inlineStyles.accentText}>до {moment(subscribeTo).format('D.MM.YY')}</span>
-                <span style={inlineStyles.secondaryText}>{percent}%</span>
+          <div style={inlineStyles.backgroundImage(courseImage)}>
+            <div className={classes.metaOverlay}>
+              <div style={{backgroundColor:'#34BDF5', width:`${percent}%`, alignSelf:'flex-start' ,height: 6}}/>
+              <div style={inlineStyles.dataStyle}>
+                <span style={inlineStyles.mainText}>{name}</span>
+                <div style={{display:'flex', justifyContent:'space-between'}}>
+                  <span style={inlineStyles.accentText}>до {moment(subscribeTo).format('D.MM.YY')}</span>
+                  <span style={inlineStyles.secondaryText}>{percent}%</span>
+                </div>
               </div>
             </div>
+            {!active && (
+              <div className={classes.inactiveOverlay}>
+                <span style={{color:'white', fontSize: 24}}>Подписка устарела</span>
+              </div>
+            )}
           </div>
-          {!active && (
-            <div className={classes.inactiveOverlay}>
-              <span style={{color:'white', fontSize: 24}}>Подписка устарела</span>
-            </div>
-          )}
-        </div>
       </Paper>
     )
   }
@@ -48,7 +46,7 @@ class CourseItem extends Component {
 
 const inlineStyles = {
   dataStyle: {
-    padding: 8,
+    padding: '0px 8px',
     display:'flex',
     flexDirection: 'column'
   },
@@ -58,17 +56,24 @@ const inlineStyles = {
   },
   secondaryText: {
     color: 'white',
-    fontSize: 14
+    fontSize: 12
   },
   accentText: {
     color: 'white',
     fontSize: 10
-  }
+  },
+  backgroundImage:(image) => ({
+    backgroundImage: `url(${image})`,
+    height: 160,
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover'
+  })
 }
 
 const styles = theme => ({
   metaOverlay: {
-    height: '45%',
+    height: '30%',
     width: '100%',
     position:'absolute',
     bottom: 0,
@@ -89,7 +94,6 @@ const styles = theme => ({
   container: {
     borderRadius: 8,
     overflow: 'hidden',
-    display:'flex',
     position:'relative',
     '&:hover': {
       bottom: 5,

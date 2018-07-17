@@ -39,7 +39,7 @@ class CoursesScreen extends Component {
     render() {
       return(
         <div style={styles.container}>
-          <Grid container spacing={8}>
+          <Grid container spacing={16}>
             <Grid item xs={12} sm={4}>
               <CourseItem/>
             </Grid>
@@ -96,7 +96,7 @@ const styles = {
       flexDirection: 'column',
       justifyContent: 'flex-start',
       alignItems: 'center',
-      padding: '16px 15%',
+      padding: '16px 10%',
       flex: 1
     },
 }
