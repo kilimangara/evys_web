@@ -22,17 +22,24 @@ class ThemesItem extends Component {
         className={classes.container}
         onMouseOver={this.changeHovered.bind(this, true)}
         onMouseOut={this.changeHovered.bind(this, false)}>
+        <div style={{
+    //   border: '16px solid #6AD9FD',
+    //  borderImage: 'linear-gradient(to right, #6AD9FD 0%, #1EABF1 100%)',
+    //  borderImageSlice: 1,
+    //  padding: '17px'
+     }}>
         <p style={{ fontWeight: 'bold', margin: '0px' }}>{this.props.name}</p>
         <p style={{ margin: '0px' }}>Кол-во разделов: <span style={{ fontWeight: 'bold' }}><span style={{ fontWeight: 'bold' }}>{this.props.number}</span></span></p>
         <p style={{ margin: '0px' }}>Выполнено: <span style={inlineStyles.number}>{this.props.doneNumber}</span> из <span style={{ fontWeight: 'bold' }}>{this.props.number}</span></p>
         <p style={inlineStyles.status}> {this.props.percent}% </p>
         <div style={inlineStyles.statusLine} style={{ width: `${this.props.percent}%`, 
-        background: 'linear-gradient(to left, #00BFFF, #fefcea)',
+        background: 'linear-gradient(to left, #1EABF1, #6AD9FD )',
         height: '16px',
         borderRadius: '0 0 0px 6px',
         left: '0px',
         position: 'absolute',
         bottom: '0px'}}>
+        </div>
             </div>
     </Paper>
     )
@@ -41,33 +48,24 @@ class ThemesItem extends Component {
 }
 
 const inlineStyles = {
-    theme: {
-        backgroundColor: 'white',
-        boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-        padding: '17px',
-        borderRadius: '6px',
-        marginBottom: '10px',
-        position: 'relative',
-     //   border: '16px solid #00BFFF'
-    },
     status: {
         margin: '0px',
         fontSize: '30px',
-        color: '#00BFFF',
+        color: '#6AD9FD',
         marginLeft: '70%',
         fontWeight: 'bold'
     },
     number: {
         fontWeight: 'bold', 
-        color: 'blue'
+        color: '#6AD9FD'
     }
 }
 
 const styles = theme => ({
     container: {
-      borderRadius: 8,
+      borderRadius: '8px',
       overflow: 'hidden',
-      padding: '17px',
+      padding: '16px',
       marginBottom: '10px',
       position:'relative',
       '&:hover': {
