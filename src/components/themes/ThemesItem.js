@@ -4,82 +4,81 @@ import { withStyles } from '@material-ui/core/styles'
 
 class ThemesItem extends Component {
 
-    state = {
-        hover: false
-      }
-    
-      changeHovered = (hover) => {
-        this.setState({hover})
-      }
-    
+  state = {
+    hover: false,
+    borderDisplay: '0',
+    statusDisplay: 'none'
+  }
 
-  render(){
-    const {hover} = this.state
-    const {name, percent, doneNumber, number, classes} = this.props
+  changeHovered = (hover) => {
+    this.setState({ hover })
+  }
 
-    return(
-        <Paper elevation={hover ? 5 : 1}
+  componentWillMount = () => {
+    if (this.props.percent == 100) { this.setState({ borderDisplay: '16' }) } else { this.setState({ statusDisplay: 'inline' }) }
+  }
+
+
+
+  render() {
+    const { hover, borderDisplay } = this.state
+    const { name, percent, doneNumber, number, classes } = this.props
+
+    return (
+      <Paper elevation={hover ? 5 : 1}
         className={classes.container}
         onMouseOver={this.changeHovered.bind(this, true)}
         onMouseOut={this.changeHovered.bind(this, false)}>
-        <div style={{
-    //   border: '16px solid #6AD9FD',
-    //  borderImage: 'linear-gradient(to right, #6AD9FD 0%, #1EABF1 100%)',
-    //  borderImageSlice: 1,
-    //  padding: '17px'
-     }}>
-        <p style={{ fontWeight: 'bold', margin: '0px' }}>{this.props.name}</p>
-        <p style={{ margin: '0px' }}>Кол-во разделов: <span style={{ fontWeight: 'bold' }}><span style={{ fontWeight: 'bold' }}>{this.props.number}</span></span></p>
-        <p style={{ margin: '0px' }}>Выполнено: <span style={inlineStyles.number}>{this.props.doneNumber}</span> из <span style={{ fontWeight: 'bold' }}>{this.props.number}</span></p>
-        <p style={inlineStyles.status}> {this.props.percent}% </p>
-        <div style={inlineStyles.statusLine} style={{ width: `${this.props.percent}%`, 
-        background: 'linear-gradient(to left, #1EABF1, #6AD9FD )',
-        height: '16px',
-        borderRadius: '0 0 0px 6px',
-        left: '0px',
-        position: 'absolute',
-        bottom: '0px'}}>
+        <div style={{ border: `${borderDisplay}px solid #6AD9FD`, borderImage: 'linear-gradient(to right, #6AD9FD 0%, #1EABF1 100%)', margin: '-17px', borderImageSlice: 1, padding: '17px' }}>
+          <p style={{ fontWeight: 'bold', margin: '0px' }}>{this.props.name}</p>
+          {this.props.nastedThemes && <div> <p style={{ margin: '0px' }}>Кол-во разделов: <span style={{ fontWeight: 'bold' }}><span style={{ fontWeight: 'bold' }}>{this.props.number}</span></span></p>
+            <p style={{ margin: '0px' }}>Выполнено: <span style={inlineStyles.number}>{this.props.doneNumber}</span> из <span style={{ fontWeight: 'bold' }}>{this.props.number}</span></p>
+          </div>
+          }
+          <p style={inlineStyles.status}> {this.props.percent}% </p>
+          <div style={{ display: `${this.state.statusDisplay}`, background: 'linear-gradient(to left, #1EABF1, #6AD9FD )', height: '16px', borderRadius: '0 0 0px 6px', left: '0px', position: 'absolute', bottom: '0px', width: `${this.props.percent}%` }}>
+          </div>
         </div>
-            </div>
-    </Paper>
+      </Paper>
     )
   }
 
 }
 
 const inlineStyles = {
-    status: {
-        margin: '0px',
-        fontSize: '30px',
-        color: '#6AD9FD',
-        marginLeft: '70%',
-        fontWeight: 'bold'
-    },
-    number: {
-        fontWeight: 'bold', 
-        color: '#6AD9FD'
-    }
+  status: {
+    margin: '0px',
+    fontSize: '30px',
+    color: '#6AD9FD',
+    marginLeft: '70%',
+    fontWeight: 'bold'
+  },
+  number: {
+    fontWeight: 'bold',
+    color: '#6AD9FD'
+  }
 }
 
 const styles = theme => ({
-    container: {
-      borderRadius: '8px',
-      overflow: 'hidden',
-      padding: '16px',
-      marginBottom: '10px',
-      position:'relative',
-      '&:hover': {
-        bottom: 5,
-        transition: theme.transitions.create(['bottom'])
-      }
+  container: {
+    borderRadius: '8px',
+    overflow: 'hidden',
+    padding: '16px',
+    marginBottom: '10px',
+    position: 'relative',
+    '&:hover': {
+      bottom: 5,
+      transition: theme.transitions.create(['bottom'])
     }
-  })
+  }
+})
 
 ThemesItem.defaultProps = {
   name: 'Основы',
   percent: 50,
   number: 5,
-  doneNumber: 4
+  doneNumber: 4,
+  nastedThemes: true
 }
 
 export default withStyles(styles)(ThemesItem)
