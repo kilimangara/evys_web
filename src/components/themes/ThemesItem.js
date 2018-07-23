@@ -14,15 +14,13 @@ class ThemesItem extends Component {
     this.setState({ hover })
   }
 
-  componentWillMount = () => {
-    if (this.props.percent == 100) { this.setState({ borderDisplay: '16' }) } else { this.setState({ statusDisplay: 'inline' }) }
-  }
-
-
 
   render() {
-    const { hover, borderDisplay } = this.state
+    const { hover } = this.state
     const { name, percent, doneNumber, number, classes } = this.props
+    let borderDisplay = '0', statusDisplay = 'none'
+
+    if (this.props.percent == 100) { borderDisplay = '16' } else { statusDisplay = 'inline' }
 
     return (
       <Paper elevation={hover ? 5 : 1}
@@ -36,7 +34,7 @@ class ThemesItem extends Component {
           </div>
           }
           <p style={inlineStyles.status}> {this.props.percent}% </p>
-          <div style={{ display: `${this.state.statusDisplay}`, background: 'linear-gradient(to left, #1EABF1, #6AD9FD )', height: '16px', borderRadius: '0 0 0px 6px', left: '0px', position: 'absolute', bottom: '0px', width: `${this.props.percent}%` }}>
+          <div style={{ display: `${statusDisplay}`, background: 'linear-gradient(to left, #1EABF1, #6AD9FD )', height: '16px', borderRadius: '0 0 0px 6px', left: '0px', position: 'absolute', bottom: '0px', width: `${this.props.percent}%` }}>
           </div>
         </div>
       </Paper>
@@ -75,7 +73,7 @@ const styles = theme => ({
 
 ThemesItem.defaultProps = {
   name: 'Основы',
-  percent: 50,
+  percent: 100,
   number: 5,
   doneNumber: 4,
   nastedThemes: true
