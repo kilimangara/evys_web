@@ -73,7 +73,7 @@ const styles = theme => ({
 
 ThemesItem.defaultProps = {
   name: 'Основы',
-  percent: 100,
+  percent: 50,
   number: 5,
   doneNumber: 4,
   nastedThemes: true
