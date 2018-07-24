@@ -95,7 +95,7 @@ class App extends Component {
         <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
           <HeaderAppBar/>
           <div style={{overflowY:'scroll', flex: 1, display: 'flex'}}>
-            <CoursesScreen/>
+            <ThemesScreen/>
           </div>
         </div>
       </div>
