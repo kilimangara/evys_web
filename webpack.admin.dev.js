@@ -13,13 +13,13 @@ module.exports = env =>
   return {
     entry: [
       "react-hot-loader/patch",
-      "./src/index.js",
+      "./src/admin_index.js",
     ],
     devtool: process.env.WEBPACK_DEVTOOL || "eval-source-map",
     output: {
       publicPath : env.DEV_SERVER ? 'http://localhost:3000/' : 'http://dev-evys.ru:3000/dist/',
       path: path.resolve('./dist'),
-      filename: "app_bundle_dev.js"
+      filename: "admin_bundle_dev.js"
     },
     resolve: {
       extensions: [".js", ".jsx"]
@@ -53,16 +53,16 @@ module.exports = env =>
       new webpack.NamedModulesPlugin(),
       new webpack.HotModuleReplacementPlugin(),
       new ExtractTextPlugin({
-        filename: "styles.css",
+        filename: "styles_admin.css",
       }),
       new HtmlWebpackPlugin({
         template: "./public/index.html",
-        title: 'Evys',
-        filename: 'index_student.html',
-        description: 'Обучающая платформа Evys.',
+        title: 'Evys admin',
+        filename: 'index_admin.html',
+        description: 'Создадим онлайн школу вместе с Evys.',
         files: {
-          css: ["styles.css"],
-          js: [ "app_bundle_dev.js"],
+          css: ["styles_admin.css"],
+          js: [ "admin_bundle_dev.js"],
         }
       }),
     ]

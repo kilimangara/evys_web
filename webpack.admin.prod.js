@@ -10,12 +10,12 @@ module.exports = env =>
 {
   return {
     entry: [
-      "./src/index.js",
+      "./src/admin_index.js",
     ],
     output: {
       publicPath : '/dist/',
       path: path.resolve('./dist/'),
-      filename: "app_bundle.js"
+      filename: "admin_app_bundle.js"
     },
     resolve: {
       extensions: [".js", ".jsx"]
@@ -25,7 +25,7 @@ module.exports = env =>
     },
     plugins: [
       new ExtractTextPlugin({
-        filename: "styles.css"
+        filename: "styles_admin.css"
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
@@ -51,12 +51,12 @@ module.exports = env =>
       }),
       new HtmlWebpackPlugin({
         template: "./public/index.html",
-        title: 'Evys',
-        filename: 'index_student.html',
-        description: 'Обучающая платформа Evys.',
+        title: 'Evys admin',
+        filename: 'index_admin.html',
+        description: 'Создадим онлайн школу вместе с Evys.',
         files: {
-          css: ["styles.css"],
-          js: [ "app_bundle_dev.js"],
+          css: ["styles_admin.css"],
+          js: [ "admin_app_bundle.js"],
         }
       }),
       // new CompressionPlugin({

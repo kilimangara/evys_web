@@ -4,10 +4,10 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import setUpStore from "./store";
 import { Route, Switch} from "react-router";
-import App from "./components/App";
-// import AdminApp from './components/AdminApp'
+import AdminApp from './components/AdminApp'
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import './screencss/Global.scss'
+import {ADMIN_APP} from './modules/apps'
 
 import routes from "./routes";
 
@@ -18,25 +18,24 @@ class Root extends Component {
 
   componentWillMount = () => {
     moment.locale('ru')
-    const store = setUpStore();
+    const store = setUpStore(ADMIN_APP);
     this.setState({ store });
     store.subscribe(this.handleDispatch);
   };
 
   handleDispatch = () => {
     const state = this.state.store.getState();
-    localStorage.setItem("evysMainAppState", JSON.stringify(state));
+    localStorage.setItem("evysAdminMainAppState", JSON.stringify(state));
   };
 
   render() {
-    console.log(this.state)
     if (!this.state.store) return null;
     return (
       <Provider store={this.state.store}>
         <MuiThemeProvider>
           <BrowserRouter>
             <Switch>
-              <Route path='/app' component={App}/>
+              <Route path='/admin' component={AdminApp}/>
             </Switch>
           </BrowserRouter>
         </MuiThemeProvider>

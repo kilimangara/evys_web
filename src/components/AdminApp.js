@@ -8,7 +8,7 @@ import ThemesScreen from '../screens/admin/ThemesScreen'
 import TestCaseScreen from '../screens/admin/TestCaseScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
 import DistributionScreen from '../screens/admin/DistributionScreen'
-import HTMLBuilderScreen from '../screens/admin/HTMLBuilderScreen'
+// import HTMLBuilderScreen from '../screens/admin/HTMLBuilderScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import TariffScreen from '../screens/admin/TariffScreen'
 import {switchAdminApp} from '../actions/AppActions'
@@ -89,7 +89,6 @@ class App extends Component {
               <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
               <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
               <Route path='/admin/students' component={StudentsScreen}/>
-              <Route path='/admin/editor' component={HTMLBuilderScreen}/>
               <Route path='/admin/choose_account' component={ChooseAccountScreen}/>
               <Route path='/admin/tariffs' component={TariffScreen}/>
               <Route path='/admin/register' component={RegisterScreen}/>

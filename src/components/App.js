@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
 import HeaderAppBar from './HeaderAppBar'
 import Login from '../screens/Login'
-import VideHost from '../screens/VideoHost'
+// import VideHost from '../screens/VideoHost'
 import ProfileScreen from '../screens/ProfileScreen'
 import Drawer from 'material-ui/Drawer'
 import FontIcon from 'material-ui/FontIcon'
