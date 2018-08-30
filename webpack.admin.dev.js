@@ -29,15 +29,14 @@ module.exports = env =>
     },
      devServer: {
       contentBase:'./public',
-      publicPath: '/',
-      index: 'index_admin.html',
+      index: '/index_admin.html',
       // enable HMR
       hot: true,
       // embed the webpack-dev-server runtime into the bundle
       inline: true,
       // serve index.html in place of 404 responses to allow HTML5 history
       historyApiFallback: {
-        index: '/',
+        index: '/index_admin.html',
       },
       compress: true,
       port: PORT,

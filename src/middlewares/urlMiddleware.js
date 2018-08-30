@@ -3,7 +3,7 @@ import {ADMIN_APP, USER_APP} from '../modules/apps'
 
 let isValidFetchingAction = action => action.types && action.meta && action.meta.fetch && action.meta.fetch.url;
 
-const BASE_URL = __DEV__ ? 'http://api.localhost:8000/' : 'https://api.evys.ru/'
+const BASE_URL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 
 export const toEndPointUrl = url => `${BASE_URL}${url.substr(1)}`
 

@@ -8,6 +8,7 @@ import AdminApp from './components/AdminApp'
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import './screencss/Global.scss'
 import {ADMIN_APP} from './modules/apps'
+import {pick} from 'lodash'
 
 import routes from "./routes";
 
@@ -24,8 +25,9 @@ class Root extends Component {
   };
 
   handleDispatch = () => {
-    const state = this.state.store.getState();
-    localStorage.setItem("evysAdminMainAppState", JSON.stringify(state));
+    let state = this.state.store.getState();
+    state = pick(state, ['account_admin', 'auth_admin', 'company_admin'])
+    localStorage.setItem("evysAdminMainAppState", JSON.stringify(state))
   };
 
   render() {

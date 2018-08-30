@@ -8,10 +8,8 @@
     "build-prod": "webpack --config webpack.prod.config.js --progress --colors",
     "build-admin-prod": "webpack --config webpack.admin.prod.js --progress --colors",
     "build-admin-dev": "webpack --config webpack.admin.dev.js  --env.DEV --progress --colors",
-    "start-dev": "webpack-dev-server --env.DEV --env.DEV_SERVER",
-    "start-admin-dev": "webpack-dev-server --config webpack.admin.dev.js --env.DEV --env.DEV_SERVER",
     "start-admin": "webpack-dev-server --config webpack.admin.dev.js --env.DEV",
-    "start": "webpack-dev-server --env.DEV_SERVER"
+    "start": "webpack-dev-server --env.DEV"
   },
   "repository": {
     "type": "git",
@@ -44,7 +42,7 @@
     "react-paginate": "^5.1.0",
     "react-player": "^1.1.1",
     "react-player-controls": "^0.5.18",
-    "react-quill": "^1.2.6",
+    "react-quill": "^1.3.1",
     "react-redux": "^5.0.5",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",

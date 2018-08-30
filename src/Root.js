@@ -5,9 +5,9 @@ import { BrowserRouter } from "react-router-dom";
 import setUpStore from "./store";
 import { Route, Switch} from "react-router";
 import App from "./components/App";
-// import AdminApp from './components/AdminApp'
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import './screencss/Global.scss'
+import {pick} from 'lodash'
 
 import routes from "./routes";
 
@@ -24,12 +24,12 @@ class Root extends Component {
   };
 
   handleDispatch = () => {
-    const state = this.state.store.getState();
+    let state = this.state.store.getState();
+    state = pick(state, ['auth'])
     localStorage.setItem("evysMainAppState", JSON.stringify(state));
   };
 
   render() {
-    console.log(this.state)
     if (!this.state.store) return null;
     return (
       <Provider store={this.state.store}>

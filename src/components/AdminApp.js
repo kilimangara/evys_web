@@ -13,6 +13,7 @@ import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import TariffScreen from '../screens/admin/TariffScreen'
 import {switchAdminApp} from '../actions/AppActions'
 import {logoutAction} from '../actions/admin/AccountActions'
+import {pickAsset} from '../actions/admin/TemplateAssetsActions'
 import {List, ListItem} from 'material-ui/List'
 import Drawer from 'material-ui/Drawer'
 import FontIcon from 'material-ui/FontIcon'
@@ -22,6 +23,9 @@ import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui
 import bind from 'memoize-bind'
 import Divider from 'material-ui/Divider'
 import RegisterScreen from '../screens/admin/RegisterScreen'
+import Modal from 'reboron/ScaleModal'
+import ImageAssetPicker from './template_assets/ImageAssetPicker'
+import pt from 'prop-types'
 
 class App extends Component {
 
@@ -30,6 +34,11 @@ class App extends Component {
     this.state = {
       opened: false
     }
+  }
+
+  onAssetPicked = (assetObject, meta) => {
+    this.assetManager.hide()
+    this.props.pickAsset(assetObject, meta)
   }
 
   componentWillMount(){
@@ -43,6 +52,11 @@ class App extends Component {
   goToExactPath = (path) => {
     this.handleMenuClick()
     this.props.history.push(path)
+  }
+
+  componentDidUpdate(prevProps) {
+    if(!prevProps.assetOpened && this.props.assetOpened) this.assetManager.show()
+    if(prevProps.assetOpened && !this.props.assetOpened) this.assetManager.hide()
   }
 
   handleMenuClick = () => {
@@ -83,6 +97,9 @@ class App extends Component {
           <div style={{display:'flex', flexDirection:'column', marginLeft: isDesktop ? '200px' : '0px'}}>
             <HeaderAppBarAdmin history={this.props.history} isDesktop={isDesktop}
                                onMenuPressed={this.handleMenuClick}/>
+            <Modal ref={(ref) => this.assetManager = ref} modalStyle={{height: '90vh', overflowY: 'auto'}}>
+             <ImageAssetPicker assetPicked={this.onAssetPicked}/>
+            </Modal>
             <Switch>
               <Route exact path='/admin' component={SubjectsScreen} />
               <Route path='/admin/login' component={LoginScreen}/>
@@ -103,7 +120,8 @@ const mapStateToProps = state => ({
   account: state.account_admin.profileData || {},
   authenticated: state.auth_admin.authenticated,
   currentCompany: state.company_admin.currentCompany,
-  company: state.company_admin.companyList.find(el => el.permalink === state.company_admin.currentCompany)
+  company: state.company_admin.companyList.find(el => el.permalink === state.company_admin.currentCompany),
+  assetOpened: state.asset_manager.managerOpened
 })
 
-export default connect(mapStateToProps, {switchAdminApp, logoutAction})(withGetScreen(App))
+export default connect(mapStateToProps, {switchAdminApp, logoutAction, pickAsset})(withGetScreen(App))

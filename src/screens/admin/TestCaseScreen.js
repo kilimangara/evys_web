@@ -7,12 +7,12 @@ import IconButton from 'material-ui/IconButton'
 import {getTestCases, updateTestCase,
         createTestCase, deleteAnswer, deleteTest,
         deleteTestCase} from '../../actions/admin/TestCaseActions'
-// import Graph from 'react-graph-vis'
+import Graph from 'react-graph-vis'
 import {blue500, grey200, grey500, green500, red500, grey900} from 'material-ui/styles/colors'
 import Divider from 'material-ui/Divider'
 import Paper from 'material-ui/Paper'
 import {GRAPH_OPTIONS} from '../../components/test_cases/TestCaseGraph'
-// import 'vis/dist/vis.css'
+import 'vis/dist/vis.css'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import update from 'immutability-helper'
@@ -194,6 +194,7 @@ class TestCaseScreen extends Component {
         <Tab label='Задания'>
           <div style={styles.container}>
             <div style={{display:'flex', justifyContent: 'center', flexDirection:'column'}}>
+              <Graph events={events} options={options} graph={graph}/>
               <Divider/>
               {this.renderTestCase()}
             </div>

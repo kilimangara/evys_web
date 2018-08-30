@@ -15,7 +15,7 @@ import {GridList} from 'material-ui/GridList'
 import Drawer from 'material-ui/Drawer'
 import ImageAssetPicker from '../../components/template_assets/ImageAssetPicker'
 import {connect} from 'react-redux'
-import {switchManager} from '../../actions/admin/TemplateAssetsActions'
+import {pickAsset, switchManager} from '../../actions/admin/TemplateAssetsActions'
 
 const formats = [
   'header', 'font', 'size',
@@ -38,14 +38,16 @@ class TestCaseCreation extends Component {
   }
 
   saveTextToTask = (index, field, value) => {
+    console.log(index, field, value)
     const newTest = {...this.state.tests[index], [field]: value}
     const testList = update(this.state.tests, {$splice: [[index, 1, newTest]]})
+    console.log('NEW TASKS', testList)
     this.setState({
       tests: testList
     })
   }
 
-  saveTextToTaskAlt = (index, field,event, value) => {
+  saveTextToTaskAlt = (index, field, event, value) => {
     const newTest = {...this.state.tests[index], [field]: value}
     const testList = update(this.state.tests, {$splice: [[index, 1, newTest]]})
     this.setState({
@@ -57,8 +59,7 @@ class TestCaseCreation extends Component {
     this.setState(nextProps.initialState)
   }
 
-  getModules = () => {
-    return {
+  modules = {
       toolbar: {
         container:[
                     [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
@@ -66,24 +67,25 @@ class TestCaseCreation extends Component {
                     ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                     [{'list': 'ordered'}, {'list': 'bullet'},
                      {'indent': '-1'}, {'indent': '+1'}],
-                    ['clean']
+                    ['clean'],
+                    ['image']
                 ],
-        handlers:{
-          'link': (value) => {
-            console.log(value)
-            this.props.switchManager()
-          },
-          'image': (value) => {
-            console.log(value)
-            this.props.switchManager()
-          }
-        }
+        handlers:{}
       },
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
         matchVisual: false,
       }
-    }
+  }
+
+  initQuill = (index) => {
+    const quill = this[`quill${index}`].getEditor()
+    const toolbar = quill.getModule('toolbar')
+    toolbar.addHandler('image', (value) => {
+      this.focusedQuillIndex = index
+      this.focusedQuill = quill
+      this.props.switchManager()
+    })
   }
 
   renderTest = (testItem, index) => {
@@ -93,10 +95,11 @@ class TestCaseCreation extends Component {
           <TextField onChange={bind(this.saveTextToTaskAlt, this, index, 'name')}
             floatingLabelText="Название" value={testItem.name}
             underlineFocusStyle={{borderColor: grey900}} />
-          <ReactQuill value={testItem.task}
+          <ReactQuill ref={(ref) => this[`quill${index}`] = ref}
+                      value={testItem.task}
                       onChange={bind(this.saveTextToTask, this, index, 'task')}
                       theme={'snow'}
-                      modules={this.getModules()}
+                      modules={this.modules}
                       formats={formats}
           />
           <h4>Ответы</h4>
@@ -157,14 +160,6 @@ class TestCaseCreation extends Component {
     const answer = test.answers[answer_index]
   }
 
-  componentWillUnmount(){
-    this.closeManager()
-  }
-
-  closeManager = () => {
-    if(this.props.managerOpened) this.props.switchManager()
-  }
-
   addTest = () => {
     const newTest = {
       name: '',
@@ -185,14 +180,33 @@ class TestCaseCreation extends Component {
     this.modal.hide()
   }
 
-  // <Drawer openSecondary open={this.props.managerOpened}>
-  //   <ImageAssetPicker ref={ref => this.assetManager = ref}/>
-  // </Drawer>
+  componentDidMount(){
+    const {tests} = this.state
+    tests.forEach((t, index) => this.initQuill(index))
+  }
+
+  componentDidUpdate(prevProps){
+    const {tests} = this.state
+    tests.forEach((t, index) => this.initQuill(index))
+    const {asset} = this.props
+    if(asset && this.focusedQuillIndex != null){
+      const range = this.focusedQuill.getSelection();
+      this.focusedQuill.insertEmbed(range.index, 'image', asset.file, "user")
+      // const testText = this.focusedQuill.getText(0)
+      // this.saveTextToTask(this.focusedQuillIndex, 'task', testText)
+      this.props.pickAsset(null, null)
+    }
+  }
+
+  syncQuillWithState = () => {
+
+  }
 
   render(){
     const {analogue_id, description, tests} = this.state
     let numberOfColumns = tests.length > 1 ? 2 : 1
     if(this.props.isMobile) numberOfColumns = 1
+    console.log(this.state)
     return (
       <div style={styles.container}>
         <TextField onChange={this.saveToState.bind(this, 'analogue_id')}
@@ -272,7 +286,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-  managerOpened: state.asset_manager.managerOpened
+  asset: state.asset_manager.asset,
+  meta: state.asset_manager.meta
 })
 
-export default connect(mapStateToProps, {switchManager})(TestCaseCreation)
+export default connect(mapStateToProps, {pickAsset, switchManager})(TestCaseCreation)

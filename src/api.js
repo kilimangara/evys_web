@@ -14,12 +14,7 @@ import students_admin from './endpoints/admin/students_admin'
 import tariffs_admin from './endpoints/admin/tariffs_admin'
 import company_admin from './endpoints/admin/company_admin'
 
-export default trivialRedux({
-  auth,
-  account,
-  tariffs,
-  courses,
-  stats,
+export const adminAPI = trivialRedux({
   auth_admin,
   account_admin,
   subjects_admin,
@@ -28,4 +23,12 @@ export default trivialRedux({
   students_admin,
   tariffs_admin,
   company_admin
+})
+
+export const studentAPI = trivialRedux({
+  auth,
+  account,
+  tariffs,
+  courses,
+  stats
 });

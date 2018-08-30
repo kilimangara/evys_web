@@ -1,5 +1,5 @@
 import {actionTypesFor} from 'trivial-redux'
-import {SWITCH_MANAGER} from '../../modules/asset_manager'
+import {SWITCH_MANAGER, ASSET_PICKED} from '../../modules/asset_manager'
 
 export function loadAssets(page=1, filtersObj={}){
   return {
@@ -16,11 +16,7 @@ export function loadAssets(page=1, filtersObj={}){
 export function createAsset(data){
   const body = new FormData()
   const {file={}} = data
-  body.append('file', {
-      uri:file.preview,
-      type:file.type,
-      name: file.name
-    })
+  body.append('file', file)
   body.append('name', data.name)
   body.append('type', data.type)
   return {
@@ -38,5 +34,13 @@ export function createAsset(data){
 export function switchManager(){
   return {
     type: SWITCH_MANAGER
+  }
+}
+
+export function pickAsset(asset, meta){
+  return {
+    type: ASSET_PICKED,
+    meta,
+    asset
   }
 }
