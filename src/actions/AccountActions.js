@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from './actionTypesFor'
 import {LOGOUT} from '../endpoints/auth'
 
 export function loadProfileData(){

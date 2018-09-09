@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux';
+import {actionTypesFor} from './actionTypesFor'
 import {SAVE_STEP} from '../modules/first_steps'
 
 export function getCode(phone){

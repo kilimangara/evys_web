@@ -9,6 +9,14 @@ import {getTheory, getVideos, createTheory} from '../../actions/admin/ThemesActi
 import Snackbar from 'material-ui/Snackbar'
 import {grey900, grey500} from 'material-ui/styles/colors'
 import HoverPaper from '../common/HoverPaper'
+import {pickAsset, switchManager} from '../../actions/admin/TemplateAssetsActions'
+
+const formats = [
+  'header', 'font', 'size',
+  'bold', 'italic', 'underline', 'strike', 'blockquote',
+  'list', 'bullet', 'indent',
+  'link', 'image', 'video'
+]
 
 class TheoryView extends Component {
 
@@ -22,10 +30,14 @@ class TheoryView extends Component {
 
   componentDidMount = () => {
     this.props.getTheory(this.props.themeId).then((res) => {
-      this.setState({theory: {...res.data.data}})
-      return res.data.data.id
-    }).then((id) => this.props.getVideos(id))
-    .then((res) => this.setState({videos: [...res.data.data]}))
+      this.setState({theory: {...res.data.data}}, this.loadVideos)
+    })
+  }
+
+  loadVideos = () => {
+    const {theory} = this.state
+    if(!theory.id) return
+    this.props.getVideos(theory.id).then((res) => this.setState({videos: [...res.data.data]}))
   }
 
   changeTheoryText(newText){
@@ -33,8 +45,10 @@ class TheoryView extends Component {
     this.setState({theory: newTheoryObj})
   }
 
-  saveTheory(){
-    this.props.createTheory(this.props.themeId, this.state.theory)
+  saveTheory = () => {
+    this.props.createTheory(this.props.themeId, this.state.theory).then((res) =>{
+      this.setState({theory: {...res.data.data}}, this.loadVideos)
+    })
   }
 
   renderVideo = (video, index) => {
@@ -60,7 +74,11 @@ class TheoryView extends Component {
                     ['clean'],
                     ['image']
                 ],
-        handlers:{}
+        handlers:{
+          'image': (value) => {
+            this.props.switchManager()
+          }
+        }
       },
       clipboard: {
         // toggle to add extra line breaks when pasting HTML:
@@ -68,15 +86,28 @@ class TheoryView extends Component {
       }
   }
 
+  componentDidUpdate(prevProps){
+    const {asset} = this.props
+    if(asset && this.quill != null){
+      const editor = this.quill.getEditor()
+      const range = editor.getSelection()
+      editor.insertEmbed(range.index, 'image', asset.file, "user")
+      this.props.pickAsset(null, null)
+    }
+  }
+
   render(){
     const {theory, videos} = this.state
     return(
       <div style={styles.container}>
         <div style={styles.theoryContainer}>
-          <ReactQuill value={theory.text}
-                    onChange={bind(this.changeTheoryText, this)}
-                    theme={'snow'}/>
-          <RaisedButton backgroundColor={grey900} label='Сохранить' style={{marginTop: 12}} labelStyle={{color: 'white'}}/>
+          <ReactQuill ref={ref => this.quill = ref}
+                      value={theory.text}
+                      modules={this.modules}
+                      formats={formats}
+                      onChange={bind(this.changeTheoryText, this)}
+                      theme={'snow'}/>
+          <RaisedButton backgroundColor={grey900} label='Сохранить' style={{marginTop: 12}} labelStyle={{color: 'white'}} onClick={this.saveTheory}/>
         </div>
         <div style={styles.videosContainer}>
           <h2>Видео</h2>
@@ -117,4 +148,9 @@ const styles = {
 
 }
 
-export default connect(null, {getTheory, getVideos, createTheory})(TheoryView)
+const mapStateToProps = state => ({
+  asset: state.asset_manager.asset,
+  meta: state.asset_manager.meta
+})
+
+export default connect(mapStateToProps, {getTheory, getVideos, createTheory, pickAsset, switchManager})(TheoryView)

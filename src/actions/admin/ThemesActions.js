@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from '../actionTypesFor'
 
 
 export function loadThemesBySubject(subject_id, page=1, parent_theme=undefined){

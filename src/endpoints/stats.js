@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from '../actions/actionTypesFor'
 import {LOGOUT} from './auth'
 
 const initialState = {
@@ -26,7 +26,7 @@ export default {
       case suggestionsAction.sucess:
         return {...state, suggestionsFetching: false, suggestions: action.payload}
       case LOGOUT:
-        return initialState  
+        return initialState
       default:
         return state
     }

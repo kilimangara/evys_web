@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from '../actionTypesFor'
 import {SAVE_TOKEN} from '../../endpoints/admin/auth_admin'
 import {btoa} from 'Base64'
 import {CHOOSE_COMPANY} from '../../endpoints/admin/company_admin'

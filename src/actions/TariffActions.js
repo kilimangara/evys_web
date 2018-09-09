@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from './actionTypesFor'
 
 
 export function loadTariffs(tariff_type){

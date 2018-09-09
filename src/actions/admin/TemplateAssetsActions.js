@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from '../actionTypesFor'
 import {SWITCH_MANAGER, ASSET_PICKED} from '../../modules/asset_manager'
 
 export function loadAssets(page=1, filtersObj={}){

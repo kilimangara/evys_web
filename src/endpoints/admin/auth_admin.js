@@ -1,4 +1,4 @@
-import {actionTypesFor} from 'trivial-redux'
+import {actionTypesFor} from '../../actions/actionTypesFor'
 
 export const LOGOUT_ADMIN = "LOGOUT_ADMIN"
 export const SAVE_TOKEN = 'ADMIN_SAVE_TOKEN'
