@@ -7,9 +7,10 @@ import {connect} from 'react-redux'
 import bind from 'memoize-bind'
 import {getTheory, getVideos, createTheory} from '../../actions/admin/ThemesActions'
 import Snackbar from 'material-ui/Snackbar'
-import {grey900, grey500} from 'material-ui/styles/colors'
+import {blue500, grey200, grey500, green500, red500, grey900} from 'material-ui/styles/colors'
 import HoverPaper from '../common/HoverPaper'
 import {pickAsset, switchManager} from '../../actions/admin/TemplateAssetsActions'
+import Paper from 'material-ui/Paper'
 
 const formats = [
   'header', 'font', 'size',
@@ -96,6 +97,22 @@ class TheoryView extends Component {
     }
   }
 
+  creationItem = () => {
+    return (
+      <Paper>
+        <div style={{padding: 18, flexDirection:'column', justifyContent:'center', alignItems:'stretch'}}>
+          <TextField
+            floatingLabelText="Название"
+            underlineFocusStyle={{borderColor: grey900}}/>
+          <TextField
+            floatingLabelText="Ссылка"
+            underlineFocusStyle={{borderColor: grey900}}/>
+          <RaisedButton backgroundColor={grey900} label='Добавить' style={{marginTop:12}}  labelStyle={{color: 'white'}}/>
+        </div>
+      </Paper>
+    )
+  }
+
   render(){
     const {theory, videos} = this.state
     return(
@@ -112,6 +129,7 @@ class TheoryView extends Component {
         <div style={styles.videosContainer}>
           <h2>Видео</h2>
           {videos.map(this.renderVideo)}
+          {this.creationItem()}
         </div>
       </div>
     )

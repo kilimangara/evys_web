@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import ReactDOM from "react-dom"
 import {connect } from 'react-redux'
 import RaisedButton from "material-ui/RaisedButton"
 import {withGetScreen} from 'react-getscreen'
@@ -27,13 +28,19 @@ class TestCaseScreen extends Component {
     super(props)
     this.state = {
       testCaseSelected: undefined,
-      testCases: this.props.testCaseList
+      testCases: this.props.testCaseList,
+      tabSelected: 'tests'
     }
+    this.id = this.props.match.params["theme_id"]
   }
 
-  componentWillMount(){
-    this.id = this.props.match.params["theme_id"];
+  handleTabChange = (value) => {
+    this.setState({tabSelected: value})
+  }
+
+  componentDidMount(){
     this.props.getTestCases(this.id)
+    this.graphBounds = ReactDOM.findDOMNode(this.graph).getBoundingClientRect()
   }
 
   componentWillReceiveProps(nextProps){
@@ -69,7 +76,7 @@ class TestCaseScreen extends Component {
     return graph
   }
 
-  floatingButtonClicked = () => {
+  createTestCase = () => {
     const lastTestCase = this.state.testCases[this.state.testCases.length - 1] || {analogue_id:undefined}
     const newTestCase = {
       analogue_id : lastTestCase.analogue_id != undefined ? lastTestCase.analogue_id +1 : 0,
@@ -99,6 +106,15 @@ class TestCaseScreen extends Component {
               .then((res) => {
                 this.setState({testCases: res.data.data})
               })
+  }
+
+  createVideo = () => {
+    console.log('createVideo')
+  }
+
+  floatingButtonClicked = () => {
+    if(this.state.tabSelected === 'tests') this.createTestCase()
+    if(this.state.tabSelected === 'theory') this.createVideo()
   }
 
   renderTestCase(){
@@ -163,13 +179,18 @@ class TestCaseScreen extends Component {
     console.log(connectionData)
   }
 
+  scrollToTestCase = () => {
+    const {bottom} = this.graphBounds
+    window.scroll({top: bottom, behavior: 'smooth'})
+  }
+
   render(){
     const graph = this.generateDataForGraph()
     const events = {
       click: (event) => {
         const { nodes, edges } = event;
         const testCaseSelected = this.props.testCaseList.find(tc => tc.id == nodes[0])
-        this.setState({testCaseSelected})
+        this.setState({testCaseSelected}, this.scrollToTestCase)
       }
     };
     const {testCaseSelected} = this.state
@@ -190,25 +211,27 @@ class TestCaseScreen extends Component {
       }
     }
     return(
-      <Tabs inkBarStyle={{backgroundColor:'white'}}>
-        <Tab label='Задания' style={{backgroundColor: '#1EAAF0'}}>
-          <div style={styles.container}>
-            <div style={{display:'flex', justifyContent: 'center', flexDirection:'column'}}>
-              <Graph events={events} options={options} graph={graph}/>
-              <Divider/>
-              {this.renderTestCase()}
+      <div>
+        <Tabs inkBarStyle={{backgroundColor:'white'}} value={this.state.tabSelected} onChange={this.handleTabChange}>
+          <Tab label='Задания' style={{backgroundColor: '#1EAAF0'}} value='tests'>
+            <div style={styles.container}>
+              <div style={{display:'flex', justifyContent: 'center', flexDirection:'column'}}>
+                <Graph events={events} options={options} graph={graph} ref={(ref) => this.graph = ref}/>
+                <Divider/>
+                {this.renderTestCase()}
+              </div>
             </div>
-            <FloatingActionButton style={styles.fabStyle}
-                backgroundColor={grey900}
-                onClick={this.floatingButtonClicked}>
-              <ContentAdd />
-            </FloatingActionButton>
-          </div>
-        </Tab>
-        <Tab label='Теория' style={{backgroundColor: '#1EAAF0'}}>
-          <TheoryView themeId={this.id}/>
-        </Tab>
-      </Tabs>
+          </Tab>
+          <Tab label='Теория' style={{backgroundColor: '#1EAAF0'}} value='theory'>
+            <TheoryView themeId={this.id}/>
+          </Tab>
+        </Tabs>
+        <FloatingActionButton style={styles.fabStyle}
+            backgroundColor={grey900}
+            onClick={this.floatingButtonClicked}>
+          <ContentAdd />
+        </FloatingActionButton>
+      </div>
     )
   }
 }
