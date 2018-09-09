@@ -23,7 +23,6 @@ class LeftPanel extends Component {
   }
 
   render(){
-    console.log(this.props)
     const {classes, buttonIndexActive} = this.props
     const active = this.activeButton(buttonIndexActive)
     return(

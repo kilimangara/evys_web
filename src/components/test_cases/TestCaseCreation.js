@@ -38,10 +38,8 @@ class TestCaseCreation extends Component {
   }
 
   saveTextToTask = (index, field, value) => {
-    console.log(index, field, value)
     const newTest = {...this.state.tests[index], [field]: value}
     const testList = update(this.state.tests, {$splice: [[index, 1, newTest]]})
-    console.log('NEW TASKS', testList)
     this.setState({
       tests: testList
     })
@@ -90,11 +88,11 @@ class TestCaseCreation extends Component {
 
   renderTest = (testItem, index) => {
     return(
-      <Paper key={index} style={{padding: '20px 5px', margin: '0 20px', minWidth: 250}}>
-        <div style={{display:'flex', flexDirection:'justifyContent', flexDirection:'column'}}>
+      <Paper key={index} style={{padding: '20px', margin: '0 20px', minWidth: 250}}>
+        <div style={{display:'flex', flexDirection:'justifyContent', flexDirection:'column', alignItems:'stretch'}}>
           <TextField onChange={bind(this.saveTextToTaskAlt, this, index, 'name')}
             floatingLabelText="Название" value={testItem.name}
-            underlineFocusStyle={{borderColor: grey900}} />
+            underlineFocusStyle={{borderColor: grey900}} multiLine fullWidth/>
           <ReactQuill ref={(ref) => this[`quill${index}`] = ref}
                       value={testItem.task}
                       onChange={bind(this.saveTextToTask, this, index, 'task')}
@@ -112,6 +110,7 @@ class TestCaseCreation extends Component {
           </Chip>
           <Divider/>
           <RaisedButton label="Удалить"
+            style={{marginTop:12}}
             labelStyle={{color: 'white'}}
             backgroundColor={grey900}
             onClick={bind(this.deleteTest, this, index)}/>
@@ -206,7 +205,6 @@ class TestCaseCreation extends Component {
     const {analogue_id, description, tests} = this.state
     let numberOfColumns = tests.length > 1 ? 2 : 1
     if(this.props.isMobile) numberOfColumns = 1
-    console.log(this.state)
     return (
       <div style={styles.container}>
         <TextField onChange={this.saveToState.bind(this, 'analogue_id')}

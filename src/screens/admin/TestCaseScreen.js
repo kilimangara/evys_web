@@ -73,10 +73,10 @@ class TestCaseScreen extends Component {
     const lastTestCase = this.state.testCases[this.state.testCases.length - 1] || {analogue_id:undefined}
     const newTestCase = {
       analogue_id : lastTestCase.analogue_id != undefined ? lastTestCase.analogue_id +1 : 0,
-      description: 'Новое',
+      description: 'Небольшое описание для создателя курса',
       tests: [
         {
-          name:'Автоматически созданный вопрос',
+          name:'Название вопроса',
           task: '<p>Выберите правильный ответ</p>',
           tip: "<p>Пусто</p>",
           answers: [
@@ -190,8 +190,8 @@ class TestCaseScreen extends Component {
       }
     }
     return(
-      <Tabs>
-        <Tab label='Задания'>
+      <Tabs inkBarStyle={{backgroundColor:'white'}}>
+        <Tab label='Задания' style={{backgroundColor: '#1EAAF0'}}>
           <div style={styles.container}>
             <div style={{display:'flex', justifyContent: 'center', flexDirection:'column'}}>
               <Graph events={events} options={options} graph={graph}/>
@@ -205,7 +205,7 @@ class TestCaseScreen extends Component {
             </FloatingActionButton>
           </div>
         </Tab>
-        <Tab label='Теория'>
+        <Tab label='Теория' style={{backgroundColor: '#1EAAF0'}}>
           <TheoryView themeId={this.id}/>
         </Tab>
       </Tabs>

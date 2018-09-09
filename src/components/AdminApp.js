@@ -68,13 +68,17 @@ class App extends Component {
     this.props.history.push('/admin/login')
   }
 
+  imageAssetPickerClose = (source) => {
+    console.log(source)
+  }
+
   render(){
     const {authenticated, isTablet, isMobile, company={}, currentCompany} = this.props
     const isDesktop = !isTablet() && !isMobile()
     const opened = isDesktop ? true : this.state.opened
     return (
         <div>
-          <Drawer open={opened} width={200} docked={isDesktop} onRequestChange={(opened) => this.setState({opened})}>
+          <Drawer containerStyle={{zIndex: 1000}} open={opened} width={200} docked={isDesktop} onRequestChange={(opened) => this.setState({opened})}>
             <Toolbar style={{backgroundColor:grey900}}>
                <ToolbarGroup firstChild style={{marginLeft: 12}}>
                   <ToolbarTitle text={company.name || 'Evys'} style={{color:'white'}}/>
@@ -94,10 +98,10 @@ class App extends Component {
                         onClick={bind(this.logout, this)}/>
             </List>
           </Drawer>
-          <div style={{display:'flex', flexDirection:'column', marginLeft: isDesktop ? '200px' : '0px'}}>
+          <div style={{display:'flex', flexDirection:'column', marginLeft: isDesktop ? '200px' : '0px', width: isDesktop ? 'calc(100% - 200px)' : '100%'}}>
             <HeaderAppBarAdmin history={this.props.history} isDesktop={isDesktop}
                                onMenuPressed={this.handleMenuClick}/>
-            <Modal ref={(ref) => this.assetManager = ref} modalStyle={{height: '90vh', overflowY: 'auto'}}>
+            <Modal ref={(ref) => this.assetManager = ref} modalStyle={{height: '90vh', overflowY: 'auto'}} onHide={this.imageAssetPickerClose}>
              <ImageAssetPicker assetPicked={this.onAssetPicked}/>
             </Modal>
             <Switch>

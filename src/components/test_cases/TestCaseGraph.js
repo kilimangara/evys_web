@@ -1,11 +1,11 @@
 export const GRAPH_OPTIONS = {
   "nodes": {
     "color": {
-      "border": "rgba(0,0,0,1)",
-      "background": "rgba(0,0,0,1)",
+      "border": "rgba(255,255,255,1)",
+      "background": "rgba(30,170,240)",
       "highlight": {
-        "border": "rgba(63,66,76,1)",
-        "background": "rgba(101,103,109,1)"
+        "border": "rgba(0,0,0,1)",
+        "background": "rgba(0,0,0,1)"
       },
       "hover": {
         "border": "rgba(101,111,114,1)",

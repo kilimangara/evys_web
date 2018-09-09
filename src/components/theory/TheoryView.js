@@ -34,7 +34,7 @@ class TheoryView extends Component {
   }
 
   saveTheory(){
-
+    this.props.createTheory(this.props.themeId, this.state.theory)
   }
 
   renderVideo = (video, index) => {
@@ -47,6 +47,25 @@ class TheoryView extends Component {
         </HoverPaper>
       </div>
     )
+  }
+
+  modules = {
+      toolbar: {
+        container:[
+                    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                    [{size: []}],
+                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                    [{'list': 'ordered'}, {'list': 'bullet'},
+                     {'indent': '-1'}, {'indent': '+1'}],
+                    ['clean'],
+                    ['image']
+                ],
+        handlers:{}
+      },
+      clipboard: {
+        // toggle to add extra line breaks when pasting HTML:
+        matchVisual: false,
+      }
   }
 
   render(){

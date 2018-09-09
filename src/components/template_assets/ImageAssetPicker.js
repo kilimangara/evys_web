@@ -74,11 +74,16 @@ class ImageAssetPicker extends Component {
 
   onDrop(files) {
     console.log(files)
-    files.forEach(file => {
+    files.forEach((file, index) => {
       this.props.createAsset({
         file,
         type: this.props.mediaType,
         name: file.name
+      }).then(()=>{
+        if (index === files.length - 1) {
+          this.props.loadAssets(this.state.currenPage, {type: this.props.mediaType})
+                    .then(this.loadingCallback)
+        }
       })
     })
     this.setState({
@@ -89,8 +94,10 @@ class ImageAssetPicker extends Component {
 
   render(){
     const {assets, dropzoneActive} = this.state
-    const additionalStyle = {}
-    if(dropzoneActive) additionalStyle.backgroundColor = 'rgba(0,0,0.5)'
+    const overlayStyle = {...styles.dropzoneStyle}
+    if(dropzoneActive){
+      overlayStyle.backgroundColor = 'rgba(128,128,128, .5)'
+    }
     return(
         <div style={styles.container}>
           <div style={styles.searchBox}>
@@ -107,7 +114,7 @@ class ImageAssetPicker extends Component {
                     onDrop={bind(this.onDrop, this)}
                     onDragEnter={bind(this.onDragEnter, this)}
                     onDragLeave={bind(this.onDragLeave, this)}>
-              <div style={[styles.dropzoneStyle, additionalStyle]}>
+              <div style={overlayStyle}>
                 Перетащите сюда файлы или нажмите
               </div>
           </Dropzone>
@@ -133,10 +140,12 @@ const styles = {
   },
   dropzoneStyle: {
     marginVertical: 12,
-    height: 75,
+    height: 150,
     borderRadius: 15,
+    padding: 16,
     borderWidth: 2,
     borderColor: grey900,
+    borderStyle: 'dashed',
     justifyContent: 'center',
     alignItems:'center',
     display:'flex'
