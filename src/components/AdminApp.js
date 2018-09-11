@@ -26,6 +26,7 @@ import RegisterScreen from '../screens/admin/RegisterScreen'
 import Modal from 'reboron/ScaleModal'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
+import GoogleAuth from './youtube/GoogleAuth'
 
 class App extends Component {
 
@@ -78,6 +79,7 @@ class App extends Component {
     const opened = isDesktop ? true : this.state.opened
     return (
         <div>
+          <GoogleAuth/>
           <Drawer containerStyle={{zIndex: 1000}} open={opened} width={200} docked={isDesktop} onRequestChange={(opened) => this.setState({opened})}>
             <Toolbar style={{backgroundColor:grey900}}>
                <ToolbarGroup firstChild style={{marginLeft: 12}}>
