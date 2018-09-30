@@ -2,26 +2,55 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import AppBar from "material-ui/AppBar";
 import IconButton from "material-ui/IconButton";
-import IconMenu from "material-ui/IconMenu";
-import MenuItem from "material-ui/MenuItem";
-import FlatButton from "material-ui/FlatButton";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
 import PropTypes from "prop-types";
 import Avatar from 'material-ui/Avatar'
 import {grey900} from 'material-ui/styles/colors'
 import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 class AppBarButton extends Component {
-  static muiName = 'FlatButton';
+  state = {
+    anchorEl: null,
+  };
+
+  handleClick = event => {
+    if(this.props.register) return this.onPress()
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
   onPress = () => {
     this.props.onPress && this.props.onPress()
   }
 
   render() {
+    const { anchorEl } = this.state;
     return (
-      <FlatButton onClick={this.onPress} label={this.props.label} style={{color:'white'}} />
+      <div>
+      <Button
+         aria-owns={anchorEl ? 'simple-menu' : null}
+         aria-haspopup="true"
+         style={{color:'white'}}
+         onClick={this.handleClick}
+       >
+         {this.props.label}
+       </Button>
+       <Menu
+         id="simple-menu"
+         anchorEl={anchorEl}
+         open={Boolean(anchorEl)}
+         onClose={this.handleClose}
+       >
+         <MenuItem onClick={this.handleClose}>Профиль</MenuItem>
+         <MenuItem onClick={this.handleClose}>Выйти</MenuItem>
+       </Menu>
+      </div>
     );
   }
 }
@@ -40,9 +69,19 @@ class HeaderAppBarAdmin extends Component {
     )
   }
 
+  loginYoutube(){
+    window.GoogleAuth.signIn()
+  }
+
+  logoutYoutube(){
+    window.GoogleAuth.signOut()
+  }
+
   render() {
     const rightComponent = this.props.isLogged ? <AppBarButton label={this.props.profile.username}/>
-                                               : <AppBarButton label={'Войти'} onPress={()=> this.props.history.push('/admin/login')} />
+                                               : <AppBarButton register label={'Войти'} onPress={()=> this.props.history.push('/admin/login')} />
+    const youtubeComponent = this.props.youtubeSigned ? <AppBarButton register label={'Youtube подключен'} onPress={this.logoutYoutube}/>
+                                                      : <AppBarButton register label={'Войти в Youtube'} onPress={this.loginYoutube}/>
     const {isDesktop} = this.props
     return (
       <Toolbar style={{backgroundColor:grey900}}>
@@ -50,6 +89,7 @@ class HeaderAppBarAdmin extends Component {
             {!isDesktop && this.menuIcon()}
          </ToolbarGroup>
          <ToolbarGroup lastChild>
+            {youtubeComponent}
             {rightComponent}
          </ToolbarGroup>
        </Toolbar>
@@ -59,7 +99,8 @@ class HeaderAppBarAdmin extends Component {
 
 const mapStateToProps = state => ({
   isLogged: state.auth_admin.authenticated,
-  profile: state.account_admin.profileData
+  profile: state.account_admin.profileData,
+  youtubeSigned: state.youtube.signedIn
 });
 
 HeaderAppBarAdmin.defaultProps = {

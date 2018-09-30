@@ -1,7 +1,9 @@
 import React from 'react'
+import { connect } from "react-redux"
+import {saveYoutubeData, clearYoutubeData} from '../../actions/admin/YoutubeActions'
 
 
-export default class GoogleAuth extends React.Component {
+class GoogleAuth extends React.Component {
 
   componentDidMount(){
     window.gapi.load('client:auth2', this.initClient)
@@ -17,14 +19,40 @@ export default class GoogleAuth extends React.Component {
     }).then(() => {
         window.GoogleAuth = gapi.auth2.getAuthInstance()
         window.GoogleAuth.isSignedIn.listen(this.updateSigninStatus)
+        if(window.GoogleAuth.isSignedIn.Ab) this.afterSignedIn()
     })
   }
 
   updateSigninStatus = (isSignedIn) => {
     console.log('ISSIGNED UPDATE', isSignedIn)
+    if(isSignedIn) this.afterSignedIn()
+    else this.afterUnsigned()
+  }
+
+  afterSignedIn = async () => {
+    const channel = (await this.loadChannels()).result.items[0]
+    if (!channel) return null
+    const channelId = channel.id
+    const uploadPlaylistId = channel.contentDetails.relatedPlaylists.uploads
+    this.props.saveYoutubeData(channelId, uploadPlaylistId)
+    return {channelId, uploadPlaylistId}
+  }
+
+  afterUnsigned = () => {
+    this.props.clearYoutubeData()
+  }
+
+  loadChannels(){
+    return window.gapi.client.youtube.channels.list({
+      mine: true,
+      part: 'snippet, contentDetails'
+    })
   }
 
   render(){
     return null
   }
 }
+
+
+export default connect(null, {saveYoutubeData, clearYoutubeData})(GoogleAuth)
