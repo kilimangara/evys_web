@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css'
 import ReactQuill, {Toolbar} from 'react-quill'
 import {connect} from 'react-redux'
 import bind from 'memoize-bind'
-import {getTheory, getVideos, createTheory} from '../../actions/admin/ThemesActions'
+import {getTheory, getVideos, createTheory, createVideo} from '../../actions/admin/ThemesActions'
 import Snackbar from 'material-ui/Snackbar'
 import {blue500, grey200, grey500, green500, red500, grey900} from 'material-ui/styles/colors'
 import HoverPaper from '../common/HoverPaper'
@@ -25,7 +25,9 @@ class TheoryView extends Component {
     super(props)
     this.state = {
       theory: {},
-      videos: []
+      videos: [],
+      videoName: '',
+      videoURL: ''
     }
   }
 
@@ -52,15 +54,30 @@ class TheoryView extends Component {
     })
   }
 
+  saveVideo = () => {
+    const {videoName, videoURL} = this.state
+    const data = {
+      youtube_video: videoURL,
+      name: videoName,
+      attachment_type: 'youtube'
+    }
+    this.props.createVideo(this.props.themeId, data).then(res => {
+      console.log(res)
+      this.setState({videoName:'', videoURL: ''})
+      this.loadVideos()
+    })
+  }
+
   renderVideo = (video, index) => {
     const url = video.video ? video.video.file : video.youtube_video
+    let videoKey = new URL(url).searchParams.get('v')
     return(
-      <div key={index} style={styles.videoItem}>
-        <HoverPaper initialZDepth={1}>
-          <p>{video.name}</p>
-          <span style={{color: grey500, fontSize: 12}}>{url}</span>
+        <HoverPaper key={index} initialZDepth={1} style={styles.videoItem}>
+          <img src={`http://img.youtube.com/vi/${videoKey}/sddefault.jpg`} width={96} height={96}/>
+          <div style={{marginLeft: 12}}>
+            <p>{index+1}. {video.name}</p>
+          </div>
         </HoverPaper>
-      </div>
     )
   }
 
@@ -98,16 +115,22 @@ class TheoryView extends Component {
   }
 
   creationItem = () => {
+    const {videoName, videoURL} = this.state
     return (
       <Paper>
-        <div style={{padding: 18, flexDirection:'column', justifyContent:'center', alignItems:'stretch'}}>
+        <div style={{padding: 18, flexDirection:'column', justifyContent:'center', alignItems:'stretch', display:'flex', width: 350}}>
           <TextField
+            value={videoName}
+            onChange={(event, videoName) => this.setState({videoName})}
             floatingLabelText="Название"
             underlineFocusStyle={{borderColor: grey900}}/>
           <TextField
             floatingLabelText="Ссылка"
+            value={videoURL}
+            onChange={(event, videoURL) => this.setState({videoURL})}
             underlineFocusStyle={{borderColor: grey900}}/>
-          <RaisedButton backgroundColor={grey900} label='Добавить' style={{marginTop:12}}  labelStyle={{color: 'white'}}/>
+          <RaisedButton backgroundColor={grey900} label='Добавить' style={{marginTop:12}}  labelStyle={{color: 'white'}}
+                        onClick={this.saveVideo}/>
         </div>
       </Paper>
     )
@@ -124,11 +147,13 @@ class TheoryView extends Component {
                       formats={formats}
                       onChange={bind(this.changeTheoryText, this)}
                       theme={'snow'}/>
-          <RaisedButton backgroundColor={grey900} label='Сохранить' style={{marginTop: 12}} labelStyle={{color: 'white'}} onClick={this.saveTheory}/>
+          <RaisedButton backgroundColor={grey900} label='Сохранить' style={{marginTop: 12}}
+                        labelStyle={{color: 'white'}} onClick={this.saveTheory}/>
         </div>
         <div style={styles.videosContainer}>
           <h2>Видео</h2>
           {videos.map(this.renderVideo)}
+          <div style={{height: 12}}/>
           {this.creationItem()}
         </div>
       </div>
@@ -155,13 +180,16 @@ const styles = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    width: '100%',
     padding: 16
   },
   videoItem: {
     display: 'flex',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginTop: 12
+    marginTop: 12,
+    padding: 18,
+    width: '80%'
   }
 
 }
@@ -171,4 +199,4 @@ const mapStateToProps = state => ({
   meta: state.asset_manager.meta
 })
 
-export default connect(mapStateToProps, {getTheory, getVideos, createTheory, pickAsset, switchManager})(TheoryView)
+export default connect(mapStateToProps, {getTheory, getVideos, createTheory, pickAsset, switchManager, createVideo})(TheoryView)
