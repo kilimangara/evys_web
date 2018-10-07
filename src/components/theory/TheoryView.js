@@ -11,6 +11,7 @@ import {blue500, grey200, grey500, green500, red500, grey900} from 'material-ui/
 import HoverPaper from '../common/HoverPaper'
 import {pickAsset, switchManager} from '../../actions/admin/TemplateAssetsActions'
 import Paper from 'material-ui/Paper'
+import PickYoutubeVideo from '../youtube/PickYoutubeVideo'
 
 const formats = [
   'header', 'font', 'size',
@@ -27,7 +28,8 @@ class TheoryView extends Component {
       theory: {},
       videos: [],
       videoName: '',
-      videoURL: ''
+      videoURL: '',
+      pickVideoMode: false
     }
   }
 
@@ -116,6 +118,10 @@ class TheoryView extends Component {
 
   creationItem = () => {
     const {videoName, videoURL} = this.state
+    if(Boolean(this.props.playlistId)) return (
+      <RaisedButton backgroundColor={grey900} label='Добавить видео' style={{marginTop:12}}  labelStyle={{color: 'white'}}
+                    onClick={() => this.setState({pickVideoMode: true})}/>
+    )
     return (
       <Paper>
         <div style={{padding: 18, flexDirection:'column', justifyContent:'center', alignItems:'stretch', display:'flex', width: 350}}>
@@ -137,7 +143,8 @@ class TheoryView extends Component {
   }
 
   render(){
-    const {theory, videos} = this.state
+    const {theory, videos, pickVideoMode} = this.state
+    if(pickVideoMode) return <PickYoutubeVideo playlistId={this.props.playlistId}/>
     return(
       <div style={styles.container}>
         <div style={styles.theoryContainer}>
@@ -196,7 +203,8 @@ const styles = {
 
 const mapStateToProps = state => ({
   asset: state.asset_manager.asset,
-  meta: state.asset_manager.meta
+  meta: state.asset_manager.meta,
+  playlistId: state.youtube.uploadPlaylistId
 })
 
 export default connect(mapStateToProps, {getTheory, getVideos, createTheory, pickAsset, switchManager, createVideo})(TheoryView)
