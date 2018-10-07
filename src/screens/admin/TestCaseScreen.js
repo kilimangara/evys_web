@@ -26,10 +26,12 @@ class TestCaseScreen extends Component {
 
   constructor(props){
     super(props)
+    const params = new URLSearchParams(this.props.location.search)
+    const tab = params.get('tab_selected') || 'tests'
     this.state = {
       testCaseSelected: undefined,
       testCases: this.props.testCaseList,
-      tabSelected: 'tests'
+      tabSelected: tab
     }
     this.id = this.props.match.params["theme_id"]
   }
@@ -223,7 +225,7 @@ class TestCaseScreen extends Component {
             </div>
           </Tab>
           <Tab label='Теория' style={{backgroundColor: '#1EAAF0'}} value='theory'>
-            <TheoryView themeId={this.id}/>
+            <TheoryView themeId={this.id} history={this.props.history}/>
           </Tab>
         </Tabs>
         <FloatingActionButton style={styles.fabStyle}

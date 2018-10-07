@@ -27,6 +27,7 @@ import Modal from 'reboron/ScaleModal'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
 import GoogleAuth from './youtube/GoogleAuth'
+import AddVideoScreen from '../screens/admin/AddVideoScreen'
 
 class App extends Component {
 
@@ -115,6 +116,7 @@ class App extends Component {
               <Route path='/admin/choose_account' component={ChooseAccountScreen}/>
               <Route path='/admin/tariffs' component={TariffScreen}/>
               <Route path='/admin/register' component={RegisterScreen}/>
+              <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen}/>
             </Switch>
           </div>
         </div>

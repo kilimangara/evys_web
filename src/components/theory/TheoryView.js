@@ -12,6 +12,7 @@ import HoverPaper from '../common/HoverPaper'
 import {pickAsset, switchManager} from '../../actions/admin/TemplateAssetsActions'
 import Paper from 'material-ui/Paper'
 import PickYoutubeVideo from '../youtube/PickYoutubeVideo'
+import pt from 'prop-types'
 
 const formats = [
   'header', 'font', 'size',
@@ -22,18 +23,22 @@ const formats = [
 
 class TheoryView extends Component {
 
+  static contextTypes = {
+    router: pt.object
+  }
+
   constructor(props){
     super(props)
     this.state = {
       theory: {},
       videos: [],
       videoName: '',
-      videoURL: '',
-      pickVideoMode: false
+      videoURL: ''
     }
   }
 
   componentDidMount = () => {
+    console.log(this.context)
     this.props.getTheory(this.props.themeId).then((res) => {
       this.setState({theory: {...res.data.data}}, this.loadVideos)
     })
@@ -57,17 +62,19 @@ class TheoryView extends Component {
   }
 
   saveVideo = () => {
-    const {videoName, videoURL} = this.state
-    const data = {
-      youtube_video: videoURL,
-      name: videoName,
-      attachment_type: 'youtube'
+    const {videoName, videoURL, theory} = this.state
+    if(theory && theory.id){
+      const data = {
+        youtube_video: videoURL,
+        name: videoName,
+        attachment_type: 'youtube'
+      }
+      this.props.createVideo(theory.id, data).then(res => {
+        console.log(res)
+        this.setState({videoName:'', videoURL: ''})
+        this.loadVideos()
+      })
     }
-    this.props.createVideo(this.props.themeId, data).then(res => {
-      console.log(res)
-      this.setState({videoName:'', videoURL: ''})
-      this.loadVideos()
-    })
   }
 
   renderVideo = (video, index) => {
@@ -116,11 +123,19 @@ class TheoryView extends Component {
     }
   }
 
+  goToYoutubeVideoAdd = () => {
+    const {themeId} = this.props
+    const {theory} = this.state
+    if(!theory.id) return
+    this.context.router.history.push(`/admin/themes/${themeId}/add_video?theory_id=${theory.id}`)
+  }
+
   creationItem = () => {
     const {videoName, videoURL} = this.state
-    if(Boolean(this.props.playlistId)) return (
+    const {themeId, youtubeSigned} = this.props
+    if(youtubeSigned) return (
       <RaisedButton backgroundColor={grey900} label='Добавить видео' style={{marginTop:12}}  labelStyle={{color: 'white'}}
-                    onClick={() => this.setState({pickVideoMode: true})}/>
+                    onClick={this.goToYoutubeVideoAdd}/>
     )
     return (
       <Paper>
@@ -143,8 +158,7 @@ class TheoryView extends Component {
   }
 
   render(){
-    const {theory, videos, pickVideoMode} = this.state
-    if(pickVideoMode) return <PickYoutubeVideo playlistId={this.props.playlistId}/>
+    const {theory, videos} = this.state
     return(
       <div style={styles.container}>
         <div style={styles.theoryContainer}>
@@ -204,7 +218,7 @@ const styles = {
 const mapStateToProps = state => ({
   asset: state.asset_manager.asset,
   meta: state.asset_manager.meta,
-  playlistId: state.youtube.uploadPlaylistId
+  youtubeSigned: state.youtube.signedIn
 })
 
 export default connect(mapStateToProps, {getTheory, getVideos, createTheory, pickAsset, switchManager, createVideo})(TheoryView)
