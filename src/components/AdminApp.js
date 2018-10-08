@@ -28,6 +28,7 @@ import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
 import GoogleAuth from './youtube/GoogleAuth'
 import AddVideoScreen from '../screens/admin/AddVideoScreen'
+import VideoScreen from '../screens/admin/VideoScreen'
 
 class App extends Component {
 
@@ -79,7 +80,7 @@ class App extends Component {
     const isDesktop = !isTablet() && !isMobile()
     const opened = isDesktop ? true : this.state.opened
     return (
-        <div>
+        <div style={styles.root}>
           <GoogleAuth/>
           <Drawer containerStyle={{zIndex: 1000}} open={opened} width={200} docked={isDesktop} onRequestChange={(opened) => this.setState({opened})}>
             <Toolbar style={{backgroundColor:grey900}}>
@@ -101,7 +102,7 @@ class App extends Component {
                         onClick={bind(this.logout, this)}/>
             </List>
           </Drawer>
-          <div style={{display:'flex', flexDirection:'column', marginLeft: isDesktop ? '200px' : '0px', width: isDesktop ? 'calc(100% - 200px)' : '100%'}}>
+          <div style={{display:'flex', flexDirection:'column', marginLeft: isDesktop ? '200px' : '0px', width: isDesktop ? 'calc(100% - 200px)' : '100%', height: '100%'}}>
             <HeaderAppBarAdmin history={this.props.history} isDesktop={isDesktop}
                                onMenuPressed={this.handleMenuClick}/>
             <Modal ref={(ref) => this.assetManager = ref} modalStyle={{height: '90vh', overflowY: 'auto'}} onHide={this.imageAssetPickerClose}>
@@ -117,10 +118,17 @@ class App extends Component {
               <Route path='/admin/tariffs' component={TariffScreen}/>
               <Route path='/admin/register' component={RegisterScreen}/>
               <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen}/>
+              <Route exact path='/admin/theory/:theory_id(\d+)/watch' component={VideoScreen}/>
             </Switch>
           </div>
         </div>
     )
+  }
+}
+
+const styles = {
+  root: {
+    height: '100%'
   }
 }
 

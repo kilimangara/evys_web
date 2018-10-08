@@ -77,16 +77,24 @@ class TheoryView extends Component {
     }
   }
 
+  goToVideo = (index) => {
+    const {theory} = this.state
+    if(!theory.id) return
+    this.context.router.history.push(`/admin/theory/${theory.id}/watch?v=${index}`)
+  }
+
   renderVideo = (video, index) => {
     const url = video.video ? video.video.file : video.youtube_video
     let videoKey = new URL(url).searchParams.get('v')
     return(
-        <HoverPaper key={index} initialZDepth={1} style={styles.videoItem}>
+      <div key={index} onClick={this.goToVideo.bind(this, index)} style={{width: '80%'}}>
+        <HoverPaper initialZDepth={1} style={styles.videoItem}>
           <img src={`http://img.youtube.com/vi/${videoKey}/sddefault.jpg`} width={96} height={96}/>
           <div style={{marginLeft: 12}}>
             <p>{index+1}. {video.name}</p>
           </div>
         </HoverPaper>
+      </div>
     )
   }
 
@@ -209,8 +217,7 @@ const styles = {
     justifyContent: 'flex-start',
     alignItems: 'center',
     marginTop: 12,
-    padding: 18,
-    width: '80%'
+    padding: 18
   }
 
 }
