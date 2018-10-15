@@ -8,7 +8,7 @@ import Icon from '@material-ui/core/Icon'
 import SearchBar from 'react-search-bar'
 import Badge from '@material-ui/core/Badge'
 import classNames from 'classnames'
-import '../screencss/SearchBar.css'
+import '../../screencss/SearchBar.css'
 
 
 class HeaderAppBar extends Component {

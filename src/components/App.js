@@ -2,7 +2,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
-import HeaderAppBar from './HeaderAppBar'
+import HeaderAppBar from './header_app_bar/HeaderAppBar'
 import Login from '../screens/Login'
 // import VideHost from '../screens/VideoHost'
 import ProfileScreen from '../screens/ProfileScreen'

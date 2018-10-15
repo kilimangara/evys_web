@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route, Switch } from "react-router";
-import HeaderAppBarAdmin from './HeaderAppBarAdmin'
+import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
 import LoginScreen from '../screens/admin/LoginScreen'
 import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import ThemesScreen from '../screens/admin/ThemesScreen'
@@ -96,10 +96,6 @@ class App extends Component {
               <ListItem leftIcon={<FontIcon className="fas fa-tag"/>} primaryText={'Мои предложения'}
                         onClick={bind(this.goToExactPath, this, '/admin/tariffs')}/>
               <Divider/>
-              <ListItem leftIcon={<FontIcon className="far fa-address-book"/>} primaryText={'Выбрать аккаунт'}
-                        onClick={bind(this.goToExactPath, this, '/admin/choose_account')}/>
-              <ListItem leftIcon={<FontIcon className="fas fa-sign-out-alt"/>} primaryText={'Выйти'}
-                        onClick={bind(this.logout, this)}/>
             </List>
           </Drawer>
           <div style={{display:'flex', flexDirection:'column', marginLeft: isDesktop ? '200px' : '0px', width: isDesktop ? 'calc(100% - 200px)' : '100%', height: '100%'}}>
