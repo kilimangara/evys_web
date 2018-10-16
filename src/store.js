@@ -6,6 +6,7 @@ import urlMiddleware from "./middlewares/urlMiddleware";
 import {studentAPI, adminAPI} from "./api";
 import moduleReducers from './modules'
 import {ADMIN_APP, USER_APP} from './modules/apps'
+import { composeWithDevTools } from 'redux-devtools-extension'
 
 const middlewares = [reduxThunk, urlMiddleware, trivialReduxMiddleware, unwrapMiddleware];
 
@@ -23,7 +24,7 @@ export default function setUpStore(app=USER_APP) {
 
 function getDefaultStorage(app) {
   const reducers = app == ADMIN_APP ? adminReducers : studentReducers
-  const store = createStore(reducers, {}, compose(...enhancers));
+  const store = createStore(reducers, {}, composeWithDevTools(...enhancers));
   global.store = store;
   return store;
 }
@@ -31,7 +32,7 @@ function getDefaultStorage(app) {
 function getStatedStorage(state, app) {
   const reducers = app == ADMIN_APP ? adminReducers : studentReducers
   const jsonState = JSON.parse(state)
-  const store = createStore(reducers, jsonState, compose(...enhancers));
+  const store = createStore(reducers, jsonState, composeWithDevTools(...enhancers));
   global.store = store;
   return store;
 }

@@ -5,11 +5,13 @@
   "main": "index.js",
   "scripts": {
     "build-dev": "webpack  --env.DEV --progress --colors",
-    "build-prod": "webpack --config webpack.prod.config.js --progress --colors",
-    "build-admin-prod": "webpack --config webpack.admin.prod.js --progress --colors",
+    "build-prod": "webpack --config webpack.prod.config.js --env.DEV=false --progress --colors",
+    "build-admin-prod": "webpack --config webpack.admin.prod.js --env.DEV=false --progress --colors",
     "build-admin-dev": "webpack --config webpack.admin.dev.js  --env.DEV --progress --colors",
-    "start-admin": "webpack-dev-server --config webpack.admin.dev.js --env.DEV",
-    "start": "webpack-dev-server --env.DEV"
+    "start-admin-dev": "webpack-dev-server --config webpack.admin.dev.js --env.DEV",
+    "start-admin": "webpack-dev-server --config webpack.admin.dev.js --env.DEV=false",
+    "start-dev": "webpack-dev-server --env.DEV",
+    "start": "webpack-dev-server --env.DEV=False"
   },
   "repository": {
     "type": "git",
@@ -32,6 +34,7 @@
     "material-ui": "^0.20.0",
     "memoize-bind": "^1.0.3",
     "moment": "^2.19.0",
+    "prettier": "^1.14.3",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-codemirror": "^1.0.0",
@@ -73,6 +76,7 @@
     "html-webpack-plugin": "^3.2.0",
     "node-sass": "^4.6.0",
     "react-hot-loader": "^3.1.1",
+    "redux-devtools-extension": "^2.13.5",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "url-loader": "^1.0.1",
