@@ -4,8 +4,8 @@ import asset_manager from './asset_manager'
 import youtube from './youtube'
 
 export default {
-  first_steps,
-  apps,
-  asset_manager,
-  youtube
+    first_steps,
+    apps,
+    asset_manager,
+    youtube
 }

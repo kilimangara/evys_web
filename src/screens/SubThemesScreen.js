@@ -17,13 +17,11 @@ class SubThemesScreen extends Component {
     }
 
     componentWillMount = () => {
-        this.course_id = this.props.match.params["course_id"];
-        this.theme_id = this.props.match.params["theme_id"];
-        this.props.loadThemes(this.course_id, this.theme_id).then(
-            response => {
-                this.setState({ sub_themes: response.data.data });
-            }
-        );
+        this.course_id = this.props.match.params['course_id']
+        this.theme_id = this.props.match.params['theme_id']
+        this.props.loadThemes(this.course_id, this.theme_id).then(response => {
+            this.setState({ sub_themes: response.data.data })
+        })
     }
 
     loadStudy = (has_sub_themes, theme_id) => {
@@ -63,5 +61,7 @@ const mapStateToProps = state => ({
     userId: state.auth.user_id
 })
 
-
-export default connect(mapStateToProps, { loadThemes })(SubThemesScreen)
+export default connect(
+    mapStateToProps,
+    { loadThemes }
+)(SubThemesScreen)

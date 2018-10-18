@@ -1,18 +1,18 @@
 import React from 'react'
-import ReactDOM from "react-dom";
+import ReactDOM from 'react-dom'
 import AdminRoot from './AdminRoot'
-import { AppContainer } from "react-hot-loader"
+import { AppContainer } from 'react-hot-loader'
 
 const render = () =>
-  ReactDOM.render(
+    ReactDOM.render(
         <AppContainer>
-          <AdminRoot/>
+            <AdminRoot />
         </AppContainer>,
-        document.getElementById("react-app")
-  );
+        document.getElementById('react-app')
+    )
 
-render()  
+render()
 
 if (module.hot) {
-  module.hot.accept("./AdminRoot", () => render());
+    module.hot.accept('./AdminRoot', () => render())
 }

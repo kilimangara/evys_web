@@ -37,7 +37,6 @@ class ThemesScreen extends Component {
     //         }
     //     }
 
-
     // renderItem = (item, index) => {
     //     return (
     //         <ListItem
@@ -59,10 +58,9 @@ class ThemesScreen extends Component {
             // </div>
 
             <div style={styles.container}>
-
                 <Grid container spacing={8}>
                     <Grid item xs={12} sm={12}>
-                       <CourseHeader />
+                        <CourseHeader />
                     </Grid>
                 </Grid>
                 <h1> Темы </h1>
@@ -90,7 +88,6 @@ class ThemesScreen extends Component {
                     </Grid>
                 </Grid>
             </div>
-
         )
     }
 }
@@ -112,5 +109,7 @@ const mapStateToProps = state => ({
     userId: state.auth.user_id
 })
 
-
-export default connect(mapStateToProps, { loadThemes })(ThemesScreen)
+export default connect(
+    mapStateToProps,
+    { loadThemes }
+)(ThemesScreen)
