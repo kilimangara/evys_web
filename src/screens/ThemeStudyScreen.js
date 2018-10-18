@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 class ThemeStudyScreen extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-        }
+        this.state = {}
     }
 
     render() {
@@ -15,7 +14,5 @@ class ThemeStudyScreen extends Component {
         )
     }
 }
-
-
 
 export default ThemeStudyScreen

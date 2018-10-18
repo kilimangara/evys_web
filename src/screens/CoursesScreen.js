@@ -14,14 +14,12 @@ class CoursesScreen extends Component {
     }
 
     componentWillMount = () => {
-        this.props.loadCourses().then(
-            response => {
-                this.setState({ courses: response.data.data });
-            }
-        );
+        this.props.loadCourses().then(response => {
+            this.setState({ courses: response.data.data })
+        })
     }
 
-    loadThemes = (id) => {
+    loadThemes = id => {
         this.props.history.push(`/app/course/${id}/themes`)
     }
 
@@ -37,48 +35,48 @@ class CoursesScreen extends Component {
     // }
 
     render() {
-      return(
-        <div style={styles.container}>
-          <Grid container spacing={16}>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem active={false}/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem active={false}/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <CourseItem/>
-            </Grid>
-          </Grid>
-        </div>
-      )
+        return (
+            <div style={styles.container}>
+                <Grid container spacing={16}>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem active={false} />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem active={false} />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <CourseItem />
+                    </Grid>
+                </Grid>
+            </div>
+        )
         // return (
         //     <div style={styles.container}>
         //         <List>
@@ -92,13 +90,13 @@ class CoursesScreen extends Component {
 
 const styles = {
     container: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      padding: '16px 10%',
-      flex: 1
-    },
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        padding: '16px 10%',
+        flex: 1
+    }
 }
 
 const mapStateToProps = state => ({
@@ -107,5 +105,7 @@ const mapStateToProps = state => ({
     userId: state.auth.user_id
 })
 
-
-export default connect(mapStateToProps, { loadCourses })(CoursesScreen)
+export default connect(
+    mapStateToProps,
+    { loadCourses }
+)(CoursesScreen)

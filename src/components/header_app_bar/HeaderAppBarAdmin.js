@@ -43,11 +43,7 @@ class AppBarButton extends Component {
                 >
                     {label}
                 </Button>
-                <HeaderPopover
-                    open={Boolean(anchorEl)}
-                    anchorEl={anchorEl}
-                    onClose={this.handleClose}
-                />
+                <HeaderPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.handleClose} />
             </div>
         )
     }
