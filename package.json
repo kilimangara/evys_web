@@ -53,6 +53,7 @@
     "reboron": "^0.4.5",
     "redux": "^3.7.1",
     "redux-thunk": "^2.2.0",
+    "styled-components": "^4.0.2",
     "trivial-redux": "^1.7.0",
     "trivial-redux-middleware": "^0.3.0",
     "victory": "^0.25.6"

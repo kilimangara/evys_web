@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Paper from 'material-ui/Paper'
+import Styled from '../styled'
 
 export default class HoverPaper extends Component {
     constructor(props) {
@@ -14,16 +14,15 @@ export default class HoverPaper extends Component {
     }
 
     render() {
-        const zDepth = this.state.hovered ? 3 : this.props.initialZDepth
         return (
-            <Paper
+            <Styled.Paper
                 style={this.props.style}
-                zDepth={zDepth}
+                hovered={this.state.hovered}
                 onMouseOver={this.changeHovered.bind(this, true)}
                 onMouseOut={this.changeHovered.bind(this, false)}
             >
                 {this.props.children}
-            </Paper>
+            </Styled.Paper>
         )
     }
 }

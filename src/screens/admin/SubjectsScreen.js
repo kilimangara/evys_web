@@ -13,8 +13,9 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
+import {Subject} from "../../components/subjects/Subject";
 
-const IMG_SRC = 'http://golos-vremeni.ru/media/cache/ad/f6/93/0b/e0/55/adf6930be0555d915298b4f92934095f.jpg'
+
 
 class SubjectsScreen extends Component {
     constructor(props) {
@@ -93,7 +94,7 @@ class SubjectsScreen extends Component {
             <div style={styles.container}>
                 <GridList padding={25} cellHeight={200} cols={numberOfColumns} style={styles.gridList}>
                     <Subheader>Предметы</Subheader>
-                    {this.props.subjectsList.map(this.renderSubject)}
+                    {this.props.subjectsList.map(subject => <Subject subject={subject} onClickSubject={this.onClickSubject} onClickSubjectInfo={this.onClickSubjectInfo}/>)}
                 </GridList>
                 <FloatingActionButton
                     style={styles.fabStyle}
@@ -133,7 +134,7 @@ const styles = {
         fontSize: 14
     },
     gridList: {
-        overflowY: 'auto'
+        // overflowY: 'auto'
     },
     modalStyle: {
         width: '80%'
