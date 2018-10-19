@@ -22,17 +22,18 @@ const HeaderPopover = ({
         <div className={classes.contentContainer}>
             <div className={`${classes.content} ${classes.isBold} ${classes.largeFontSize}`}>{currentAccount}</div>
             <p>
-              <span className={classes.title}>Номер аккаунта: </span>
-              <span>{accountId}</span>
+                <span className={classes.title}>Номер аккаунта: </span>
+                <span>{accountId}</span>
             </p>
             <div className={classes.separator} />
-            <div className={classes.clickableContent}
-                 onClick={()=> {
+            <div
+                className={classes.clickableContent}
+                onClick={() => {
                     history.push('/admin/choose_account')
                     onClose()
-                 }}
+                }}
             >
-                 Управление аккаунтами
+                Управление аккаунтами
             </div>
             <div className={classes.clickableContent}>Профиль</div>
             <div
@@ -55,9 +56,9 @@ const HeaderPopover = ({
                             account.permalink === currentCompany ? `${classes.isBold} ${classes.isSelected}` : ''
                         }`}
                         onClick={() => {
-                          chooseCompany(account.permalink)
-                          history.push('/admin')
-                          onClose()
+                            chooseCompany(account.permalink)
+                            history.push('/admin')
+                            onClose()
                         }}
                     >
                         {account.name}
