@@ -32,7 +32,7 @@ class AppBarButton extends Component {
 
     render() {
         const { anchorEl } = this.state
-        const { label, accountId } = this.props
+        const { label, accountId, history } = this.props
         return (
             <div>
                 <Button
@@ -43,7 +43,7 @@ class AppBarButton extends Component {
                 >
                     {label}
                 </Button>
-                <HeaderPopover open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.handleClose} />
+                <HeaderPopover history={history} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.handleClose} />
             </div>
         )
     }
@@ -72,7 +72,7 @@ class HeaderAppBarAdmin extends Component {
 
     render() {
         const rightComponent = this.props.isLogged ? (
-            <AppBarButton label={this.props.profile.username} accountId={this.props.profile.id} acco />
+            <AppBarButton history={this.props.history} label={this.props.profile.username} accountId={this.props.profile.id} acco />
         ) : (
             <AppBarButton register label={'Войти'} onPress={() => this.props.history.push('/admin/login')} />
         )

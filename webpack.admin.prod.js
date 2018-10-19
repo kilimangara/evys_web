@@ -15,7 +15,7 @@ module.exports = env =>
     output: {
       publicPath : '/dist/',
       path: path.resolve('./dist/'),
-      filename: "admin_app_bundle.js"
+      filename: "[hash].admin_app_bundle.js"
     },
     resolve: {
       extensions: [".js", ".jsx"]
@@ -25,7 +25,7 @@ module.exports = env =>
     },
     plugins: [
       new ExtractTextPlugin({
-        filename: "styles_admin.css"
+        filename: "[hash].styles_admin.css"
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
@@ -55,8 +55,8 @@ module.exports = env =>
         filename: 'index_admin.html',
         description: 'Создадим онлайн школу вместе с Evys.',
         files: {
-          css: ["styles_admin.css"],
-          js: [ "admin_app_bundle.js"],
+          css: ["[hash].styles_admin.css"],
+          js: [ "[hash].admin_app_bundle.js"],
         }
       }),
       // new CompressionPlugin({
