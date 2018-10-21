@@ -15,21 +15,33 @@ const HeaderPopover = ({
     chooseCompany,
     currentCompany,
     currentAccount,
-    logoutAction
+    logoutAction,
+    history
 }) => (
     <Popover open={open} anchorEl={anchorEl} onClose={onClose}>
         <div className={classes.contentContainer}>
             <div className={`${classes.content} ${classes.isBold} ${classes.largeFontSize}`}>{currentAccount}</div>
-            <span className={classes.title}>Номер аккаунта: </span>
-            <span>{accountId}</span>
+            <p>
+                <span className={classes.title}>Номер аккаунта: </span>
+                <span>{accountId}</span>
+            </p>
             <div className={classes.separator} />
-            <div className={classes.clickableContent}>Управление аккаунтами</div>
+            <div
+                className={classes.clickableContent}
+                onClick={() => {
+                    history.push('/admin/choose_account')
+                    onClose()
+                }}
+            >
+                Управление аккаунтами
+            </div>
             <div className={classes.clickableContent}>Профиль</div>
             <div
                 className={classes.clickableContent}
                 onClick={() => {
                     onClose()
                     logoutAction()
+                    history.push('/admin/login')
                 }}
             >
                 Выход
@@ -39,10 +51,15 @@ const HeaderPopover = ({
             {userAccounts &&
                 userAccounts.map(account => (
                     <div
+                        key={account.id}
                         className={`${classes.clickableContent} ${
                             account.permalink === currentCompany ? `${classes.isBold} ${classes.isSelected}` : ''
                         }`}
-                        onClick={() => chooseCompany(account.permalink)}
+                        onClick={() => {
+                            chooseCompany(account.permalink)
+                            history.push('/admin')
+                            onClose()
+                        }}
                     >
                         {account.name}
                     </div>
@@ -64,14 +81,14 @@ const styles = theme => ({
     },
     clickableContent: {
         margin: '10px 0',
-        color: '#98D9F8',
+        color: '#4290d8',
         cursor: 'pointer'
     },
     isBold: {
         fontWeight: 'bold'
     },
     isSelected: {
-        color: '#60C7F8'
+        color: '#4290d8'
     },
     title: {
         color: 'gray'
@@ -81,7 +98,7 @@ const styles = theme => ({
         height: '1px',
         border: '0',
         borderTop: '1px solid rgba(128,128,128, .5)',
-        margin: '1em 24px 1em 14px',
+        margin: '1em 0px',
         padding: '0'
     }
 })

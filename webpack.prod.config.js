@@ -15,7 +15,7 @@ module.exports = env =>
     output: {
       publicPath : '/dist/',
       path: path.resolve('./dist/'),
-      filename: "app_bundle.js"
+      filename: "[hash].app_bundle.js"
     },
     resolve: {
       extensions: [".js", ".jsx"]
@@ -25,7 +25,7 @@ module.exports = env =>
     },
     plugins: [
       new ExtractTextPlugin({
-        filename: "styles.css"
+        filename: "[hash].styles.css"
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
@@ -55,8 +55,8 @@ module.exports = env =>
         filename: 'index_student.html',
         description: 'Обучающая платформа Evys.',
         files: {
-          css: ["styles.css"],
-          js: [ "app_bundle_dev.js"],
+          css: ["[hash].styles.css"],
+          js: [ "[hash].app_bundle_dev.js"],
         }
       }),
       // new CompressionPlugin({
