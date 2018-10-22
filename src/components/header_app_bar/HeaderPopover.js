@@ -39,6 +39,7 @@ const HeaderPopover = ({
             {userAccounts &&
                 userAccounts.map(account => (
                     <div
+                        key={account.permalink}
                         className={`${classes.clickableContent} ${
                             account.permalink === currentCompany ? `${classes.isBold} ${classes.isSelected}` : ''
                         }`}

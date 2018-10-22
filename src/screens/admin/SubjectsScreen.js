@@ -13,9 +13,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
-import {Subject} from "../../components/subjects/Subject";
-
-
+import { Subject } from '../../components/subjects/Subject'
 
 class SubjectsScreen extends Component {
     constructor(props) {
@@ -94,7 +92,14 @@ class SubjectsScreen extends Component {
             <div style={styles.container}>
                 <GridList padding={25} cellHeight={200} cols={numberOfColumns} style={styles.gridList}>
                     <Subheader>Предметы</Subheader>
-                    {this.props.subjectsList.map(subject => <Subject subject={subject} onClickSubject={this.onClickSubject} onClickSubjectInfo={this.onClickSubjectInfo}/>)}
+                    {this.props.subjectsList.map(subject => (
+                        <Subject
+                            key={subject.subject}
+                            subject={subject}
+                            onClickSubject={this.onClickSubject}
+                            onClickSubjectInfo={this.onClickSubjectInfo}
+                        />
+                    ))}
                 </GridList>
                 <FloatingActionButton
                     style={styles.fabStyle}
