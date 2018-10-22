@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import setUpStore from './store'
 import { Route, Switch } from 'react-router'
 import AdminApp from './components/AdminApp'
+import LoginScreen from './screens/admin/LoginScreen'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import './screencss/Global.scss'
 import { ADMIN_APP } from './modules/apps'
@@ -36,6 +37,7 @@ class Root extends Component {
                 <MuiThemeProvider>
                     <BrowserRouter>
                         <Switch>
+                            <Route exact path="/admin/login" component={LoginScreen} />
                             <Route path="/admin" component={AdminApp} />
                         </Switch>
                     </BrowserRouter>

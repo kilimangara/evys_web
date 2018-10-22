@@ -135,7 +135,6 @@ class App extends Component {
                     </Modal>
                     <Switch>
                         <Route exact path="/admin" component={SubjectsScreen} />
-                        <Route path="/admin/login" component={LoginScreen} />
                         <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
                         <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
                         <Route path="/admin/students" component={StudentsScreen} />

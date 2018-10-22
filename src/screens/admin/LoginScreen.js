@@ -71,7 +71,7 @@ class LoginScreen extends Component {
         }
 
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <Card style={style}>
                     <TextField
                         style={fieldStyle}
