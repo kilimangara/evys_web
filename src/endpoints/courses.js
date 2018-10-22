@@ -5,7 +5,8 @@ export const COURSE_IS_VALID = 'COURSE_IS_VALID'
 const initialState = {
     coursesList: [],
     fetching: false,
-    valid_course: true
+    valid_course: true,
+    categoryList: []
 }
 
 export default {
