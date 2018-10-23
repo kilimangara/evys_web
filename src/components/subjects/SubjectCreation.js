@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import { grey900 } from 'material-ui/styles/colors'
+import Button from '@material-ui/core/Button'
+import grey from '@material-ui/core/colors/grey'
 import { fetchCategories } from '../../actions/admin/SubjectActions'
 import { connect } from 'react-redux'
 import MenuItem from 'material-ui/MenuItem'
@@ -37,45 +37,52 @@ class SubjectCreation extends Component {
     }
 
     render() {
+        const {selectedCategory = {}, categories = []} = this.state
+        const {classes} = this.props
         return (
-            <div style={styles.container}>
-                <TextField onChange={this.textFieldChanged.bind(this)} label={'Название'} value={this.state.subject} />
+            <div className={classes.container}>
+                <TextField onChange={this.textFieldChanged.bind(this)} label={'Название'} value={this.state.subject} fullWidth margin={'normal'}/>
                 <TextField
                     select
+                    margin='normal'
                     label={'Категория'}
                     value={
-                        (this.state.selectedCategory && this.state.selectedCategory.category_secret) ||
-                        (this.state.categories.length && this.state.categories[0].category_secret)
+                        (selectedCategory && selectedCategory.category_secret) ||
+                        (categories.length && categories[0].category_secret)
                     }
                     className={this.props.classes.menu}
                     onChange={this.changeCategory}
                 >
-                    {(this.state.categories.length &&
-                        this.state.categories.map(category => (
+                    {(categories.length &&
+                        categories.map(category => (
                             <MenuItem key={category.category_secret} value={category.category_secret}>
                                 {category.verbose_name}
                             </MenuItem>
                         ))) ||
                         []}
                 </TextField>
-                <RaisedButton
-                    label="Сохранить"
-                    labelStyle={{ color: 'white' }}
-                    backgroundColor={grey900}
-                    onClick={this.props.onSubjectSave.bind(this, {
-                        subject: this.state.subject,
-                        category_secret: this.state.selectedCategory.category_secret
-                    })}
-                />
-                {this.props.updateMode && (
-                    <RaisedButton
-                        label="Удалить"
-                        style={{ marginTop: 20 }}
-                        labelStyle={{ color: 'white' }}
-                        backgroundColor={grey900}
-                        onClick={this.props.onSubjectDelete.bind(this, this.state.id)}
-                    />
-                )}
+                <div className={classes.buttonsContainer}>
+                  <Button
+                      variant='contained'
+                      className={classes.button}
+                      onClick={this.props.onSubjectSave.bind(this, {
+                          subject: this.state.subject,
+                          category_secret: selectedCategory.category_secret
+                      })}
+                  >
+                  Сохранить
+                  </Button>
+                  {this.props.updateMode && (
+                      <Button
+                          label="Удалить"
+                          variant='contained'
+                          className={classes.button}
+                          onClick={this.props.onSubjectDelete.bind(this, this.state.id)}
+                      >
+                        Удалить
+                      </Button>
+                  )}
+                </div>
             </div>
         )
     }
@@ -88,7 +95,7 @@ SubjectCreation.defaultProps = {
     initialState: { subject: '', categories: [], selectedCategory: '' }
 }
 
-const styles = {
+const styles = theme =>({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -99,8 +106,21 @@ const styles = {
     menu: {
         width: 200,
         margin: '10px 0'
-    }
-}
+    },
+    buttonsContainer: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignSelf: 'stretch'
+    },
+    button: {
+      margin: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 4}px 0px`,
+      color: theme.palette.getContrastText(grey[900]),
+      backgroundColor: grey[900],
+      '&:hover': {
+        backgroundColor: grey[800],
+      },
+    },
+})
 
 const mapActionsToProps = {
     fetchCategories
