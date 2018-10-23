@@ -20,7 +20,6 @@ const HeaderPopover = ({
 }) => (
     <Popover open={open} anchorEl={anchorEl} onClose={onClose}>
         <div className={classes.contentContainer}>
-            {console.log('shit')}
             <div className={`${classes.content} ${classes.isBold} ${classes.largeFontSize}`}>{currentAccount}</div>
             <p>
                 <span className={classes.title}>Номер аккаунта: </span>
@@ -45,7 +44,6 @@ const HeaderPopover = ({
                     history.push('/admin/login')
                 }}
             >
-                {console.log(1, history)}
                 Выход
             </div>
             <div className={classes.separator} />

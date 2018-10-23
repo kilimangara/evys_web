@@ -6,15 +6,24 @@ import setUpStore from './store'
 import { Route, Switch } from 'react-router'
 import AdminApp from './components/AdminApp'
 import LoginScreen from './screens/admin/LoginScreen'
+import RegisterScreen from './screens/admin/RegisterScreen'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import './screencss/Global.scss'
 import { ADMIN_APP } from './modules/apps'
 import { pick } from 'lodash'
-
 import routes from './routes'
-
 import 'moment/locale/ru'
 import moment from 'moment'
+import JssProvider from "react-jss/lib/JssProvider";
+import {createGenerateClassName, jssPreset} from "@material-ui/core";
+import {create} from "jss";
+
+const styleNode = document.createComment("insertion-point-jss");
+document.head.insertBefore(styleNode, document.head.firstChild);
+
+const generateClassName = createGenerateClassName()
+const jss = create(jssPreset())
+jss.options.insertionPoint = 'insertion-point-jss'
 
 class Root extends Component {
     componentWillMount = () => {
@@ -34,14 +43,15 @@ class Root extends Component {
         if (!this.state.store) return null
         return (
             <Provider store={this.state.store}>
-                <MuiThemeProvider>
+                    <JssProvider jss={jss} generateClassName={generateClassName}>
                     <BrowserRouter>
                         <Switch>
+                            <Route exact path="/admin/register" component={RegisterScreen} />
                             <Route exact path="/admin/login" component={LoginScreen} />
                             <Route path="/admin" component={AdminApp} />
                         </Switch>
                     </BrowserRouter>
-                </MuiThemeProvider>
+                    </JssProvider>
             </Provider>
         )
     }

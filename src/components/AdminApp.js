@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
-import LoginScreen from '../screens/admin/LoginScreen'
 import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import ThemesScreen from '../screens/admin/ThemesScreen'
 import TestCaseScreen from '../screens/admin/TestCaseScreen'
@@ -22,7 +21,6 @@ import { grey900 } from 'material-ui/styles/colors'
 import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
 import bind from 'memoize-bind'
 import Divider from 'material-ui/Divider'
-import RegisterScreen from '../screens/admin/RegisterScreen'
 import Modal from 'reboron/ScaleModal'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
@@ -140,7 +138,6 @@ class App extends Component {
                         <Route path="/admin/students" component={StudentsScreen} />
                         <Route path="/admin/choose_account" component={ChooseAccountScreen} />
                         <Route path="/admin/tariffs" component={TariffScreen} />
-                        <Route path="/admin/register" component={RegisterScreen} />
                         <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
                         <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
                     </Switch>

@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import { Card } from 'material-ui/Card'
+import {TextField, Button} from '@material-ui/core'
 import { createUser, saveCredentials, resetCredentials } from '../../actions/admin/AccountActions'
 import _ from 'lodash'
 import bind from 'memoize-bind'
 import { grey900 } from 'material-ui/styles/colors'
+import { ColoredContainer } from '../../components/styled/common'
+import { AuthCard, AuthCardContent } from '../../components/styled/authorization'
 
 class RegisterScreen extends Component {
     constructor(props) {
@@ -35,7 +35,7 @@ class RegisterScreen extends Component {
     }
 
     handlePress = () => {
-        if (this.state.password != this.state.passwordRepeat) {
+        if (this.state.password !== this.state.passwordRepeat) {
             this.setState({ errors: { ...this.state.errors, passwordRepeat: 'Пароли не совпадают' } })
             return
         }
@@ -51,63 +51,49 @@ class RegisterScreen extends Component {
     }
 
     render() {
-        let { email, password, errors, username, first_name, passwordRepeat } = this.state
-        const style = {
-            display: 'flex',
-            margin: 'auto',
-            flexDirection: 'column',
-            padding: 12
-        }
-
-        const fieldStyle = {
-            display: 'block',
-            margin: '20px'
-        }
-
-        const slideDown = {
-            display: 'block',
-            marginTop: '20px'
-        }
+        const { email, password, errors, username, first_name, passwordRepeat } = this.state
 
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                <Card style={style}>
-                    <TextField
-                        style={fieldStyle}
-                        floatingLabelText="Логин"
-                        value={username}
-                        onChange={bind(this.handleChange, this, 'username')}
-                    />
-                    <TextField
-                        style={fieldStyle}
-                        floatingLabelText="Имя"
-                        value={first_name}
-                        onChange={bind(this.handleChange, this, 'first_name')}
-                    />
-                    <TextField
-                        style={fieldStyle}
-                        floatingLabelText="Почта"
-                        value={email}
-                        onChange={bind(this.handleChange, this, 'email')}
-                    />
-                    <TextField
-                        style={fieldStyle}
-                        floatingLabelText="Пароль"
-                        value={password}
-                        type="password"
-                        onChange={bind(this.handleChange, this, 'password')}
-                    />
-                    <TextField
-                        style={fieldStyle}
-                        floatingLabelText="Повторите пароль"
-                        value={passwordRepeat}
-                        type="password"
-                        errorText={errors.passwordRepeat}
-                        onChange={bind(this.handleChange, this, 'passwordRepeat')}
-                    />
-                    <RaisedButton style={fieldStyle} label="Создать" primary={true} onClick={this.handlePress} />
-                </Card>
-            </div>
+            <ColoredContainer backgroundColor={'#3b3a3f'}>
+                <AuthCard>
+                    <AuthCardContent>
+                        <TextField
+                            label="Логин"
+                            value={username}
+                            onChange={bind(this.handleChange, this, 'username')}
+                            variant="outlined"
+                        />
+                        <TextField
+                            label="Имя"
+                            value={first_name}
+                            onChange={bind(this.handleChange, this, 'first_name')}
+                            variant="outlined"
+                        />
+                        <TextField
+                            label="Почта"
+                            value={email}
+                            onChange={bind(this.handleChange, this, 'email')}
+                            variant="outlined"
+                        />
+                        <TextField
+                            label="Пароль"
+                            value={password}
+                            type="password"
+                            onChange={bind(this.handleChange, this, 'password')}
+                            variant="outlined"
+                        />
+                        <TextField
+                            label="Повторите пароль"
+                            value={passwordRepeat}
+                            type="password"
+                            errorText={errors.passwordRepeat}
+                            onChange={bind(this.handleChange, this, 'passwordRepeat')}
+                            variant="outlined"
+                        />
+                        <RaisedButton label="Создать" primary={true} onClick={this.handlePress} variant="outlined" />
+                    </AuthCardContent>
+                </AuthCard>
+            </ColoredContainer>
         )
     }
 }

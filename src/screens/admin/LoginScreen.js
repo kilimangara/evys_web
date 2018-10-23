@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import RaisedButton from 'material-ui/RaisedButton'
-import { grey900 } from 'material-ui/styles/colors'
-import TextField from '@material-ui/core/TextField'
 import { loadAccount, saveCredentials, resetCredentials } from '../../actions/admin/AccountActions'
 import { ColoredContainer } from '../../components/styled/common'
-import { LoginCard, LoginCardContent, LoginField } from '../../components/styled/loginScreen'
+import { AuthButton, AuthCard, AuthCardContent, AuthField } from '../../components/styled/authorization'
+import { switchAdminApp } from '../../actions/AppActions'
+import { Button } from '@material-ui/core'
+import {theme} from "../../utils/global_theme";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -20,6 +18,7 @@ class LoginScreen extends Component {
     }
 
     componentWillMount() {
+        this.props.switchAdminApp()
         if (this.props.isLogged) this.props.history.push('/admin/choose_account')
     }
 
@@ -35,12 +34,21 @@ class LoginScreen extends Component {
         this.props
             .loadAccount()
             .then(response => {
-                this.props.history.push('/admin/choose_account')
-                this.setState({
-                    email: '',
-                    password: '',
-                    loginFailed: false
-                })
+                if (response.response && response.response.data && response.response.data.error) {
+                    this.props.resetCredentials()
+                    this.setState({
+                        email: '',
+                        password: '',
+                        loginFailed: true
+                    })
+                } else {
+                    this.props.history.push('/admin/choose_account')
+                    this.setState({
+                        email: '',
+                        password: '',
+                        loginFailed: false
+                    })
+                }
             })
             .catch(error => {
                 this.props.resetCredentials()
@@ -55,56 +63,51 @@ class LoginScreen extends Component {
     render() {
         const { email, password, loginFailed } = this.state
 
-        const fieldStyle = {
-            display: 'block',
-            margin: '20px'
-        }
-
-        const slideDown = {
-            display: 'block',
-            marginTop: '20px'
-        }
-
         return (
             <ColoredContainer backgroundColor={'#3b3a3f'}>
-                <LoginCard>
-                    <LoginCardContent>
-                        <TextField
-                            id="1"
+                <AuthCard>
+                    <AuthCardContent>
+                        <AuthField
                             name="login"
                             label="Логин"
                             value={email}
+                            fullWidth
+                            error={loginFailed && !email && !password}
                             margin={'normal'}
                             onChange={e => this.handleChange(e)}
                             variant="outlined"
                         />
-                        <LoginField
-                            id="2"
+                        <AuthField
                             name="password"
                             label="Пароль"
                             value={password}
+                            error={loginFailed && !email && !password}
+                            helperText={
+                                (loginFailed &&
+                                    !email &&
+                                    !password &&
+                                    'Проверьте правильность ввода e-mail и пароля') ||
+                                null
+                            }
                             fullWidth
+                            margin={'normal'}
                             type="password"
                             onChange={e => this.handleChange(e)}
                             variant={'outlined'}
                         />
-                        <RaisedButton
-                            style={loginFailed ? slideDown : fieldStyle}
-                            label="Войти"
+                        <AuthButton fullWidth primary={true} onClick={this.handlePress} variant="contained" color={theme.ACCENT_COLOR}>
+                            Войти
+                        </AuthButton>
+                        <AuthButton
                             fullWidth
-                            primary={true}
-                            onClick={this.handlePress}
-                        />
-                        <RaisedButton
-                            style={loginFailed ? slideDown : fieldStyle}
-                            label="Еще нет аккаунта? Создайте прямо сейчас!"
-                            backgroundColor={grey900}
-                            fullWidth
-                            labelStyle={{ color: 'white' }}
+                            color={theme.PRIMARY}
                             onClick={() => this.props.history.push('/admin/register')}
-                        />
-                    </LoginCardContent>
-                </LoginCard>
+                            variant="contained"
+                        >
+                            Еще нет аккаунта? Создайте прямо сейчас!
+                        </AuthButton>
+                    </AuthCardContent>
+                </AuthCard>
             </ColoredContainer>
         )
     }
@@ -116,5 +119,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { loadAccount, saveCredentials, resetCredentials }
+    { loadAccount, saveCredentials, resetCredentials, switchAdminApp }
 )(LoginScreen)
