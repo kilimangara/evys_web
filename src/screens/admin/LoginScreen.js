@@ -2,18 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
-import { Card } from 'material-ui/Card'
 import { grey900 } from 'material-ui/styles/colors'
+import TextField from '@material-ui/core/TextField'
 import { loadAccount, saveCredentials, resetCredentials } from '../../actions/admin/AccountActions'
+import { ColoredContainer } from '../../components/styled/common'
+import { LoginCard, LoginCardContent, LoginField } from '../../components/styled/loginScreen'
 
 class LoginScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            email: null,
-            password: null,
+            email: undefined,
+            password: undefined,
             loginFailed: false
         }
     }
@@ -52,13 +53,7 @@ class LoginScreen extends Component {
     }
 
     render() {
-        let { email, password, loginFailed } = this.state
-        const style = {
-            display: 'flex',
-            margin: 'auto',
-            flexDirection: 'column',
-            padding: 12
-        }
+        const { email, password, loginFailed } = this.state
 
         const fieldStyle = {
             display: 'block',
@@ -71,40 +66,46 @@ class LoginScreen extends Component {
         }
 
         return (
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <Card style={style}>
-                    <TextField
-                        style={fieldStyle}
-                        name="login"
-                        floatingLabelText="Логин"
-                        value={email}
-                        onChange={e => this.handleChange(e)}
-                    />
-                    <TextField
-                        style={fieldStyle}
-                        name="password"
-                        floatingLabelText="Пароль"
-                        value={password}
-                        type="password"
-                        errorText={loginFailed ? 'Логин или пароль введены неверно' : null}
-                        onChange={e => this.handleChange(e)}
-                    />
-                    <RaisedButton
-                        style={loginFailed ? slideDown : fieldStyle}
-                        label="Войти"
-                        primary={true}
-                        onClick={this.handlePress}
-                    />
-
-                    <RaisedButton
-                        style={loginFailed ? slideDown : fieldStyle}
-                        label="Еще нет аккаунта? Создайте прямо сейчас!"
-                        backgroundColor={grey900}
-                        labelStyle={{ color: 'white' }}
-                        onClick={() => this.props.history.push('/admin/register')}
-                    />
-                </Card>
-            </div>
+            <ColoredContainer backgroundColor={'#3b3a3f'}>
+                <LoginCard>
+                    <LoginCardContent>
+                        <TextField
+                            id="1"
+                            name="login"
+                            label="Логин"
+                            value={email}
+                            margin={'normal'}
+                            onChange={e => this.handleChange(e)}
+                            variant="outlined"
+                        />
+                        <LoginField
+                            id="2"
+                            name="password"
+                            label="Пароль"
+                            value={password}
+                            fullWidth
+                            type="password"
+                            onChange={e => this.handleChange(e)}
+                            variant={'outlined'}
+                        />
+                        <RaisedButton
+                            style={loginFailed ? slideDown : fieldStyle}
+                            label="Войти"
+                            fullWidth
+                            primary={true}
+                            onClick={this.handlePress}
+                        />
+                        <RaisedButton
+                            style={loginFailed ? slideDown : fieldStyle}
+                            label="Еще нет аккаунта? Создайте прямо сейчас!"
+                            backgroundColor={grey900}
+                            fullWidth
+                            labelStyle={{ color: 'white' }}
+                            onClick={() => this.props.history.push('/admin/register')}
+                        />
+                    </LoginCardContent>
+                </LoginCard>
+            </ColoredContainer>
         )
     }
 }
