@@ -1,3 +1,4 @@
+import React from 'react'
 import { Card, TextField, Button } from '@material-ui/core'
 import styled from 'styled-components'
 
@@ -14,14 +15,15 @@ export const AuthCardContent = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width: 400px;
 `
 
 export const AuthField = styled(TextField)`
     display: flex;
 `
 
-export const AuthButton = styled(Button)`
+export const AuthButton = styled(({ color, ...props }) => <Button {...props} />)`
     color: white;
-    background-color: ${({color}) => color || 'gray'};
+    background-color: ${({ color }) => color || 'gray'};
     margin-top: 20px;
 `

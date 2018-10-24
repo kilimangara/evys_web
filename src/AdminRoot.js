@@ -14,12 +14,13 @@ import { pick } from 'lodash'
 import routes from './routes'
 import 'moment/locale/ru'
 import moment from 'moment'
-import JssProvider from "react-jss/lib/JssProvider";
-import {createGenerateClassName, jssPreset} from "@material-ui/core";
-import {create} from "jss";
+import JssProvider from 'react-jss/lib/JssProvider'
+import { createGenerateClassName, jssPreset } from '@material-ui/core'
+import { create } from 'jss'
+import { theme } from './utils/global_theme'
 
-const styleNode = document.createComment("insertion-point-jss");
-document.head.insertBefore(styleNode, document.head.firstChild);
+const styleNode = document.createComment('insertion-point-jss')
+document.head.insertBefore(styleNode, document.head.firstChild)
 
 const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
@@ -43,15 +44,17 @@ class Root extends Component {
         if (!this.state.store) return null
         return (
             <Provider store={this.state.store}>
+                <MuiThemeProvider theme={theme}>
                     <JssProvider jss={jss} generateClassName={generateClassName}>
-                    <BrowserRouter>
-                        <Switch>
-                            <Route exact path="/admin/register" component={RegisterScreen} />
-                            <Route exact path="/admin/login" component={LoginScreen} />
-                            <Route path="/admin" component={AdminApp} />
-                        </Switch>
-                    </BrowserRouter>
+                        <BrowserRouter>
+                            <Switch>
+                                <Route exact path="/admin/register" component={RegisterScreen} />
+                                <Route exact path="/admin/login" component={LoginScreen} />
+                                <Route path="/admin" component={AdminApp} />
+                            </Switch>
+                        </BrowserRouter>
                     </JssProvider>
+                </MuiThemeProvider>
             </Provider>
         )
     }

@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {TextField, Button} from '@material-ui/core'
 import { createUser, saveCredentials, resetCredentials } from '../../actions/admin/AccountActions'
 import _ from 'lodash'
 import bind from 'memoize-bind'
-import { grey900 } from 'material-ui/styles/colors'
 import { ColoredContainer } from '../../components/styled/common'
-import { AuthCard, AuthCardContent } from '../../components/styled/authorization'
+import { AuthButton, AuthField, AuthCard, AuthCardContent } from '../../components/styled/authorization'
+import { theme } from '../../utils/global_theme'
+import { switchAdminApp } from '../../actions/AppActions'
 
 class RegisterScreen extends Component {
     constructor(props) {
@@ -25,13 +25,18 @@ class RegisterScreen extends Component {
     }
 
     componentWillMount() {
+        this.props.switchAdminApp()
         if (this.props.isLogged) this.props.history.push('/admin/choose_account')
     }
 
-    handleChange = (field, event, value) => {
+    handleChange = (field, event) => {
         const { errors } = this.state
         if (field === 'password' || field === 'passwordRepeat') delete errors.passwordRepeat
-        this.setState({ [field]: value, errors })
+        if (field === 'password') delete errors.password
+        if (field === 'username') delete errors.username
+        if (field === 'email') delete errors.email
+
+        this.setState({ [field]: event.target.value, errors })
     }
 
     handlePress = () => {
@@ -46,7 +51,7 @@ class RegisterScreen extends Component {
                 this.props.history.push('/admin/choose_account')
             })
             .catch(error => {
-                console.log(error.response)
+                this.setState({ errors: error.response.data })
             })
     }
 
@@ -54,43 +59,62 @@ class RegisterScreen extends Component {
         const { email, password, errors, username, first_name, passwordRepeat } = this.state
 
         return (
-            <ColoredContainer backgroundColor={'#3b3a3f'}>
+            <ColoredContainer backgroundColor={theme.BACKGROUND_DARK}>
                 <AuthCard>
                     <AuthCardContent>
-                        <TextField
+                        <AuthField
                             label="Логин"
                             value={username}
                             onChange={bind(this.handleChange, this, 'username')}
-                            variant="outlined"
+                            margin={'normal'}
+                            error={errors.username}
+                            helperText={errors.username}
+                            fullWidth
+                            variant={'outlined'}
                         />
-                        <TextField
+                        <AuthField
                             label="Имя"
                             value={first_name}
                             onChange={bind(this.handleChange, this, 'first_name')}
-                            variant="outlined"
+                            margin={'normal'}
+                            fullWidth
+                            variant={'outlined'}
                         />
-                        <TextField
+                        <AuthField
                             label="Почта"
                             value={email}
                             onChange={bind(this.handleChange, this, 'email')}
-                            variant="outlined"
+                            error={errors.email}
+                            helperText={errors.email}
+                            margin={'normal'}
+                            fullWidth
+                            variant={'outlined'}
                         />
-                        <TextField
+                        <AuthField
                             label="Пароль"
                             value={password}
                             type="password"
                             onChange={bind(this.handleChange, this, 'password')}
-                            variant="outlined"
+                            margin={'normal'}
+                            error={errors.password}
+                            helperText={errors.password}
+                            fullWidth
+                            variant={'outlined'}
                         />
-                        <TextField
+                        <AuthField
                             label="Повторите пароль"
                             value={passwordRepeat}
                             type="password"
-                            errorText={errors.passwordRepeat}
+                            error={errors.passwordRepeat}
+                            helperText={errors.passwordRepeat}
                             onChange={bind(this.handleChange, this, 'passwordRepeat')}
-                            variant="outlined"
+                            margin={'normal'}
+                            fullWidth
+                            variant={'outlined'}
                         />
-                        <RaisedButton label="Создать" primary={true} onClick={this.handlePress} variant="outlined" />
+                        <AuthButton color={theme.PRIMARY} fullWidth onClick={this.handlePress} variant="contained">
+                            Создать
+                        </AuthButton>
                     </AuthCardContent>
                 </AuthCard>
             </ColoredContainer>
@@ -104,5 +128,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { createUser, saveCredentials, resetCredentials }
+    { createUser, saveCredentials, resetCredentials, switchAdminApp }
 )(RegisterScreen)
