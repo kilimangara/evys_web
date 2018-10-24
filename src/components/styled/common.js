@@ -11,3 +11,12 @@ export const Paper = styled.div`
     overflow: hidden;
     transition: box-shadow 0.25s ease-in-out;
 `
+
+export const ColoredContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: ${({backgroundColor}) => backgroundColor || '#ffffff'};
+`

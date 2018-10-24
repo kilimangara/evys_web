@@ -1,14 +1,14 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
-import trivialReduxMiddleware from 'trivial-redux-middleware'
 import reduxThunk from 'redux-thunk'
 import unwrapMiddleware from './middlewares/unwrapMiddleware'
 import urlMiddleware from './middlewares/urlMiddleware'
+import axiosMiddleware from "./middlewares/axiosMiddleware";
 import { studentAPI, adminAPI } from './api'
 import moduleReducers from './modules'
 import { ADMIN_APP, USER_APP } from './modules/apps'
 import { composeWithDevTools } from 'redux-devtools-extension'
 
-const middlewares = [reduxThunk, urlMiddleware, trivialReduxMiddleware, unwrapMiddleware]
+const middlewares = [reduxThunk, urlMiddleware, axiosMiddleware, unwrapMiddleware]
 
 const enhancers = [applyMiddleware(...middlewares)]
 

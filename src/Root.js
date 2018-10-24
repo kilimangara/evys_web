@@ -5,14 +5,24 @@ import { BrowserRouter } from 'react-router-dom'
 import setUpStore from './store'
 import { Route, Switch } from 'react-router'
 import App from './components/App'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
 import './screencss/Global.scss'
 import { pick } from 'lodash'
-
+import { createTheming } from 'react-jss'
+import JssProvider from 'react-jss/lib/JssProvider'
 import routes from './routes'
-
 import 'moment/locale/ru'
 import moment from 'moment'
+import { jssPreset, createGenerateClassName } from '@material-ui/core/styles'
+import { create } from 'jss'
+import {theme} from "./utils/global_theme";
+
+const styleNode = document.createComment('insertion-point-jss')
+document.head.insertBefore(styleNode, document.head.firstChild)
+
+const generateClassName = createGenerateClassName()
+const jss = create(jssPreset())
+jss.options.insertionPoint = 'insertion-point-jss'
 
 class Root extends Component {
     componentWillMount = () => {
@@ -32,12 +42,14 @@ class Root extends Component {
         if (!this.state.store) return null
         return (
             <Provider store={this.state.store}>
-                <MuiThemeProvider>
-                    <BrowserRouter>
-                        <Switch>
-                            <Route path="/app" component={App} />
-                        </Switch>
-                    </BrowserRouter>
+                <MuiThemeProvider theme={theme}>
+                    <JssProvider jss={jss} generateClassName={generateClassName}>
+                        <BrowserRouter>
+                            <Switch>
+                                <Route path="/app" component={App} />
+                            </Switch>
+                        </BrowserRouter>
+                    </JssProvider>
                 </MuiThemeProvider>
             </Provider>
         )
