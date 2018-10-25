@@ -1,16 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AppBar from 'material-ui/AppBar'
-import IconButton from 'material-ui/IconButton'
-import NavigationMenu from 'material-ui/svg-icons/navigation/menu'
-import PropTypes from 'prop-types'
-import Avatar from 'material-ui/Avatar'
-import { grey900 } from 'material-ui/styles/colors'
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
-import Button from '@material-ui/core/Button'
+import {Button, IconButton} from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu'
 import HeaderPopover from './HeaderPopover'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import { AppToolbar, ToolbarGroup } from '../styled/layout'
 
 class AppBarButton extends Component {
     state = {
@@ -43,7 +36,12 @@ class AppBarButton extends Component {
                 >
                     {label}
                 </Button>
-                <HeaderPopover history={history} open={Boolean(anchorEl)} anchorEl={anchorEl} onClose={this.handleClose} />
+                <HeaderPopover
+                    history={history}
+                    open={Boolean(anchorEl)}
+                    anchorEl={anchorEl}
+                    onClose={this.handleClose}
+                />
             </div>
         )
     }
@@ -57,7 +55,7 @@ class HeaderAppBarAdmin extends Component {
     menuIcon = () => {
         return (
             <IconButton onClick={this.props.onMenuPressed} iconStyle={{ color: 'white', fill: 'white' }}>
-                <NavigationMenu style={{ color: 'white', fill: 'white' }} />
+                <MenuIcon />
             </IconButton>
         )
     }
@@ -71,25 +69,26 @@ class HeaderAppBarAdmin extends Component {
     }
 
     render() {
-        const rightComponent = this.props.isLogged ? (
-            <AppBarButton history={this.props.history} label={this.props.profile.username} accountId={this.props.profile.id} acco />
+        const { isDesktop, isLogged, youtubeSigned, history, profile } = this.props
+        const rightComponent = isLogged ? (
+            <AppBarButton history={history} label={profile.username} accountId={profile.id} acco />
         ) : (
-            <AppBarButton register label={'Войти'} onPress={() => this.props.history.push('/admin/login')} />
+            <AppBarButton register label={'Войти'} onPress={() => history.push('/admin/login')} />
         )
-        const youtubeComponent = this.props.youtubeSigned ? (
+        const youtubeComponent = youtubeSigned ? (
             <AppBarButton register label={'Youtube подключен'} onPress={this.logoutYoutube} />
         ) : (
             <AppBarButton register label={'Войти в Youtube'} onPress={this.loginYoutube} />
         )
-        const { isDesktop } = this.props
+
         return (
-            <Toolbar style={{ backgroundColor: grey900 }}>
-                <ToolbarGroup firstChild={true}>{!isDesktop && this.menuIcon()}</ToolbarGroup>
-                <ToolbarGroup lastChild>
+            <AppToolbar height={'64px'}>
+                <ToolbarGroup>{!isDesktop && this.menuIcon()}</ToolbarGroup>
+                <ToolbarGroup>
                     {youtubeComponent}
                     {rightComponent}
                 </ToolbarGroup>
-            </Toolbar>
+            </AppToolbar>
         )
     }
 }

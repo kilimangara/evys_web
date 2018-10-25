@@ -13,20 +13,17 @@ import TariffScreen from '../screens/admin/TariffScreen'
 import { switchAdminApp } from '../actions/AppActions'
 import { logoutAction } from '../actions/admin/AccountActions'
 import { pickAsset } from '../actions/admin/TemplateAssetsActions'
-import { List, ListItem } from 'material-ui/List'
-import Drawer from 'material-ui/Drawer'
-import FontIcon from 'material-ui/FontIcon'
+import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, withWidth, Divider } from '@material-ui/core'
 import { withGetScreen } from 'react-getscreen'
-import { grey900 } from 'material-ui/styles/colors'
-import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar'
 import bind from 'memoize-bind'
-import Divider from 'material-ui/Divider'
 import Modal from 'reboron/ScaleModal'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
 import GoogleAuth from './youtube/GoogleAuth'
 import AddVideoScreen from '../screens/admin/AddVideoScreen'
 import VideoScreen from '../screens/admin/VideoScreen'
+import { AppContainer, AppDrawer, AppToolbar, CompanyBlock, ListIcon } from './styled/layout'
+import { theme } from '../utils/global_theme'
 
 class App extends Component {
     constructor(props) {
@@ -72,53 +69,59 @@ class App extends Component {
         console.log(source)
     }
 
+    drawerContent = () => {
+        const { company = {} } = this.props
+        return (
+            <div>
+                <AppToolbar>
+                    <CompanyBlock>{company.name || 'Evys'}</CompanyBlock>
+                </AppToolbar>
+                <List>
+                    <ListItem onClick={bind(this.goToExactPath, this, '/admin')}>
+                        <ListItemIcon>
+                            <ListIcon className={'fab fa-leanpub'} />
+                        </ListItemIcon>
+                        <ListItemText primary={'Курсы'} />
+                    </ListItem>
+                    <ListItem onClick={bind(this.goToExactPath, this, '/admin/students')}>
+                        <ListItemIcon>
+                            <ListIcon className="fas fa-users" />
+                        </ListItemIcon>
+                        <ListItemText primary={'Ученики'} />
+                    </ListItem>
+                    <ListItem onClick={bind(this.goToExactPath, this, '/admin/tariffs')}>
+                        <ListItemIcon>
+                            <ListIcon className="fas fa-tag" />
+                        </ListItemIcon>
+                        <ListItemText primary={'Мои предложения'} />
+                    </ListItem>
+                    <Divider />
+                </List>
+            </div>
+        )
+    }
+
     render() {
         const { authenticated, isTablet, isMobile, company = {}, currentCompany } = this.props
         const isDesktop = !isTablet() && !isMobile()
-        const opened = isDesktop ? true : this.state.opened
         return (
             <div style={styles.root}>
                 <GoogleAuth />
-                <Drawer
-                    containerStyle={{ zIndex: 1000 }}
-                    open={opened}
-                    width={200}
-                    docked={isDesktop}
-                    onRequestChange={opened => this.setState({ opened })}
-                >
-                    <Toolbar style={{ backgroundColor: grey900 }}>
-                        <ToolbarGroup firstChild style={{ marginLeft: 12 }}>
-                            <ToolbarTitle text={company.name || 'Evys'} style={{ color: 'white' }} />
-                        </ToolbarGroup>
-                    </Toolbar>
-                    <List>
-                        <ListItem
-                            primaryText={'Курсы'}
-                            onClick={bind(this.goToExactPath, this, '/admin')}
-                            leftIcon={<FontIcon className="fab fa-leanpub" />}
-                        />
-                        <ListItem
-                            primaryText={'Ученики'}
-                            onClick={bind(this.goToExactPath, this, '/admin/students')}
-                            leftIcon={<FontIcon className="fas fa-users" />}
-                        />
-                        <ListItem
-                            leftIcon={<FontIcon className="fas fa-tag" />}
-                            primaryText={'Мои предложения'}
-                            onClick={bind(this.goToExactPath, this, '/admin/tariffs')}
-                        />
-                        <Divider />
-                    </List>
-                </Drawer>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        marginLeft: isDesktop ? '200px' : '0px',
-                        width: isDesktop ? 'calc(100% - 200px)' : '100%',
-                        height: '100%'
-                    }}
-                >
+                <Hidden smUp implementation={'css'}>
+                    <AppDrawer
+                        open={this.state.opened}
+                        onClose={this.handleMenuClick}
+                        variant={'temporary'}
+                    >
+                        {this.drawerContent()}
+                    </AppDrawer>
+                </Hidden>
+                <Hidden xsDown implementation={'css'}>
+                    <AppDrawer open variant={'permanent'}>
+                        {this.drawerContent()}
+                    </AppDrawer>
+                </Hidden>
+                <AppContainer isDesktop={this.props.width !== 'xs'}>
                     <HeaderAppBarAdmin
                         history={this.props.history}
                         isDesktop={isDesktop}
@@ -126,7 +129,7 @@ class App extends Component {
                     />
                     <Modal
                         ref={ref => (this.assetManager = ref)}
-                        modalStyle={{ height: '90vh', overflowY: 'auto' }}
+                        modalStyle={{ height: '100vh', overflowY: 'auto' }}
                         onHide={this.imageAssetPickerClose}
                     >
                         <ImageAssetPicker assetPicked={this.onAssetPicked} />
@@ -141,7 +144,7 @@ class App extends Component {
                         <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
                         <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
                     </Switch>
-                </div>
+                </AppContainer>
             </div>
         )
     }
@@ -164,4 +167,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { switchAdminApp, logoutAction, pickAsset }
-)(withGetScreen(App))
+)(withWidth()(withGetScreen(App)))
