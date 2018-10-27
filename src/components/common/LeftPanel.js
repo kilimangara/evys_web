@@ -89,9 +89,9 @@ const styles = theme => ({
         color: '#cecece',
         width: 'inherit',
         fontSize: 36,
+        transition: 'color .3s',
         '&:hover': {
-            color: 'white',
-            transition: theme.transitions.create(['color'])
+            color: 'white'
         }
     },
     buttonStyle: {
@@ -101,8 +101,8 @@ const styles = theme => ({
         padding: '6px 0px',
         display: 'flex',
         justifyContent: 'center',
+        transition: 'background-color .3s',
         '&:hover': {
-            transition: theme.transitions.create(['background-color']),
             backgroundColor: '#1EAAF0'
         }
     },

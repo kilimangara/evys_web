@@ -89,14 +89,7 @@ class App extends Component {
         const { authenticated } = this.props
 
         return (
-            <div style={{ display: 'flex', height: '100%' }}>
-                <LeftPanel />
-                <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                    <HeaderAppBar />
-                    <div style={{ overflowY: 'scroll', flex: 1, display: 'flex' }}>
-                        <ThemesScreen />
-                    </div>
-                </div>
+            <div style={{ display: 'flex', height: '100%', background: 'linear-gradient(to top left, #3f3f3f, #555555)' }}>
             </div>
         )
         // return (
