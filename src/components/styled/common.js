@@ -20,3 +20,22 @@ export const ColoredContainer = styled.div`
   height: 100%;
   background-color: ${({backgroundColor}) => backgroundColor || '#ffffff'};
 `
+
+export const BorderedImage = styled.div`
+  width: ${({width}) => width || '80px'};
+  height: ${({height}) => height || '80px'};
+  border-radius: 5px;
+  background-image: ${({image}) => `url(${image})`};
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+`
+
+export const StudentTypography = styled.p`
+  font-size: ${props => props.fontSize ? `${props.fontSize}px` : '18px'};
+  font-family: Montserrat;
+  margin:0;
+  padding: 12px 0;
+  color: ${props => props.mainColor ? 'white' : 'inherit'};
+  font-weight: ${props => props.bold ? 'bold' : props.fontWeight || '300'}
+`
