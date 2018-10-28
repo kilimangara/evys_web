@@ -25,7 +25,7 @@ class LeftPanel extends Component {
         const active = this.activeButton(buttonIndexActive)
         return (
           <LeftPanelContainer>
-            <div style={{padding:'50px 0px 0px 50px'}}>
+            <div style={{padding:'0px 0px 0px 50px'}}>
               <div style={{display: 'flex'}}>
                 <BorderedImage image={'https://pp.userapi.com/c824604/v824604757/123b72/kQXTMsBo7Lc.jpg'}/>
                 <LeftPanelNavigation style={{margin: '8px 0px 8px 12px', justifyContent:'space-between'}}>

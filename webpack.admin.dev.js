@@ -53,7 +53,7 @@ module.exports = env =>
         filename: "styles_admin.css",
       }),
       new HtmlWebpackPlugin({
-        template: "./public/index.html",
+        template: "./public/index_admin.html",
         title: 'Evys admin',
         filename: 'index_admin.html',
         description: 'Создадим онлайн школу вместе с Evys.',
