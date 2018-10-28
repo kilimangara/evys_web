@@ -26,7 +26,14 @@ class LeftPanel extends Component {
         return (
           <LeftPanelContainer>
             <div style={{padding:'50px 0px 0px 50px'}}>
-              <BorderedImage image={'https://pp.userapi.com/c824604/v824604757/123b72/kQXTMsBo7Lc.jpg'}/>
+              <div style={{display: 'flex'}}>
+                <BorderedImage image={'https://pp.userapi.com/c824604/v824604757/123b72/kQXTMsBo7Lc.jpg'}/>
+                <LeftPanelNavigation style={{margin: '8px 0px 8px 12px', justifyContent:'space-between'}}>
+                  <BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'}/>
+                  <BorderedImage image={'/images/settings.svg'} width={'18px'} height={'18px'}/>
+                  <BorderedImage image={'/images/exit.svg'} width={'18px'} height={'18px'}/>
+                </LeftPanelNavigation>
+              </div>
               <StudentTypography fontSize={20} mainColor>
                 Злаин Н.А.
               </StudentTypography>
