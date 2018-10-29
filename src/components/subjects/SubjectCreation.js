@@ -37,14 +37,20 @@ class SubjectCreation extends Component {
     }
 
     render() {
-        const {selectedCategory = {}, categories = []} = this.state
-        const {classes} = this.props
+        const { selectedCategory = {}, categories = [] } = this.state
+        const { classes } = this.props
         return (
             <div className={classes.container}>
-                <TextField onChange={this.textFieldChanged.bind(this)} label={'Название'} value={this.state.subject} fullWidth margin={'normal'}/>
+                <TextField
+                    onChange={this.textFieldChanged.bind(this)}
+                    label={'Название'}
+                    value={this.state.subject}
+                    fullWidth
+                    margin={'normal'}
+                />
                 <TextField
                     select
-                    margin='normal'
+                    margin="normal"
                     label={'Категория'}
                     value={
                         (selectedCategory && selectedCategory.category_secret) ||
@@ -62,26 +68,26 @@ class SubjectCreation extends Component {
                         []}
                 </TextField>
                 <div className={classes.buttonsContainer}>
-                  <Button
-                      variant='contained'
-                      className={classes.button}
-                      onClick={this.props.onSubjectSave.bind(this, {
-                          subject: this.state.subject,
-                          category_secret: selectedCategory.category_secret
-                      })}
-                  >
-                  Сохранить
-                  </Button>
-                  {this.props.updateMode && (
-                      <Button
-                          label="Удалить"
-                          variant='contained'
-                          className={classes.button}
-                          onClick={this.props.onSubjectDelete.bind(this, this.state.id)}
-                      >
-                        Удалить
-                      </Button>
-                  )}
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        onClick={this.props.onSubjectSave.bind(this, {
+                            subject: this.state.subject,
+                            category_secret: selectedCategory.category_secret
+                        })}
+                    >
+                        Сохранить
+                    </Button>
+                    {this.props.updateMode && (
+                        <Button
+                            label="Удалить"
+                            variant="contained"
+                            className={classes.button}
+                            onClick={this.props.onSubjectDelete.bind(this, this.state.id)}
+                        >
+                            Удалить
+                        </Button>
+                    )}
                 </div>
             </div>
         )
@@ -95,7 +101,7 @@ SubjectCreation.defaultProps = {
     initialState: { subject: '', categories: [], selectedCategory: '' }
 }
 
-const styles = theme =>({
+const styles = theme => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -108,18 +114,18 @@ const styles = theme =>({
         margin: '10px 0'
     },
     buttonsContainer: {
-      display: 'flex',
-      justifyContent: 'center',
-      alignSelf: 'stretch'
+        display: 'flex',
+        justifyContent: 'center',
+        alignSelf: 'stretch'
     },
     button: {
-      margin: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 4}px 0px`,
-      color: theme.palette.getContrastText(grey[900]),
-      backgroundColor: grey[900],
-      '&:hover': {
-        backgroundColor: grey[800],
-      },
-    },
+        margin: `${theme.spacing.unit * 4}px ${theme.spacing.unit * 4}px 0px`,
+        color: theme.palette.getContrastText(grey[900]),
+        backgroundColor: grey[900],
+        '&:hover': {
+            backgroundColor: grey[800]
+        }
+    }
 })
 
 const mapActionsToProps = {

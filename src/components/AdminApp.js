@@ -47,7 +47,9 @@ class App extends Component {
     }
 
     goToExactPath = path => {
-        this.handleMenuClick()
+        if (this.state.opened && this.props.width === 'xs') {
+            this.handleMenuClick()
+        }
         this.props.history.push(path)
     }
 
@@ -77,19 +79,19 @@ class App extends Component {
                     <CompanyBlock>{company.name || 'Evys'}</CompanyBlock>
                 </AppToolbar>
                 <List>
-                    <ListItem onClick={bind(this.goToExactPath, this, '/admin')}>
+                    <ListItem button onClick={bind(this.goToExactPath, this, '/admin')}>
                         <ListItemIcon>
                             <ListIcon className={'fab fa-leanpub'} />
                         </ListItemIcon>
                         <ListItemText primary={'Курсы'} />
                     </ListItem>
-                    <ListItem onClick={bind(this.goToExactPath, this, '/admin/students')}>
+                    <ListItem button onClick={bind(this.goToExactPath, this, '/admin/students')}>
                         <ListItemIcon>
                             <ListIcon className="fas fa-users" />
                         </ListItemIcon>
                         <ListItemText primary={'Ученики'} />
                     </ListItem>
-                    <ListItem onClick={bind(this.goToExactPath, this, '/admin/tariffs')}>
+                    <ListItem button onClick={bind(this.goToExactPath, this, '/admin/tariffs')}>
                         <ListItemIcon>
                             <ListIcon className="fas fa-tag" />
                         </ListItemIcon>
@@ -108,16 +110,17 @@ class App extends Component {
             <div style={styles.root}>
                 <GoogleAuth />
                 <Hidden smUp implementation={'css'}>
-                    <AppDrawer
-                        open={this.state.opened}
-                        onClose={this.handleMenuClick}
-                        variant={'temporary'}
-                    >
+                    <AppDrawer open={this.state.opened} onClose={this.handleMenuClick} variant={'temporary'}>
                         {this.drawerContent()}
                     </AppDrawer>
                 </Hidden>
                 <Hidden xsDown implementation={'css'}>
-                    <AppDrawer open variant={'permanent'}>
+                    <AppDrawer
+                        PaperProps={{ style: { zIndex: 2 } }}
+                        ModalProps={{ style: { zIndex: 2 } }}
+                        open
+                        variant={'permanent'}
+                    >
                         {this.drawerContent()}
                     </AppDrawer>
                 </Hidden>
@@ -126,6 +129,7 @@ class App extends Component {
                         history={this.props.history}
                         isDesktop={isDesktop}
                         onMenuPressed={this.handleMenuClick}
+                        position={'sticky'}
                     />
                     <Modal
                         ref={ref => (this.assetManager = ref)}

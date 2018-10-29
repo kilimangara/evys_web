@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import { IconButton } from '@material-ui/core'
+import React from 'react'
+import Modal from 'reboron/ScaleModal'
 
 export const Paper = styled.div`
     box-shadow: ${({ hovered }) =>
@@ -13,10 +16,28 @@ export const Paper = styled.div`
 `
 
 export const ColoredContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: ${({backgroundColor}) => backgroundColor || '#ffffff'};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    background-color: ${({ backgroundColor }) => backgroundColor || '#ffffff'};
+`
+
+export const ColoredIconButton = styled(({ color, rippleColor, ...props }) => <IconButton {...props} />)`
+    color: ${({ color }) => color};
+
+    &:hover {
+        background-color: ${({ rippleColor }) => rippleColor};
+    }
+`
+
+export const Colored = styled.div`
+    background-color: ${({ color }) => color};
+`
+
+export const ModalZ = styled(({ ...props }) => (
+    <Modal modalStyle={{ zIndex: 2001 }} backdropStyle={{ zIndex: 2000 }} {...props} />
+))`
+    z-index: 500;
 `
