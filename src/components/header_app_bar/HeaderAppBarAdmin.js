@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {Button, IconButton} from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
+import { Button, IconButton } from '@material-ui/core'
 import HeaderPopover from './HeaderPopover'
-import { AppToolbar, ToolbarGroup } from '../styled/layout'
+import { AppToolbar, ColoredMenuIcon, ToolbarGroup } from '../styled/layout'
+import { AppBar } from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu'
+import { theme } from '../../utils/global_theme'
+import { ColoredIconButton } from '../styled/common'
 
 class AppBarButton extends Component {
     state = {
@@ -54,9 +57,13 @@ class AppBarButton extends Component {
 class HeaderAppBarAdmin extends Component {
     menuIcon = () => {
         return (
-            <IconButton onClick={this.props.onMenuPressed} iconStyle={{ color: 'white', fill: 'white' }}>
+            <ColoredIconButton
+                color={theme.CONTRAST_LIGHT}
+                rippleColor={theme.SECONDARY}
+                onClick={this.props.onMenuPressed}
+            >
                 <MenuIcon />
-            </IconButton>
+            </ColoredIconButton>
         )
     }
 
@@ -82,13 +89,15 @@ class HeaderAppBarAdmin extends Component {
         )
 
         return (
-            <AppToolbar height={'64px'}>
-                <ToolbarGroup>{!isDesktop && this.menuIcon()}</ToolbarGroup>
-                <ToolbarGroup>
-                    {youtubeComponent}
-                    {rightComponent}
-                </ToolbarGroup>
-            </AppToolbar>
+            <AppBar position={'sticky'}>
+                <AppToolbar height={'64px'}>
+                    <ToolbarGroup>{!isDesktop && this.menuIcon()}</ToolbarGroup>
+                    <ToolbarGroup>
+                        {youtubeComponent}
+                        {rightComponent}
+                    </ToolbarGroup>
+                </AppToolbar>
+            </AppBar>
         )
     }
 }
