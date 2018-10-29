@@ -1,10 +1,12 @@
 import React from 'react'
 import { Drawer, Toolbar, Icon } from '@material-ui/core'
+import MenuIcon from '@material-ui/icons/Menu'
 import styled from 'styled-components'
 import { theme, studentTheme } from '../../utils/global_theme'
 
 export const AppDrawer = styled(Drawer)`
     width: 200px;
+    z-index: 2;
 `
 
 export const AppToolbar = styled(({ height, ...props }) => <Toolbar {...props} />)`

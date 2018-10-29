@@ -11,6 +11,7 @@ import { grey500, grey200, grey900 } from 'material-ui/styles/colors'
 import HoverPaper from '../../components/common/HoverPaper'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
+// import {Modal, ModalZ} from "../../components/styled/common";
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
 import { Subject } from '../../components/subjects/Subject'
