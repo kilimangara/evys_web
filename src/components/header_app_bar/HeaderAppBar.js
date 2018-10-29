@@ -33,51 +33,28 @@ class HeaderAppBar extends Component {
     render() {
         const { classes } = this.props
         return (
-            <div>
-                <AppBar position="sticky" color="default" classes={{ colorDefault: classes.appBar }}>
-                    <Toolbar className={classes.toolbar}>
-                        <div />
-                        <SearchBar
-                            styles={this.getStylesObject()}
-                            renderClearButton
-                            renderSearchButton
-                            placeholder="Поиск"
-                            suggestions={[]}
-                            onSearch={this.handleOnSearch}
-                            onClear={this.handleOnClear}
-                            onChange={this.handleChange}
-                        />
-                        <Badge classes={{ badge: classes.badge }} color="primary" badgeContent="">
-                            <Icon className={classNames('fa fa-bell', classes.icon)} />
-                        </Badge>
-                    </Toolbar>
-                    <div id="additional-toolbar" />
-                </AppBar>
+            <div className={classes.toolbar}>
+                <SearchBar
+                    styles={this.getStylesObject()}
+                    placeholder="Поиск"
+                    suggestions={[]}
+                    onSearch={this.handleOnSearch}
+                    onClear={this.handleOnClear}
+                    onChange={this.handleChange}
+                />
+                <div id="additional-toolbar" />
             </div>
         )
     }
 }
 
 const styles = theme => ({
-    root: {
-        flexGrow: 1
-    },
-    appBar: {
-        backgroundColor: 'white'
-    },
     toolbar: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    icon: {
-        color: '#cecece'
-    },
-    badge: {
-        width: 12,
-        height: 12,
-        top: -4,
-        right: 0
+        justifyContent: 'space-between',
+        backgroundColor: 'transparent',
+        flex: 1
     }
 })
 

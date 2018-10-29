@@ -89,8 +89,11 @@ class App extends Component {
         const { authenticated } = this.props
 
         return (
-            <div style={{ display: 'flex', height: 'calc(100% - 100px)', padding: '50px 0px' }}>
+            <div style={{ display: 'flex', height: 'calc(100% - 100px)', padding: '50px 50px 50px 0px' }}>
               <LeftPanel/>
+              <div style={{display: 'flex', height: '100%', flexDirection: 'column', justifyContent:'flex-start', width: '100%'}}>
+                <HeaderAppBar/>
+              </div>
             </div>
         )
         // return (
