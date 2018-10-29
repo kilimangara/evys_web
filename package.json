@@ -11,7 +11,7 @@
     "start-admin-dev": "webpack-dev-server --config webpack.admin.dev.js --env.DEV",
     "start-admin": "webpack-dev-server --config webpack.admin.dev.js --env.DEV=false",
     "start-dev": "webpack-dev-server --env.DEV",
-    "start": "webpack-dev-server --env.DEV=False"
+    "start": "webpack-dev-server --env.DEV=false"
   },
   "repository": {
     "type": "git",
