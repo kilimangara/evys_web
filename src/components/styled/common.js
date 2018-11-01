@@ -11,6 +11,9 @@ export const Paper = styled.div`
               '0px 2px 1px -1px rgba(0, 0, 0, 0.12)'};
     z-index: ${({ zIndex }) => zIndex || '0'};
     height: ${({ height }) => height || 'auto'};
+    width: ${({ width }) => width || 'auto'};
+    background-color: ${({ background }) => background || '#FFFFFF'};
+    border-radius: ${({ borderRadius }) => borderRadius || '0'};
     overflow: hidden;
     transition: box-shadow 0.25s ease-in-out;
 `
@@ -43,20 +46,20 @@ export const ModalZ = styled(({ ...props }) => (
 `
 
 export const BorderedImage = styled.div`
-  width: ${({width}) => width || '80px'};
-  height: ${({height}) => height || '80px'};
-  border-radius: 5px;
-  background-image: ${({image}) => `url(${image})`};
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+    width: ${({ width }) => width || '80px'};
+    height: ${({ height }) => height || '80px'};
+    border-radius: 5px;
+    background-image: ${({ image }) => `url(${image})`};
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 `
 
 export const StudentTypography = styled.p`
-  font-size: ${props => props.fontSize ? `${props.fontSize}px` : '18px'};
-  font-family: Montserrat;
-  margin:0;
-  padding: 12px 0;
-  color: ${props => props.mainColor ? 'white' : 'inherit'};
-  font-weight: ${props => props.bold ? 'bold' : props.fontWeight || '300'}
+    font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '18px')};
+    font-family: Montserrat;
+    margin: 0;
+    padding: 12px 0;
+    color: ${props => (props.mainColor ? 'white' : 'inherit')};
+    font-weight: ${props => (props.bold ? 'bold' : props.fontWeight || '300')};
 `

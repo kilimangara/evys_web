@@ -94,6 +94,7 @@ class App extends Component {
               <div style={{display: 'flex', height: '100%', flexDirection: 'column', justifyContent:'flex-start', width: '100%'}}>
                 <HeaderAppBar/>
               </div>
+                <Route path='/app/courses' component={CoursesScreen} />
             </div>
         )
         // return (

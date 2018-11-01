@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Styled from '../styled'
+import {Paper} from "../styled/common";
 
 export default class HoverPaper extends Component {
     constructor(props) {
@@ -15,14 +15,14 @@ export default class HoverPaper extends Component {
 
     render() {
         return (
-            <Styled.Paper
-                style={this.props.style}
+            <Paper
                 hovered={this.state.hovered}
                 onMouseOver={this.changeHovered.bind(this, true)}
                 onMouseOut={this.changeHovered.bind(this, false)}
+                {...props}
             >
                 {this.props.children}
-            </Styled.Paper>
+            </Paper>
         )
     }
 }

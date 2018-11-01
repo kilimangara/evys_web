@@ -42,7 +42,7 @@ class Root extends Component {
         if (!this.state.store) return null
         return (
             <Provider store={this.state.store}>
-                <MuiThemeProvider theme={theme}>
+                <MuiThemeProvider>
                     <JssProvider jss={jss} generateClassName={generateClassName}>
                         <BrowserRouter>
                             <Switch>

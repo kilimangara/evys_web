@@ -36,42 +36,42 @@ class CoursesScreen extends Component {
 
     render() {
         return (
-            <div style={styles.container}>
+            <div>
                 <Grid container spacing={16}>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem active={false} />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem active={false} />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}>
+                    <Grid item  >
                         <CourseItem />
                     </Grid>
                 </Grid>
@@ -85,17 +85,6 @@ class CoursesScreen extends Component {
         //         </List>
         //     </div>
         // )
-    }
-}
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        padding: '16px 10%',
-        flex: 1
     }
 }
 
