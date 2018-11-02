@@ -4,7 +4,7 @@ import HoverPaper from '../common/HoverPaper'
 import moment from 'moment'
 import $clamp from 'clamp-js'
 import { studentTheme } from '../../utils/global_theme'
-import {CourseImage, CourseInfo, TextInfo} from "../styled/courses";
+import {CourseImage, CourseInfo, CourseName, TextInfo} from "../styled/courses";
 
 class CourseItem extends Component {
     state = {
@@ -16,19 +16,21 @@ class CourseItem extends Component {
     }
 
     render() {
-        const {imgSrc, name, teacherName} = this.props
-        console.log(name)
+        const {courseImage, name, teacherName, subscribeTo} = this.props
         return (
             <HoverPaper height={'300px'} width={'350px'} background={studentTheme.PRIMARY_LIGHT} borderRadius={'15px'}>
-                <CourseImage src={imgSrc} />
+                <CourseImage src={courseImage} />
             <CourseInfo>
                 <TextInfo>
-                    <div>
-                        {$clamp(<div>${name}</div>, 2)}
-                    </div>
+                    <CourseName>
+                        {name}
+                    </CourseName>
                     <div>
                         {teacherName}
                     </div>
+                    <CourseExpireDate>
+                        {} до{}
+                    </CourseExpireDate>
                 </TextInfo>
             </CourseInfo>
             </HoverPaper>
@@ -38,9 +40,9 @@ class CourseItem extends Component {
 
 CourseItem.defaultProps = {
     active: true,
-    name: 'Тест',
+    name: 'Тестовое название',
     percent: 50,
-    teacherName: '',
+    teacherName: 'Фамилия И.О.',
     subscribeTo: '2018-07-18T20:59:59.999Z',
     courseImage: 'https://respectbet.com/upload/articles/59d7a723718e7.jpg'
 }

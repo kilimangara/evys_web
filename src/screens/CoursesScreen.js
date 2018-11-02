@@ -38,40 +38,40 @@ class CoursesScreen extends Component {
         return (
             <div>
                 <Grid container spacing={16}>
-                    <Grid item >
+                    <Grid item xs={12} sm={4} >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem active={false} />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem active={false} />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item  >
+                    <Grid item xs={12} sm={4}  >
                         <CourseItem />
                     </Grid>
                 </Grid>

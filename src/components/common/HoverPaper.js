@@ -19,7 +19,7 @@ export default class HoverPaper extends Component {
                 hovered={this.state.hovered}
                 onMouseOver={this.changeHovered.bind(this, true)}
                 onMouseOut={this.changeHovered.bind(this, false)}
-                {...props}
+                {...this.props}
             >
                 {this.props.children}
             </Paper>

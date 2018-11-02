@@ -10,5 +10,10 @@ export const studentTheme = {
     PRIMARY: '#3f3f3f',
     PRIMARY_LIGHT: '#555555',
     ACCENT: '#00ffd8',
-    ACCENT_LIGHT: '#ff009c'
+    ACCENT_LIGHT: '#ff009c',
+    TEXT_COLOR: '#FFFFFF',
+    FONT: 'Montserrat',
+    H1: `24px`,
+    H2: '20px',
+    H3: '18px',
 }
