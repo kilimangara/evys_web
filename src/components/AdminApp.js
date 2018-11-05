@@ -137,16 +137,18 @@ class App extends Component {
                     >
                         <ImageAssetPicker assetPicked={this.onAssetPicked} />
                     </Modal>
-                    <Switch>
-                        <Route exact path="/admin" component={SubjectsScreen} />
-                        <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
-                        <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
-                        <Route path="/admin/students" component={StudentsScreen} />
-                        <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                        <Route path="/admin/tariffs" component={TariffScreen} />
-                        <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
-                        <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
-                    </Switch>
+                    <div style={{overflow: 'scroll'}}>
+                      <Switch>
+                          <Route exact path="/admin" component={SubjectsScreen} />
+                          <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
+                          <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
+                          <Route path="/admin/students" component={StudentsScreen} />
+                          <Route path="/admin/choose_account" component={ChooseAccountScreen} />
+                          <Route path="/admin/tariffs" component={TariffScreen} />
+                          <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
+                          <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
+                      </Switch>
+                    </div>
                 </AppContainer>
             </div>
         )
