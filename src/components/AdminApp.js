@@ -22,6 +22,7 @@ import GoogleAuth from './youtube/GoogleAuth'
 import AddVideoScreen from '../screens/admin/AddVideoScreen'
 import VideoScreen from '../screens/admin/VideoScreen'
 import { AppContainer, AppDrawer, AppToolbar, CompanyBlock, ListIcon } from './styled/layout'
+import { CommonWrapper } from './styled/common'
 import { theme } from '../utils/global_theme'
 
 class App extends Component {
@@ -137,7 +138,7 @@ class App extends Component {
                     >
                         <ImageAssetPicker assetPicked={this.onAssetPicked} />
                     </Modal>
-                    <div style={{overflow: 'scroll'}}>
+                    <CommonWrapper>
                       <Switch>
                           <Route exact path="/admin" component={SubjectsScreen} />
                           <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
@@ -148,7 +149,7 @@ class App extends Component {
                           <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
                           <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
                       </Switch>
-                    </div>
+                    </CommonWrapper>
                 </AppContainer>
             </div>
         )

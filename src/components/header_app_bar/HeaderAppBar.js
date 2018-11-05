@@ -8,7 +8,7 @@ import Icon from '@material-ui/core/Icon'
 import SearchBar from 'react-search-bar'
 import Badge from '@material-ui/core/Badge'
 import classNames from 'classnames'
-import '../../screencss/SearchBar.css'
+import { StudentInput } from '../styled/common'
 
 class HeaderAppBar extends Component {
     handleChange = input => {}
@@ -17,32 +17,14 @@ class HeaderAppBar extends Component {
 
     handleOnClear = () => {}
 
-    getStylesObject() {
-        return {
-            field: 'field',
-            focusedField: 'field--focused',
-            hasSuggestions: 'field--has-suggestions',
-            input: 'input',
-            clearButton: 'clear-button',
-            submitButton: 'submit-button',
-            suggestions: 'suggestions',
-            suggestion: 'suggestion'
-        }
-    }
-
     render() {
         const { classes } = this.props
         return (
             <div className={classes.toolbar}>
-                <SearchBar
-                    styles={this.getStylesObject()}
-                    placeholder="Поиск"
-                    suggestions={[]}
-                    onSearch={this.handleOnSearch}
-                    onClear={this.handleOnClear}
-                    onChange={this.handleChange}
-                />
-                <div id="additional-toolbar" />
+                <div style={{flex:1}}>
+                  <StudentInput placeholder='Поиск'/>
+                </div>
+                <div id="additional-toolbar" style={{height:100}} />
             </div>
         )
     }
@@ -51,11 +33,8 @@ class HeaderAppBar extends Component {
 const styles = theme => ({
     toolbar: {
         display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
         backgroundColor: 'transparent',
-        flex: 1
-    }
+    },
 })
 
 const mapStateToProps = state => ({

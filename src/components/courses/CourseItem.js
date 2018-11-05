@@ -4,7 +4,7 @@ import HoverPaper from '../common/HoverPaper'
 import moment from 'moment'
 import $clamp from 'clamp-js'
 import { studentTheme } from '../../utils/global_theme'
-import {CourseImage, CourseInfo, CourseName, TextInfo} from "../styled/courses";
+import {CourseImage, CourseInfo, CourseName, TextInfo, CourseExpireDate} from "../styled/courses";
 
 class CourseItem extends Component {
     state = {

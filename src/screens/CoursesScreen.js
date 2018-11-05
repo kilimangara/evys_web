@@ -36,8 +36,7 @@ class CoursesScreen extends Component {
 
     render() {
         return (
-            <div>
-                <Grid container spacing={16}>
+                <Grid container spacing={16} justify='center' alignItems='center'>
                     <Grid item xs={12} sm={4} >
                         <CourseItem />
                     </Grid>
@@ -75,7 +74,6 @@ class CoursesScreen extends Component {
                         <CourseItem />
                     </Grid>
                 </Grid>
-            </div>
         )
         // return (
         //     <div style={styles.container}>
