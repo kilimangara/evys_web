@@ -45,6 +45,16 @@ export const ModalZ = styled(({ ...props }) => (
     z-index: 500;
 `
 
+export const CommonWrapper = styled.div`
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
+  overflow: scroll;
+  ::-webkit-scrollbar {
+    width: 0
+  }
+
+`
+
 export const BorderedImage = styled.div`
     width: ${({ width }) => width || '80px'};
     height: ${({ height }) => height || '80px'};
@@ -62,4 +72,22 @@ export const StudentTypography = styled.p`
     padding: 12px 0;
     color: ${props => (props.mainColor ? 'white' : 'inherit')};
     font-weight: ${props => (props.bold ? 'bold' : props.fontWeight || '300')};
+`
+
+export const StudentInput = styled.input`
+  font-size: 14px;
+  font-family: Montserrat;
+  padding: 8px 16px;
+  box-sizing: border-box;
+  background-color: #333333;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  width: ${props => props.width || '100%'};
+  height: ${props => props.height || '30px'};
+  outline: none;
+  text-align: center;
+  &:focus {
+    text-align: left
+  }
 `

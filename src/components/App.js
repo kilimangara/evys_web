@@ -23,6 +23,7 @@ import { blue500 } from 'material-ui/styles/colors'
 import { switchUserApp } from '../actions/AppActions'
 import LeftPanel from '../components/common/LeftPanel'
 import CourseItem from '../components/courses/CourseItem'
+import { CommonWrapper } from './styled/common'
 
 class App extends Component {
     constructor(props) {
@@ -90,11 +91,23 @@ class App extends Component {
 
         return (
             <div style={{ display: 'flex', height: 'calc(100% - 100px)', padding: '50px 50px 50px 0px' }}>
-              <LeftPanel/>
-              <div style={{display: 'flex', height: '100%', flexDirection: 'column', justifyContent:'flex-start', width: '100%'}}>
-                <HeaderAppBar/>
-              </div>
-                <Route path='/app/courses' component={CoursesScreen} />
+                <LeftPanel />
+                <div
+                    style={{
+                        display: 'flex',
+                        height: '100%',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        width: '100%'
+                    }}
+                >
+                    <HeaderAppBar />
+                    <CommonWrapper>
+                        <Switch>
+                            <Route path="/app/courses" component={CoursesScreen} />
+                        </Switch>
+                    </CommonWrapper>
+                </div>
             </div>
         )
         // return (

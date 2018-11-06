@@ -89,15 +89,13 @@ class HeaderAppBarAdmin extends Component {
         )
 
         return (
-            <AppBar position={'sticky'}>
-                <AppToolbar height={'64px'}>
-                    <ToolbarGroup>{!isDesktop && this.menuIcon()}</ToolbarGroup>
-                    <ToolbarGroup>
-                        {youtubeComponent}
-                        {rightComponent}
-                    </ToolbarGroup>
-                </AppToolbar>
-            </AppBar>
+            <AppToolbar height={'64px'}>
+                <ToolbarGroup>{!isDesktop && this.menuIcon()}</ToolbarGroup>
+                <ToolbarGroup>
+                    {youtubeComponent}
+                    {rightComponent}
+                </ToolbarGroup>
+            </AppToolbar>
         )
     }
 }

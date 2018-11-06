@@ -4,7 +4,7 @@ import HoverPaper from '../common/HoverPaper'
 import moment from 'moment'
 import $clamp from 'clamp-js'
 import { studentTheme } from '../../utils/global_theme'
-import {CourseImage, CourseInfo, CourseName, TextInfo} from "../styled/courses";
+import { CourseImage, CourseInfo, CourseName, TextInfo, CourseExpireDate } from '../styled/courses'
 
 class CourseItem extends Component {
     state = {
@@ -16,23 +16,20 @@ class CourseItem extends Component {
     }
 
     render() {
-        const {courseImage, name, teacherName, subscribeTo} = this.props
+        const { courseImage, name, teacherName, subscribeTo } = this.props
         return (
-            <HoverPaper height={'300px'} width={'350px'} background={studentTheme.PRIMARY_LIGHT} borderRadius={'15px'}>
+            <HoverPaper height={'300px'} width={'250px'} background={studentTheme.PRIMARY_LIGHT} borderRadius={'15px'}>
                 <CourseImage src={courseImage} />
-            <CourseInfo>
-                <TextInfo>
-                    <CourseName>
-                        {name}
-                    </CourseName>
-                    <div>
-                        {teacherName}
-                    </div>
-                    <CourseExpireDate>
-                        {} до{}
-                    </CourseExpireDate>
-                </TextInfo>
-            </CourseInfo>
+                <CourseInfo>
+                    <TextInfo>
+                        <CourseName>{name}</CourseName>
+                        <div>{teacherName}</div>
+                        <CourseExpireDate>
+                            {} до
+                            {}
+                        </CourseExpireDate>
+                    </TextInfo>
+                </CourseInfo>
             </HoverPaper>
         )
     }
