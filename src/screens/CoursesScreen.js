@@ -36,44 +36,31 @@ class CoursesScreen extends Component {
 
     render() {
         return (
-                <Grid container spacing={16} justify='center' alignItems='center'>
-                    <Grid item xs={12} sm={4} >
+          <div style={{flexGrow:1, display: 'flex', flexDirection:'column', justifyContent:'center'}}>
+                <Grid container spacing={24} direction='row'>
+                    <Grid item xs style={{display:'flex', justifyContent:'center'}} >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}  >
+                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}  >
+                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
                         <CourseItem active={false} />
                     </Grid>
-                    <Grid item xs={12} sm={4}  >
+                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}  >
+                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}  >
+                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
                         <CourseItem />
                     </Grid>
-                    <Grid item xs={12} sm={4}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4}  >
-                        <CourseItem active={false} />
-                    </Grid>
-                    <Grid item xs={12} sm={4}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4}  >
+                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
                         <CourseItem />
                     </Grid>
                 </Grid>
+            </div>
         )
         // return (
         //     <div style={styles.container}>
