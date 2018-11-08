@@ -34,6 +34,7 @@ const styles = theme => ({
     toolbar: {
         display: 'flex',
         backgroundColor: 'transparent',
+        minHeight: '60px'
     },
 })
 

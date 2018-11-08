@@ -42,7 +42,12 @@ export const ListIcon = styled(Icon)`
 `
 
 export const LeftPanelContainer = styled.div`
+   @media screen and (min-width: 0px) and (max-width: 748px) {
+    display: none;
+  }
   width: 300px;
+  min-width: 300px;
+  max-width: 300px;
   display: flex;
   flex-direction: column;
 `

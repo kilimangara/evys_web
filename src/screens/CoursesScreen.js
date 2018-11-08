@@ -4,6 +4,7 @@ import { loadCourses } from '../actions/CoursesActions'
 import Grid from '@material-ui/core/Grid'
 
 import CourseItem from '../components/courses/CourseItem'
+import {CoursesScreenContainer, CoursesWrapper} from "../components/styled/courses";
 
 class CoursesScreen extends Component {
     constructor(props) {
@@ -36,31 +37,22 @@ class CoursesScreen extends Component {
 
     render() {
         return (
-          <div style={{flexGrow:1, display: 'flex', flexDirection:'column', justifyContent:'center'}}>
-                <Grid container spacing={24} direction='row'>
-                    <Grid item xs style={{display:'flex', justifyContent:'center'}} >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
-                        <CourseItem active={false} />
-                    </Grid>
-                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
-                        <CourseItem />
-                    </Grid>
-                    <Grid item xs={12} sm={4} style={{display:'flex', justifyContent:'center'}}  >
-                        <CourseItem />
-                    </Grid>
-                </Grid>
-            </div>
+            <CoursesScreenContainer>
+            <CoursesWrapper>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+                <CourseItem/>
+            </CoursesWrapper>
+            </CoursesScreenContainer>
         )
         // return (
         //     <div style={styles.container}>
