@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 import React from 'react'
 import { studentTheme } from '../../utils/global_theme'
+import Tabs from '@material-ui/core/Tabs/Tabs'
+import Tab from '@material-ui/core/Tab/Tab'
 
 export const CourseImage = styled.img`
     height: 50%;
@@ -18,8 +20,6 @@ export const TextInfo = styled.div`
     width: 250px;
     height: 100%;
     margin-left: 15px;
-    color: ${studentTheme.TEXT_COLOR};
-    font-family: ${studentTheme.FONT};
 `
 
 export const CourseName = styled.div`
@@ -35,14 +35,28 @@ export const CourseExpireDate = styled.div`
 `
 
 export const CoursesScreenContainer = styled.div`
-  display: flex;
-  justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `
 
 export const CourseWrapper = styled.div`
     width: 350px;
     height: 300px;
     margin: 12px;
+    font-family: ${studentTheme.FONT};
+    color: ${studentTheme.TEXT_COLOR};
+`
+
+export const CoursesTab = styled(Tab)`
+    color: ${studentTheme.TEXT_COLOR};
+`
+
+export const CoursesTabs = styled(Tabs)`
+    width: 100%;
+    & > div > div > span {
+        background-color: ${studentTheme.ACCENT};
+    }
 `
 
 export const CoursesWrapper = styled.div`
@@ -59,6 +73,7 @@ export const CoursesWrapper = styled.div`
         max-width: 1496px;
     }
     width: 5000px;
-    ;display: flex;
+    display: flex;
     flex-wrap: wrap;
+    flex-direction: row;
 `

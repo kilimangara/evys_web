@@ -24,6 +24,7 @@ import { switchUserApp } from '../actions/AppActions'
 import LeftPanel from '../components/common/LeftPanel'
 import CourseItem from '../components/courses/CourseItem'
 import { CommonWrapper } from './styled/common'
+import { StudentAppWrapper } from './styled/layout'
 
 class App extends Component {
     constructor(props) {
@@ -90,7 +91,7 @@ class App extends Component {
         const { authenticated } = this.props
 
         return (
-            <div style={{ display: 'flex', height: 'calc(100% - 100px)', padding: '50px 50px 50px 0px' }}>
+            <StudentAppWrapper>
                 <LeftPanel />
                 <div
                     style={{
@@ -108,7 +109,7 @@ class App extends Component {
                         </Switch>
                     </CommonWrapper>
                 </div>
-            </div>
+            </StudentAppWrapper>
         )
         // return (
         //   <StickyContainer style={{ display: 'flex', flexDirection: 'column' }}>

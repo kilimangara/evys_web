@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { loadCourses } from '../actions/CoursesActions'
-import Grid from '@material-ui/core/Grid'
 
 import CourseItem from '../components/courses/CourseItem'
-import {CoursesScreenContainer, CoursesWrapper} from "../components/styled/courses";
+import { CoursesScreenContainer, CoursesTab, CoursesTabs, CoursesWrapper } from '../components/styled/courses'
 
 class CoursesScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            courses: []
+            courses: [],
+            selectedTab: 1
         }
     }
 
@@ -24,44 +24,33 @@ class CoursesScreen extends Component {
         this.props.history.push(`/app/course/${id}/themes`)
     }
 
-    // renderItem = (item, index) => {
-    //     return (
-    //         <ListItem
-    //             key={index}
-    //             leftAvatar={<Avatar> {item.subject.subject[0]} </Avatar>}
-    //             primaryText={item.subject.subject}
-    //             onClick={this.loadThemes.bind(this, item.id)}
-    //         />
-    //     )
-    // }
+    handleChange = (event, value) => {
+        this.setState({ selectedTab: value })
+    }
 
     render() {
         return (
             <CoursesScreenContainer>
-            <CoursesWrapper>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-                <CourseItem/>
-            </CoursesWrapper>
+                <CoursesTabs value={this.state.selectedTab} fullWidth onChange={this.handleChange}>
+                    <CoursesTab label={'Текущие'} />
+                    <CoursesTab label={'Пройденые'} />
+                </CoursesTabs>
+                <CoursesWrapper>
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                    <CourseItem />
+                </CoursesWrapper>
             </CoursesScreenContainer>
         )
-        // return (
-        //     <div style={styles.container}>
-        //         <List>
-        //             <Subheader inset={true}>Курсы</Subheader>
-        //             {this.state.courses.map(this.renderItem)}
-        //         </List>
-        //     </div>
-        // )
     }
 }
 

@@ -46,13 +46,12 @@ export const ModalZ = styled(({ ...props }) => (
 `
 
 export const CommonWrapper = styled.div`
-  overflow: -moz-scrollbars-none;
-  -ms-overflow-style: none;
-  overflow: scroll;
-  ::-webkit-scrollbar {
-    width: 0
-  }
-
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    overflow: scroll;
+    ::-webkit-scrollbar {
+        width: 0;
+    }
 `
 
 export const BorderedImage = styled.div`
@@ -75,19 +74,19 @@ export const StudentTypography = styled.p`
 `
 
 export const StudentInput = styled.input`
-  font-size: 14px;
-  font-family: Montserrat;
-  padding: 8px 16px;
-  box-sizing: border-box;
-  background-color: #333333;
-  color: white;
-  border: 0;
-  border-radius: 8px;
-  width: ${props => props.width || '100%'};
-  height: ${props => props.height || '30px'};
-  outline: none;
-  text-align: center;
-  &:focus {
-    text-align: left
-  }
+    font-size: 14px;
+    font-family: Montserrat;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    background-color: #333333;
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    width: ${props => props.width || '100%'};
+    height: ${props => props.height || '30px'};
+    outline: none;
+    text-align: center;
+    &:focus {
+        text-align: left;
+    }
 `

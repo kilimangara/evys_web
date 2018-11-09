@@ -24,7 +24,7 @@ class HeaderAppBar extends Component {
                 <div style={{flex:1}}>
                   <StudentInput placeholder='Поиск'/>
                 </div>
-                <div id="additional-toolbar" style={{height:100}} />
+                <div id="additional-toolbar"/>
             </div>
         )
     }

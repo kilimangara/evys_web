@@ -42,36 +42,45 @@ export const ListIcon = styled(Icon)`
 `
 
 export const LeftPanelContainer = styled.div`
-   @media screen and (min-width: 0px) and (max-width: 748px) {
-    display: none;
-  }
-  width: 300px;
-  min-width: 300px;
-  max-width: 300px;
-  display: flex;
-  flex-direction: column;
+    @media screen and (min-width: 0px) and (max-width: 748px) {
+        display: none;
+    }
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
 `
 
 export const LeftPanelNavigation = styled.div`
-  flex-grow: 1;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  display: flex;
+    flex-grow: 1;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+    display: flex;
 `
 
 export const LeftPanelNavigationItem = styled.div`
-  border-color: ${props => props.active ? studentTheme.ACCENT : 'transparent'};
-  cursor: ${props => props.active ? 'default' : 'pointer'}
+  border-color: ${props => (props.active ? studentTheme.ACCENT : 'transparent')};
+  cursor: ${props => (props.active ? 'default' : 'pointer')}
   border-width: 0 0 0 5px;
   border-style: solid;
   transition: border-color .3s;
   padding-left: 50px;
-  color: ${props => props.active || props.mainColor ? 'white' : studentTheme.PRIMARY_LIGHT};
+  color: ${props => (props.active || props.mainColor ? 'white' : studentTheme.PRIMARY_LIGHT)};
 
   :hover {
     border-color: ${studentTheme.ACCENT};
     color: white;
   }
+`
+
+export const StudentAppWrapper = styled.div`
+    display: flex;
+    width: calc(100% - 100px);
+    padding: 50px 50px 50px 0;
+
+    @media screen and (min-width: 0px) and (max-width: 748px) {
+        padding: 50px;
+    }
 `

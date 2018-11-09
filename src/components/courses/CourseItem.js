@@ -30,10 +30,7 @@ class CourseItem extends Component {
                         <TextInfo>
                             <CourseName>{name}</CourseName>
                             <div>{teacherName}</div>
-                            <CourseExpireDate>
-                                {} до
-                                {}
-                            </CourseExpireDate>
+                            <CourseExpireDate>до {moment(subscribeTo).format('DD.MM.YYYY')}</CourseExpireDate>
                         </TextInfo>
                     </CourseInfo>
                 </HoverPaper>
