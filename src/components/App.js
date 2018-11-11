@@ -96,10 +96,11 @@ class App extends Component {
                 <div
                     style={{
                         display: 'flex',
-                        height: '100%',
+                        height: '102%',
                         flexDirection: 'column',
                         justifyContent: 'center',
-                        width: '100%'
+                        width: '100%',
+                        overflow: 'auto'
                     }}
                 >
                     <HeaderAppBar />

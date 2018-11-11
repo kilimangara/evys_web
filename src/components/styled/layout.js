@@ -58,6 +58,7 @@ export const LeftPanelNavigation = styled.div`
     flex-direction: column;
     align-items: stretch;
     display: flex;
+    justify-content: center;
 `
 
 export const LeftPanelNavigationItem = styled.div`
@@ -78,8 +79,8 @@ export const LeftPanelNavigationItem = styled.div`
 export const StudentAppWrapper = styled.div`
     display: flex;
     width: calc(100% - 100px);
-    padding: 50px 50px 50px 0;
-
+    padding: 50px 0 0 0;
+    height: calc(100% - 65px);
     @media screen and (min-width: 0px) and (max-width: 748px) {
         padding: 50px;
     }
