@@ -29,6 +29,8 @@ class CoursesScreen extends Component {
     }
 
     render() {
+        const { courses } = this.state
+
         return (
             <CoursesScreenContainer>
                 <CoursesTabs value={this.state.selectedTab} fullWidth onChange={this.handleChange}>
@@ -36,6 +38,16 @@ class CoursesScreen extends Component {
                     <CoursesTab label={'Пройденые'} />
                 </CoursesTabs>
                 <CoursesWrapper>
+                    {courses.map(({id, billing_info, subject, progress}) => (
+                        <CourseItem
+                            key={id}
+                            active={!billing_info.ended}
+                            name={subject.subject}
+                            percent={progress}
+                            subscribeTo={billing_info.ends_at}
+                            courseImage={subject.category_image}
+                        />
+                    ))}
                     <CourseItem />
                     <CourseItem />
                     <CourseItem />

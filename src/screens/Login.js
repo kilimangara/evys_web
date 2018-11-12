@@ -3,12 +3,11 @@ import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { getCode, sendCode, saveStepIndex } from '../actions/CodeActions'
 import PropTypes from 'prop-types'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
 import { Card } from 'material-ui/Card'
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper'
+import { Step, Stepper, StepLabel, StepContent, TextField, Button } from "@material-ui/core/";
 import ExpandTransition from 'material-ui/internal/ExpandTransition'
 import { blue500 } from 'material-ui/styles/colors'
+import withStyles from "@material-ui/core/es/styles/withStyles";
 
 class Login extends Component {
     constructor(props) {
@@ -39,7 +38,7 @@ class Login extends Component {
                     underlineFocusStyle={{ borderColor: blue500 }}
                     onChange={this.handleChange}
                 />
-                <RaisedButton
+                <Button
                     style={styles.fieldStyle}
                     label="Подтвердить"
                     backgroundColor={blue500}
@@ -95,7 +94,7 @@ class Login extends Component {
                     value={phone}
                     onChange={this.handleChange}
                 />
-                <RaisedButton
+                <Button
                     style={styles.fieldStyle}
                     label="Отправить смс"
                     backgroundColor={blue500}
@@ -121,7 +120,7 @@ class Login extends Component {
         return (
             <div style={styles.wrapper}>
                 <span style={{ fontSize: 18, color: 'black' }}>Осталось только заполнить профиль</span>
-                <RaisedButton
+                <Button
                     style={styles.fieldStyle}
                     label="В профиль"
                     backgroundColor={blue500}
@@ -198,4 +197,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { getCode, sendCode, saveStepIndex }
-)(Login)
+)(withStyles(styles)(Login))

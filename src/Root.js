@@ -16,6 +16,7 @@ import moment from 'moment'
 import { jssPreset, createGenerateClassName } from '@material-ui/core/styles'
 import { create } from 'jss'
 import {theme} from "./utils/global_theme";
+import Login from "./screens/Login";
 
 const styleNode = document.createComment('insertion-point-jss')
 document.head.insertBefore(styleNode, document.head.firstChild)
@@ -47,6 +48,7 @@ class Root extends Component {
                         <BrowserRouter>
                             <Switch>
                                 <Route path="/app" component={App} />
+                                <Route path="/login" component={Login} />
                             </Switch>
                         </BrowserRouter>
                     </JssProvider>
