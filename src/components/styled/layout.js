@@ -1,6 +1,5 @@
 import React from 'react'
 import { Drawer, Toolbar, Icon } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
 import styled from 'styled-components'
 import { theme, studentTheme } from '../../utils/global_theme'
 

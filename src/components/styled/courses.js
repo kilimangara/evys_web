@@ -21,6 +21,10 @@ export const TextInfo = styled.div`
     height: 100%;
     margin-left: 15px;
 `
+export const ProgressRingContainter = styled.div`
+    width: 60px;
+    height: 60px;
+`
 
 export const CourseName = styled.div`
     width: 100%;
