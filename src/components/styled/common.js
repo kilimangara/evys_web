@@ -15,6 +15,7 @@ export const Paper = styled.div`
     background-color: ${({ background }) => background || '#FFFFFF'};
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
     overflow: hidden;
+    cursor: pointer;
     transition: box-shadow 0.25s ease-in-out;
 `
 

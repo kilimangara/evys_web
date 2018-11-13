@@ -10,11 +10,11 @@ class CoursesScreen extends Component {
         super(props)
         this.state = {
             courses: [],
-            selectedTab: 1
+            selectedTab: 0
         }
     }
 
-    componentWillMount = () => {
+    componentDidMount = () => {
         this.props.loadCourses().then(response => {
             this.setState({ courses: response.data.data })
         })
@@ -38,28 +38,17 @@ class CoursesScreen extends Component {
                     <CoursesTab label={'Пройденые'} />
                 </CoursesTabs>
                 <CoursesWrapper>
-                    {courses.map(({id, billing_info, subject, progress}) => (
+                    {courses.map(({id, billing_info, subject, progress, owner}) => (
                         <CourseItem
                             key={id}
                             active={!billing_info.ended}
                             name={subject.subject}
                             percent={progress}
+                            teacherName={owner}
                             subscribeTo={billing_info.ends_at}
                             courseImage={subject.category_image}
                         />
                     ))}
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
-                    <CourseItem />
                 </CoursesWrapper>
             </CoursesScreenContainer>
         )

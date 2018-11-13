@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import HoverPaper from '../common/HoverPaper'
 import moment from 'moment'
-import $clamp from 'clamp-js'
 import { studentTheme } from '../../utils/global_theme'
 import CircularProgressbar from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
@@ -13,7 +12,7 @@ import {
     TextInfo,
     CourseExpireDate,
     CourseWrapper,
-    ProgressRingContainter
+    ProgressRingContainer
 } from '../styled/courses'
 
 class CourseItem extends Component {
@@ -23,6 +22,16 @@ class CourseItem extends Component {
 
     changeHovered = hover => {
         this.setState({ hover })
+    }
+
+    renderExpireDate(subscribeTo){
+      if (subscribeTo) return `до ${moment(subscribeTo).format('DD.MM.YYYY')}`
+      return 'Бесконечный доступ'
+    }
+
+    colorByPercent(percent){
+      if(!percent) return 'white'
+      else return studentTheme.ACCENT
     }
 
     render() {
@@ -40,17 +49,17 @@ class CourseItem extends Component {
                         <TextInfo>
                             <CourseName>{name}</CourseName>
                             <div>{teacherName}</div>
-                            <CourseExpireDate>до {moment(subscribeTo).format('DD.MM.YYYY')}</CourseExpireDate>
+                            <CourseExpireDate>{this.renderExpireDate(subscribeTo)}</CourseExpireDate>
                         </TextInfo>
-                        <ProgressRingContainter>
+                        <ProgressRingContainer>
                             <CircularProgressbar
                                 percentage={percent}
                                 text={`${percent}%`}
                                 styles={{
-                                    path: { stroke: studentTheme.ACCENT },
+                                    path: { stroke: this.colorByPercent(percent) },
                                     trail: { stroke: 'transparent' },
                                     text: {
-                                        fill: studentTheme.ACCENT,
+                                        fill: this.colorByPercent(percent),
                                         fontSize: '16pt',
                                         fontWeight: 600,
                                         fontFamily: studentTheme.FONT
@@ -58,7 +67,7 @@ class CourseItem extends Component {
                                 }}
                                 counterClockwise
                             />
-                        </ProgressRingContainter>
+                        </ProgressRingContainer>
                     </CourseInfo>
                 </HoverPaper>
             </CourseWrapper>

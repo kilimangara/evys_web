@@ -98,7 +98,6 @@ class App extends Component {
                         display: 'flex',
                         height: '102%',
                         flexDirection: 'column',
-                        justifyContent: 'center',
                         width: '100%',
                         overflow: 'auto'
                     }}

@@ -12,30 +12,36 @@ export const CourseImage = styled.img`
 export const CourseInfo = styled.div`
     width: 100%;
     display: flex;
+    height:135px;
     flex-direction: row;
-    padding-top: 30px;
+    padding-top: 15px;
 `
 
 export const TextInfo = styled.div`
     width: 250px;
     height: 100%;
-    margin-left: 15px;
+    margin-left: 24px;
+    position: relative;
 `
-export const ProgressRingContainter = styled.div`
+export const ProgressRingContainer = styled.div`
     width: 60px;
     height: 60px;
+    margin-left: 12px;
 `
 
-export const CourseName = styled.div`
-    width: 100%;
-    white-space: nowrap;
-    overflow: visible;
+export const CourseName = styled.p`
+    overflow: hidden;
+    margin: 0;
     text-overflow: ellipsis;
     font-size: ${studentTheme.H1};
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
 `
 
 export const CourseExpireDate = styled.div`
-    margin-top: 20px;
+    position: absolute;
+    bottom: 18px;
 `
 
 export const CoursesScreenContainer = styled.div`
@@ -47,7 +53,7 @@ export const CoursesScreenContainer = styled.div`
 export const CourseWrapper = styled.div`
     width: 350px;
     height: 300px;
-    margin: 12px;
+    margin: 36px 12px;
     font-family: ${studentTheme.FONT};
     color: ${studentTheme.TEXT_COLOR};
 `
