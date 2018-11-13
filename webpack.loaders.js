@@ -1,15 +1,23 @@
 "use strict"
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
+var babelLoader = {
+  loader: 'babel-loader',
+  options: {
+    presets: ['react', 'es2015', 'stage-1'],
+    plugins: ['transform-runtime']
+  }
+}
+
 module.exports = [
+  {
+    test: /\.coffee$/,
+    use: [ babelLoader, 'coffee-loader' ]
+  },
   {
     test: /\.(jsx|js)?$/,
     exclude: /(node_modules|bower_components|public\/)/,
-    loader: 'babel-loader',
-    query: {
-      presets: ['react', 'es2015', 'stage-1'],
-      plugins: ['transform-runtime']
-    }
+    use: [babelLoader]
   },
   {
     test: /\.css$/,

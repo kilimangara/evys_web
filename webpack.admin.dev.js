@@ -22,7 +22,7 @@ module.exports = env =>
       filename: "admin_bundle_dev.js"
     },
     resolve: {
-      extensions: [".js", ".jsx"]
+      extensions: [".js", ".jsx", ".coffee"]
     },
     module: {
       loaders

@@ -18,7 +18,7 @@ module.exports = env =>
       filename: "[hash].admin_app_bundle.js"
     },
     resolve: {
-      extensions: [".js", ".jsx"]
+      eextensions: [".js", ".jsx", ".coffee"]
     },
     module: {
       loaders
