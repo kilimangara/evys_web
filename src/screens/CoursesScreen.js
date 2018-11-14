@@ -27,6 +27,15 @@ class CoursesScreen extends Component {
 
     handleChange = (event, value) => {
         this.setState({ selectedTab: value })
+        if (value === 0) {
+            this.props.loadCurrentCourses().then(response => {
+                this.setState({ courses: response.data.results })
+            })
+        } else if (value === 1) {
+            this.props.loadFinishedCourses().then(response => {
+                this.setState({ courses: response.data.results })
+            })
+        }
     }
 
     render() {
