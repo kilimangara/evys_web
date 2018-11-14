@@ -50,6 +50,7 @@ export const CommonWrapper = styled.div`
     overflow: -moz-scrollbars-none;
     -ms-overflow-style: none;
     overflow: scroll;
+    height: 100%;
     ::-webkit-scrollbar {
         width: 0;
     }
@@ -90,4 +91,19 @@ export const StudentInput = styled.input`
     &:focus {
         text-align: left;
     }
+`
+
+export const Loader = styled.div`
+    width: 100px;
+    height: 100px;
+    background-image: url(/images/Ripple-1s-200px.svg);
+    background-size: 100px 100px;
+`
+
+export const LoaderWrapper = styled.div`
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `

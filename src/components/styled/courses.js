@@ -12,7 +12,7 @@ export const CourseImage = styled.img`
 export const CourseInfo = styled.div`
     width: 100%;
     display: flex;
-    height:135px;
+    height: 135px;
     flex-direction: row;
     padding-top: 15px;
 `
@@ -48,6 +48,7 @@ export const CoursesScreenContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    height: 100%;
 `
 
 export const CourseWrapper = styled.div`
