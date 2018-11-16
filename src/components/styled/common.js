@@ -118,6 +118,7 @@ export const CenteredContent = styled.div`
 `
 
 export const WithVerticalMargin = styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

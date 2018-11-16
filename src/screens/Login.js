@@ -88,7 +88,7 @@ class Login extends Component {
     renderPhoneStage = () => {
         const { errors } = this.state
         return (
-            <CenteredContent>
+            <CenteredContent style={{ width: '100%' }}>
                 <WithVerticalMargin margin={'10px'}>
                     <PhoneNumberInput
                         placeholder="Введите номер телефона"

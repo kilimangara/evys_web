@@ -31,14 +31,15 @@ export const AuthButton = styled(({ color, ...props }) => <Button {...props} />)
 
 export const PhoneNumberInput = styled.input`
     background: ${studentTheme.INPUT_COLOR};
-    width: 500px;
     height: 40px;
     border: 0;
     border-radius: 2px;
     padding-left: 10px;
     font: ${studentTheme.H3} ${studentTheme.FONT};
     color: ${studentTheme.TEXT_COLOR};
-    max-width: 80%;
+    width: 50%;
+    min-width: 300px;
+    max-width: 500px;
 
     :focus {
         outline: none;
