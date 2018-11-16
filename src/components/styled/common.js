@@ -2,6 +2,8 @@ import styled from 'styled-components'
 import { IconButton } from '@material-ui/core'
 import React from 'react'
 import Modal from 'reboron/ScaleModal'
+import { Button } from '@material-ui/core'
+import { studentTheme } from '../../utils/global_theme'
 
 export const Paper = styled.div`
     box-shadow: ${({ hovered }) =>
@@ -106,4 +108,30 @@ export const LoaderWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`
+
+export const CenteredContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
+export const WithVerticalMargin = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    & > * {
+        margin: ${({ margin }) => `${margin} 0`};
+    }
+`
+
+export const ColoredButton = styled(({ color, textColor, ...props }) => <Button {...props} />)`
+    background-color: ${({ color }) => color || studentTheme.ACCENT};
+    color: ${({ textColor }) => textColor || studentTheme.PRIMARY};
+`
+
+export const Error = styled.div`
+    color: ${studentTheme.ERROR}
+    font: ${studentTheme.H3} ${studentTheme.FONT}
 `

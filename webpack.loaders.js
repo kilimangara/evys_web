@@ -28,7 +28,7 @@ module.exports = [
     exclude: ['node_modules']
   },
   {
-      test: /.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
+      test: /.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf|svg)(\?v=\d+\.\d+\.\d+)?$/,
       loader: 'file-loader',
       query: {
           name: '[hash].[ext]',

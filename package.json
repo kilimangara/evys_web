@@ -40,6 +40,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-circular-progressbar": "^1.0.0",
+    "react-code-input": "^3.8.1",
     "react-codemirror": "^1.0.0",
     "react-dom": "^16.1.1",
     "react-dropzone": "^4.2.9",
