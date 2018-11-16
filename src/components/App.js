@@ -23,6 +23,8 @@ import { blue500 } from 'material-ui/styles/colors'
 import { switchUserApp } from '../actions/AppActions'
 import LeftPanel from '../components/common/LeftPanel'
 import CourseItem from '../components/courses/CourseItem'
+import { CommonWrapper } from './styled/common'
+import { StudentAppWrapper } from './styled/layout'
 
 class App extends Component {
     constructor(props) {
@@ -89,15 +91,25 @@ class App extends Component {
         const { authenticated } = this.props
 
         return (
-            <div style={{ display: 'flex', height: '100%' }}>
+            <StudentAppWrapper>
                 <LeftPanel />
-                <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <div
+                    style={{
+                        display: 'flex',
+                        height: '102%',
+                        flexDirection: 'column',
+                        width: '100%',
+                        overflow: 'auto'
+                    }}
+                >
                     <HeaderAppBar />
-                    <div style={{ overflowY: 'scroll', flex: 1, display: 'flex' }}>
-                        <ThemesScreen />
-                    </div>
+                    <CommonWrapper>
+                        <Switch>
+                            <Route path="/app/courses" component={CoursesScreen} />
+                        </Switch>
+                    </CommonWrapper>
                 </div>
-            </div>
+            </StudentAppWrapper>
         )
         // return (
         //   <StickyContainer style={{ display: 'flex', flexDirection: 'column' }}>

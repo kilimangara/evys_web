@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
 import { getCode, sendCode, saveStepIndex } from '../actions/CodeActions'
-import PropTypes from 'prop-types'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import { Card } from 'material-ui/Card'
-import { Step, Stepper, StepLabel, StepContent } from 'material-ui/Stepper'
-import ExpandTransition from 'material-ui/internal/ExpandTransition'
-import { blue500 } from 'material-ui/styles/colors'
+import { Step } from '@material-ui/core/'
+import { CenteredContent, ColoredButton, Error, WithVerticalMargin } from '../components/styled/common'
+import { LoginContainer, LoginDataWrapper } from '../components/styled/authorization'
+import { LoginStepLabel, LoginStepper, PhoneNumberInput } from '../components/styled/authorization'
+import { studentTheme } from '../utils/global_theme'
+import ReactCodeInput from 'react-code-input'
+import { withWidth } from '@material-ui/core'
 
 class Login extends Component {
     constructor(props) {
@@ -26,27 +25,29 @@ class Login extends Component {
     }
 
     renderVerifyStage = () => {
-        const { phone, errors, code } = this.state
+        const { errors } = this.state
         return (
-            <div style={styles.wrapper}>
-                <TextField
-                    style={styles.fieldStyle}
-                    errorText={errors.code}
+            <CenteredContent>
+                <ReactCodeInput
+                    type="text"
                     name="code"
-                    floatingLabelText="Код"
-                    value={code}
-                    floatingLabelFocusStyle={{ color: blue500 }}
-                    underlineFocusStyle={{ borderColor: blue500 }}
-                    onChange={this.handleChange}
+                    onChange={this.handleCodeChange}
+                    fields={6}
+                    inputStyle={{
+                        width: '25px',
+                        height: '40px',
+                        fontFamily: studentTheme.FONT,
+                        fontSize: studentTheme.H3,
+                        backgroundColor: studentTheme.INPUT_COLOR,
+                        color: studentTheme.TEXT_COLOR,
+                        border: '0',
+                        margin: '4px',
+                        outline: 'none',
+                        paddingLeft: '15px'
+                    }}
                 />
-                <RaisedButton
-                    style={styles.fieldStyle}
-                    label="Подтвердить"
-                    backgroundColor={blue500}
-                    labelColor={'white'}
-                    onClick={this.handlePress}
-                />
-            </div>
+                {errors && errors.phone && <Error>{errors.phone}</Error>}
+            </CenteredContent>
         )
     }
 
@@ -54,6 +55,15 @@ class Login extends Component {
         this.setState({
             [e.target.name]: e.target.value
         })
+    }
+
+    handleCodeChange = code => {
+        if (code.length === 6) {
+            this.props
+                .sendCode(this.state.phone, code)
+                .then(() => this.goToProfile())
+                .catch(() => this.setState({ errors: { phone: 'Неправильный формат' } }))
+        }
     }
 
     newStepIndex = index => {
@@ -67,42 +77,35 @@ class Login extends Component {
         if (this.props.stepIndex === 0) {
             this.props
                 .getCode(this.state.phone)
-                .then(() => this.newStepIndex(1))
+                .then(() => {
+                    this.newStepIndex(1)
+                    this.setState({ errors: { phone: null } })
+                })
                 .catch(() => this.setState({ errors: { phone: 'Неправильный формат' } }))
-            return
-        }
-
-        if (this.props.stepIndex === 1) {
-            this.props
-                .sendCode(this.state.phone, this.state.code)
-                .then(() => this.newStepIndex(2))
-                .catch(() => this.setState({ errors: { phone: 'Неправильный формат' } }))
-            return
         }
     }
 
-    renderCodeStage = () => {
-        const { phone, errors } = this.state
+    renderPhoneStage = () => {
+        const { errors } = this.state
         return (
-            <div style={styles.wrapper}>
-                <TextField
-                    style={styles.fieldStyle}
-                    errorText={errors.phone}
-                    name="phone"
-                    floatingLabelFocusStyle={{ color: blue500 }}
-                    underlineFocusStyle={{ borderColor: blue500 }}
-                    floatingLabelText="Номер телефона"
-                    value={phone}
-                    onChange={this.handleChange}
-                />
-                <RaisedButton
-                    style={styles.fieldStyle}
-                    label="Отправить смс"
-                    backgroundColor={blue500}
-                    labelColor={'white'}
-                    onClick={this.handlePress}
-                />
-            </div>
+            <CenteredContent style={{ width: '100%' }}>
+                <WithVerticalMargin margin={'10px'}>
+                    <PhoneNumberInput
+                        placeholder="Введите номер телефона"
+                        name={'phone'}
+                        onChange={this.handleChange}
+                    />
+                    {errors && errors.phone && <Error>{errors.phone}</Error>}
+                    <ColoredButton
+                        variant="contained"
+                        labelColor={'white'}
+                        onClick={this.handlePress}
+                        style={{ maxWidth: '100px' }}
+                    >
+                        отправить
+                    </ColoredButton>
+                </WithVerticalMargin>
+            </CenteredContent>
         )
     }
 
@@ -117,29 +120,12 @@ class Login extends Component {
         this.props.history.push('/app/profile')
     }
 
-    renderTelegramLink = () => {
-        return (
-            <div style={styles.wrapper}>
-                <span style={{ fontSize: 18, color: 'black' }}>Осталось только заполнить профиль</span>
-                <RaisedButton
-                    style={styles.fieldStyle}
-                    label="В профиль"
-                    backgroundColor={blue500}
-                    labelColor={'white'}
-                    onClick={this.goToProfile}
-                />
-            </div>
-        )
-    }
-
     renderContent = () => {
         switch (this.props.stepIndex) {
             case 0:
-                return this.renderCodeStage()
+                return this.renderPhoneStage()
             case 1:
                 return this.renderVerifyStage()
-            case 2:
-                return this.renderTelegramLink()
         }
     }
 
@@ -150,42 +136,22 @@ class Login extends Component {
     }
 
     render() {
+        const { stepIndex, width } = this.props
         return (
-            <div style={styles.wrapper}>
-                <Stepper activeStep={this.props.stepIndex} orientation="vertical">
-                    <Step>
-                        <StepLabel>Введите номер</StepLabel>
-                        <StepContent> {this.renderContent()}</StepContent>
-                    </Step>
-                    <Step>
-                        <StepLabel>Подтвердите свой номер</StepLabel>
-                        <StepContent> {this.renderContent()}</StepContent>
-                    </Step>
-                    <Step>
-                        <StepLabel>Используйте бота в телеграме</StepLabel>
-                        <StepContent> {this.renderContent()}</StepContent>
-                    </Step>
-                </Stepper>
-            </div>
+            <LoginContainer>
+                <LoginDataWrapper>
+                    <LoginStepper activeStep={stepIndex} orientation={width === 'xs' ? 'vertical' : 'horizontal'}>
+                        <Step>
+                            <LoginStepLabel>Номер телефона</LoginStepLabel>
+                        </Step>
+                        <Step>
+                            <LoginStepLabel>Проверочный код</LoginStepLabel>
+                        </Step>
+                    </LoginStepper>
+                    {this.renderContent()}
+                </LoginDataWrapper>
+            </LoginContainer>
         )
-    }
-}
-
-const styles = {
-    wrapper: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column'
-    },
-    card: {
-        display: 'flex',
-        margin: 'auto',
-        alignItems: 'center',
-        flexDirection: 'column'
-    },
-    fieldStyle: {
-        margin: '5px'
     }
 }
 
@@ -198,4 +164,4 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     { getCode, sendCode, saveStepIndex }
-)(Login)
+)(withWidth()(Login))

@@ -18,7 +18,7 @@ module.exports = env =>
       filename: "[hash].admin_app_bundle.js"
     },
     resolve: {
-      extensions: [".js", ".jsx"]
+      eextensions: [".js", ".jsx", ".coffee"]
     },
     module: {
       loaders
@@ -50,7 +50,7 @@ module.exports = env =>
         }
       }),
       new HtmlWebpackPlugin({
-        template: "./public/index.html",
+        template: "./public/index_admin.html",
         title: 'Evys admin',
         filename: 'index_admin.html',
         description: 'Создадим онлайн школу вместе с Evys.',

@@ -6,7 +6,6 @@ import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import ThemesScreen from '../screens/admin/ThemesScreen'
 import TestCaseScreen from '../screens/admin/TestCaseScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
-import DistributionScreen from '../screens/admin/DistributionScreen'
 // import HTMLBuilderScreen from '../screens/admin/HTMLBuilderScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import TariffScreen from '../screens/admin/TariffScreen'
@@ -23,6 +22,7 @@ import GoogleAuth from './youtube/GoogleAuth'
 import AddVideoScreen from '../screens/admin/AddVideoScreen'
 import VideoScreen from '../screens/admin/VideoScreen'
 import { AppContainer, AppDrawer, AppToolbar, CompanyBlock, ListIcon } from './styled/layout'
+import { CommonWrapper } from './styled/common'
 import { theme } from '../utils/global_theme'
 
 class App extends Component {
@@ -138,16 +138,18 @@ class App extends Component {
                     >
                         <ImageAssetPicker assetPicked={this.onAssetPicked} />
                     </Modal>
-                    <Switch>
-                        <Route exact path="/admin" component={SubjectsScreen} />
-                        <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
-                        <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
-                        <Route path="/admin/students" component={StudentsScreen} />
-                        <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                        <Route path="/admin/tariffs" component={TariffScreen} />
-                        <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
-                        <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
-                    </Switch>
+                    <CommonWrapper>
+                      <Switch>
+                          <Route exact path="/admin" component={SubjectsScreen} />
+                          <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
+                          <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
+                          <Route path="/admin/students" component={StudentsScreen} />
+                          <Route path="/admin/choose_account" component={ChooseAccountScreen} />
+                          <Route path="/admin/tariffs" component={TariffScreen} />
+                          <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
+                          <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
+                      </Switch>
+                    </CommonWrapper>
                 </AppContainer>
             </div>
         )
