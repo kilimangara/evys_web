@@ -106,6 +106,7 @@ class App extends Component {
                     <CommonWrapper>
                         <Switch>
                             <Route path="/app/courses" component={CoursesScreen} />
+                            <Route path='/app/profile' component={ProfileScreen} />
                         </Switch>
                     </CommonWrapper>
                 </div>

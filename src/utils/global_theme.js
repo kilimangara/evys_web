@@ -13,6 +13,7 @@ export const studentTheme = {
     BACKGROUND: '#2C2C2C',
     ERROR: '#FF0000',
     ACCENT: '#00ffd8',
+    ACCENT_HOVER: '#00ffe4',
     ACCENT_LIGHT: '#ff009c',
     TEXT_COLOR: '#FFFFFF',
     FONT: 'Montserrat',
