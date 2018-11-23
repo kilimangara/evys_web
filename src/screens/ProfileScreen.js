@@ -9,11 +9,11 @@ import _ from 'lodash'
 import { blue500 } from 'material-ui/styles/colors'
 import { AliasTextField } from '../components/common/AliasTextfield'
 import { ProfileContainer } from '../components/styled/profile'
-import { CenteredContent, ColoredButton } from '../components/styled/common'
+import { CenteredContent, ColoredButton, Error } from '../components/styled/common'
 import { studentTheme } from '../utils/global_theme'
-import {ImageLoader} from "../components/common/ImageLoader";
+import { ImageLoader } from '../components/common/ImageLoader'
 
-const profileFields = ['full_name', 'email', 'address']
+const profileFields = ['full_name', 'email', 'avatar']
 
 const requiredFields = ['full_name', 'email']
 
@@ -28,10 +28,16 @@ class ProfileScreen extends Component {
 
     componentWillMount() {
         if (!this.props.isAuthenticated) this.props.history.push('/app/login')
-        this.props.loadProfileData()
+        this.props.loadProfileData().then(() =>
+            this.setState({
+                full_name: this.props.profileData.full_name,
+                email: this.props.profileData.email,
+                avatar: this.props.profileData.avatar
+            })
+        )
     }
 
-    retrieveValue = (name, defaulVal) => this.state[name] || defaulVal
+    retrieveValue = (name, defaultVal) => this.state[name] || defaultVal
 
     checkForErrors = () => {
         const errors = {}
@@ -62,6 +68,11 @@ class ProfileScreen extends Component {
         })
     }
 
+    onAvatarChanged = avatar => {
+        console.log('ava', avatar)
+        this.setState({ avatar })
+    }
+
     telegramLink = () => {
         const { userId } = this.props
         let res = `https://telegram.me/evys_bot?start=${userId}`
@@ -70,15 +81,36 @@ class ProfileScreen extends Component {
     }
 
     render() {
-        const { profileData, userId } = this.props
-        const { errors } = this.state
+        const { profileData, userId, loading } = this.props
+        const { errors, full_name, email } = this.state
         return (
             <CenteredContent style={{ height: '100%' }}>
                 <ProfileContainer>
-                    <ImageLoader width={'33%'} paddingTop={'33%'}/>
-                    <AliasTextField alias={'ФИО'} />
-                    <AliasTextField alias={'E-mail'} />
-                    <ColoredButton color={studentTheme.ACCENT} textColor={studentTheme.BACKGROUND} style={{marginTop: '10px'}}>
+                    <ImageLoader
+                        width={'33%'}
+                        paddingTop={'33%'}
+                        loading={loading}
+                        src={profileData.avatar && profileData.avatar.medium.url}
+                        onChange={this.onAvatarChanged}
+                    />
+                    <AliasTextField
+                        fieldProps={{ value: full_name }}
+                        onChange={this.onTextChanged.bind(this, 'full_name')}
+                        alias={'ФИО'}
+                    />
+                    {errors.full_name && <Error>{errors.full_name}</Error>}
+                    <AliasTextField
+                        alias={'E-mail'}
+                        fieldProps={{ value: email }}
+                        onChange={this.onTextChanged.bind(this, 'email')}
+                    />
+                    {errors.full_name && <Error>{errors.email}</Error>}
+                    <ColoredButton
+                        color={studentTheme.ACCENT}
+                        textColor={studentTheme.BACKGROUND}
+                        style={{ marginTop: '10px' }}
+                        onClick={this.saveProfile}
+                    >
                         сохранить
                     </ColoredButton>
                 </ProfileContainer>
@@ -90,7 +122,8 @@ class ProfileScreen extends Component {
 const mapStateToProps = state => ({
     profileData: state.account.profileData,
     isAuthenticated: state.auth.authenticated,
-    userId: state.auth.user_id
+    userId: state.auth.user_id,
+    loading: state.account.fetching
 })
 
 export default connect(

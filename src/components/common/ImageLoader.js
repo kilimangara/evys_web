@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { ImageCoverContainer, ImageLoaderContainer } from '../styled/ImageLoader'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import Dropzone from 'react-dropzone'
+import { Loader, LoaderWrapper } from '../styled/common'
 
 export class ImageLoader extends Component {
     state = {
@@ -24,6 +25,7 @@ export class ImageLoader extends Component {
     }
 
     handleImageUpload = image => {
+        this.props.onChange(image)
         const reader = new FileReader()
         reader.onloadend = () => this.setState({ uploadedImage: reader.result })
         if (image) {
@@ -58,10 +60,11 @@ export class ImageLoader extends Component {
     createInputRef = element => (this.fileUploader = element)
 
     render() {
-        const { src, width, paddingTop } = this.props
+        const { src, width, paddingTop, loading } = this.props
         const { hovered, uploadedImage } = this.state
         return (
             <ImageLoaderContainer
+                paddingTop={paddingTop || 0}
                 onMouseEnter={() => this.handleHover(true)}
                 onMouseLeave={() => this.handleHover(false)}
                 width={width}
@@ -70,7 +73,23 @@ export class ImageLoader extends Component {
                 onDragLeave={this.dragLeave}
                 onDragOver={this.dragOver}
             >
-                <img src={uploadedImage || src} style={{ objectFit: 'cover', maxWidth: '100%', maxHeight: '100%' }} />
+                {loading ? (
+                    <LoaderWrapper style={{ position: 'absolute', top: '0', left: '0' }}>
+                        <Loader />
+                    </LoaderWrapper>
+                ) : (
+                    <img
+                        src={uploadedImage || src}
+                        style={{
+                            objectFit: 'contain',
+                            maxWidth: '100%',
+                            maxHeight: '100%',
+                            position: 'absolute',
+                            top: '0',
+                            left: '0'
+                        }}
+                    />
+                )}
                 <ImageCoverContainer hovered={hovered} onClick={this.uploadFile}>
                     <CloudUploadIcon style={{ color: 'white' }} />
                 </ImageCoverContainer>

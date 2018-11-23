@@ -8,8 +8,6 @@ export const ImageLoaderContainer = styled.div`
     height: ${({ height }) => height};
     background-color: ${studentTheme.INPUT_COLOR};
     position: relative;
-    display: flex;
-    flex: 1;
 `
 
 export const ImageCoverContainer = styled.div`
