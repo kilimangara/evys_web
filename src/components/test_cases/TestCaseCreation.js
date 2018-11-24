@@ -29,9 +29,9 @@ const formats = [
     'list',
     'bullet',
     'indent',
-    'link',
-    'image',
-    'video'
+    'formula',
+    'image'
+
 ]
 
 class TestCaseCreation extends Component {
@@ -74,7 +74,8 @@ class TestCaseCreation extends Component {
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
                 ['clean'],
-                ['image']
+                ['image'],
+                ['formula']
             ],
             handlers: {}
         },
