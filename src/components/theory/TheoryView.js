@@ -28,7 +28,8 @@ const formats = [
     'indent',
     'link',
     'image',
-    'video'
+    'video',
+    'formula'
 ]
 
 class TheoryView extends Component {
@@ -117,7 +118,8 @@ class TheoryView extends Component {
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
                 ['clean'],
-                ['image']
+                ['image'],
+                ['formula']
             ],
             handlers: {
                 image: value => {
