@@ -12,6 +12,8 @@ import { ProfileContainer } from '../components/styled/profile'
 import { CenteredContent, ColoredButton, Error } from '../components/styled/common'
 import { studentTheme } from '../utils/global_theme'
 import { ImageLoader } from '../components/common/ImageLoader'
+import { FavoriteSubjects } from '../components/subjects/favoriteSubjects/FavoriteSubjects'
+import { subjects } from '../utils/subjects'
 
 const profileFields = ['full_name', 'email', 'avatar']
 
@@ -22,7 +24,8 @@ class ProfileScreen extends Component {
         super(props)
         this.state = {
             errors: {},
-            open: false
+            open: false,
+            selectedFavoriteSubjects: []
         }
     }
 
@@ -69,8 +72,17 @@ class ProfileScreen extends Component {
     }
 
     onAvatarChanged = avatar => {
-        console.log('ava', avatar)
         this.setState({ avatar })
+    }
+
+    handleFavoriteSubjectSelect = subject => {
+        if (this.state.selectedFavoriteSubjects.includes(subject.name)) {
+            this.setState({
+                selectedFavoriteSubjects: this.state.selectedFavoriteSubjects.filter(sub => sub !== subject)
+            })
+        } else {
+            this.setState({ selectedFavoriteSubjects: [...this.state.selectedFavoriteSubjects, subject.name] })
+        }
     }
 
     telegramLink = () => {
@@ -82,38 +94,47 @@ class ProfileScreen extends Component {
 
     render() {
         const { profileData, userId, loading } = this.props
-        const { errors, full_name, email } = this.state
+        const { errors, full_name, email, selectedFavoriteSubjects } = this.state
+        const isTrue = true
         return (
-            <CenteredContent style={{ height: '100%' }}>
-                <ProfileContainer>
-                    <ImageLoader
-                        width={'33%'}
-                        paddingTop={'33%'}
-                        loading={loading}
-                        src={profileData.avatar && profileData.avatar.medium.url}
-                        onChange={this.onAvatarChanged}
+            <CenteredContent style={{ height: 'fitContent' }}>
+                {isTrue ? (
+                    <FavoriteSubjects
+                        subjects={subjects}
+                        selected={selectedFavoriteSubjects}
+                        onSelect={this.handleFavoriteSubjectSelect}
                     />
-                    <AliasTextField
-                        fieldProps={{ value: full_name }}
-                        onChange={this.onTextChanged.bind(this, 'full_name')}
-                        alias={'ФИО'}
-                    />
-                    {errors.full_name && <Error>{errors.full_name}</Error>}
-                    <AliasTextField
-                        alias={'E-mail'}
-                        fieldProps={{ value: email }}
-                        onChange={this.onTextChanged.bind(this, 'email')}
-                    />
-                    {errors.full_name && <Error>{errors.email}</Error>}
-                    <ColoredButton
-                        color={studentTheme.ACCENT}
-                        textColor={studentTheme.BACKGROUND}
-                        style={{ marginTop: '10px' }}
-                        onClick={this.saveProfile}
-                    >
-                        сохранить
-                    </ColoredButton>
-                </ProfileContainer>
+                ) : (
+                    <ProfileContainer>
+                        <ImageLoader
+                            width={'33%'}
+                            paddingTop={'33%'}
+                            loading={loading}
+                            src={profileData.avatar && profileData.avatar.medium.url}
+                            onChange={this.onAvatarChanged}
+                        />
+                        <AliasTextField
+                            fieldProps={{ value: full_name }}
+                            onChange={this.onTextChanged.bind(this, 'full_name')}
+                            alias={'ФИО'}
+                        />
+                        {errors.full_name && <Error>{errors.full_name}</Error>}
+                        <AliasTextField
+                            alias={'E-mail'}
+                            fieldProps={{ value: email }}
+                            onChange={this.onTextChanged.bind(this, 'email')}
+                        />
+                        {errors.full_name && <Error>{errors.email}</Error>}
+                        <ColoredButton
+                            color={studentTheme.ACCENT}
+                            textColor={studentTheme.BACKGROUND}
+                            style={{ marginTop: '10px' }}
+                            onClick={this.saveProfile}
+                        >
+                            сохранить
+                        </ColoredButton>
+                    </ProfileContainer>
+                )}
             </CenteredContent>
         )
     }
@@ -123,6 +144,7 @@ const mapStateToProps = state => ({
     profileData: state.account.profileData,
     isAuthenticated: state.auth.authenticated,
     userId: state.auth.user_id,
+    newUser: state.auth.is_new,
     loading: state.account.fetching
 })
 

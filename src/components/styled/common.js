@@ -127,11 +127,12 @@ export const WithVerticalMargin = styled.div`
     }
 `
 
-export const ColoredButton = styled(({ color, textColor, ...props }) => <Button {...props} />)`
+export const ColoredButton = styled(({ color, textColor, textHover, ...props }) => <Button {...props} />)`
     background-color: ${({ color }) => color || studentTheme.ACCENT};
     color: ${({ textColor }) => textColor || studentTheme.PRIMARY};
-    :hover{
-    background-color: ${studentTheme.ACCENT_HOVER};
+    :hover {
+        background-color: ${studentTheme.ACCENT_HOVER};
+        color: ${({ textHover }) => textHover || studentTheme.BACKGROUND};
     }
 `
 
