@@ -25,7 +25,8 @@ class ProfileScreen extends Component {
         this.state = {
             errors: {},
             open: false,
-            selectedFavoriteSubjects: []
+            selectedFavoriteSubjects: [],
+            favoriteSubjectsOpened: props.newUser,
         }
     }
 
@@ -57,6 +58,15 @@ class ProfileScreen extends Component {
         this.props.saveProfile(profile).then(res => this.setState({ open: true }))
     }
 
+    saveFavoriteSubjects = () => {
+        this.props.saveProfile({ tags: this.state.selectedFavoriteSubjects })
+        this.setState({ favoriteSubjectsOpened: false })
+    }
+
+    closeFavoriteSubjects = () => {
+        this.setState({ favoriteSubjectsOpened: false })
+    }
+
     handleRequestClose = () => {
         this.setState({
             open: false
@@ -76,12 +86,12 @@ class ProfileScreen extends Component {
     }
 
     handleFavoriteSubjectSelect = subject => {
-        if (this.state.selectedFavoriteSubjects.includes(subject.name)) {
+        if (this.state.selectedFavoriteSubjects.includes(subject.alias)) {
             this.setState({
-                selectedFavoriteSubjects: this.state.selectedFavoriteSubjects.filter(sub => sub !== subject)
+                selectedFavoriteSubjects: this.state.selectedFavoriteSubjects.filter(sub => sub !== subject.alias)
             })
         } else {
-            this.setState({ selectedFavoriteSubjects: [...this.state.selectedFavoriteSubjects, subject.name] })
+            this.setState({ selectedFavoriteSubjects: [...this.state.selectedFavoriteSubjects, subject.alias] })
         }
     }
 
@@ -94,15 +104,17 @@ class ProfileScreen extends Component {
 
     render() {
         const { profileData, userId, loading } = this.props
-        const { errors, full_name, email, selectedFavoriteSubjects } = this.state
-        const isTrue = true
+        const { errors, full_name, email, selectedFavoriteSubjects, favoriteSubjectsOpened } = this.state
+
         return (
             <CenteredContent style={{ height: 'fitContent' }}>
-                {isTrue ? (
+                {favoriteSubjectsOpened ? (
                     <FavoriteSubjects
                         subjects={subjects}
                         selected={selectedFavoriteSubjects}
                         onSelect={this.handleFavoriteSubjectSelect}
+                        onApply={this.saveFavoriteSubjects}
+                        onCancel={this.closeFavoriteSubjects}
                     />
                 ) : (
                     <ProfileContainer>

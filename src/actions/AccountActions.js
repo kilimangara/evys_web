@@ -14,7 +14,7 @@ export function loadProfileData() {
 
 export function saveProfile(data) {
     const body = new FormData()
-    const { avatar = {}, full_name, email } = data
+    const { avatar, full_name, email, tags } = data
     if (avatar) {
         body.append('avatar', avatar)
     }
@@ -22,7 +22,10 @@ export function saveProfile(data) {
         body.append('full_name', data.full_name)
     }
     if (email) {
-        data.append('email', email)
+        body.append('email', email)
+    }
+    if (tags) {
+        body.append('tags', tags)
     }
     return {
         types: actionTypesFor('update', 'account'),

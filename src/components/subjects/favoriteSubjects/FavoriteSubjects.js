@@ -3,11 +3,11 @@ import { CenteredContent, ColoredButton } from '../../styled/common'
 import { ButtonsBlock, FavoriteSubject, FavoriteSubjectsGrid } from '../../styled/favoriteSubjects'
 import { studentTheme } from '../../../utils/global_theme'
 
-export const FavoriteSubjects = ({ subjects, selected }) => (
+export const FavoriteSubjects = ({ subjects, selected, onSelect, onApply }) => (
     <CenteredContent>
         <FavoriteSubjectsGrid>
             {subjects.map(subject => (
-                <FavoriteSubject selected={selected.includes(subject.name)} key={subject.alias}>{subject.name}</FavoriteSubject>
+                <FavoriteSubject key={subject.name} selected={selected.includes(subject.alias)} onClick={() =>onSelect(subject)}>{subject.name}</FavoriteSubject>
             ))}
         </FavoriteSubjectsGrid>
         <ButtonsBlock>
@@ -23,6 +23,7 @@ export const FavoriteSubjects = ({ subjects, selected }) => (
                 textColor={studentTheme.ACCENT}
                 textHover={studentTheme.BACKGROUND}
                 style={{ padding: '0 12px' }}
+                onClick={onApply}
             >
                 применить
             </ColoredButton>

@@ -1,54 +1,54 @@
 export const subjects = [
     {
         name: 'test',
-        alias: ''
+        alias: 'test1'
     },
     {
         name: 'lol',
-        alias: ''
+        alias: 'test2'
     },
     {
         name: 'kek',
-        alias: ''
+        alias: 'test3'
     },
     {
         name: 'pisos',
-        alias: ''
+        alias: 'test4'
     },
     {
         name: 'zlain',
-        alias: ''
+        alias: 'test5'
     },
     {
         name: 'jabka',
-        alias: ''
+        alias: 'test6'
     },
     {
         name: 'mysh',
-        alias: ''
+        alias: 'test7'
     },
     {
         name: 'krodetsya',
-        alias: ''
+        alias: 'test8'
     },
     {
         name: 'random',
-        alias: ''
+        alias: 'test9'
     },
     {
         name: 'slova',
-        alias: ''
+        alias: 'test10'
     },
     {
         name: 'zdes',
-        alias: ''
+        alias: 'test11'
     },
     {
         name: 'napisany',
-        alias: ''
+        alias: 'test12'
     },
     {
         name: 'ubeyte menya',
-        alias: ''
+        alias: 'test13'
     }
 ]
