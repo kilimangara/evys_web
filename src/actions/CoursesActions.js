@@ -16,6 +16,17 @@ export function loadCurrentCourses() {
     }
 }
 
+export function loadCourseById(course_id) {
+    return {
+        types: actionTypesFor('index', 'courses'),
+        meta: {
+            fetch: {
+                url: `~student/course/${course_id}`,
+            }
+        }
+    }
+}
+
 export function loadFinishedCourses() {
     return {
         types: actionTypesFor('index', 'courses'),
