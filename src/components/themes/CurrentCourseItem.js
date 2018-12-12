@@ -11,9 +11,8 @@ import {
     CourseName,
     CourseExpireDate,
     CourseWrapper,
-    ProgressRingContainer
 } from '../styled/courses'
-import {CurrentCourseInfo, CurrentCourseWrapper, TextInfo} from '../styled/themes'
+import {CurrentCourseInfo, CurrentCourseWrapper, ProgressRingContainer, TextInfo} from '../styled/themes'
 
 export class CurrentCourseItem extends Component {
     state = {
@@ -39,10 +38,11 @@ export class CurrentCourseItem extends Component {
         return (
             <CurrentCourseWrapper>
                 <HoverPaper
-                    width={'100%'}
+                    width={'calc(100% - 24px)'}
                     height={'100%'}
-                    background={studentTheme.PRIMARY_LIGHT}
+                    background={`linear-gradient(to right, ${studentTheme.COURSE_GRADIENT_LEFT}, ${studentTheme.COURSE_GRADIENT_RIGHT})`}
                     borderRadius={'15px'}
+                    style={{margin: '0 12px'}}
                 >
                     <CurrentCourseInfo>
                         <TextInfo>

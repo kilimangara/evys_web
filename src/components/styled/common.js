@@ -14,8 +14,9 @@ export const Paper = styled.div`
     z-index: ${({ zIndex }) => zIndex || '0'};
     height: ${({ height }) => height || 'auto'};
     width: ${({ width }) => width || 'auto'};
-    background-color: ${({ background }) => background || '#FFFFFF'};
+    background: ${({ background }) => background || ''};
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
+    box-shadow: ${({boxShadow}) => boxShadow || ''};
     overflow: hidden;
     cursor: pointer;
     transition: box-shadow 0.25s ease-in-out;

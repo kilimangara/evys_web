@@ -5,6 +5,8 @@ import { relative } from 'path'
 import { CenteredContent } from '../components/styled/common'
 import CourseItem from "../components/courses/CourseItem";
 import {CurrentCourseItem} from "../components/themes/CurrentCourseItem";
+import {ThemeItem} from "../components/themes/ThemeItem";
+import {ThemesItemWrapper, ThemesScreenWrapper} from "../components/styled/themes";
 
 class ThemesScreen extends Component {
     constructor(props) {
@@ -32,12 +34,25 @@ class ThemesScreen extends Component {
     render() {
         const {course} = this.state
         return (<CenteredContent>
+            <ThemesScreenWrapper>
             <CurrentCourseItem
                 active={true}
                 name={course.name}
                 percent={course.percent}
                 teacherName={course.teacherName}
             />
+                <ThemesItemWrapper>
+            <ThemeItem alias={'My pisos very big'} percent={100}/>
+                    <ThemeItem alias={'My pisos very big'} percent={10}/>
+                    <ThemeItem alias={'My pisos very big'} percent={20}/>
+                    <ThemeItem alias={'My pisos very big'} percent={30}/>
+                    <ThemeItem alias={'My pisos very big'} percent={40}/>
+                    <ThemeItem alias={'My pisos very big'} percent={50}/>
+                    <ThemeItem alias={'My pisos very big'} percent={60}/>
+                    <ThemeItem alias={'My pisos very big'} percent={70}/>
+                    <ThemeItem alias={'My pisos very big'} percent={80}/>
+                </ThemesItemWrapper>
+            </ThemesScreenWrapper>
         </CenteredContent>)
     }
 }

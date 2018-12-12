@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import {studentTheme} from "../../utils/global_theme";
+import { studentTheme } from '../../utils/global_theme'
 
 export const CurrentCourseWrapper = styled.div`
     width: 100%;
@@ -16,10 +16,62 @@ export const CurrentCourseInfo = styled.div`
     display: flex;
     flex-direction: row;
     padding-top: 15px;
+    justify-content: space-between;
 `
 
 export const TextInfo = styled.div`
     height: 100%;
     margin-left: 24px;
     position: relative;
+`
+
+export const ProgressRingContainer = styled.div`
+    width: 100px;
+    height: calc(100% - 15px);
+    align-items: center;
+    margin-right: 30px;
+    display: flex;
+`
+
+export const TextBlock = styled.div`
+    width: 250px;
+    height: 75px;
+`
+
+export const PercentBlock = styled.div`
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    //margin: 0 35px 35px 0;
+`
+
+export const ThemeWrapper = styled.div`
+    max-height: 100%;
+    max-width: 100%;
+    font-family: ${studentTheme.FONT};
+    color: ${studentTheme.TEXT_COLOR};
+    font-size: ${studentTheme.H2};
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+`
+
+export const ThemesScreenWrapper = styled.div`
+ @media screen and (min-width: 0px) and (max-width: 796px) {
+        max-width: 398px;
+    }
+    @media screen and (min-width: 797px) and (max-width: 1194px) {
+        max-width: 796px;
+    }
+    @media screen and (min-width: 1195px) {
+        max-width: 1194px;
+    } 
+`
+
+export const ThemesItemWrapper = styled.div`
+    margin-top: 12px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 `
