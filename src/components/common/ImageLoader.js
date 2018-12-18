@@ -83,6 +83,7 @@ export class ImageLoader extends Component {
                         style={{
                             objectFit: 'contain',
                             maxWidth: '100%',
+                            height: '100%',
                             maxHeight: '100%',
                             position: 'absolute',
                             top: '0',

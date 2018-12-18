@@ -56,7 +56,7 @@ class CoursesScreen extends Component {
                         {courses.map(({ id, billing_info, subject, progress, owner }) => (
                             <CourseItem
                                 key={id}
-                                active={!billing_info.ended}
+                                ended={billing_info.ended}
                                 name={subject.subject}
                                 percent={progress}
                                 teacherName={owner}

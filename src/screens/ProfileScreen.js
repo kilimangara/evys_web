@@ -122,7 +122,7 @@ class ProfileScreen extends Component {
                             width={'33%'}
                             paddingTop={'33%'}
                             loading={loading}
-                            src={profileData.avatar && profileData.avatar.medium.url}
+                            src={profileData.avatar && profileData.avatar.original.url}
                             onChange={this.onAvatarChanged}
                         />
                         <AliasTextField

@@ -52,6 +52,7 @@ export const CoursesScreenContainer = styled.div`
 `
 
 export const CourseWrapper = styled.div`
+    position: relative;
     width: 350px;
     height: 300px;
     margin: 36px 12px;
@@ -87,4 +88,30 @@ export const CoursesWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+`
+
+export const OutdatedWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    top: 0;
+    background-color: rgba(50, 50, 50, 0.5);
+`
+
+export const OutdatedText = styled.div`
+    position: inherit;
+    bottom: 16px;
+    left: 24px;
+    color: ${studentTheme.ACCENT_LIGHT};
+`
+
+export const GrayscaleContent = styled.div`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    filter: ${({ isOn }) => (isOn ? 'grayscale(100%)' : '')};
 `
