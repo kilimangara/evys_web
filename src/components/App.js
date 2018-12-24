@@ -25,6 +25,8 @@ import LeftPanel from '../components/common/LeftPanel'
 import CourseItem from '../components/courses/CourseItem'
 import { CommonWrapper } from './styled/common'
 import { StudentAppWrapper } from './styled/layout'
+import BeforeStudy from "../screens/BeforeStudy";
+
 
 class App extends Component {
     constructor(props) {
@@ -108,6 +110,7 @@ class App extends Component {
                             <Route path="/app/courses" component={CoursesScreen} />
                             <Route path='/app/profile' component={ProfileScreen} />
                             <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
+                            <Route path='/app/beforestudy' component={BeforeStudy} />
                         </Switch>
                     </CommonWrapper>
                 </div>

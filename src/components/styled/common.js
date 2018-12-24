@@ -141,3 +141,9 @@ export const Error = styled.div`
     color: ${studentTheme.ERROR}
     font: ${studentTheme.H3} ${studentTheme.FONT}
 `
+
+
+export const H3 = styled.div`
+font: ${studentTheme.H3} ${studentTheme.FONT}
+
+`
