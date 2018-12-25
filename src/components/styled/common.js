@@ -16,7 +16,7 @@ export const Paper = styled.div`
     width: ${({ width }) => width || 'auto'};
     background: ${({ background }) => background || ''};
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
-    box-shadow: ${({boxShadow}) => boxShadow || ''};
+    box-shadow: ${({ boxShadow }) => boxShadow || ''};
     overflow: hidden;
     cursor: pointer;
     transition: box-shadow 0.25s ease-in-out;
@@ -142,8 +142,17 @@ export const Error = styled.div`
     font: ${studentTheme.H3} ${studentTheme.FONT}
 `
 
-
 export const H3 = styled.div`
-font: ${studentTheme.H3} ${studentTheme.FONT}
+    font: ${studentTheme.H3} ${studentTheme.FONT};
+`
 
+export const H2 = styled.div`
+    font: ${studentTheme.H2} ${studentTheme.FONT};
+`
+
+export const CustomisedIcon = styled.div`
+  & > div > * {
+    font-size: ${({fontSize}) => fontSize};
+    color: ${({color}) => color}
+  }
 `
