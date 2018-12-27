@@ -23,6 +23,14 @@ export const CardsBlock = styled.div`
     margin-top: 24px;
 `
 
-export const IconsBlock = styled.div` 
+export const IconsBlock = styled.div`
     margin-top: 24px;
+`
+
+export const ThemeNameBlock = styled.div`
+    margin-top: 24px;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    color: ${studentTheme.TEXT_COLOR};
 `

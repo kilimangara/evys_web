@@ -21,7 +21,7 @@ export function loadCourseById(course_id) {
         types: actionTypesFor('index', 'courses'),
         meta: {
             fetch: {
-                url: `~student/course/${course_id}`,
+                url: `~student/course/${course_id}`
             }
         }
     }
@@ -53,6 +53,17 @@ export function loadThemes(course_id, theme_id) {
             },
             with_parent_theme: Boolean(theme_id),
             is_course: true
+        }
+    }
+}
+
+export function loadThemeById(theme_id) {
+    return {
+        types: actionTypesFor('show', 'themes'),
+        meta: {
+            fetch: {
+                url: `~student/theme/${theme_id}`
+            }
         }
     }
 }

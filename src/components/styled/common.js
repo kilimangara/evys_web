@@ -150,6 +150,10 @@ export const H2 = styled.div`
     font: ${studentTheme.H2} ${studentTheme.FONT};
 `
 
+export const H1 = styled.div`
+    font: ${studentTheme.H1} ${studentTheme.FONT}
+`
+
 export const CustomisedIcon = styled.div`
   & > div > * {
     font-size: ${({fontSize}) => fontSize};

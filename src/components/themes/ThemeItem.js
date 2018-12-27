@@ -14,7 +14,7 @@ const getThemeItemBoxShadow = percent => {
     } else return ''
 }
 
-export const ThemeItem = ({ alias, percent }) => (
+export const ThemeItem = ({ alias, percent, onClick }) => (
     <HoverPaper
         width={'350px'}
         height={'150px'}
@@ -28,6 +28,7 @@ export const ThemeItem = ({ alias, percent }) => (
         borderRadius={'15px'}
         boxShadow={getThemeItemBoxShadow(percent)}
         style={{ margin: '24px' }}
+        onClick={onClick}
     >
         <ThemeWrapper>
             <TextBlock>{alias}</TextBlock>
