@@ -111,6 +111,7 @@ class App extends Component {
                             <Route path='/app/profile' component={ProfileScreen} />
                             <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
                             <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)' component={BeforeStudy} />
+                            <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory' component={ThemeStudyScreen} />
                         </Switch>
                     </CommonWrapper>
                 </div>

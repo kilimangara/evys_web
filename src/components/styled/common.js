@@ -151,12 +151,19 @@ export const H2 = styled.div`
 `
 
 export const H1 = styled.div`
-    font: ${studentTheme.H1} ${studentTheme.FONT}
+    font: ${studentTheme.H1} ${studentTheme.FONT};
 `
 
 export const CustomisedIcon = styled.div`
-  & > div > * {
-    font-size: ${({fontSize}) => fontSize};
-    color: ${({color}) => color}
-  }
+    & > div > * {
+        font-size: ${({ fontSize }) => fontSize};
+        color: ${({ color }) => color};
+    }
+`
+
+export const HorizontalCentered = styled.div`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: ${({ direction }) => direction || 'row'};
 `

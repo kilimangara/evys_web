@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import { studentTheme } from '../../utils/global_theme'
+import { Paper } from './common'
 
 export const CurrentCourseWrapper = styled.div`
     width: 100%;
@@ -75,4 +76,29 @@ export const ThemesItemWrapper = styled.div`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+`
+
+export const ThemeStudyTextBlock = styled(Paper)`
+    background-color: ${studentTheme.PRIMARY_LIGHT};
+    width: calc(100% - 30px);
+    display: flex;
+    justify-content: flex-start;
+    border-radius: 15px;
+    padding: 15px;
+    max-width: 100%;
+    font: ${studentTheme.h3} ${studentTheme.FONT};
+    color: ${studentTheme.TEXT_COLOR};
+`
+
+export const ThemeStudyTheoryItemContainer = styled(Paper)`
+    background-color: ${studentTheme.PRIMARY_LIGHT};
+    width: calc(100% - 20px);
+    border-radius: 15px;
+    display: flex;
+    font: ${studentTheme.h3} ${studentTheme.FONT};
+    color: ${studentTheme.TEXT_COLOR};
+    align-items: center;
+    padding: 10px;
+    height: 50px;
+    margin: 12px 0;
 `

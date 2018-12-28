@@ -68,6 +68,17 @@ export function loadThemeById(theme_id) {
     }
 }
 
+export function loadTheoryByThemeId(theme_id) {
+    return {
+        types: actionTypesFor('show', 'theory'),
+        meta: {
+            fetch: {
+                url: `~student/theme/${theme_id}/theory`
+            }
+        }
+    }
+}
+
 export function goToCoursesPage() {
     return {
         type: COURSE_IS_NOT_VALID
