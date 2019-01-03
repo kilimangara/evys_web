@@ -5,6 +5,9 @@ import { AppContainer } from 'react-hot-loader'
 import { init, captureMessage } from '@sentry/browser'
 import katex from 'katex'
 import "katex/dist/katex.css"
+import moment from 'moment'
+import 'moment/locale/ru'
+moment.locale('ru')
 
 window.katex = katex
 

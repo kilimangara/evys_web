@@ -1,38 +1,44 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import reduxThunk from 'redux-thunk'
-import unwrapMiddleware from './middlewares/unwrapMiddleware'
-import urlMiddleware from './middlewares/urlMiddleware'
-import axiosMiddleware from "./middlewares/axiosMiddleware";
-import { studentAPI, adminAPI } from './api'
-import moduleReducers from './modules'
 import { ADMIN_APP, USER_APP } from './modules/apps'
 import { composeWithDevTools } from 'redux-devtools-extension'
+import { persistStore, persistReducer } from 'redux-persist'
+import storage from 'redux-persist/lib/storage'
 
-const middlewares = [reduxThunk, urlMiddleware, axiosMiddleware, unwrapMiddleware]
+KEY_STORE_MAP = {
+  [ADMIN_APP]: 'evysAdminMainAppState',
+  [USER_APP]: 'evysMainAppState'
+}
+
+WHITELIST_MAP = {
+  [ADMIN_APP]: [],
+  [USER_APP]: []
+}
+
+const persistConfig = (app) => ({
+  key: KEY_STORE_MAP[app],
+  storage,
+  whitelist: WHITELIST_MAP[app]
+})
+
+const middlewares = [reduxThunk]
 
 const enhancers = [applyMiddleware(...middlewares)]
 
-const adminReducers = combineReducers(Object.assign({}, adminAPI.reducers, moduleReducers))
+const adminReducers = combineReducers(Object.assign({}))
 
-const studentReducers = combineReducers(Object.assign({}, studentAPI.reducers, moduleReducers))
+const studentReducers = combineReducers(Object.assign({}))
 
 export default function setUpStore(app = USER_APP) {
-    const appState = app == ADMIN_APP ? 'evysAdminMainAppState' : 'evysMainAppState'
-    const state = localStorage.getItem(appState)
-    return state ? getStatedStorage(state, app) : getDefaultStorage(app)
+  const reducers = app == ADMIN_APP ? adminReducers : studentReducers
+  const persistedReducer = persistReducer(persistConfig(app), reducers)
+  const store = createStore(persistedReducer, composeWithDevTools(...enhancers))
+  if(__DEV__) global.store = store
+  return store
 }
 
-function getDefaultStorage(app) {
-    const reducers = app == ADMIN_APP ? adminReducers : studentReducers
-    const store = createStore(reducers, {}, composeWithDevTools(...enhancers))
-    global.store = store
-    return store
-}
+const store = setUpStore(CURRENT_APP)
+const persistor = persistStore(store)
 
-function getStatedStorage(state, app) {
-    const reducers = app == ADMIN_APP ? adminReducers : studentReducers
-    const jsonState = JSON.parse(state)
-    const store = createStore(reducers, jsonState, composeWithDevTools(...enhancers))
-    global.store = store
-    return store
-}
+export store
+export persistor

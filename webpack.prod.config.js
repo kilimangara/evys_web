@@ -29,7 +29,8 @@ module.exports = env =>
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
-        __DEV__: false
+        __DEV__: false,
+        CURRENT_APP: 'USER_APP'
       }),
       new webpack.optimize.AggressiveMergingPlugin(),
       new webpack.optimize.UglifyJsPlugin({

@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import HeaderAppBar from './header_app_bar/HeaderAppBar'
 import Login from '../screens/Login'
-// import VideHost from '../screens/VideoHost'
 import ProfileScreen from '../screens/ProfileScreen'
 import Drawer from 'material-ui/Drawer'
 import FontIcon from 'material-ui/FontIcon'
@@ -13,7 +12,6 @@ import Divider from 'material-ui/Divider'
 import Avatar from 'material-ui/Avatar'
 import RaisedButton from 'material-ui/RaisedButton'
 import TariffsScreen from '../screens/TariffsScreen'
-import DashboardScreen from '../screens/DashboardScreen'
 import ThemesScreen from '../screens/ThemesScreen'
 import SubThemesScreen from '../screens/SubThemesScreen'
 import CoursesScreen from '../screens/CoursesScreen'
@@ -25,8 +23,7 @@ import LeftPanel from '../components/common/LeftPanel'
 import CourseItem from '../components/courses/CourseItem'
 import { CommonWrapper } from './styled/common'
 import { StudentAppWrapper } from './styled/layout'
-import BeforeStudy from "../screens/BeforeStudy";
-
+import BeforeStudy from "../screens/BeforeStudy"
 
 class App extends Component {
     constructor(props) {

@@ -1,4 +1,4 @@
-import { actionTypesFor } from 'trivial-redux'
+import { actionTypesFor } from './actionTypesFor'
 import { COURSE_IS_NOT_VALID, COURSE_IS_VALID } from '../endpoints/courses'
 
 export function loadCurrentCourses() {
