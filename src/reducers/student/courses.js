@@ -7,23 +7,27 @@ import createReducer from 'redux-act/src/createReducer'
 const initialState = {
     coursesList: [],
     fetching: false,
-    currentCourse: null,
+    currentCourse: null
 }
 
 const coursesLoading = createAction('courses/courses-loading')
 const coursesFetchSuccess = createAction('courses/courses-fetch-success')
+const coursesReset = createAction('courses/courses-reset')
 const themesLoading = createAction('courses/themes-loading')
 const themesLoadingSuccess = createAction('courses/themes-loading-success')
 
-
 export const getCurrentCourses = (page = 1) => dispatch => {
     dispatch(coursesLoading)
-    return getStudentCourses({ progressTo: '99', page }).then(response => dispatch(coursesFetchSuccess(response.data)))
+    return getStudentCourses({ progressTo: '99', page }).then(response => {
+        page === 1 ? dispatch(coursesReset(response.data)) : dispatch(coursesFetchSuccess(response.data))
+    })
 }
 
 export const getFinishedCourses = (page = 1) => dispatch => {
     dispatch(coursesLoading)
-    return getStudentCourses({ progressFrom: '100', page }).then(response => dispatch(coursesFetchSuccess(response.data)))
+    return getStudentCourses({ progressFrom: '100', page }).then(response => {
+        page === 1 ? dispatch(coursesReset(response.data)) : dispatch(coursesFetchSuccess(response.data))
+    })
 }
 
 export const getCourseById = id => dispatch => {
@@ -53,14 +57,17 @@ export const loadThemes = (courseId, parentThemeId) => dispatch => {
     dispatch(themesLoading)
 }
 
-
-
 export default createReducer(
     {
         [coursesLoading]: state => ({ ...state, fetching: true }),
-        [coursesFetchSuccess]: (state, payload) => ({ ...state, fetching: false, coursesList: payload }),
+        [coursesReset]: (state, payload) => ({ ...state, fetching: false, coursesList: payload }),
+        [coursesFetchSuccess]: (state, payload) => ({
+            ...state,
+            fetching: false,
+            coursesList: { ...state.coursesList, ...payload }
+        }),
         [themesLoading]: state => ({ ...state, fetching: true }),
-        [themesLoadingSuccess]: state => ({...state, })
+        [themesLoadingSuccess]: state => ({ ...state })
     },
     initialState
 )
