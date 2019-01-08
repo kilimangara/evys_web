@@ -4,7 +4,7 @@ import { loadThemeById, loadTheoryByThemeId} from "../actions/CoursesActions";
 import {HorizontalCentered} from "../components/styled/common";
 import {ThemeStudyTextBlock} from "../components/styled/themes";
 import {ThemeStudyTheoryItem} from "../components/themes/ThemeStudyTheoryItem";
-import VideoIcon from '@material-ui/icons/videocam'
+import VideoIcon from '@material-ui/icons/Videocam'
 
 class ThemeStudyScreen extends Component {
     state = {

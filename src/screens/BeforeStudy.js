@@ -3,10 +3,10 @@ import { connect } from 'react-redux'
 import { CurrentCourseItem } from '../components/themes/CurrentCourseItem'
 import { DataCard } from '../components/BeforeStudy/DataCard'
 import { BeforeStudyWrapper, CardsBlock, IconsBlock, ThemeNameBlock } from '../components/styled/BeforeStudy'
-import VideoIcon from '@material-ui/icons/videocam'
-import DescriptionIcon from '@material-ui/icons/description'
+import VideoIcon from '@material-ui/icons/Videocam'
+import DescriptionIcon from '@material-ui/icons/Description'
 import { H1 } from '../components/styled/common'
-import CheckboxIcon from '@material-ui/icons/checkbox'
+import CheckboxIcon from '@material-ui/icons/CheckBox'
 import { loadCourseById, loadThemeById } from '../actions/CoursesActions'
 
 class BeforeStudy extends Component {
