@@ -56,7 +56,7 @@ axiosInstance.interceptors.request.use(config => {
 
 // student authorization
 
-function sendCode(phone) {
+export function sendCode(phone) {
     return axiosInstance.request({
         url: '/student/code',
         method: 'POST',
@@ -64,7 +64,7 @@ function sendCode(phone) {
     })
 }
 
-function authorizeCode(code) {
+export function sendAuthorizeCode(code) {
     return axiosInstance.request({
         url: '/student/auth',
         method: 'POST',
@@ -72,43 +72,53 @@ function authorizeCode(code) {
     })
 }
 
-function studentProfile() {
+export function getStudentProfile() {
     return axiosInstance.request({
         url: '/student/info'
     })
 }
 
-function studentCourses() {
+export function updateStudentProfile(profile) {
     return axiosInstance.request({
-        url: '/student/courses'
+        url: '/student/info',
+        method: 'PUT',
+        data: profile
     })
 }
 
-function studentCourse(courseId) {
+export function getStudentCourses(params) {
+    return axiosInstance.request({
+        url: '/student/courses',
+        params
+    })
+}
+
+export function getStudentCourse(courseId) {
     return axiosInstance.request({
         url: `/student/course/${courseId}`
     })
 }
 
-function studentThemes(courseId) {
+export function getStudentThemes(params) {
     return axiosInstance.request({
-        url: `/student/course/${themeId}/themes`
+        url: `/student/course/${params.themeId}/themes`,
+        params
     })
 }
 
-function studentTheme(themeId) {
+export function getStudentTheme(themeId) {
     return axiosInstance.request({
         url: `/student/theme/${themeId}`
     })
 }
 
-function studentThemeTheory(themeId) {
+export function getStudentThemeTheory(themeId) {
     return axiosInstance.request({
         url: `/student/theme/${themeId}/theory`
     })
 }
 
-function studentThemeVideo(themeId) {
+export function getStudentThemeVideo(themeId) {
     return axiosInstance.request({
         url: `/student/theme/${themeId}/theory_video`
     })
@@ -122,15 +132,15 @@ function getAccounts() {
     })
 }
 
-function createAccount(data) {
+function createAccount(name) {
     return axiosInstance.request({
         url: '/admin2/accounts',
         method: 'POST',
-        data
+        data: { name }
     })
 }
 
-function getProfileInfo() {
+function accountInfo() {
     return axiosInstance.request({
         url: '/admin2/info'
     })
