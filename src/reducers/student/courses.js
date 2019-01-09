@@ -1,6 +1,12 @@
 import { actionTypesFor } from '../../actions/actionTypesFor'
 
-import { getStudentCourse, getStudentCourses, getStudentProfile, updateStudentProfile } from '../../api'
+import {
+    getStudentCourse,
+    getStudentCourses,
+    getStudentProfile,
+    getStudentThemes,
+    updateStudentProfile
+} from '../../api'
 import createAction from 'redux-act/src/createAction'
 import createReducer from 'redux-act/src/createReducer'
 
@@ -35,27 +41,11 @@ export const getCourseById = id => dispatch => {
     return getStudentCourse(id).then(response => dispatch(coursesFetchSuccess(response.data)))
 }
 
-// export function loadThemes(course_id, theme_id) {
-//     return {
-//         types: actionTypesFor('show', 'themes'),
-//         meta: {
-//             fetch: {
-//                 url: `~student/course/${course_id}/themes`,
-//                 params: {
-//                     parent_theme: theme_id
-//                 }
-//             },
-//             with_parent_theme: Boolean(theme_id),
-//             is_course: true
-//         }
-//     }
-// }
-
-// TODO: single course update in list, reset course list when 1st page selected
-
 export const loadThemes = (courseId, parentThemeId) => dispatch => {
     dispatch(themesLoading)
+    return getStudentThemes(courseId, parentThemeId, { parentTheme: parentThemeId }).then(response => response.data)
 }
+
 
 export default createReducer(
     {
@@ -67,7 +57,7 @@ export default createReducer(
             coursesList: { ...state.coursesList, ...payload }
         }),
         [themesLoading]: state => ({ ...state, fetching: true }),
-        [themesLoadingSuccess]: state => ({ ...state })
+        [themesLoadingSuccess]: state => ({ ...state, fetching: false })
     },
     initialState
 )
