@@ -159,14 +159,11 @@ function getSubject(subjectId) {
     })
 }
 
-function createSubject(title, categorySecret) {
+function createSubject(data) {
     return axiosInstance.request({
         url: '/admin2/subjects',
         method: 'POST',
-        data: {
-            subject: title,
-            categorySecret
-        }
+        data: data
     })
 }
 
