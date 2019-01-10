@@ -4,7 +4,9 @@ import {
     getStudentCourse,
     getStudentCourses,
     getStudentProfile,
+    getStudentTheme,
     getStudentThemes,
+    getStudentThemeTheory,
     updateStudentProfile
 } from '../../api'
 import createAction from 'redux-act/src/createAction'
@@ -43,9 +45,27 @@ export const getCourseById = id => dispatch => {
 
 export const loadThemes = (courseId, parentThemeId) => dispatch => {
     dispatch(themesLoading)
-    return getStudentThemes(courseId, parentThemeId, { parentTheme: parentThemeId }).then(response => response.data)
+    return getStudentThemes(courseId, parentThemeId, { parentTheme: parentThemeId }).then(response => {
+        dispatch(themesLoadingSuccess)
+        return response.data
+    })
 }
 
+export const loadThemeById = themeId => dispatch => {
+    dispatch(themesLoading)
+    getStudentTheme(themeId).then(response => {
+        dispatch(themesLoadingSuccess)
+        return response.data
+    })
+}
+
+export const loadTheoryByThemeId = themeId => dispatch => {
+    dispatch(themesLoading)
+    getStudentThemeTheory(themeId).then(response => {
+        dispatch(themesLoadingSuccess)
+        return response.data
+    })
+}
 
 export default createReducer(
     {

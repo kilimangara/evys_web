@@ -8,7 +8,9 @@ import { LoginStepLabel, LoginStepper, PhoneNumberInput } from '../components/st
 import { studentTheme } from '../utils/global_theme'
 import ReactCodeInput from 'react-code-input'
 import { withWidth } from '@material-ui/core'
+import {withAuthMethods} from "../decorators/withAuthMethods";
 
+@withAuthMethods
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -155,13 +157,15 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    authenticated: state.auth.authenticated,
-    userId: state.auth.user_id,
-    stepIndex: state.first_steps.stepIndex
-})
+// const mapStateToProps = state => ({
+//     authenticated: state.auth.authenticated,
+//     userId: state.auth.user_id,
+//     stepIndex: state.first_steps.stepIndex
+// })
 
-export default connect(
-    mapStateToProps,
-    { getCode, sendCode, saveStepIndex }
-)(withWidth()(Login))
+// export default connect(
+//     mapStateToProps,
+//     { getCode, sendCode, saveStepIndex }
+// )(withWidth()(Login))
+
+export default withWidth(Login)
