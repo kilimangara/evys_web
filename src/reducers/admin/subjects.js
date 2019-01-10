@@ -20,15 +20,11 @@ export const replaceSubject = createAction('subjects/replace')
 export const resetSubjectList = createAction('subjects/reset-list')
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {
-    if (page > totalPages)
-        return new Promise(function(resolve, reject) {
-            resolve()
-        })
     dispatch(startLoadingSubjects())
     return loadStudents(page, query).then(response => {
         const { data } = response
         const { count, result } = data
-        dispatch(
+        return dispatch(
             successLoadingSubjects({
                 list: result,
                 totalPages: count,

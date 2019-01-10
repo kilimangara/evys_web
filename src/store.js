@@ -4,6 +4,8 @@ import { ADMIN_APP, USER_APP } from './modules/apps'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
+import aReducers from './reducers/admin'
+import sReducers from './reducers/student'
 
 const KEY_STORE_MAP = {
   [ADMIN_APP]: 'evysAdminMainAppState',
@@ -11,8 +13,8 @@ const KEY_STORE_MAP = {
 }
 
 const WHITELIST_MAP = {
-  [ADMIN_APP]: [],
-  [USER_APP]: []
+  [ADMIN_APP]: ['account', 'profile', 'authorization'],
+  [USER_APP]: ['auth']
 }
 
 const persistConfig = (app) => ({
@@ -25,9 +27,9 @@ const middlewares = [reduxThunk]
 
 const enhancers = [applyMiddleware(...middlewares)]
 
-const adminReducers = combineReducers(Object.assign({}))
+const adminReducers = combineReducers(aReducers)
 
-const studentReducers = combineReducers(Object.assign({}))
+const studentReducers = combineReducers(sReducers)
 
 export default function setUpStore(app = USER_APP) {
   const reducers = app === ADMIN_APP ? adminReducers : studentReducers

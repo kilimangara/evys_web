@@ -35,6 +35,7 @@
 import axios from 'axios'
 import humps from 'humps'
 import { store } from './store'
+import {ADMIN_APP} from './utils/constants'
 
 const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 
@@ -44,12 +45,25 @@ const axiosInstance = axios.create({
     transformRequest: [data => humps.decamelizeKeys(data), ...axios.defaults.transformRequest]
 })
 
-function basicAdminAuth(config) {}
+function basicAdminAuth(config) {
+  const {authorization, account} = store.getState()
+  if(authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
+  if(account.currentAccount) config.headers['Account-Name'] = account.currentAccount
+  return config
+}
 
-function studentTokenAuth(config) {}
+function studentTokenAuth(config) {
+  const {auth} = store.getState()
+  if(auth.token) config.headers['Authorization'] = `Student ${auth.token}`
+}
 
-axiosInstance.interceptors.request.use(config => {
-    // здесь логика пропихивания авторизационных данных
+axiosInstance.interceptors.request.use(CURRENT_APP === ADMIN_APP ? basicAdminAuth : studentTokenAuth)
+
+axiosInstance.interceptors.response.use(data => {
+  if (!data) return data
+  if (data.data) return data.data
+  if (data.error) return data.error
+  return data
 })
 
 // student methods
@@ -188,10 +202,10 @@ function fetchCategories() {
     })
 }
 
-function getSubjectThemes(subjectId, page = 1, parentTheme = undefined) {
+function getSubjectThemes(subjectId, params) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/themes`,
-        params: { page, parentTheme }
+        params: params
     })
 }
 
