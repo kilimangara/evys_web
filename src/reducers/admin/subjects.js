@@ -21,7 +21,7 @@ export const resetSubjectList = createAction('subjects/reset-list')
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingSubjects())
-    return loadStudents(page, query).then(response => {
+    return loadSubjects(page, query).then(response => {
         const { data } = response
         const { count, result } = data
         return dispatch(
@@ -44,7 +44,7 @@ export const loadSubject = subjectId => dispatch => {
     })
 }
 
-export const createSubject = (subject, categorySecret) => dispatch => {
+export const newSubject = (subject, categorySecret) => dispatch => {
     return createSubject({ subject, categorySecret })
 }
 

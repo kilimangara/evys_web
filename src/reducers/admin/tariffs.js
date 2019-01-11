@@ -34,18 +34,16 @@ export const loadTariffs = (page = 1, query = '') => dispatch => {
     })
 }
 
-export const destroyTariff = (tariffId) => (dispatch) => {
-  return deleteTariff(tariffId)
+export const destroyTariff = tariffId => dispatch => {
+    return deleteTariff(tariffId)
 }
 
-export const newTariff = (
-    data
-) => (dispatch) => {
-  return createTariff(data)
+export const newTariff = data => dispatch => {
+    return createTariff(data)
 }
 
 export const changeTariff = (tariffId, data) => dispatch => {
-  return updateTariff(tariffId, data)
+    return updateTariff(tariffId, data)
 }
 
 export default createReducer(
@@ -59,7 +57,7 @@ export default createReducer(
                 if (payload.currentPage !== 1) payload.unshift(...state.list)
                 merge(draft, payload)
             }),
-        [resetTariffsList]: (state, payload) => produce(state, draft => merge(draft, omit(initialState, ['current'])))
+        [resetTariffsList]: (state, payload) => produce(state, draft => merge(draft, omit(initialState, ['current']))),
         [successShowTariff]: (state, payload) =>
             produce(state, draft => {
                 draft.current = payload

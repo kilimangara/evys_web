@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import reduxThunk from 'redux-thunk'
-import { ADMIN_APP, USER_APP } from './modules/apps'
+import { ADMIN_APP, USER_APP } from './utils/constants'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
@@ -32,15 +32,18 @@ const adminReducers = combineReducers(aReducers)
 const studentReducers = combineReducers(sReducers)
 
 export default function setUpStore(app = USER_APP) {
-  const reducers = app === ADMIN_APP ? adminReducers : studentReducers
+  let reducers = app === ADMIN_APP ? adminReducers : studentReducers
   const persistedReducer = persistReducer(persistConfig(app), reducers)
   const store = createStore(persistedReducer, composeWithDevTools(...enhancers))
-  if(__DEV__) global.store = store
   return store
 }
 
-export const store = setUpStore(CURRENT_APP)
+export const store = setUpStore(__CURRENT_APP__)
 export const persistor = persistStore(store)
+
+console.log(store)
+
+if(__DEV__) global.store = store
 
 // export store
 // export persistor

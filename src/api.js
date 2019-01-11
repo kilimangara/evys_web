@@ -37,6 +37,8 @@ import humps from 'humps'
 import { store } from './store'
 import {ADMIN_APP} from './utils/constants'
 
+console.log(__DEV__, __CURRENT_APP__)
+
 const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 
 const axiosInstance = axios.create({
@@ -57,7 +59,10 @@ function studentTokenAuth(config) {
   if(auth.token) config.headers['Authorization'] = `Student ${auth.token}`
 }
 
-axiosInstance.interceptors.request.use(CURRENT_APP === ADMIN_APP ? basicAdminAuth : studentTokenAuth)
+axiosInstance.interceptors.request.use((config) => {
+  if(__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
+  return studentTokenAuth(config)
+})
 
 axiosInstance.interceptors.response.use(data => {
   if (!data) return data

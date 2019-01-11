@@ -17,7 +17,7 @@ export const successLoadingStudents = createAction('students/success-loading')
 export const successShowStudent = createAction('students/success-show')
 export const resetStudentsList = createAction('students/reset-list')
 
-export const loadStudents = (page = 1, query = '') => dispatch => {
+export const getStudents = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingStudents())
     return loadStudents(page, query).then(response => {
         const { data } = response

@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadAccount, saveCredentials, resetCredentials } from '../../actions/admin/AccountActions'
 import { ColoredContainer } from '../../components/styled/common'
 import { AuthButton, AuthCard, AuthCardContent, AuthField } from '../../components/styled/authorization'
-import { switchAdminApp } from '../../actions/AppActions'
 import { Button } from '@material-ui/core'
 import { theme } from '../../utils/global_theme'
+import AuthorizationMixin from '../../mixins/admin/AuthorizationMixin'
+import SubjectRepositoryMixin from '../../mixins/admin/SubjectRepositoryMixin'
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -17,9 +16,8 @@ class LoginScreen extends Component {
         }
     }
 
-    componentWillMount() {
-        this.props.switchAdminApp()
-        if (this.props.isLogged) this.props.history.push('/admin/choose_account')
+    componentDidMount() {
+        // if (this.props.isLogged) this.props.history.push('/admin/choose_account')
     }
 
     handleChange = e => {
@@ -30,37 +28,37 @@ class LoginScreen extends Component {
     }
 
     handlePress = () => {
-        this.props.saveCredentials(this.state.email, this.state.password)
-        this.props
-            .loadAccount()
-            .then(response => {
-                if (response.response && response.response.data && response.response.data.error) {
-                    this.props.resetCredentials()
-                    this.setState({
-                        password: '',
-                        loginFailed: true
-                    })
-                } else {
-                    this.props.history.push('/admin/choose_account')
-                    this.setState({
-                        email: '',
-                        password: '',
-                        loginFailed: false
-                    })
-                }
-            })
-            .catch(error => {
-                this.props.resetCredentials()
-                this.setState({
-                    password: '',
-                    loginFailed: true
-                })
-            })
+        // this.props.saveCredentials(this.state.email, this.state.password)
+        // this.props
+        //     .loadAccount()
+        //     .then(response => {
+        //         if (response.response && response.response.data && response.response.data.error) {
+        //             this.props.resetCredentials()
+        //             this.setState({
+        //                 password: '',
+        //                 loginFailed: true
+        //             })
+        //         } else {
+        //             this.props.history.push('/admin/choose_account')
+        //             this.setState({
+        //                 email: '',
+        //                 password: '',
+        //                 loginFailed: false
+        //             })
+        //         }
+        //     })
+        //     .catch(error => {
+        //         this.props.resetCredentials()
+        //         this.setState({
+        //             password: '',
+        //             loginFailed: true
+        //         })
+        //     })
     }
 
     render() {
         const { email, password, loginFailed } = this.state
-
+        console.log(this.state, this.props)
         return (
             <ColoredContainer backgroundColor={theme.BACKGROUND_DARK}>
                 <AuthCard>
@@ -111,11 +109,4 @@ class LoginScreen extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    isLogged: state.auth_admin.authenticated
-})
-
-export default connect(
-    mapStateToProps,
-    { loadAccount, saveCredentials, resetCredentials, switchAdminApp }
-)(LoginScreen)
+export default LoginScreen

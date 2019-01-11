@@ -45,7 +45,7 @@ module.exports = env =>
     plugins: [
       new webpack.DefinePlugin({
         __DEV__: env.DEV,
-        CURRENT_APP: 'ADMIN_APP'
+        __CURRENT_APP__: JSON.stringify('ADMIN_APP')
       }),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),

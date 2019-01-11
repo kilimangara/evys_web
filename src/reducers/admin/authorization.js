@@ -17,7 +17,7 @@ export const authorize = (login, password) => dispatch => {
   return loadProfile()(dispatch)
                     .catch((err) => {
                       if(err.status === 401) dispatch(saveToken(null))
-                      throw 'Проброс'
+                      throw err
                     })
 }
 
@@ -29,7 +29,7 @@ const initialState = {
 
 export default createReducer(
   {
-    [successLoadProfile]: (state, profile) => spread(state, { userId: profile.id })
+    [successLoadProfile]: (state, profile) => spread(state, { userId: profile.id }),
     [saveToken]: (state, token) => spread(state, { token }),
     [logoutAdmin]: (state) => spread(state, initialState)
   },

@@ -23,8 +23,8 @@ export const loadProfile = () => dispatch => {
 
 export default createReducer(
     {
-        [startLoadAccount]: (state, payload) => spread(state, { fetching: true }),
-        [successFetchAccount]: (state, payload) =>
+        [startLoadProfile]: (state, payload) => spread(state, { fetching: true }),
+        [successLoadProfile]: (state, payload) =>
             produce(state, draft => {
                 draft.profileData = payload
             })

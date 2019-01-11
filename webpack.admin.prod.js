@@ -30,7 +30,7 @@ module.exports = env =>
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
         __DEV__: false,
-        CURRENT_APP: 'ADMIN_APP'
+        __CURRENT_APP__: JSON.stringify('ADMIN_APP')
       }),
       new webpack.optimize.AggressiveMergingPlugin(),
       new webpack.optimize.UglifyJsPlugin({
