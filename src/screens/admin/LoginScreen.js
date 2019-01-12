@@ -3,10 +3,11 @@ import { ColoredContainer } from '../../components/styled/common'
 import { AuthButton, AuthCard, AuthCardContent, AuthField } from '../../components/styled/authorization'
 import { Button } from '@material-ui/core'
 import { theme } from '../../utils/global_theme'
-import AuthorizationMixin from '../../mixins/admin/AuthorizationMixin'
-import SubjectRepositoryMixin from '../../mixins/admin/SubjectRepositoryMixin'
+import AuthorizationMixin, { AuthorizationProvider} from '../../mixins/admin/AuthorizationRepository'
+import SubjectRepositoryMixin, { SubjectProvider } from '../../mixins/admin/SubjectRepository'
+import withProviders from '../../utils/withProviders'
 
-class LoginScreen extends Component {
+class LoginScreen extends AuthorizationMixin(Component) {
     constructor(props) {
         super(props)
         this.state = {
@@ -109,4 +110,4 @@ class LoginScreen extends Component {
     }
 }
 
-export default LoginScreen
+export default withProviders(AuthorizationProvider, SubjectProvider)(LoginScreen)

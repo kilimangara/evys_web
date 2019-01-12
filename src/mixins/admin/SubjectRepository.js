@@ -1,21 +1,22 @@
 import { connect } from 'react-redux'
 import { loadSubject, loadSubjects, createSubject } from '../../reducers/admin/subjects'
 
-export default superclass => {
+export default superclass =>
   class SubjectRepository extends superclass {
 
 
   }
 
-  const mapStateToProps = state => ({
+
+export class SubjectProvider {
+
+  static mapStateToProps = state => ({
     subjects: state.subjects.list,
     subjectsFetching: state.subjects.fetching
   })
 
-  const mapDispatchToProps = {
+  static mapDispatchToProps = {
     loadSubject,
     loadSubjects
   }
-
-  return connect(mapStateToProps, mapDispatchToProps)(SubjectRepository)
 }
