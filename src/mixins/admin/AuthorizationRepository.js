@@ -1,4 +1,3 @@
-import { connect } from 'react-redux'
 import { authorize } from '../../reducers/admin/authorization'
 
 export default superclass =>

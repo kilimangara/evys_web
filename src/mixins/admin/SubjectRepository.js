@@ -1,10 +1,9 @@
-import { connect } from 'react-redux'
 import { loadSubject, loadSubjects, createSubject } from '../../reducers/admin/subjects'
 
 export default superclass =>
   class SubjectRepository extends superclass {
 
-
+    //Здесь методы для работы с данными из компонента
   }
 
 
