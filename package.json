@@ -57,6 +57,7 @@
     "react-router-dom": "^4.2.2",
     "react-search-bar": "^2.2.0",
     "reboron": "^0.4.5",
+    "recompose": "^0.30.0",
     "redux": "^3.7.1",
     "redux-act": "^1.7.4",
     "redux-persist": "^5.10.0",
