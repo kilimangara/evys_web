@@ -35,7 +35,7 @@
 import axios from 'axios'
 import humps from 'humps'
 import { store } from './store'
-import {ADMIN_APP} from './utils/constants'
+import { ADMIN_APP } from './utils/constants'
 
 console.log(__DEV__, __CURRENT_APP__)
 
@@ -48,27 +48,28 @@ const axiosInstance = axios.create({
 })
 
 function basicAdminAuth(config) {
-  const {authorization, account} = store.getState()
-  if(authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
-  if(account.currentAccount) config.headers['Account-Name'] = account.currentAccount
-  return config
+    const { authorization, account } = store.getState()
+    if (authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
+    if (account.currentAccount) config.headers['Account-Name'] = account.currentAccount
+    return config
 }
 
 function studentTokenAuth(config) {
-  const {auth} = store.getState()
-  if(auth.token) config.headers['Authorization'] = `Student ${auth.token}`
+    const { auth } = store.getState()
+    if (auth.token) config.headers['Authorization'] = `Student ${auth.token}`
+    return config
 }
 
-axiosInstance.interceptors.request.use((config) => {
-  if(__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
-  return studentTokenAuth(config)
+axiosInstance.interceptors.request.use(config => {
+    if (__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
+    return studentTokenAuth(config)
 })
 
 axiosInstance.interceptors.response.use(data => {
-  if (!data) return data
-  if (data.data) return data.data
-  if (data.error) return data.error
-  return data
+    if (!data) return data
+    if (data.data) return data.data
+    if (data.error) return data.error
+    return data
 })
 
 // student methods

@@ -6,7 +6,8 @@ const initialState = {
     token: undefined,
     fetching: false,
     userId: undefined,
-    isNew: false
+    isNew: false,
+    stepIndex: 0
 }
 
 const getCodeStart = createAction('auth/load-code')
@@ -14,6 +15,7 @@ const getCodeSuccess = createAction('auth/load-code-success')
 const sendCodeStart = createAction('auth/load-code')
 const sendCodeSuccess = createAction('auth/load-code-success')
 const logout = createAction('auth/load-code-success')
+const saveNewStepIndex = ('auth/save-step-index')
 
 export const getCodeByPhoneNumber = phone => dispatch => {
     dispatch(getCodeStart())
@@ -32,6 +34,10 @@ export const validateCode = code => dispatch => {
     })
 }
 
+export const saveStepIndex = index => dispatch => {
+    dispatch(saveNewStepIndex(index))
+}
+
 export const exitProfile = () => dispatch => dispatch(logout)
 
 export default createReducer(
@@ -40,6 +46,7 @@ export default createReducer(
         [getCodeSuccess]: state => ({ ...state, fetching: false }),
         [sendCodeStart]: state => ({ ...state, fetching: true }),
         [sendCodeSuccess]: (state, payload) => ({ ...state, fetching: false, ...payload }),
+        [saveNewStepIndex]: (state, payload) => ({...state, stepIndex: payload}),
         [logout]: state => initialState
     },
     initialState

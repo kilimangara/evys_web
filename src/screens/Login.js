@@ -8,21 +8,26 @@ import { LoginStepLabel, LoginStepper, PhoneNumberInput } from '../components/st
 import { studentTheme } from '../utils/global_theme'
 import ReactCodeInput from 'react-code-input'
 import { withWidth } from '@material-ui/core'
-import {withAuthMethods} from "../decorators/withAuthMethods";
+import { withAuthMethods } from '../decorators/withAuthMethods'
+import AuthorisationMixin, { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
+import withProviders from "../utils/withProviders";
+import {getCodeByPhoneNumber, validateCode} from "../reducers/student/auth";
 
-@withAuthMethods
-class Login extends Component {
-    constructor(props) {
+class Login extends AuthorisationMixin(Component) {
+
+    constructor(props){
         super(props)
-        this.state = {
-            phone: '',
-            code: '',
-            errors: {},
-            loading: false
-        }
+        console.log('pisos')
+    }
+    state = {
+        phone: '',
+        code: '',
+        errors: {},
+        loading: false
     }
 
-    componentWillMount = () => {
+    componentWillMount() {
+        console.log('cwm')
         if (this.props.authenticated) this.props.history.push('/app/profile')
     }
 
@@ -62,7 +67,7 @@ class Login extends Component {
     handleCodeChange = code => {
         if (code.length === 6) {
             this.props
-                .sendCode(this.state.phone, code)
+                .validateCode(this.state.phone, code)
                 .then(() => this.goToProfile())
                 .catch(() => this.setState({ errors: { phone: 'Неправильный формат' } }))
         }
@@ -78,7 +83,7 @@ class Login extends Component {
     handlePress = () => {
         if (this.props.stepIndex === 0) {
             this.props
-                .getCode(this.state.phone)
+                .getCodeByPhoneNumber(this.state.phone)
                 .then(() => {
                     this.newStepIndex(1)
                     this.setState({ errors: { phone: null } })
@@ -139,6 +144,7 @@ class Login extends Component {
 
     render() {
         const { stepIndex, width } = this.props
+        console.log(stepIndex)
         return (
             <LoginContainer>
                 <LoginDataWrapper>
@@ -168,4 +174,5 @@ class Login extends Component {
 //     { getCode, sendCode, saveStepIndex }
 // )(withWidth()(Login))
 
-export default withWidth(Login)
+export default withProviders(AuthorizationProvider)(withWidth(Login))
+// export default withWidth(Login)

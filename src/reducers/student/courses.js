@@ -25,6 +25,7 @@ const themesLoading = createAction('courses/themes-loading')
 const themesLoadingSuccess = createAction('courses/themes-loading-success')
 
 export const getCurrentCourses = (page = 1) => dispatch => {
+    console.log('haha')
     dispatch(coursesLoading)
     return getStudentCourses({ progressTo: '99', page }).then(response => {
         page === 1 ? dispatch(coursesReset(response.data)) : dispatch(coursesFetchSuccess(response.data))

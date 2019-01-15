@@ -14,7 +14,7 @@ const KEY_STORE_MAP = {
 
 const WHITELIST_MAP = {
   [ADMIN_APP]: ['account', 'profile', 'authorization'],
-  [USER_APP]: ['auth']
+  [USER_APP]: ['auth', 'account', 'courses']
 }
 
 const persistConfig = (app) => ({

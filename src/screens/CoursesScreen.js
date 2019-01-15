@@ -5,8 +5,12 @@ import { loadCurrentCourses, loadFinishedCourses } from '../actions/CoursesActio
 import CourseItem from '../components/courses/CourseItem'
 import { CoursesScreenContainer, CoursesTab, CoursesTabs, CoursesWrapper } from '../components/styled/courses'
 import { Loader, LoaderWrapper } from '../components/styled/common'
+import CoursesMixin, {CoursesProvider} from "../mixins/student/CoursesRepository";
+import {AuthorizationProvider} from "../mixins/student/AuthorizationRepository";
+import {AccountProvider} from "../mixins/student/AccountRepository";
+import withProviders from "../utils/withProviders";
 
-class CoursesScreen extends Component {
+class CoursesScreen extends CoursesMixin(Component) {
     constructor(props) {
         super(props)
         this.state = {
@@ -16,9 +20,7 @@ class CoursesScreen extends Component {
     }
 
     componentDidMount = () => {
-        this.props.loadCurrentCourses().then(response => {
-            this.setState({ courses: response.data.results })
-        })
+        this.props.getCurrentCourses()
     }
 
     loadThemes = id => {
@@ -28,19 +30,19 @@ class CoursesScreen extends Component {
     handleChange = (event, value) => {
         this.setState({ selectedTab: value })
         if (value === 0) {
-            this.props.loadCurrentCourses().then(response => {
+            this.props.getCurrentCourses().then(response => {
                 this.setState({ courses: response.data.results })
             })
         } else if (value === 1) {
-            this.props.loadFinishedCourses().then(response => {
+            this.props.getFinishedCourses().then(response => {
                 this.setState({ courses: response.data.results })
             })
         }
     }
 
     render() {
-        const { courses, selectedTab } = this.state
-        const { loading } = this.props
+        const { selectedTab } = this.state
+        const { loading, coursesList } = this.props
         return (
             <CoursesScreenContainer>
                 <CoursesTabs value={selectedTab} fullWidth onChange={this.handleChange}>
@@ -53,7 +55,7 @@ class CoursesScreen extends Component {
                     </LoaderWrapper>
                 ) : (
                     <CoursesWrapper>
-                        {courses.map(({ id, billing_info, subject, progress, owner }) => (
+                        {coursesList.map(({ id, billing_info, subject, progress, owner }) => (
                             <CourseItem
                                 key={id}
                                 ended={billing_info.ended}
@@ -71,14 +73,4 @@ class CoursesScreen extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    profileData: state.account.profileData,
-    isAuthenticated: state.auth.authenticated,
-    userId: state.auth.user_id,
-    loading: state.courses.fetching
-})
-
-export default connect(
-    mapStateToProps,
-    { loadCurrentCourses, loadFinishedCourses }
-)(CoursesScreen)
+export default withProviders(CoursesProvider)(CoursesScreen)
