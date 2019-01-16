@@ -84,11 +84,11 @@ export function sendCode(phone) {
     })
 }
 
-export function sendAuthorizeCode(code) {
+export function sendAuthorizeCode(phone, code) {
     return axiosInstance.request({
         url: '/student/auth',
         method: 'POST',
-        data: { code }
+        data: { phone, code }
     })
 }
 
@@ -121,10 +121,9 @@ export function getStudentCourse(courseId) {
 
 export function getStudentThemes(courseId, themeId, params) {
     return axiosInstance.request({
-        url: `/student/course/${params.themeId}/themes`,
+        url: `/student/course/${courseId}/themes`,
         meta: {
             fetch: {
-                url: `~student/course/${params.course_id}/themes`,
                 params
             },
             with_parent_theme: Boolean(themeId),

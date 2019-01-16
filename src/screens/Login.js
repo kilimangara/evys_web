@@ -10,14 +10,12 @@ import ReactCodeInput from 'react-code-input'
 import { withWidth } from '@material-ui/core'
 import { withAuthMethods } from '../decorators/withAuthMethods'
 import AuthorisationMixin, { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
-import withProviders from "../utils/withProviders";
-import {getCodeByPhoneNumber, validateCode} from "../reducers/student/auth";
+import withProviders from '../utils/withProviders'
+import { getCodeByPhoneNumber, validateCode } from '../reducers/student/auth'
 
 class Login extends AuthorisationMixin(Component) {
-
-    constructor(props){
+    constructor(props) {
         super(props)
-        console.log('pisos')
     }
     state = {
         phone: '',
@@ -27,8 +25,7 @@ class Login extends AuthorisationMixin(Component) {
     }
 
     componentWillMount() {
-        console.log('cwm')
-        if (this.props.authenticated) this.props.history.push('/app/profile')
+        if (this.props.token) this.props.history.push('/app/profile')
     }
 
     renderVerifyStage = () => {
@@ -144,7 +141,6 @@ class Login extends AuthorisationMixin(Component) {
 
     render() {
         const { stepIndex, width } = this.props
-        console.log(stepIndex)
         return (
             <LoginContainer>
                 <LoginDataWrapper>
@@ -174,5 +170,5 @@ class Login extends AuthorisationMixin(Component) {
 //     { getCode, sendCode, saveStepIndex }
 // )(withWidth()(Login))
 
-export default withProviders(AuthorizationProvider)(withWidth(Login))
+export default withProviders(AuthorizationProvider)(withWidth()(Login))
 // export default withWidth(Login)

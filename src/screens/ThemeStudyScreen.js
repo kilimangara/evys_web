@@ -5,6 +5,8 @@ import {HorizontalCentered} from "../components/styled/common";
 import {ThemeStudyTextBlock} from "../components/styled/themes";
 import {ThemeStudyTheoryItem} from "../components/themes/ThemeStudyTheoryItem";
 import VideoIcon from '@material-ui/icons/Videocam'
+import withProviders from "../utils/withProviders";
+import {CoursesProvider} from "../mixins/student/CoursesRepository";
 
 class ThemeStudyScreen extends Component {
     state = {
@@ -38,9 +40,11 @@ class ThemeStudyScreen extends Component {
     }
 }
 
-const mapStateToProps = state => ({})
+// const mapStateToProps = state => ({})
 
-export default connect(
-    mapStateToProps,
-    { loadTheoryByThemeId, loadThemeById}
-)(ThemeStudyScreen)
+export default withProviders(CoursesProvider)(ThemeStudyScreen)
+
+// export default connect(
+//     mapStateToProps,
+//     { loadTheoryByThemeId, loadThemeById}
+// )(ThemeStudyScreen)

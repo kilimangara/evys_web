@@ -16,7 +16,7 @@ const profileSaveSuccess = createAction('account/profile-save-success')
 
 export const loadProfileData = () => dispatch => {
     dispatch(profileFetch())
-    return getStudentProfile().then(response => dispatch(profileFetch(response.data)))
+    return getStudentProfile().then(response => dispatch(profileFetchSuccess(response.data)))
 }
 
 export const saveProfile = data => dispatch => {

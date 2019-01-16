@@ -5,18 +5,13 @@ import { loadCurrentCourses, loadFinishedCourses } from '../actions/CoursesActio
 import CourseItem from '../components/courses/CourseItem'
 import { CoursesScreenContainer, CoursesTab, CoursesTabs, CoursesWrapper } from '../components/styled/courses'
 import { Loader, LoaderWrapper } from '../components/styled/common'
-import CoursesMixin, {CoursesProvider} from "../mixins/student/CoursesRepository";
-import {AuthorizationProvider} from "../mixins/student/AuthorizationRepository";
-import {AccountProvider} from "../mixins/student/AccountRepository";
-import withProviders from "../utils/withProviders";
+import CoursesMixin, { CoursesProvider } from '../mixins/student/CoursesRepository'
+import withProviders from '../utils/withProviders'
 
 class CoursesScreen extends CoursesMixin(Component) {
-    constructor(props) {
-        super(props)
-        this.state = {
-            courses: [],
-            selectedTab: 0
-        }
+    state = {
+        courses: [],
+        selectedTab: 0
     }
 
     componentDidMount = () => {
@@ -55,17 +50,18 @@ class CoursesScreen extends CoursesMixin(Component) {
                     </LoaderWrapper>
                 ) : (
                     <CoursesWrapper>
-                        {coursesList.map(({ id, billing_info, subject, progress, owner }) => (
-                            <CourseItem
-                                key={id}
-                                ended={billing_info.ended}
-                                name={subject.subject}
-                                percent={progress}
-                                teacherName={owner}
-                                subscribeTo={billing_info.ends_at}
-                                courseImage={subject.category_image}
-                            />
-                        ))}
+                        {coursesList &&
+                            coursesList.map(({ id, billingInfo, subject, progress, owner }) => (
+                                <CourseItem
+                                    key={id}
+                                    ended={billingInfo.ended}
+                                    name={subject.subject}
+                                    percent={progress}
+                                    teacherName={owner}
+                                    subscribeTo={billingInfo.endsAt}
+                                    courseImage={subject.categoryImage}
+                                />
+                            ))}
                     </CoursesWrapper>
                 )}
             </CoursesScreenContainer>

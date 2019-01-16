@@ -15,16 +15,16 @@ const getCodeSuccess = createAction('auth/load-code-success')
 const sendCodeStart = createAction('auth/load-code')
 const sendCodeSuccess = createAction('auth/load-code-success')
 const logout = createAction('auth/load-code-success')
-const saveNewStepIndex = ('auth/save-step-index')
+const saveNewStepIndex = createAction('auth/save-step-index')
 
 export const getCodeByPhoneNumber = phone => dispatch => {
     dispatch(getCodeStart())
     return sendCode(phone).then(response => dispatch(getCodeSuccess()))
 }
 
-export const validateCode = code => dispatch => {
+export const validateCode = (phone, code) => dispatch => {
     dispatch(sendCodeStart())
-    return sendAuthorizeCode(code).then(response => {
+    return sendAuthorizeCode(phone, code).then(response => {
         const data = {
             userId: response.data.userId,
             isNew: response.data.isNew,

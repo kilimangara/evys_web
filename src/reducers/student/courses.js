@@ -20,15 +20,15 @@ const initialState = {
 
 const coursesLoading = createAction('courses/courses-loading')
 const coursesFetchSuccess = createAction('courses/courses-fetch-success')
+const currentCourseFetchSuccess = createAction('courses/current-course-fetch-success')
 const coursesReset = createAction('courses/courses-reset')
 const themesLoading = createAction('courses/themes-loading')
 const themesLoadingSuccess = createAction('courses/themes-loading-success')
 
 export const getCurrentCourses = (page = 1) => dispatch => {
-    console.log('haha')
     dispatch(coursesLoading)
     return getStudentCourses({ progressTo: '99', page }).then(response => {
-        page === 1 ? dispatch(coursesReset(response.data)) : dispatch(coursesFetchSuccess(response.data))
+        page === 1 ? dispatch(coursesReset(response.results)) : dispatch(coursesFetchSuccess(response.results))
     })
 }
 
@@ -41,10 +41,11 @@ export const getFinishedCourses = (page = 1) => dispatch => {
 
 export const getCourseById = id => dispatch => {
     dispatch(coursesLoading)
-    return getStudentCourse(id).then(response => dispatch(coursesFetchSuccess(response.data)))
+    return getStudentCourse(id).then(response => dispatch(currentCourseFetchSuccess(response.data)))
 }
 
 export const loadThemes = (courseId, parentThemeId) => dispatch => {
+
     dispatch(themesLoading)
     return getStudentThemes(courseId, parentThemeId, { parentTheme: parentThemeId }).then(response => {
         dispatch(themesLoadingSuccess)
@@ -78,7 +79,8 @@ export default createReducer(
             coursesList: { ...state.coursesList, ...payload }
         }),
         [themesLoading]: state => ({ ...state, fetching: true }),
-        [themesLoadingSuccess]: state => ({ ...state, fetching: false })
+        [themesLoadingSuccess]: state => ({ ...state, fetching: false }),
+        [currentCourseFetchSuccess]: (state, payload) => ({...state, currentCourse: payload})
     },
     initialState
 )

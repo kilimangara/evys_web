@@ -7,28 +7,30 @@ import Divider from 'material-ui/Divider'
 import Subheader from 'material-ui/Subheader'
 import Avatar from 'material-ui/Avatar'
 import FileFolder from 'material-ui/svg-icons/file/folder'
+import withProviders from "../utils/withProviders";
+import {CoursesProvider} from "../mixins/student/CoursesRepository";
 
 class SubThemesScreen extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            sub_themes: []
+            subThemes: []
         }
     }
 
     componentWillMount = () => {
-        this.course_id = this.props.match.params['course_id']
-        this.theme_id = this.props.match.params['theme_id']
-        this.props.loadThemes(this.course_id, this.theme_id).then(response => {
-            this.setState({ sub_themes: response.data.data })
+        this.courseId = this.props.match.params['course_id']
+        this.themeId = this.props.match.params['theme_id']
+        this.props.loadThemes(this.courseId, this.themeId).then(response => {
+            this.setState({ subThemes: response.data.data })
         })
     }
 
-    loadStudy = (has_sub_themes, theme_id) => {
-        if (!has_sub_themes) {
-            this.props.history.push(`/app/theme/${theme_id}/study`)
+    loadStudy = (hasSubThemes, themeId) => {
+        if (!hasSubThemes) {
+            this.props.history.push(`/app/theme/${themeId}/study`)
         } else {
-            this.props.history.push(`/app/course/${this.course_id}/theme/${theme_id}/sub_themes`)
+            this.props.history.push(`/app/course/${this.courseId}/theme/${themeId}/sub_themes`)
         }
     }
 
@@ -38,7 +40,7 @@ class SubThemesScreen extends Component {
                 key={index}
                 leftAvatar={<Avatar> {item.theme.name[0]} </Avatar>}
                 primaryText={item.theme.name}
-                onClick={this.loadStudy.bind(this, item.theme.has_sub_themes, item.theme.id)}
+                onClick={this.loadStudy.bind(this, item.theme.hasSubThemes, item.theme.id)}
             />
         )
     }
@@ -48,20 +50,17 @@ class SubThemesScreen extends Component {
             <div>
                 <List>
                     <Subheader inset={true}>Темы</Subheader>
-                    {this.state.sub_themes.map(this.renderItem)}
+                    {this.state.subThemes.map(this.renderItem)}
                 </List>
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({
-    profileData: state.account.profileData,
-    isAuthenticated: state.auth.authenticated,
-    userId: state.auth.user_id
-})
 
-export default connect(
-    mapStateToProps,
-    { loadThemes }
-)(SubThemesScreen)
+withProviders(CoursesProvider)(SubThemesScreen)
+
+// export default connect(
+//     mapStateToProps,
+//     { loadThemes }
+// )(SubThemesScreen)

@@ -10,11 +10,8 @@ import { withGetScreen } from 'react-getscreen'
 import { blue500 } from 'material-ui/styles/colors'
 
 class TariffsScreen extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            openSnack: false
-        }
+    state = {
+        openSnack: false
     }
 
     componentWillMount() {

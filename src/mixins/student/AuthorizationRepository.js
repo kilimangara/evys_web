@@ -6,7 +6,8 @@ export class AuthorizationProvider {
     static mapStateToProps = state => ({
         authenticated: state.auth.authenticated,
         userId: state.auth.user_id,
-        stepIndex: state.auth.stepIndex
+        stepIndex: state.auth.stepIndex,
+        token: state.auth.token
     })
 
     static mapDispatchToProps = {
