@@ -15,8 +15,9 @@ import ContentAdd from 'material-ui/svg-icons/content/add'
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
 import { Subject } from '../../components/subjects/Subject'
+import SubjectRepository from '../../mixins/admin/SubjectRepository'
 
-class SubjectsScreen extends Component {
+class SubjectsScreen extends SubjectRepository(Component) {
     constructor(props) {
         super(props)
         this.state = {
@@ -153,7 +154,7 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    subjectsList: state.subjects_admin.subjectsList
+    subjectsList: state.subjects.list
 })
 
 export default connect(

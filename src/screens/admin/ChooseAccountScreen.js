@@ -88,8 +88,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    companies: state.company_admin.companyList,
-    currentCompany: state.company_admin.currentCompany
+    companies: state.account.accounts,
+    currentCompany: state.account.currentAccount
 })
 
 export default connect(

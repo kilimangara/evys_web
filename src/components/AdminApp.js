@@ -8,7 +8,6 @@ import TestCaseScreen from '../screens/admin/TestCaseScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import TariffScreen from '../screens/admin/TariffScreen'
-import { switchAdminApp } from '../actions/AppActions'
 import { logoutAction } from '../actions/admin/AccountActions'
 import { pickAsset } from '../actions/admin/TemplateAssetsActions'
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, withWidth, Divider } from '@material-ui/core'
@@ -38,7 +37,6 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.props.switchAdminApp()
         if (!this.props.authenticated) this.props.history.push('/admin/login')
         else {
             if (!this.props.currentCompany) this.props.history.push('/admin/choose_account')
@@ -162,14 +160,14 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    account: state.account_admin.profileData || {},
-    authenticated: state.auth_admin.authenticated,
-    currentCompany: state.company_admin.currentCompany,
-    company: state.company_admin.companyList.find(el => el.permalink === state.company_admin.currentCompany),
-    assetOpened: state.asset_manager.managerOpened
+    account: state.profile.profileData || {},
+    authenticated: Boolean(state.authorization.token),
+    currentCompany: state.account.currentAccount,
+    company: state.account.accounts.find(el => el.permalink === state.account.currentAccount),
+    assetOpened: state.assetManager.managerOpened
 })
 
 export default connect(
     mapStateToProps,
-    { switchAdminApp, logoutAction, pickAsset }
+    { logoutAction, pickAsset }
 )(withWidth()(withGetScreen(App)))

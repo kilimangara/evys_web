@@ -1,7 +1,7 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
 
-import { getProfileInfo } from '../../api'
+import { profileInfo } from '../../api'
 
 const spread = produce(Object.assign)
 
@@ -16,7 +16,7 @@ export const successLoadProfile = createAction('profile/success-load-profile')
 
 export const loadProfile = () => dispatch => {
     dispatch(startLoadProfile())
-    return getProfileInfo().then(response => {
+    return profileInfo().then(response => {
         dispatch(successLoadProfile(response.data))
     })
 }
