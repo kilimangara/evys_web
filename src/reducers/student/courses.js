@@ -7,7 +7,8 @@ import {
     getStudentTheme,
     getStudentThemes,
     getStudentThemeTheory,
-    updateStudentProfile
+    updateStudentProfile,
+    getStudentThemeVideo
 } from '../../api'
 import createAction from 'redux-act/src/createAction'
 import createReducer from 'redux-act/src/createReducer'
@@ -24,6 +25,8 @@ const currentCourseFetchSuccess = createAction('courses/current-course-fetch-suc
 const coursesReset = createAction('courses/courses-reset')
 const themesLoading = createAction('courses/themes-loading')
 const themesLoadingSuccess = createAction('courses/themes-loading-success')
+const videosLoading = createAction('courses/videos-loading')
+const videosLoadingSuccess = createAction('courses/videos-loading-success')
 
 export const getCurrentCourses = (page = 1) => dispatch => {
     dispatch(coursesLoading)
@@ -45,7 +48,6 @@ export const getCourseById = id => dispatch => {
 }
 
 export const loadThemes = (courseId, parentThemeId) => dispatch => {
-
     dispatch(themesLoading)
     return getStudentThemes(courseId, parentThemeId, { parentTheme: parentThemeId }).then(response => {
         dispatch(themesLoadingSuccess)
@@ -55,7 +57,7 @@ export const loadThemes = (courseId, parentThemeId) => dispatch => {
 
 export const loadThemeById = themeId => dispatch => {
     dispatch(themesLoading)
-    getStudentTheme(themeId).then(response => {
+    return getStudentTheme(themeId).then(response => {
         dispatch(themesLoadingSuccess)
         return response.data
     })
@@ -63,8 +65,16 @@ export const loadThemeById = themeId => dispatch => {
 
 export const loadTheoryByThemeId = themeId => dispatch => {
     dispatch(themesLoading)
-    getStudentThemeTheory(themeId).then(response => {
+    return getStudentThemeTheory(themeId).then(response => {
         dispatch(themesLoadingSuccess)
+        return response.data
+    })
+}
+
+export const loadThemeVideos = themeId => dispatch => {
+    dispatch(videosLoading)
+    return getStudentThemeVideo(themeId).then(response => {
+        dispatch(videosLoadingSuccess)
         return response.data
     })
 }
@@ -79,8 +89,10 @@ export default createReducer(
             coursesList: { ...state.coursesList, ...payload }
         }),
         [themesLoading]: state => ({ ...state, fetching: true }),
+        [videosLoading]: state => ({ ...state, fetching: true }),
         [themesLoadingSuccess]: state => ({ ...state, fetching: false }),
-        [currentCourseFetchSuccess]: (state, payload) => ({...state, currentCourse: payload})
+        [videosLoadingSuccess]: state => ({ ...state, fetching: false }),
+        [currentCourseFetchSuccess]: (state, payload) => ({ ...state, currentCourse: payload })
     },
     initialState
 )

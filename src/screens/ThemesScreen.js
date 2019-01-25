@@ -7,8 +7,8 @@ import CourseItem from '../components/courses/CourseItem'
 import { CurrentCourseItem } from '../components/themes/CurrentCourseItem'
 import { ThemeItem } from '../components/themes/ThemeItem'
 import { ThemesItemWrapper, ThemesScreenWrapper } from '../components/styled/themes'
-import withProviders from "../utils/withProviders";
-import {CoursesProvider} from "../mixins/student/CoursesRepository";
+import withProviders from '../utils/withProviders'
+import { CoursesProvider } from '../mixins/student/CoursesRepository'
 
 class ThemesScreen extends Component {
     state = {
@@ -23,7 +23,7 @@ class ThemesScreen extends Component {
         //     this.setState({ themes: response.data })
         // })
         Promise.all([this.props.loadThemes(this.courseId, null), this.props.getCourseById(this.courseId)]).then(
-            responses => this.setState({ themes: responses[0].data, course: responses[1].data })
+            responses => this.setState({ themes: responses[0], course: responses[1] })
         )
     }
 

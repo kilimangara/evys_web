@@ -150,6 +150,27 @@ export function getStudentThemeVideo(themeId) {
     })
 }
 
+export function startTestingSession(themeId) {
+    return axiosInstance.request({
+        url: `student/theme/${themeId}/start_testing`
+    })
+}
+
+export function getTestQuestion(themeId, params) {
+    return axiosInstance.request({
+        url: `student/theme/${themeId}/question`,
+        params
+    })
+}
+
+export function sendTestQuestionAnswer(themeId, data) {
+    return axiosInstance.request({
+        url: `student/theme/${themeId}/answer`,
+        method: 'PUT',
+        data
+    })
+}
+
 // admin methods
 
 function getAccounts() {
@@ -357,7 +378,7 @@ export function createTestCase(themeId, data) {
 
 export function getTestCases(themeId) {
     return axiosInstance.request({
-        url: `~admin2/theme/${theme_id}/test_cases`
+        url: `~admin2/theme/${themeId}/test_cases`
     })
 }
 

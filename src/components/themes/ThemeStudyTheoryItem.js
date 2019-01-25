@@ -7,7 +7,7 @@ import {studentTheme} from "../../utils/global_theme";
 export const ThemeStudyTheoryItem = ({iconComponent, alias, onClick}) => (
 <ThemeStudyTheoryItemContainer onClick={onClick}>
 
-    <CustomisedIcon color={studentTheme.ACCENT} fontSize={'40px'}>
+    <CustomisedIcon color={studentTheme.ACCENT} fontSize={'60px'}>
         <div>{iconComponent}</div>
     </CustomisedIcon>
     <H2 style={{marginLeft: '15px'}}>{alias}</H2>

@@ -25,13 +25,9 @@ class CoursesScreen extends CoursesMixin(Component) {
     handleChange = (event, value) => {
         this.setState({ selectedTab: value })
         if (value === 0) {
-            this.props.getCurrentCourses().then(response => {
-                this.setState({ courses: response.data.results })
-            })
+            this.props.getCurrentCourses()
         } else if (value === 1) {
-            this.props.getFinishedCourses().then(response => {
-                this.setState({ courses: response.data.results })
-            })
+            this.props.getFinishedCourses()
         }
     }
 

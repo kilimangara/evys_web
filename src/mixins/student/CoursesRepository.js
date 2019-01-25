@@ -4,10 +4,14 @@ import {
     getFinishedCourses,
     loadThemeById,
     loadThemes,
-    loadTheoryByThemeId
+    loadTheoryByThemeId,
+    loadThemeVideos
 } from '../../reducers/student/courses'
 
-export default superclass => class CoursesRepository extends superclass {}
+export default superclass => class CoursesRepository extends superclass {
+
+}
+
 
 export class CoursesProvider {
     static mapStateToProps = state => ({
@@ -22,6 +26,7 @@ export class CoursesProvider {
         getCurrentCourses,
         loadThemes,
         loadTheoryByThemeId,
-        loadThemeById
+        loadThemeById,
+        loadThemeVideos
     }
 }
