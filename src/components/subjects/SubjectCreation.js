@@ -20,7 +20,7 @@ class SubjectCreation extends Component {
     }
 
     changeCategory = event => {
-        const category = this.state.categories.find(category => category.category_secret === event.target.value)
+        const category = this.state.categories.find(category => category.categorySecret === event.target.value)
         this.setState({ selectedCategory: category })
     }
 
@@ -53,8 +53,8 @@ class SubjectCreation extends Component {
                     margin="normal"
                     label={'Категория'}
                     value={
-                        (selectedCategory && selectedCategory.category_secret) ||
-                        (categories.length && categories[0].category_secret)
+                        (selectedCategory && selectedCategory.categorySecret) ||
+                        (categories.length && categories[0].categorySecret)
                     }
                     className={this.props.classes.menu}
                     onChange={this.changeCategory}

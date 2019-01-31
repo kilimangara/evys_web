@@ -21,12 +21,12 @@ export const resetSubjectList = createAction('subjects/reset-list')
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingSubjects())
-    return loadSubjects(page, query).then(response => {
+    return getSubjects(page, query).then(response => {
         const { data } = response
-        const { count, result } = data
+        const { count, results } = data
         return dispatch(
             successLoadingSubjects({
-                list: result,
+                list: results,
                 totalPages: count,
                 currentPage: page,
                 fetching: false

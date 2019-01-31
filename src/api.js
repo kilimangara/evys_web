@@ -159,6 +159,14 @@ export function createAccount(name) {
     })
 }
 
+export function createUser(data) {
+  return axiosInstance.request({
+    url: '/admin2/create_user',
+    method: 'POST',
+    data
+  })
+}
+
 export function profileInfo() {
     return axiosInstance.request({
         url: '/admin2/info'

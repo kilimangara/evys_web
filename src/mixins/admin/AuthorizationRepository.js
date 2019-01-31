@@ -1,4 +1,6 @@
-import { authorize } from '../../reducers/admin/authorization'
+import { authorize, register } from '../../reducers/admin/authorization'
+import { loadAccounts, chooseAccount } from '../../reducers/admin/account'
+import { omit } from 'lodash'
 
 export default superclass => class AuthorizationRepository extends superclass {
 
@@ -9,16 +11,32 @@ export default superclass => class AuthorizationRepository extends superclass {
     return errors
   }
 
-  doAuth = (login, password) => {
-    this.props.authorize(login, password)
-        .then(({data}) => {
-          this.props.history.push('/admin/choose_account')
-          this.setState({
-              email: '',
-              password: '',
-              errors: {}
-          })
+  afterAuth = () => {
+    this.props.loadAccounts()
+              .then((accounts) => {
+                this.props.chooseAccount(accounts[0].permalink)
+                this.props.history.push('/admin')
+              })
+  }
+
+  doRegister = () => {
+    const {password, username, passwordRepeat, errors} = this.state
+    if (password !== passwordRepeat) {
+        this.setState({ errors: { ...errors, passwordRepeat: 'Пароли не совпадают' } })
+        return
+    }
+    this.props.register(_.omit(this.state, ['errors', 'passwordRepeat']))
+        .then(() => this.afterAuth())
+        .catch(error => {
+            this.setState({ errors: error.response.data })
         })
+
+  }
+
+  doAuth = () => {
+    const {username, password} = this.state
+    this.props.authorize(username, password)
+        .then(() => this.afterAuth())
         .catch(({response})=>{
           if(response && response.data){
             this.setState({
@@ -35,10 +53,13 @@ export default superclass => class AuthorizationRepository extends superclass {
 
 export class AuthorizationProvider {
     static mapStateToProps = state => ({
-        isLogged: state.authorization.token
+        isLogged: state.authorization.token,
     })
 
     static mapDispatchToProps = {
-        authorize
+        authorize,
+        register,
+        loadAccounts,
+        chooseAccount
     }
 }

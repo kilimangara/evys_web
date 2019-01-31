@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import RaisedButton from 'material-ui/RaisedButton'
 import { GridList, GridTile } from 'material-ui/GridList'
 import { withGetScreen } from 'react-getscreen'
-import { loadSubjects, createSubject, updateSubject, deleteSubject } from '../../actions/admin/SubjectActions'
 import FontIcon from 'material-ui/FontIcon'
 import IconButton from 'material-ui/IconButton'
 import Subheader from 'material-ui/Subheader'
@@ -11,11 +10,11 @@ import { grey500, grey200, grey900 } from 'material-ui/styles/colors'
 import HoverPaper from '../../components/common/HoverPaper'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
-// import {Modal, ModalZ} from "../../components/styled/common";
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
 import { Subject } from '../../components/subjects/Subject'
-import SubjectRepository from '../../mixins/admin/SubjectRepository'
+import SubjectRepository, { SubjectProvider } from '../../mixins/admin/SubjectRepository'
+import withProviders from '../../utils/withProviders'
 
 class SubjectsScreen extends SubjectRepository(Component) {
     constructor(props) {
@@ -25,7 +24,7 @@ class SubjectsScreen extends SubjectRepository(Component) {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.loadSubjects()
     }
 
@@ -88,13 +87,14 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     render() {
+        console.log(this.props)
         let numberOfColumns = 2
-        if (this.props.subjectsList.length === 1 || this.props.isMobile()) numberOfColumns = 1
+        if (this.props.subjects.length === 1 || this.props.isMobile()) numberOfColumns = 1
         return (
             <div style={styles.container}>
                 <GridList padding={25} cellHeight={200} cols={numberOfColumns} style={styles.gridList}>
                     <Subheader>Предметы</Subheader>
-                    {this.props.subjectsList.map(subject => (
+                    {this.props.subjects.map(subject => (
                         <Subject
                             key={subject.subject}
                             subject={subject}
@@ -153,11 +153,4 @@ const styles = {
     }
 }
 
-const mapStateToProps = state => ({
-    subjectsList: state.subjects.list
-})
-
-export default connect(
-    mapStateToProps,
-    { loadSubjects, createSubject, updateSubject, deleteSubject }
-)(withGetScreen(SubjectsScreen))
+export default withProviders(SubjectProvider)(withGetScreen(SubjectsScreen))
