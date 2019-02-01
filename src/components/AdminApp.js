@@ -10,10 +10,10 @@ import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import TariffScreen from '../screens/admin/TariffScreen'
 import { logoutAction } from '../actions/admin/AccountActions'
 import { pickAsset } from '../actions/admin/TemplateAssetsActions'
-import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, withWidth, Divider } from '@material-ui/core'
-import { withGetScreen } from 'react-getscreen'
+import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import bind from 'memoize-bind'
 import Modal from 'reboron/ScaleModal'
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
 import GoogleAuth from './youtube/GoogleAuth'
@@ -22,12 +22,15 @@ import VideoScreen from '../screens/admin/VideoScreen'
 import { AppContainer, AppDrawer, AppToolbar, CompanyBlock, ListIcon } from './styled/layout'
 import { CommonWrapper } from './styled/common'
 import { theme } from '../utils/global_theme'
+import classNames from 'classnames'
+import { withStyles } from '@material-ui/core/styles'
+import IconButton from '@material-ui/core/IconButton'
 
 class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            opened: false
+            open: false
         }
     }
 
@@ -39,14 +42,11 @@ class App extends Component {
     componentWillMount() {
         if (!this.props.authenticated) this.props.history.push('/admin/login')
         else {
-            if (!this.props.currentCompany) this.props.history.push('/admin/choose_account')
+            if (!this.props.currentAccount) this.props.history.push('/admin/choose_account')
         }
     }
 
     goToExactPath = path => {
-        if (this.state.opened && this.props.width === 'xs') {
-            this.handleMenuClick()
-        }
         this.props.history.push(path)
     }
 
@@ -56,7 +56,7 @@ class App extends Component {
     }
 
     handleMenuClick = () => {
-        this.setState({ opened: !this.state.opened })
+        this.setState({ open: !this.state.open})
     }
 
     logout = () => {
@@ -69,11 +69,14 @@ class App extends Component {
     }
 
     drawerContent = () => {
-        const { company = {} } = this.props
+        const { account} = this.props
         return (
             <div>
-                <AppToolbar>
-                    <CompanyBlock>{company.name || 'Evys'}</CompanyBlock>
+                <AppToolbar inverse>
+                  <div style={{flex:1}}/>
+                  <IconButton onClick={this.handleMenuClick}>
+                     <ChevronLeftIcon/>
+                   </IconButton>
                 </AppToolbar>
                 <List>
                     <ListItem button onClick={bind(this.goToExactPath, this, '/admin')}>
@@ -101,33 +104,37 @@ class App extends Component {
     }
 
     render() {
-        const { authenticated, isTablet, isMobile, company = {}, currentCompany } = this.props
-        const isDesktop = !isTablet() && !isMobile()
+        const { authenticated, account, currentAccount, classes } = this.props
         return (
-            <div style={styles.root}>
+            <div style={inlineStyles.root}>
                 <GoogleAuth />
-                <Hidden smUp implementation={'css'}>
-                    <AppDrawer open={this.state.opened} onClose={this.handleMenuClick} variant={'temporary'}>
-                        {this.drawerContent()}
-                    </AppDrawer>
-                </Hidden>
-                <Hidden xsDown implementation={'css'}>
-                    <AppDrawer
-                        PaperProps={{ style: { zIndex: 2 } }}
-                        ModalProps={{ style: { zIndex: 2 } }}
-                        open
-                        variant={'permanent'}
-                    >
-                        {this.drawerContent()}
-                    </AppDrawer>
-                </Hidden>
-                <AppContainer isDesktop={this.props.width !== 'xs'}>
-                    <HeaderAppBarAdmin
-                        history={this.props.history}
-                        isDesktop={isDesktop}
-                        onMenuPressed={this.handleMenuClick}
-                        position={'sticky'}
-                    />
+                <AppDrawer
+                    PaperProps={{ style: { zIndex: 2 } }}
+                    ModalProps={{ style: { zIndex: 2 } }}
+                    className={classNames(classes.drawer, {
+                      [classes.drawerOpen]: this.state.open,
+                      [classes.drawerClose]: !this.state.open,
+                    })}
+                    classes={{
+                      paper: classNames({
+                        [classes.drawerOpen]: this.state.open,
+                        [classes.drawerClose]: !this.state.open,
+                      }),
+                    }}
+                    open={this.state.open}
+                    variant={'permanent'}
+                >
+                    {this.drawerContent()}
+                </AppDrawer>
+                <HeaderAppBarAdmin
+                    history={this.props.history}
+                    onMenuPressed={this.handleMenuClick}
+                    open={this.state.open}
+                    className={classNames(classes.appBar, {
+                       [classes.appBarShift]: this.state.open,
+                     })}
+                />
+                <AppContainer>
                     <Modal
                         ref={ref => (this.assetManager = ref)}
                         modalStyle={{ height: '100vh', overflowY: 'auto' }}
@@ -135,6 +142,7 @@ class App extends Component {
                     >
                         <ImageAssetPicker assetPicked={this.onAssetPicked} />
                     </Modal>
+                    <div style={{height: 64}}/>
                     <CommonWrapper>
                       <Switch>
                           <Route exact path="/admin" component={SubjectsScreen} />
@@ -153,21 +161,79 @@ class App extends Component {
     }
 }
 
-const styles = {
+const inlineStyles = {
     root: {
-        height: '100%'
+        height: '100%',
+        display: 'flex'
     }
 }
+
+const drawerWidth = 240;
+
+const styles = theme => ({
+  root: {
+    display: 'flex',
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginLeft: 12,
+    marginRight: 36,
+  },
+  hide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+    whiteSpace: 'nowrap',
+  },
+  drawerOpen: {
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerClose: {
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    overflowX: 'hidden',
+    width: theme.spacing.unit * 7 + 1,
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing.unit * 9 + 1,
+    },
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing.unit * 3,
+  },
+});
 
 const mapStateToProps = state => ({
     account: state.profile.profileData || {},
     authenticated: Boolean(state.authorization.token),
-    currentCompany: state.account.currentAccount,
-    company: state.account.accounts.find(el => el.permalink === state.account.currentAccount),
+    currentAccount: state.account.currentAccount,
+    account: state.account.accounts.find(el => el.permalink === state.account.currentAccount),
     assetOpened: state.assetManager.managerOpened
 })
 
 export default connect(
     mapStateToProps,
     { logoutAction, pickAsset }
-)(withWidth()(withGetScreen(App)))
+)(withStyles(styles)(App))

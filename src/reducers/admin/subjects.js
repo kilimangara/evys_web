@@ -1,7 +1,7 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
 
-import { getSubjects, getSubject, createSubject, fetchCategories } from '../../api'
+import { getSubjects, getSubject, createSubject, fetchCategories, putSubject, deleteSubject } from '../../api'
 import { merge } from 'lodash'
 
 const initialState = {
@@ -44,13 +44,17 @@ export const loadSubject = subjectId => dispatch => {
     })
 }
 
-export const newSubject = (subject, categorySecret) => dispatch => {
-    return createSubject({ subject, categorySecret })
+export const newSubject = (data) => dispatch => {
+    return createSubject(data)
 }
 
 export const fetchSubjectCategories = () => dispatch => {
     return fetchCategories()
 }
+
+export const updateSubject = (subjectId, data) => dispatch => putSubject(subjectId, data)
+
+export const removeSubject = (subjectId) => dispatch => deleteSubject(subjectId)
 
 export default createReducer(
     {

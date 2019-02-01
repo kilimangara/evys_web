@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { loadCompanies, chooseCompany, createCompany } from '../../actions/admin/AccountActions'
 import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
 import { grey500, grey200, grey900, blue500 } from 'material-ui/styles/colors'
 import moment from 'moment'
@@ -8,10 +7,12 @@ import Modal from 'reboron/ScaleModal'
 import CreateAccount from '../../components/accounts/CreateAccount'
 import FloatingActionButton from 'material-ui/FloatingActionButton'
 import ContentAdd from 'material-ui/svg-icons/content/add'
+import {AccountsProvider} from '../../mixins/admin/AccountsRepository'
+import withProviders from '../../utils/withProviders'
 
 class ChooseAccountScreen extends Component {
-    componentWillMount() {
-        this.props.loadCompanies()
+    componentDidMount() {
+        this.props.loadAccounts()
     }
 
     renderCompany = company => {
@@ -19,14 +20,14 @@ class ChooseAccountScreen extends Component {
             <TableRow key={company.id}>
                 <TableRowColumn>{company.id}</TableRowColumn>
                 <TableRowColumn>{company.name}</TableRowColumn>
-                <TableRowColumn>{moment(company.created_at).format('ll')}</TableRowColumn>
+                <TableRowColumn>{moment(company.createdAt).format('ll')}</TableRowColumn>
             </TableRow>
         )
     }
 
     onAccountSave = accountObj => {
-        this.props.createCompany(accountObj).then(() => {
-            this.props.loadCompanies()
+        this.props.newAccount(accountObj).then(() => {
+            this.props.loadAccounts()
         })
         this.modal.hide()
     }
@@ -38,7 +39,7 @@ class ChooseAccountScreen extends Component {
     onRowSelection = selectedRow => {
         const companyIndex = selectedRow[0]
         if (companyIndex == undefined) return
-        this.props.chooseCompany(this.props.companies[companyIndex].permalink)
+        this.props.chooseAccount(this.props.accounts[companyIndex].permalink)
         this.props.history.push('/admin')
     }
 
@@ -54,7 +55,7 @@ class ChooseAccountScreen extends Component {
                         </TableRow>
                     </TableHeader>
                     <TableBody displayRowCheckbox={false} showRowHover>
-                        {this.props.companies.map(this.renderCompany)}
+                        {this.props.accounts.map(this.renderCompany)}
                     </TableBody>
                 </Table>
                 <FloatingActionButton
@@ -87,12 +88,4 @@ const styles = {
     }
 }
 
-const mapStateToProps = state => ({
-    companies: state.account.accounts,
-    currentCompany: state.account.currentAccount
-})
-
-export default connect(
-    mapStateToProps,
-    { chooseCompany, loadCompanies, createCompany }
-)(ChooseAccountScreen)
+export default withProviders(AccountsProvider)(ChooseAccountScreen)

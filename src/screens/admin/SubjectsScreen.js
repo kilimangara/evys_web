@@ -43,7 +43,7 @@ class SubjectsScreen extends SubjectRepository(Component) {
                 <HoverPaper style={{ height: 200 }}>
                     <GridTile
                         title={subject.subject}
-                        subtitle={<b>{subject.grade_representation}</b>}
+                        subtitle={<b>{subject.gradePresentation}</b>}
                         actionIcon={
                             <IconButton
                                 onClick={this.onClickSubject.bind(this, subject.id)}
@@ -73,7 +73,8 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     onSubjectUpdate = data => {
-        this.props.updateSubject(data.id, data).then(() => {
+      const { selectedSubject } = this.state
+        this.props.updateSubject(selectedSubject.id, data).then(() => {
             this.props.loadSubjects()
             this.modalUpdate.hide()
         })
@@ -87,8 +88,8 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     render() {
-        console.log(this.props)
         let numberOfColumns = 2
+        console.log(this.state)
         if (this.props.subjects.length === 1 || this.props.isMobile()) numberOfColumns = 1
         return (
             <div style={styles.container}>

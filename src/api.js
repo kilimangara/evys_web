@@ -194,7 +194,7 @@ export function createSubject(data) {
     })
 }
 
-export function updateSubject(subjectId, data) {
+export function putSubject(subjectId, data) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}`,
         method: 'PUT',

@@ -1,4 +1,4 @@
-import { loadSubject, loadSubjects, createSubject } from '../../reducers/admin/subjects'
+import { loadSubject, loadSubjects, newSubject, deleteSubject, updateSubject } from '../../reducers/admin/subjects'
 
 export default superclass =>
     class SubjectRepository extends superclass {
@@ -13,6 +13,9 @@ export class SubjectProvider {
 
     static mapDispatchToProps = {
         loadSubject,
-        loadSubjects
+        loadSubjects,
+        createSubject: newSubject,
+        updateSubject,
+        deleteSubject
     }
 }
