@@ -25,6 +25,7 @@ import { theme } from '../utils/global_theme'
 import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
+import SubjectScreen from '../screens/admin/subject'
 
 class App extends Component {
     constructor(props) {
@@ -146,7 +147,7 @@ class App extends Component {
                     <CommonWrapper>
                       <Switch>
                           <Route exact path="/admin" component={SubjectsScreen} />
-                          <Route exact path="/admin/subjects/:id(\d+)" component={ThemesScreen} />
+                          <Route exact path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
                           <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
                           <Route path="/admin/students" component={StudentsScreen} />
                           <Route path="/admin/choose_account" component={ChooseAccountScreen} />
@@ -164,7 +165,8 @@ class App extends Component {
 const inlineStyles = {
     root: {
         height: '100%',
-        display: 'flex'
+        display: 'flex',
+        backgroundColor: '#F2F3F5'
     }
 }
 
