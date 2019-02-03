@@ -1,4 +1,4 @@
-import { loadSubject, loadSubjects, newSubject, deleteSubject, updateSubject } from '../../reducers/admin/subjects'
+import { loadSubject, loadSubjects, newSubject, deleteSubject, updateSubject, fetchSubjectCategories } from '../../reducers/admin/subjects'
 
 export default superclass =>
     class SubjectRepository extends superclass {
@@ -9,9 +9,20 @@ export default superclass =>
           this.props.loadSubject(id)
         }
 
+        updateSubject = () => {
+          const {subject} = this.state
+          return this.props.updateSubject(this.subjectId(), subject)
+        }
+
+        syncCategories = () => {
+          this.props.fetchSubjectCategories().then(({data}) => this.setState({categories: data}))
+        }
+
         subjectId = () => this.props.match.params['subjectId']
 
         subject = () => this.props.subject
+
+        categories = () => this.state.categories
     }
 
 export class SubjectProvider {
@@ -26,6 +37,7 @@ export class SubjectProvider {
         loadSubjects,
         createSubject: newSubject,
         updateSubject,
-        deleteSubject
+        deleteSubject,
+        fetchSubjectCategories
     }
 }

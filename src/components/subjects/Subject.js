@@ -22,7 +22,7 @@ export const Subject = ({ subject, index, onClickSubjectInfo, onClickSubject }) 
                     />
                 }
             >
-                <img src={subject.category_image || DEFAULT_IMG_SRC} />
+                <img src={subject.categoryImage || DEFAULT_IMG_SRC} />
             </GridTile>
         </HoverPaper>
     </div>

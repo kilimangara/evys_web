@@ -37,30 +37,6 @@ class SubjectsScreen extends SubjectRepository(Component) {
         this.modalUpdate.show()
     }
 
-    renderSubject = (subject, index) => {
-        return (
-            <div key={subject.id} onClick={this.onClickSubjectInfo.bind(this, subject)}>
-                <HoverPaper style={{ height: 200 }}>
-                    <GridTile
-                        title={subject.subject}
-                        subtitle={<b>{subject.gradePresentation}</b>}
-                        actionIcon={
-                            <IconButton
-                                onClick={this.onClickSubject.bind(this, subject.id)}
-                                iconStyle={{ color: grey200 }}
-                                iconClassName="far fa-play-circle"
-                                tooltip={'Темы'}
-                                tooltipPosition={'top-center'}
-                            />
-                        }
-                    >
-                        <img src={IMG_SRC} />
-                    </GridTile>
-                </HoverPaper>
-            </div>
-        )
-    }
-
     floatingButtonClicked = () => {
         this.modal.show()
     }

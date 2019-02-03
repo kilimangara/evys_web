@@ -41,6 +41,7 @@ export const loadSubject = subjectId => dispatch => {
         const { data } = response
         dispatch(successShowSubject(data))
         dispatch(replaceSubject(data))
+        return response
     })
 }
 
@@ -52,7 +53,15 @@ export const fetchSubjectCategories = () => dispatch => {
     return fetchCategories()
 }
 
-export const updateSubject = (subjectId, data) => dispatch => putSubject(subjectId, data)
+export const updateSubject = (subjectId, data) => dispatch => {
+  dispatch(startLoadingSubjects())
+  return putSubject(subjectId, data).then((response) =>{
+    const { data } = response
+    dispatch(successShowSubject(data))
+    dispatch(replaceSubject(data))
+    return response
+  })
+}
 
 export const removeSubject = (subjectId) => dispatch => deleteSubject(subjectId)
 
@@ -71,6 +80,7 @@ export default createReducer(
         [successShowSubject]: (state, payload) =>
             produce(state, draft => {
                 draft.current = payload
+                draft.fetching = false
             }),
         [replaceSubject]: (state, payload) =>
             produce(state, draft => {

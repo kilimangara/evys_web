@@ -50,11 +50,11 @@ class SubjectCreation extends Component {
                     select
                     margin="normal"
                     label={'Категория'}
+                    fullWidth
                     value={
                         (selectedCategory && selectedCategory.categorySecret) ||
                         (categories.length && categories[0].categorySecret)
                     }
-                    className={this.props.classes.menu}
                     onChange={this.changeCategory}
                 >
                     {(categories.length &&

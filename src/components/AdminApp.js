@@ -143,7 +143,7 @@ class App extends Component {
                     >
                         <ImageAssetPicker assetPicked={this.onAssetPicked} />
                     </Modal>
-                    <div style={{height: 64}}/>
+                    <div style={{minHeight: 64}}/>
                     <CommonWrapper>
                       <Switch>
                           <Route exact path="/admin" component={SubjectsScreen} />
