@@ -14,6 +14,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import produce from "immer"
 import LinearProgress from '@material-ui/core/LinearProgress'
 import SaveButton from '../../../components/common/SaveButton'
+import IconButton from '@material-ui/core/IconButton'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import Add from '@material-ui/icons/Add'
+import Chip from '@material-ui/core/Chip'
 
 const Container = styled.div`
   display: flex;
@@ -48,9 +52,17 @@ const ColoredButton = styled(Button)`
   color: white;
 `
 
+const TagChip = styled(Chip)`
+  margin: 8px;
+  background-color: ${theme.ACCENT_COLOR};
+  color: white;
+  border: 1px solid ${theme.ACCENT_COLOR};
+`
+
 class SubjectScreen extends SubjectRepository(React.Component) {
 
   state = {
+    tag: ''
   }
 
   componentDidMount(){
@@ -73,6 +85,23 @@ class SubjectScreen extends SubjectRepository(React.Component) {
 
   saveSubject = () => {
     this.updateSubject().then(() => this.saveButton.success())
+  }
+
+  handleAddTag = (e) => {
+    console.log(e)
+    e.preventDefault()
+    const { tag } = this.state
+    if (!tag) return
+    this.setState(produce(this.state, (draft) => {
+      draft.tag = ''
+      draft.subject.tags.push(tag)
+    }))
+  }
+
+  deleteTag = (index) => () => {
+    this.setState(produce(this.state, (draft) => {
+      draft.subject.tags.splice(index, 1)
+    }))
   }
 
   render(){
@@ -132,7 +161,27 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                 ))) ||
                 []}
         </TextField>
-        <SaveButton ref={(ref) => this.saveButton = ref} loading={this.props.subjectsFetching} onClick={this.saveSubject}/>
+        <form onSubmit={this.handleAddTag} style={{position: 'relative'}}>
+          <TextField
+            onChange={(event) => this.setState({tag: event.target.value})}
+            label={'Тэг'}
+            variant='outlined'
+            fullWidth
+            value={this.state.tag}
+            margin={'normal'}
+          />
+          <div style={{position: 'absolute', right: 12, top: 20}}>
+            <IconButton type='submit' onClick={this.handleAddTag}>
+              <Add/>
+            </IconButton>
+          </div>
+        </form>
+        <div style={{display: 'flex', justifyContent: 'flex-start',flexWrap: 'wrap'}}>
+         {subject.tags && subject.tags.map((t, index) => <TagChip variant='outlined' label={`#${t}`} onDelete={this.deleteTag(index)}/>)}
+        </div>
+        <div>
+         <SaveButton ref={(ref) => this.saveButton = ref} loading={this.props.subjectsFetching} onClick={this.saveSubject}/>
+        </div>
         </Card>
       </Container>
     )

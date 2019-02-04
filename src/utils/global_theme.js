@@ -1,6 +1,7 @@
 export const theme = {
     PRIMARY: '#212121',
-    ACCENT_COLOR: '#1FAAF0',
+    ACCENT_COLOR: '#03a9f4',
+    ACCENT_COLOR_A: (a) => `rgba(3, 169, 244, ${a})`,
     SECONDARY: '#757575',
     BACKGROUND_DARK: '#3B3A3F',
     CONTRAST_LIGHT: '#FFFFFF'

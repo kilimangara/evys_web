@@ -1,29 +1,26 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import RaisedButton from 'material-ui/RaisedButton'
-import { GridList, GridTile } from 'material-ui/GridList'
+import GridList from '@material-ui/core/GridList'
 import { withGetScreen } from 'react-getscreen'
-import FontIcon from 'material-ui/FontIcon'
-import IconButton from 'material-ui/IconButton'
-import Subheader from 'material-ui/Subheader'
-import { grey500, grey200, grey900 } from 'material-ui/styles/colors'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import HoverPaper from '../../components/common/HoverPaper'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ContentAdd from 'material-ui/svg-icons/content/add'
+import Fab from '@material-ui/core/Fab'
+import Add from '@material-ui/icons/Add'
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
 import { Subject } from '../../components/subjects/Subject'
 import SubjectRepository, { SubjectProvider } from '../../mixins/admin/SubjectRepository'
 import withProviders from '../../utils/withProviders'
+import styled from 'styled-components'
+
+const GridWrapper = styled.div`
+    max-width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+`
 
 class SubjectsScreen extends SubjectRepository(Component) {
-    constructor(props) {
-        super(props)
-        this.state = {
-            selectedSubject: undefined
-        }
-    }
-
     componentDidMount() {
         this.props.loadSubjects()
     }
@@ -33,28 +30,13 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     onClickSubjectInfo = subject => {
-        this.setState({ selectedSubject: subject })
-        this.modalUpdate.show()
+        this.props.history.push(`/admin/subjects/${subject.id}`)
     }
 
     floatingButtonClicked = () => {
         this.modal.show()
     }
 
-    onSubjectDelete = id => {
-        this.props.deleteSubject(id).then(() => {
-            this.props.loadSubjects()
-            this.modalUpdate.hide()
-        })
-    }
-
-    onSubjectUpdate = data => {
-      const { selectedSubject } = this.state
-        this.props.updateSubject(selectedSubject.id, data).then(() => {
-            this.props.loadSubjects()
-            this.modalUpdate.hide()
-        })
-    }
 
     onSubjectSave = data => {
         this.props.createSubject(data).then(() => {
@@ -69,34 +51,26 @@ class SubjectsScreen extends SubjectRepository(Component) {
         if (this.props.subjects.length === 1 || this.props.isMobile()) numberOfColumns = 1
         return (
             <div style={styles.container}>
-                <GridList padding={25} cellHeight={200} cols={numberOfColumns} style={styles.gridList}>
-                    <Subheader>Предметы</Subheader>
+                <GridWrapper>
                     {this.props.subjects.map(subject => (
+                      <div style={{margin: '36px 12px'}}>
                         <Subject
                             key={subject.subject}
                             subject={subject}
                             onClickSubject={this.onClickSubject}
                             onClickSubjectInfo={this.onClickSubjectInfo}
                         />
+                      </div>
                     ))}
-                </GridList>
-                <FloatingActionButton
+                </GridWrapper>
+                <Fab
                     style={styles.fabStyle}
-                    backgroundColor={grey900}
                     onClick={this.floatingButtonClicked}
                 >
-                    <ContentAdd />
-                </FloatingActionButton>
+                    <Add />
+                </Fab>
                 <Modal ref={ref => (this.modal = ref)}>
                     <SubjectCreation onSubjectSave={this.onSubjectSave} />
-                </Modal>
-                <Modal ref={ref => (this.modalUpdate = ref)}>
-                    <SubjectCreation
-                        initialState={this.state.selectedSubject}
-                        onSubjectDelete={this.onSubjectDelete}
-                        updateMode
-                        onSubjectSave={this.onSubjectUpdate}
-                    />
                 </Modal>
             </div>
         )
