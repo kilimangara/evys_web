@@ -23,6 +23,8 @@ export default superclass =>
         subject = () => this.props.subject
 
         categories = () => this.state.categories
+
+        isHidden = () => this.state.subject.tariff && this.state.subject.tariff.hidden
     }
 
 export class SubjectProvider {

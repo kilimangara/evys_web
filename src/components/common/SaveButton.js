@@ -26,7 +26,7 @@ const CustomButton = styled(Button)`
 `
 
 CustomButton.propTypes = {
-  success: pt.boolean
+  success: pt.bool
 }
 
 export default class SaveButton extends React.Component {

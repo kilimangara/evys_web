@@ -12,9 +12,22 @@ import { Subject } from '../../components/subjects/Subject'
 import SubjectRepository, { SubjectProvider } from '../../mixins/admin/SubjectRepository'
 import withProviders from '../../utils/withProviders'
 import styled from 'styled-components'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 const GridWrapper = styled.div`
-    max-width: 100%;
+    @media screen and (min-width: 0px) and (max-width: 1090px) {
+        max-width: 374px;
+    }
+    @media screen and (min-width: 1090px) and (max-width: 1422px) {
+        max-width: 748px;
+    }
+    @media screen and (min-width: 1422px) and (max-width: 1796px) {
+        max-width: 1122px;
+    }
+    @media screen and (min-width: 1796px) {
+        max-width: 1496px;
+    }
+    width: 5000px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -37,7 +50,6 @@ class SubjectsScreen extends SubjectRepository(Component) {
         this.modal.show()
     }
 
-
     onSubjectSave = data => {
         this.props.createSubject(data).then(() => {
             this.props.loadSubjects()
@@ -46,16 +58,22 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     render() {
+        const {subjects} = this.props
+        if(!subjects.length){
+          return(
+            <div>
+              <LinearProgress/>
+            </div>
+          )
+        }
         let numberOfColumns = 2
-        console.log(this.state)
         if (this.props.subjects.length === 1 || this.props.isMobile()) numberOfColumns = 1
         return (
             <div style={styles.container}>
                 <GridWrapper>
                     {this.props.subjects.map(subject => (
-                      <div style={{margin: '36px 12px'}}>
+                      <div style={{margin: '18px 6px'}} key={subject.id}>
                         <Subject
-                            key={subject.subject}
                             subject={subject}
                             onClickSubject={this.onClickSubject}
                             onClickSubjectInfo={this.onClickSubjectInfo}

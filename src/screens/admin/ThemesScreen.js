@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import RaisedButton from 'material-ui/RaisedButton'
 import { GridList, GridTile } from 'material-ui/GridList'
 import { withGetScreen } from 'react-getscreen'
 import { loadThemesBySubject, createThemeBySubject, deleteTheme, updateTheme } from '../../actions/admin/ThemesActions'
@@ -14,6 +13,26 @@ import Modal from 'reboron/ScaleModal'
 import ThemeCreation from '../../components/themes/ThemeCreation'
 import HoverPaper from '../../components/common/HoverPaper'
 import bind from 'memoize-bind'
+import styled from 'styled-components'
+
+const GridWrapper = styled.div`
+    @media screen and (min-width: 0px) and (max-width: 1090px) {
+        max-width: 374px;
+    }
+    @media screen and (min-width: 1090px) and (max-width: 1422px) {
+        max-width: 748px;
+    }
+    @media screen and (min-width: 1422px) and (max-width: 1796px) {
+        max-width: 1122px;
+    }
+    @media screen and (min-width: 1796px) {
+        max-width: 1496px;
+    }
+    width: 5000px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+`
 
 class ThemesScreen extends Component {
     constructor(props) {
