@@ -147,7 +147,7 @@ class App extends Component {
                     <CommonWrapper>
                       <Switch>
                           <Route exact path="/admin" component={SubjectsScreen} />
-                          <Route exact path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
+                          <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
                           <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
                           <Route path="/admin/students" component={StudentsScreen} />
                           <Route path="/admin/choose_account" component={ChooseAccountScreen} />

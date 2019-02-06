@@ -18,6 +18,7 @@ export const successShowSubject = createAction('subjects/success-show')
 export const successCreateSubject = createAction('subjects/success-create')
 export const replaceSubject = createAction('subjects/replace')
 export const resetSubjectList = createAction('subjects/reset-list')
+export const endLoadingSubjects = createAction('subjects/end-loading')
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingSubjects())
@@ -60,6 +61,9 @@ export const updateSubject = (subjectId, data) => dispatch => {
     dispatch(successShowSubject(data))
     dispatch(replaceSubject(data))
     return response
+  }).catch((err)=>{
+    dispatch(endLoadingSubjects())
+    throw err
   })
 }
 
@@ -67,6 +71,10 @@ export const removeSubject = (subjectId) => dispatch => deleteSubject(subjectId)
 
 export default createReducer(
     {
+        [endLoadingSubjects]: state =>
+          produce(state, draft => {
+              draft.fetching = false
+          }),
         [startLoadingSubjects]: state =>
             produce(state, draft => {
                 draft.fetching = true
