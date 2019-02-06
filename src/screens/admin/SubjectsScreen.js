@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import GridList from '@material-ui/core/GridList'
-import { withGetScreen } from 'react-getscreen'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import HoverPaper from '../../components/common/HoverPaper'
 import Fab from '@material-ui/core/Fab'
 import Add from '@material-ui/icons/Add'
 import Modal from 'reboron/ScaleModal'
@@ -66,8 +63,6 @@ class SubjectsScreen extends SubjectRepository(Component) {
             </div>
           )
         }
-        let numberOfColumns = 2
-        if (this.props.subjects.length === 1 || this.props.isMobile()) numberOfColumns = 1
         return (
             <div style={styles.container}>
                 <GridWrapper>
@@ -122,4 +117,4 @@ const styles = {
     }
 }
 
-export default withProviders(SubjectProvider)(withGetScreen(SubjectsScreen))
+export default withProviders(SubjectProvider)(SubjectsScreen)

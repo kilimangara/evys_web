@@ -17,6 +17,7 @@ import MainInfo from './main-info'
 import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
+import ThemesScreen from '../ThemesScreen'
 
 const WarningIcon = styled(Warning)`
   color: red;
@@ -118,6 +119,8 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}`)
             case 'billing':
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/billing`)
+            case 'themes':
+                return this.props.history.replace(`/admin/subjects/${this.subjectId()}/themes`)
         }
     }
 
@@ -126,7 +129,6 @@ class SubjectScreen extends SubjectRepository(React.Component) {
       this.state = produce(this.state, (draft) =>{
         draft.subject.tariff.hidden = !draft.subject.tariff.hidden
       })
-      console.log('new state', this.state)
       this.saveSubject()
     }
 
@@ -147,7 +149,7 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                             <ListText primary="Основные настройки" />
                         </ListItem>
                         <ListItem button>
-                            <ListText primary="Содержание курса" />
+                            <ListText primary="Содержание курса" onClick={this.goTo('themes')}/>
                         </ListItem>
                         <ListItem button onClick={this.goTo('billing')}>
                             <ListText primary="Информация для ученика" />
@@ -162,6 +164,7 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                         </div>
                     </List>
                 </Card>
+                <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen}/>
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/billing" render={this.renderBillingInfo} />
             </Container>

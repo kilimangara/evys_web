@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import { grey900 } from 'material-ui/styles/colors'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 import DurationPicker from './DurationPicker'
-import Checkbox from 'material-ui/Checkbox'
+import Checkbox from '@material-ui/core/Checkbox'
 import moment from 'moment'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
+import MenuItem from '@material-ui/core/MenuItem'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 export default class ThemeCreation extends Component {
     constructor(props) {
@@ -14,19 +13,15 @@ export default class ThemeCreation extends Component {
         this.state = this.props.initialState
     }
 
-    saveToState = (field, event, value) => {
+    saveToState = field => (event, newValue) => {
+        let value = event.target.value
+        if( field === 'isHidden') value = newValue
         this.setState({
             [field]: value
         })
     }
 
-    saveToStateDuration = (field, value) => {
-        this.setState({
-            [field]: value
-        })
-    }
-
-    saveToStateSelectField = (field, event, index, value) => {
+    saveToStateDuration = field => value => {
         this.setState({
             [field]: value
         })
@@ -36,74 +31,76 @@ export default class ThemeCreation extends Component {
         return moment.duration(isoString).asHours()
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState(nextProps.initialState)
+    componentDidUpdate(prevProps) {
+        if (prevProps.initialState !== this.props.initialState) this.setState(this.props.initialState)
     }
 
     render() {
-        const { name, num, is_hidden, tests_model_type, end_range, repetition_range, required_repeats } = this.state
+        const { name, num, isHidden, testsModelType, endRange, repetitionRange, requiredRepeats } = this.state
         return (
             <div style={styles.container}>
                 <TextField
-                    onChange={this.saveToState.bind(this, 'name')}
-                    floatingLabelText="Название"
+                    onChange={this.saveToState('name')}
                     value={name}
-                    underlineFocusStyle={{ borderColor: grey900 }}
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
+                    label="Название"
                 />
                 <TextField
-                    onChange={this.saveToState.bind(this, 'num')}
-                    floatingLabelText="Номер"
+                    onChange={this.saveToState('num')}
+                    label="Номер"
                     value={num}
+                    variant="outlined"
+                    margin="normal"
+                    fullWidth
                     type={'number'}
-                    underlineFocusStyle={{ borderColor: grey900 }}
                 />
                 <TextField
-                    onChange={this.saveToState.bind(this, 'required_repeats')}
-                    floatingLabelText="Минимальное число повторений"
-                    value={required_repeats}
+                    onChange={this.saveToState('requiredRepeats')}
+                    label="Минимальное число повторений"
+                    value={requiredRepeats}
+                    fullWidth
+                    variant="outlined"
+                    margin="normal"
                     type={'number'}
-                    underlineFocusStyle={{ borderColor: grey900 }}
                 />
-                <SelectField
-                    floatingLabelText="Модель вопросов"
-                    value={tests_model_type}
-                    onChange={this.saveToStateSelectField.bind(this, 'tests_model_type')}
-                    autoWidth={true}
+                <TextField
+                    select
+                    variant="outlined"
+                    margin="normal"
+                    label="Модель вопросов"
+                    fullWidth
+                    value={testsModelType}
+                    onChange={this.saveToState('testsModelType')}
                 >
-                    <MenuItem value={0} primaryText="Линейная модель" />
-                    <MenuItem value={1} primaryText="Древовидная модель" />
-                    <MenuItem value={2} primaryText="Стандартная модель" />
-                </SelectField>
+                    <MenuItem value={0}>Линейная модель</MenuItem>
+                    <MenuItem value={1}>Древовидная модель</MenuItem>
+                    <MenuItem value={2}>Стандартная модель</MenuItem>
+                </TextField>
                 <DurationPicker
-                    valueChanged={this.saveToStateDuration.bind(this, 'repetition_range')}
-                    defaultValue={this.toInternalValue(repetition_range)}
+                    valueChanged={this.saveToStateDuration('repetitionRange')}
+                    defaultValue={this.toInternalValue(repetitionRange)}
                     labelText={'Время между повторениями'}
                 />
                 <DurationPicker
-                    valueChanged={this.saveToStateDuration.bind(this, 'end_range')}
-                    defaultValue={this.toInternalValue(end_range)}
+                    valueChanged={this.saveToStateDuration('endRange')}
+                    defaultValue={this.toInternalValue(endRange)}
                     labelText={'Время между напоминаниями'}
                 />
-                <Checkbox
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            color="primary"
+                            checked={isHidden}
+                            onChange={this.saveToState('isHidden')}
+                        />
+                    }
                     label="Скрыто"
-                    checked={is_hidden}
-                    onCheck={this.saveToState.bind(this, 'is_hidden')}
-                    inputStyle={{ color: grey900 }}
                 />
-                <RaisedButton
-                    label="Сохранить"
-                    labelStyle={{ color: 'white' }}
-                    backgroundColor={grey900}
-                    onClick={this.props.onThemeSave.bind(this, this.state)}
-                />
-                {this.props.updateMode && (
-                    <RaisedButton
-                        label="Удалить"
-                        labelStyle={{ color: 'white' }}
-                        backgroundColor={grey900}
-                        onClick={this.props.onThemeDelete.bind(this, this.state.id)}
-                    />
-                )}
+                <Button color="primary" onClick={this.props.onThemeSave.bind(this, this.state)}>
+                    Сохранить
+                </Button>
             </div>
         )
     }
@@ -116,11 +113,11 @@ ThemeCreation.defaultProps = {
     initialState: {
         num: 0,
         name: '',
-        is_hidden: true,
-        tests_model_type: 2,
-        end_range: '24:00:00',
-        repetition_range: '03:00:00',
-        required_repeats: 3
+        isHidden: true,
+        testsModelType: 2,
+        endRange: '24:00:00',
+        repetitionRange: '03:00:00',
+        requiredRepeats: 3
     }
 }
 
@@ -129,7 +126,7 @@ const styles = {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'flex-start',
+        alignItems: 'center',
         padding: 36
     }
 }

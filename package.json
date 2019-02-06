@@ -26,6 +26,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.1",
     "@material-ui/icons": "^3.0.1",
+    "@material-ui/lab": "^3.0.0-alpha.30",
     "@sentry/browser": "^4.1.1",
     "Base64": "^1.0.1",
     "axios": "^0.18.0",

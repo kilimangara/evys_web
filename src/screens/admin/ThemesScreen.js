@@ -1,18 +1,16 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { GridList, GridTile } from 'material-ui/GridList'
-import { withGetScreen } from 'react-getscreen'
-import { loadThemesBySubject, createThemeBySubject, deleteTheme, updateTheme } from '../../actions/admin/ThemesActions'
-import FontIcon from 'material-ui/FontIcon'
-import IconButton from 'material-ui/IconButton'
-import Subheader from 'material-ui/Subheader'
-import { grey500, grey200, grey900 } from 'material-ui/styles/colors'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ContentAdd from 'material-ui/svg-icons/content/add'
-import Modal from 'reboron/ScaleModal'
-import ThemeCreation from '../../components/themes/ThemeCreation'
 import HoverPaper from '../../components/common/HoverPaper'
-import bind from 'memoize-bind'
+import GridList from '@material-ui/core/GridList'
+import GridListTileBar from '@material-ui/core/GridListTileBar'
+import GridListTile from '@material-ui/core/GridListTile'
+import IconButton from 'material-ui/IconButton'
+import Modal from 'reboron/ScaleModal'
+import Fab from '@material-ui/core/Fab'
+import Add from '@material-ui/icons/Add'
+import ThemesRepository, { ThemeProvider } from '../../mixins/admin/ThemesRepository'
+import withProviders from '../../utils/withProviders'
+import ThemeCreation from '../../components/themes/ThemeCreation'
+import LinearProgress from '@material-ui/core/LinearProgress'
 import styled from 'styled-components'
 
 const GridWrapper = styled.div`
@@ -34,50 +32,37 @@ const GridWrapper = styled.div`
     flex-direction: row;
 `
 
-class ThemesScreen extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            themeSelected: undefined
-        }
+const Wrapper = styled(HoverPaper)`
+  height: 300px;
+  width: 450px;
+  background: ${({image}) => `url(${image}) no-repeat center center`};
+  background-size: cover;
+`
+
+class ThemesScreen extends ThemesRepository(Component) {
+
+    state = {
+      page: 1
     }
 
-    componentWillMount() {
-        const id = this.props.match.params['id']
-        this.props.loadThemesBySubject(id)
-    }
-
-    onThemeClick = id => {
-        this.props.history.push(`/admin/themes/${id}`)
-    }
-
-    onThemeClickInfo = theme => {
-        this.setState({ themeSelected: theme })
-        this.modalUpdate.show()
+    componentDidMount() {
+      this.props.loadThemes(this.subjectId())
     }
 
     renderTheme = (theme, index) => {
-        const hidden = !theme.is_hidden ? 'Выставлен' : 'Скрыт'
+        const hidden = !theme.isHidden ? 'Выставлен' : 'Скрыт'
         return (
-            <div key={theme.id} onClick={bind(this.onThemeClickInfo, this, theme)}>
-                <HoverPaper style={{ height: 200 }}>
-                    <GridTile
-                        title={`${theme.num}. ${theme.name}`}
-                        subtitle={<b>{hidden}</b>}
-                        actionIcon={
-                            <IconButton
-                                onClick={this.onThemeClick.bind(this, theme.id)}
-                                iconStyle={{ color: grey200 }}
-                                iconClassName="far fa-play-circle"
-                                tooltip={'Вопросы'}
-                                tooltipPosition={'top-center'}
-                            />
-                        }
-                    >
-                        <img src="/static/images/EQ4.png" />
-                    </GridTile>
-                </HoverPaper>
-            </div>
+          <div style={{margin: '18px 6px', backgroundColor: 'white'}} key={theme.id}>
+          <GridListTile cols={1} component='div'>
+              <Wrapper image={'/images/EQ4.png'}>
+                  <GridListTileBar
+                      title={`${theme.num}. ${theme.name}`}
+                      subtitle={<b>{hidden}</b>}
+                  >
+                  </GridListTileBar>
+              </Wrapper>
+          </GridListTile>
+          </div>
         )
     }
 
@@ -86,56 +71,35 @@ class ThemesScreen extends Component {
     }
 
     onThemeSave = data => {
-        const id = this.props.match.params['id']
-        this.props.createThemeBySubject(id, data).then(() => {
-            this.props.loadThemesBySubject(id)
-            this.modal.hide()
-        })
-    }
-
-    onThemeDelete = id => {
-        const subject_id = this.props.match.params['id']
-        this.props.deleteTheme(id).then(() => {
-            this.props.loadThemesBySubject(subject_id)
-            this.modalUpdate.hide()
-        })
-    }
-
-    onThemeUpdate = data => {
-        const subject_id = this.props.match.params['id']
-        this.props.updateTheme(data.id, data).then(() => {
-            this.props.loadThemesBySubject(subject_id)
-            this.modalUpdate.hide()
-        })
+      this.props.createTheme(this.subjectId(), data).then(() => {
+          this.props.loadThemes(this.subjectId())
+          this.modal.hide()
+      })
     }
 
     render() {
-        let numberOfColumns = 2
-        if (this.props.themesList.length === 1 || this.props.isMobile()) numberOfColumns = 1
+        const {themes} = this.props
+        if(!themes.length){
+          return(
+            <div>
+              <LinearProgress/>
+            </div>
+          )
+        }
         return (
             <div style={styles.container}>
-                <GridList padding={25} cellHeight={200} cols={numberOfColumns} style={styles.gridList}>
-                    <Subheader>Темы</Subheader>
-                    {this.props.themesList.map(this.renderTheme)}
-                </GridList>
-                <FloatingActionButton
+              <GridWrapper>
+                  {themes.map(this.renderTheme)}
+              </GridWrapper>
+                <Fab
                     style={styles.fabStyle}
-                    backgroundColor={grey900}
                     onClick={this.floatingButtonClicked}
                 >
-                    <ContentAdd />
-                </FloatingActionButton>
-                <Modal ref={ref => (this.modal = ref)}>
-                    <ThemeCreation onThemeSave={this.onThemeSave} />
-                </Modal>
-                <Modal ref={ref => (this.modalUpdate = ref)}>
-                    <ThemeCreation
-                        onThemeDelete={this.onThemeDelete}
-                        updateMode
-                        initialState={this.state.themeSelected}
-                        onThemeSave={this.onThemeUpdate}
-                    />
-                </Modal>
+                  <Add />
+                </Fab>
+              <Modal ref={ref => this.modal = ref}>
+                <ThemeCreation onThemeSave={this.onThemeSave}/>
+              </Modal>
             </div>
         )
     }
@@ -165,11 +129,4 @@ const styles = {
     }
 }
 
-const mapStateToProps = (state, props) => ({
-    themesList: state.themes_admin.themesTree[null] || []
-})
-
-export default connect(
-    mapStateToProps,
-    { loadThemesBySubject, createThemeBySubject, deleteTheme, updateTheme }
-)(withGetScreen(ThemesScreen))
+export default withProviders(ThemeProvider)(ThemesScreen)

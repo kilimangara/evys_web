@@ -230,30 +230,37 @@ export function createSubjectTheme(subjectId, data) {
     })
 }
 
+export function getTheme(themeId) {
+  return axiosInstance.request({
+    url: `/admin2/theme/${themeId}`,
+    method: 'GET'
+  })
+}
+
+export function deleteTheme(themeId) {
+  return axiosInstance.request({
+    url: `/admin2/theme/${themeId}`,
+    method: 'DELETE'
+  })
+}
+
 export function updateTheme(themeId, data) {
     return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}`,
+        url: `/admin2/theme/${themeId}`,
         method: 'PUT',
         data
     })
 }
 
-export function deleteTheme(themeId) {
-    return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}`,
-        method: 'DELETE'
-    })
-}
-
 export function getThemeTheory(themeId) {
     return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}/theory`
+        url: `/admin2/theme/${themeId}/theory`
     })
 }
 
 export function createThemeTheory(themeId, data) {
     return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}/theory`,
+        url: `/admin2/theme/${themeId}/theory`,
         method: 'POST',
         data
     })
