@@ -16,6 +16,7 @@ export default class ThemeCreation extends Component {
     saveToState = field => (event, newValue) => {
         let value = event.target.value
         if( field === 'isHidden') value = newValue
+        if( field === 'num' && value === '') value = null
         this.setState({
             [field]: value
         })
@@ -50,7 +51,7 @@ export default class ThemeCreation extends Component {
                 <TextField
                     onChange={this.saveToState('num')}
                     label="Номер"
-                    value={num}
+                    value={num || ""}
                     variant="outlined"
                     margin="normal"
                     fullWidth
@@ -111,7 +112,7 @@ ThemeCreation.defaultProps = {
     onThemeDelete: id => {},
     updateMode: false,
     initialState: {
-        num: 0,
+        num: null,
         name: '',
         isHidden: true,
         testsModelType: 2,
