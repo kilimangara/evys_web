@@ -79,8 +79,8 @@ class ThemesScreen extends ThemesRepository(Component) {
     }
 
     render() {
-        const {themes} = this.props
-        if(!themes.length){
+        const {themes, themesFetching} = this.props
+        if(!themes.length && themesFetching){
           return(
             <div>
               <LinearProgress/>

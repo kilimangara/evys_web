@@ -4,8 +4,8 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin")
 var babelLoader = {
   loader: 'babel-loader',
   options: {
-    presets: ['react', 'es2015', 'stage-1'],
-    plugins: ['transform-runtime']
+    presets: ['@babel/preset-env', '@babel/preset-react'],
+    plugins: ['@babel/plugin-transform-runtime', ['@babel/plugin-proposal-decorators', {decoratorsBeforeExport: true}], '@babel/plugin-proposal-class-properties']
   }
 }
 

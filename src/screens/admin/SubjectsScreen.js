@@ -55,8 +55,8 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     render() {
-        const {subjects} = this.props
-        if(!subjects.length){
+        const {subjects, subjectsFetching} = this.props
+        if(!subjects.length && subjectsFetching){
           return(
             <div>
               <LinearProgress/>
