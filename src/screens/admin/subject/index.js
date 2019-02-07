@@ -134,7 +134,6 @@ class SubjectScreen extends SubjectRepository(React.Component) {
 
     render() {
         const { subject, categories } = this.state
-        console.log(this.state)
         if (!subject || !categories)
             return (
                 <div>
@@ -148,8 +147,8 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                         <ListItem button onClick={this.goTo('root')}>
                             <ListText primary="Основные настройки" />
                         </ListItem>
-                        <ListItem button>
-                            <ListText primary="Содержание курса" onClick={this.goTo('themes')}/>
+                        <ListItem button onClick={this.goTo('themes')}>
+                            <ListText primary="Содержание курса"/>
                         </ListItem>
                         <ListItem button onClick={this.goTo('billing')}>
                             <ListText primary="Информация для ученика" />

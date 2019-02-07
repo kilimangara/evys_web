@@ -36,7 +36,7 @@ const Wrapper = styled(HoverPaper)`
   height: 300px;
   width: 450px;
   background: ${({image}) => `url(${image}) no-repeat center center`};
-  background-size: cover;
+  background-size: contain;
 `
 
 class ThemesScreen extends ThemesRepository(Component) {
@@ -49,11 +49,13 @@ class ThemesScreen extends ThemesRepository(Component) {
       this.props.loadThemes(this.subjectId())
     }
 
+    goToTheme = (theme) => () => this.props.history.push(`/admin/themes/${theme.id}`)
+
     renderTheme = (theme, index) => {
         const hidden = !theme.isHidden ? 'Выставлен' : 'Скрыт'
         return (
           <div style={{margin: '18px 6px', backgroundColor: 'white'}} key={theme.id}>
-          <GridListTile cols={1} component='div'>
+          <GridListTile cols={1} component='div' onClick={this.goToTheme(theme)}>
               <Wrapper image={'/images/EQ4.png'}>
                   <GridListTileBar
                       title={`${theme.num}. ${theme.name}`}

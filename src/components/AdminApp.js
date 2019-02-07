@@ -25,6 +25,7 @@ import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import SubjectScreen from '../screens/admin/subject'
+import ThemeScreen from '../screens/admin/theme'
 
 class App extends Component {
     constructor(props) {
@@ -147,6 +148,7 @@ class App extends Component {
                       <Switch>
                           <Route exact path="/admin" component={SubjectsScreen} />
                           <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
+                          <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen}/>
                           <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
                           <Route path="/admin/students" component={StudentsScreen} />
                           <Route path="/admin/choose_account" component={ChooseAccountScreen} />
