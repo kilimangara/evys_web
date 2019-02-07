@@ -157,6 +157,7 @@ export function startTestingSession(themeId) {
 }
 
 export function getTestQuestion(themeId, params) {
+    console.log('params', params)
     return axiosInstance.request({
         url: `student/theme/${themeId}/question`,
         params
@@ -166,7 +167,7 @@ export function getTestQuestion(themeId, params) {
 export function sendTestQuestionAnswer(themeId, data) {
     return axiosInstance.request({
         url: `student/theme/${themeId}/answer`,
-        method: 'PUT',
+        method: 'POST',
         data
     })
 }

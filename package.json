@@ -41,6 +41,7 @@
     "moment": "^2.19.0",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-animate-height": "^2.0.7",
     "react-circular-progressbar": "^1.0.0",
     "react-code-input": "^3.8.1",
     "react-dom": "^16.1.1",
@@ -56,13 +57,15 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-search-bar": "^2.2.0",
+    "react-transition-group": "^2.5.3",
     "reboron": "^0.4.5",
     "recompose": "^0.30.0",
     "redux": "^3.7.1",
     "redux-act": "^1.7.4",
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.2.0",
-    "styled-components": "^4.0.2"
+    "styled-components": "^4.0.2",
+    "styled-transition-group": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
