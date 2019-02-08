@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import { LeftPanelContainer, LeftPanelNavigation, LeftPanelNavigationItem } from '../styled/layout'
-import { BorderedImage, StudentTypography } from '../styled/common'
+import {BorderedImage, SizedIconButton, StudentTypography} from '../styled/common'
+import IconButton from "@material-ui/core/IconButton/IconButton";
 
 class LeftPanel extends Component {
     activeButton(index) {
@@ -28,10 +29,10 @@ class LeftPanel extends Component {
             <div style={{padding:'0px 0px 0px 50px'}}>
               <div style={{display: 'flex'}}>
                 <BorderedImage image={'https://pp.userapi.com/c824604/v824604757/123b72/kQXTMsBo7Lc.jpg'}/>
-                <LeftPanelNavigation style={{margin: '8px 0px 8px 12px', justifyContent:'space-between'}}>
-                  <BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'}/>
-                  <BorderedImage image={'/images/settings.svg'} width={'18px'} height={'18px'}/>
-                  <BorderedImage image={'/images/exit.svg'} width={'18px'} height={'18px'}/>
+                <LeftPanelNavigation style={{justifyContent:'space-between'}}>
+                    <SizedIconButton width={18} margin={4} children={<BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'}/>} />
+                    <SizedIconButton width={18} margin={4} children={<BorderedImage image={'/images/settings.svg'} width={'18px'} height={'18px'}/>} />
+                    <SizedIconButton width={18} margin={4} children={<BorderedImage image={'/images/exit.svg'} width={'18px'} height={'18px'}/>} />
                 </LeftPanelNavigation>
               </div>
               <StudentTypography fontSize={20} mainColor>
@@ -47,11 +48,6 @@ class LeftPanel extends Component {
               <LeftPanelNavigationItem>
                 <StudentTypography>
                    Все курсы
-                </StudentTypography>
-              </LeftPanelNavigationItem>
-              <LeftPanelNavigationItem>
-                <StudentTypography>
-                   Статистика
                 </StudentTypography>
               </LeftPanelNavigationItem>
             </LeftPanelNavigation>

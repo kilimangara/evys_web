@@ -8,20 +8,24 @@ import { LoginStepLabel, LoginStepper, PhoneNumberInput } from '../components/st
 import { studentTheme } from '../utils/global_theme'
 import ReactCodeInput from 'react-code-input'
 import { withWidth } from '@material-ui/core'
+import { withAuthMethods } from '../decorators/withAuthMethods'
+import AuthorisationMixin, { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
+import withProviders from '../utils/withProviders'
+import { getCodeByPhoneNumber, validateCode } from '../reducers/student/auth'
 
-class Login extends Component {
+class Login extends AuthorisationMixin(Component) {
     constructor(props) {
         super(props)
-        this.state = {
-            phone: '',
-            code: '',
-            errors: {},
-            loading: false
-        }
+    }
+    state = {
+        phone: '',
+        code: '',
+        errors: {},
+        loading: false
     }
 
-    componentWillMount = () => {
-        if (this.props.authenticated) this.props.history.push('/app/profile')
+    componentWillMount() {
+        if (this.props.token) this.props.history.push('/app/profile')
     }
 
     renderVerifyStage = () => {
@@ -60,7 +64,7 @@ class Login extends Component {
     handleCodeChange = code => {
         if (code.length === 6) {
             this.props
-                .sendCode(this.state.phone, code)
+                .validateCode(this.state.phone, code)
                 .then(() => this.goToProfile())
                 .catch(() => this.setState({ errors: { phone: 'Неправильный формат' } }))
         }
@@ -76,7 +80,7 @@ class Login extends Component {
     handlePress = () => {
         if (this.props.stepIndex === 0) {
             this.props
-                .getCode(this.state.phone)
+                .getCodeByPhoneNumber(this.state.phone)
                 .then(() => {
                     this.newStepIndex(1)
                     this.setState({ errors: { phone: null } })
@@ -155,13 +159,16 @@ class Login extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    authenticated: state.auth.authenticated,
-    userId: state.auth.user_id,
-    stepIndex: state.first_steps.stepIndex
-})
+// const mapStateToProps = state => ({
+//     authenticated: state.auth.authenticated,
+//     userId: state.auth.user_id,
+//     stepIndex: state.first_steps.stepIndex
+// })
 
-export default connect(
-    mapStateToProps,
-    { getCode, sendCode, saveStepIndex }
-)(withWidth()(Login))
+// export default connect(
+//     mapStateToProps,
+//     { getCode, sendCode, saveStepIndex }
+// )(withWidth()(Login))
+
+export default withProviders(AuthorizationProvider)(withWidth()(Login))
+// export default withWidth(Login)

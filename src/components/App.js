@@ -24,6 +24,7 @@ import CourseItem from '../components/courses/CourseItem'
 import { CommonWrapper } from './styled/common'
 import { StudentAppWrapper } from './styled/layout'
 import BeforeStudy from "../screens/BeforeStudy"
+import TestQuestionScreen from "../screens/TestQuestionScreen";
 
 class App extends Component {
     constructor(props) {
@@ -109,6 +110,7 @@ class App extends Component {
                             <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
                             <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)' component={BeforeStudy} />
                             <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory' component={ThemeStudyScreen} />
+                            <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test' component={TestQuestionScreen} />
                         </Switch>
                     </CommonWrapper>
                 </div>

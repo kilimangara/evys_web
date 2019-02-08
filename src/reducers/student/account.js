@@ -16,13 +16,14 @@ const profileSaveSuccess = createAction('account/profile-save-success')
 
 export const loadProfileData = () => dispatch => {
     dispatch(profileFetch())
-    return getStudentProfile().then(response => dispatch(profileFetch(response.data)))
+    return getStudentProfile().then(response => dispatch(profileFetchSuccess(response.data)))
 }
 
 export const saveProfile = data => dispatch => {
     dispatch(profileSave())
-    const body = new FormData()
+    let body = new FormData()
     const { avatar, full_name, email, tags } = data
+    debugger
     if (avatar) {
         body.append('avatar', avatar)
     }
@@ -35,7 +36,7 @@ export const saveProfile = data => dispatch => {
     if (tags) {
         body.append('tags', tags)
     }
-    return updateStudentProfile(data).then(response => dispatch(profileSaveSuccess(response.data)))
+    return updateStudentProfile(body).then(response => dispatch(profileSaveSuccess(response.data)))
 }
 
 

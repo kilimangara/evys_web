@@ -14,27 +14,27 @@ import { studentTheme } from '../utils/global_theme'
 import { ImageLoader } from '../components/common/ImageLoader'
 import { FavoriteSubjects } from '../components/subjects/favoriteSubjects/FavoriteSubjects'
 import { subjects } from '../utils/subjects'
+import withProviders from '../utils/withProviders'
+import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
+import AccountMixin, { AccountProvider } from '../mixins/student/AccountRepository'
 
 const profileFields = ['full_name', 'email', 'avatar']
 
 const requiredFields = ['full_name', 'email']
 
-class ProfileScreen extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            errors: {},
-            open: false,
-            selectedFavoriteSubjects: [],
-            favoriteSubjectsOpened: props.newUser,
-        }
+class ProfileScreen extends AccountMixin(Component) {
+    state = {
+        errors: {},
+        open: false,
+        selectedFavoriteSubjects: [],
+        favoriteSubjectsOpened: this.props.newUser
     }
 
     componentWillMount() {
-        if (!this.props.isAuthenticated) this.props.history.push('/app/login')
+        if (!this.props.token) this.props.history.push('/login')
         this.props.loadProfileData().then(() =>
             this.setState({
-                full_name: this.props.profileData.full_name,
+                full_name: this.props.profileData.fullName,
                 email: this.props.profileData.email,
                 avatar: this.props.profileData.avatar
             })
@@ -152,15 +152,17 @@ class ProfileScreen extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    profileData: state.account.profileData,
-    isAuthenticated: state.auth.authenticated,
-    userId: state.auth.user_id,
-    newUser: state.auth.is_new,
-    loading: state.account.fetching
-})
+// const mapStateToProps = state => ({
+//     profileData: state.account.profileData,
+//     isAuthenticated: state.auth.authenticated,
+//     userId: state.auth.user_id,
+//     newUser: state.auth.is_new,
+//     loading: state.account.fetching
+// })
 
-export default connect(
-    mapStateToProps,
-    { loadProfileData, saveProfile }
-)(ProfileScreen)
+export default withProviders(AuthorizationProvider, AccountProvider)(ProfileScreen)
+
+// export default connect(
+//     mapStateToProps,
+//     { loadProfileData, saveProfile }
+// )(ProfileScreen)

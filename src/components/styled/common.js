@@ -6,20 +6,22 @@ import { Button } from '@material-ui/core'
 import { studentTheme } from '../../utils/global_theme'
 
 export const Paper = styled.div`
-    box-shadow: ${({ hovered }) =>
-        hovered
-            ? 'rgba(0,0,0,0.19) 0px 10px 30px, rgba(0,0,0,0.23) 0px 6px 10px'
-            : '0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),' +
-              '0px 2px 1px -1px rgba(0, 0, 0, 0.12)'};
+    box-shadow: ${({ boxShadow, hovered }) =>
+        boxShadow
+            ? boxShadow
+            : hovered
+                ? 'rgba(0,0,0,0.19) 0px 10px 30px, rgba(0,0,0,0.23) 0px 6px 10px'
+                : '0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),' +
+                  '0px 2px 1px -1px rgba(0, 0, 0, 0.12)'};
     z-index: ${({ zIndex }) => zIndex || '0'};
     height: ${({ height }) => height || 'auto'};
     width: ${({ width }) => width || 'auto'};
     background: ${({ background }) => background || ''};
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
-    box-shadow: ${({ boxShadow }) => boxShadow || ''};
+    border: ${({border}) => border || ''};
     overflow: hidden;
     cursor: pointer;
-    transition: box-shadow 0.25s ease-in-out;
+    transition: box-shadow 0.25s ease-in-out, border 0.25s ease-in-out;
 `
 
 export const ColoredContainer = styled.div`
@@ -139,19 +141,22 @@ export const ColoredButton = styled(({ color, textColor, textHover, ...props }) 
 `
 
 export const Error = styled.div`
-    color: ${studentTheme.ERROR}
+    color: ${studentTheme.ERROR};
     font: ${studentTheme.H3} ${studentTheme.FONT}
 `
 
 export const H3 = styled.div`
+    color: ${({color}) => color || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H3} ${studentTheme.FONT};
 `
 
 export const H2 = styled.div`
+    color: ${({color}) => color || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H2} ${studentTheme.FONT};
 `
 
 export const H1 = styled.div`
+    color: ${({color}) => color || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H1} ${studentTheme.FONT};
 `
 
@@ -167,4 +172,10 @@ export const HorizontalCentered = styled.div`
     width: 100%;
     justify-content: center;
     flex-direction: ${({ direction }) => direction || 'row'};
+`
+
+export const SizedIconButton = styled(IconButton)`
+  width: ${({width}) => `${width}px`};
+  margin: ${({margin}) => `${margin}px`};
+  padding: 0;
 `

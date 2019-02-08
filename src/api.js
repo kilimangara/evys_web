@@ -35,7 +35,7 @@
 import axios from 'axios'
 import humps from 'humps'
 import { store } from './store'
-import {ADMIN_APP} from './utils/constants'
+import { ADMIN_APP } from './utils/constants'
 
 console.log(__DEV__, __CURRENT_APP__)
 
@@ -44,31 +44,32 @@ const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 const axiosInstance = axios.create({
     baseURL,
     transformResponse: [...axios.defaults.transformResponse, data => humps.camelizeKeys(data)],
-    transformRequest: [data => humps.decamelizeKeys(data), ...axios.defaults.transformRequest]
+    transformRequest: [data => data instanceof FormData ? data : humps.decamelizeKeys(data), ...axios.defaults.transformRequest]
 })
 
 function basicAdminAuth(config) {
-  const {authorization, account} = store.getState()
-  if(authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
-  if(account.currentAccount) config.headers['Account-Name'] = account.currentAccount
-  return config
+    const { authorization, account } = store.getState()
+    if (authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
+    if (account.currentAccount) config.headers['Account-Name'] = account.currentAccount
+    return config
 }
 
 function studentTokenAuth(config) {
-  const {auth} = store.getState()
-  if(auth.token) config.headers['Authorization'] = `Student ${auth.token}`
+    const { auth } = store.getState()
+    if (auth.token) config.headers['Authorization'] = `Student ${auth.token}`
+    return config
 }
 
-axiosInstance.interceptors.request.use((config) => {
-  if(__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
-  return studentTokenAuth(config)
+axiosInstance.interceptors.request.use(config => {
+    if (__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
+    return studentTokenAuth(config)
 })
 
 axiosInstance.interceptors.response.use(data => {
-  if (!data) return data
-  if (data.data) return data.data
-  if (data.error) return data.error
-  return data
+    if (!data) return data
+    if (data.data) return data.data
+    if (data.error) return data.error
+    return data
 })
 
 // student methods
@@ -83,11 +84,11 @@ export function sendCode(phone) {
     })
 }
 
-export function sendAuthorizeCode(code) {
+export function sendAuthorizeCode(phone, code) {
     return axiosInstance.request({
         url: '/student/auth',
         method: 'POST',
-        data: { code }
+        data: { phone, code }
     })
 }
 
@@ -118,10 +119,16 @@ export function getStudentCourse(courseId) {
     })
 }
 
-export function getStudentThemes(params) {
+export function getStudentThemes(courseId, themeId, params) {
     return axiosInstance.request({
-        url: `/student/course/${params.themeId}/themes`,
-        params
+        url: `/student/course/${courseId}/themes`,
+        meta: {
+            fetch: {
+                params
+            },
+            with_parent_theme: Boolean(themeId),
+            is_course: true
+        }
     })
 }
 
@@ -140,6 +147,28 @@ export function getStudentThemeTheory(themeId) {
 export function getStudentThemeVideo(themeId) {
     return axiosInstance.request({
         url: `/student/theme/${themeId}/theory_video`
+    })
+}
+
+export function startTestingSession(themeId) {
+    return axiosInstance.request({
+        url: `student/theme/${themeId}/start_testing`
+    })
+}
+
+export function getTestQuestion(themeId, params) {
+    console.log('params', params)
+    return axiosInstance.request({
+        url: `student/theme/${themeId}/question`,
+        params
+    })
+}
+
+export function sendTestQuestionAnswer(themeId, data) {
+    return axiosInstance.request({
+        url: `student/theme/${themeId}/answer`,
+        method: 'POST',
+        data
     })
 }
 
@@ -365,7 +394,7 @@ export function createTestCase(themeId, data) {
 
 export function getTestCases(themeId) {
     return axiosInstance.request({
-        url: `~admin2/theme/${theme_id}/test_cases`
+        url: `~admin2/theme/${themeId}/test_cases`
     })
 }
 

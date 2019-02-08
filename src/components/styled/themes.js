@@ -88,6 +88,7 @@ export const ThemeStudyTextBlock = styled(Paper)`
     max-width: 100%;
     font: ${studentTheme.h3} ${studentTheme.FONT};
     color: ${studentTheme.TEXT_COLOR};
+    margin-bottom: 12px;
 `
 
 export const ThemeStudyTheoryItemContainer = styled(Paper)`
@@ -98,7 +99,8 @@ export const ThemeStudyTheoryItemContainer = styled(Paper)`
     font: ${studentTheme.h3} ${studentTheme.FONT};
     color: ${studentTheme.TEXT_COLOR};
     align-items: center;
-    padding: 10px;
-    height: 50px;
+    padding: 10px 20px;
+    height: 150px;
     margin: 12px 0;
 `
+
