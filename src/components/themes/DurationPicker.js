@@ -1,7 +1,12 @@
 import React, { Component } from 'react'
-import Slider from 'material-ui/Slider'
-import { grey900 } from 'material-ui/styles/colors'
+import Slider from '@material-ui/lab/Slider'
 import moment from 'moment'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  margin-top: 24px;
+
+`
 
 export default class DurationPicker extends Component {
     constructor(props) {
@@ -24,12 +29,11 @@ export default class DurationPicker extends Component {
         const { minHours, maxHours } = this.props
         const { value } = this.state
         return (
-            <div>
+            <Container>
                 <Slider
                     min={minHours}
                     max={maxHours}
                     step={1}
-                    sliderStyle={{ trackColorSelected: grey900 }}
                     value={value}
                     onChange={this.handleSlider}
                 />
@@ -38,12 +42,14 @@ export default class DurationPicker extends Component {
                         {this.props.labelText}: {this.humanize(value)}
                     </span>
                 </p>
-            </div>
+            </Container>
         )
     }
 }
 
-const styles = {}
+const styles = {
+
+}
 
 DurationPicker.defaultProps = {
     minHours: 1,

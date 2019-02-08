@@ -256,8 +256,8 @@ const styles = {
 }
 
 const mapStateToProps = state => ({
-    students: state.students_admin.studentList,
-    totalPages: state.students_admin.totalPages
+    students: state.students.list,
+    totalPages: state.students.totalPages
 })
 
 export default connect(

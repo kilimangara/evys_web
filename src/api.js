@@ -174,13 +174,13 @@ export function sendTestQuestionAnswer(themeId, data) {
 
 // admin methods
 
-function getAccounts() {
+export function getAccounts() {
     return axiosInstance.request({
         url: '/admin2/accounts'
     })
 }
 
-function createAccount(name) {
+export function createAccount(name) {
     return axiosInstance.request({
         url: '/admin2/accounts',
         method: 'POST',
@@ -188,26 +188,34 @@ function createAccount(name) {
     })
 }
 
-function accountInfo() {
+export function createUser(data) {
+  return axiosInstance.request({
+    url: '/admin2/create_user',
+    method: 'POST',
+    data
+  })
+}
+
+export function profileInfo() {
     return axiosInstance.request({
         url: '/admin2/info'
     })
 }
 
-function getSubjects(page = 1, query = '') {
+export function getSubjects(page = 1, query = '') {
     return axiosInstance.request({
         url: '/admin2/subjects',
         params: { page, query }
     })
 }
 
-function getSubject(subjectId) {
+export function getSubject(subjectId) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}`
     })
 }
 
-function createSubject(data) {
+export function createSubject(data) {
     return axiosInstance.request({
         url: '/admin2/subjects',
         method: 'POST',
@@ -215,7 +223,7 @@ function createSubject(data) {
     })
 }
 
-function updateSubject(subjectId, data) {
+export function putSubject(subjectId, data) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}`,
         method: 'PUT',
@@ -223,27 +231,27 @@ function updateSubject(subjectId, data) {
     })
 }
 
-function deleteSubject(subjectId) {
+export function deleteSubject(subjectId) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}`,
         method: 'DELETE'
     })
 }
 
-function fetchCategories() {
+export function fetchCategories() {
     return axiosInstance.request({
         url: `/category`
     })
 }
 
-function getSubjectThemes(subjectId, params) {
+export function getSubjectThemes(subjectId, params) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/themes`,
         params: params
     })
 }
 
-function createSubjectTheme(subjectId, data) {
+export function createSubjectTheme(subjectId, data) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/themes`,
         data,
@@ -251,42 +259,49 @@ function createSubjectTheme(subjectId, data) {
     })
 }
 
-function updateTheme(themeId, data) {
+export function getTheme(themeId) {
+  return axiosInstance.request({
+    url: `/admin2/theme/${themeId}`,
+    method: 'GET'
+  })
+}
+
+export function deleteTheme(themeId) {
+  return axiosInstance.request({
+    url: `/admin2/theme/${themeId}`,
+    method: 'DELETE'
+  })
+}
+
+export function updateTheme(themeId, data) {
     return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}`,
+        url: `/admin2/theme/${themeId}`,
         method: 'PUT',
         data
     })
 }
 
-function deleteTheme(themeId) {
+export function getThemeTheory(themeId) {
     return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}`,
-        method: 'DELETE'
+        url: `/admin2/theme/${themeId}/theory`
     })
 }
 
-function getThemeTheory(themeId) {
+export function createThemeTheory(themeId, data) {
     return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}/theory`
-    })
-}
-
-function createThemeTheory(themeId, data) {
-    return axiosInstance.request({
-        url: `/admin2/theme/${theme_id}/theory`,
+        url: `/admin2/theme/${themeId}/theory`,
         method: 'POST',
         data
     })
 }
 
-function getTheoryVideos(theoryId) {
+export function getTheoryVideos(theoryId) {
     return axiosInstance.request({
         url: `/admin2/storage/video/${theoryId}`
     })
 }
 
-function createTheoryVideo(theoryId, data) {
+export function createTheoryVideo(theoryId, data) {
     return axiosInstance.request({
         url: `/admin2/storage/video/${theoryId}`,
         method: 'POST',

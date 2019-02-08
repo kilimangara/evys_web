@@ -15,8 +15,8 @@ export default class CreateAccount extends Component {
         })
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState(nextProps.initialState)
+    componentDidUpdate(prevProps) {
+      if(this.props != prevProps) this.setState(this.props.initialState)
     }
 
     render() {

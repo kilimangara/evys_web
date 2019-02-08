@@ -6,6 +6,7 @@ import youtube from './youtube'
 import students from './students'
 import subjects from './subjects'
 import tariffs from './tariffs'
+import themes from './themes'
 
 export default {
     account,
@@ -15,5 +16,6 @@ export default {
     assetManager,
     tariffs,
     subjects,
-    students
+    students,
+    themes
 }

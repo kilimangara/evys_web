@@ -7,14 +7,15 @@ import { Route, Switch } from 'react-router'
 import AdminApp from './components/AdminApp'
 import LoginScreen from './screens/admin/LoginScreen'
 import RegisterScreen from './screens/admin/RegisterScreen'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import './screencss/Global.scss'
 import routes from './routes'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { createGenerateClassName, jssPreset } from '@material-ui/core'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { create } from 'jss'
 import { theme } from './utils/global_theme'
 import { PersistGate } from 'redux-persist/integration/react'
+import lightBlue from '@material-ui/core/colors/lightBlue'
 
 const styleNode = document.createComment('insertion-point-jss')
 document.head.insertBefore(styleNode, document.head.firstChild)
@@ -23,13 +24,20 @@ const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
 jss.options.insertionPoint = 'insertion-point-jss'
 
+const muitheme = createMuiTheme({
+  palette: {
+    primary: lightBlue,
+  },
+  typography: { useNextVariants: true },
+});
+
 class Root extends Component {
 
     render() {
         return (
             <Provider store={store}>
               <PersistGate loading={null} persistor={persistor}>
-                <MuiThemeProvider theme={theme}>
+                <MuiThemeProvider theme={muitheme}>
                     <JssProvider jss={jss} generateClassName={generateClassName}>
                         <BrowserRouter>
                             <Switch>

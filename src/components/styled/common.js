@@ -56,6 +56,7 @@ export const CommonWrapper = styled.div`
     -ms-overflow-style: none;
     overflow: scroll;
     height: 100%;
+    flex-grow: 1;
     ::-webkit-scrollbar {
         width: 0;
     }

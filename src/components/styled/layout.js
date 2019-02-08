@@ -4,15 +4,14 @@ import styled from 'styled-components'
 import { theme, studentTheme } from '../../utils/global_theme'
 
 export const AppDrawer = styled(Drawer)`
-    width: 200px;
-    z-index: 2;
+
 `
 
-export const AppToolbar = styled(({ height, ...props }) => <Toolbar {...props} />)`
+export const AppToolbar = styled(({ height, inverse, ...props }) => <Toolbar {...props} />)`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: ${theme.PRIMARY};
+    background-color: ${({ inverse }) => inverse ? 'white' : `${theme.PRIMARY}`};
     height: ${({ height }) => height};
 `
 
@@ -26,8 +25,8 @@ export const CompanyBlock = styled.div`
 export const AppContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: ${({ isDesktop }) => (isDesktop ? '256px' : '0px')};
-    width: ${({ isDesktop }) => (isDesktop ? 'calc(100% - 256px)' : '100%')};
+    position: 'relative';
+    width: 100%;
     height: 100%;
 `
 
