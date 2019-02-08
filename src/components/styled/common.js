@@ -172,3 +172,9 @@ export const HorizontalCentered = styled.div`
     justify-content: center;
     flex-direction: ${({ direction }) => direction || 'row'};
 `
+
+export const SizedIconButton = styled(IconButton)`
+  width: ${({width}) => `${width}px`};
+  margin: ${({margin}) => `${margin}px`};
+  padding: 0;
+`

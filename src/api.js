@@ -44,7 +44,7 @@ const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 const axiosInstance = axios.create({
     baseURL,
     transformResponse: [...axios.defaults.transformResponse, data => humps.camelizeKeys(data)],
-    transformRequest: [data => humps.decamelizeKeys(data), ...axios.defaults.transformRequest]
+    transformRequest: [data => data instanceof FormData ? data : humps.decamelizeKeys(data), ...axios.defaults.transformRequest]
 })
 
 function basicAdminAuth(config) {

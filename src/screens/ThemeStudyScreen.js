@@ -69,7 +69,7 @@ class ThemeStudyScreen extends Component {
                             }
                         />
                     ))}
-                {theory.files && <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />}
+                {theory && theory.files && <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />}
             </HorizontalCentered>
         )
     }
