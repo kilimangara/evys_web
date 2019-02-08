@@ -24,6 +24,7 @@ export default class MainInfo extends React.Component {
     if (!tag) return
     this.setState({tag: ''})
     this.props.subjectUpdated(produce(this.props.subject, (draft) => {
+      if(!draft.tags) draft.tags = []
       draft.tags.push(tag)
     }))
   }
