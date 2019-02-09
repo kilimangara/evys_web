@@ -5,8 +5,8 @@ import withProviders from '../../../utils/withProviders'
 import AssetManagerRepository, {AssetManagerProvider} from '../../../mixins/admin/AssetManagerRepository'
 import SaveButton from '../../../components/common/SaveButton'
 import { Card } from './index'
-import ImageResize from 'quill-image-resize-module'
-console.log(ImageResize)
+import ImageResize  from 'quill-image-resize-module'
+// TODO: здесь надо разобраться как лучше импортить это добро
 Quill.register('modules/imageResize', ImageResize)
 
 const formats = [
@@ -30,10 +30,10 @@ const formats = [
 class TheoryView extends AssetManagerRepository(React.Component){
 
   modules = {
+    imageResize: {
+      displaySize: true
+    },
       toolbar: {
-        imageResize: {
-          displaySize: true
-        },
           container: [
               [{ header: '1' }, { header: '2' }, { font: [] }],
               [{ size: [] }],
