@@ -7,8 +7,6 @@ import TestCaseScreen from '../screens/admin/TestCaseScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import TariffScreen from '../screens/admin/TariffScreen'
-import { logoutAction } from '../actions/admin/AccountActions'
-import { pickAsset } from '../actions/admin/TemplateAssetsActions'
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import bind from 'memoize-bind'
 import Modal from 'reboron/ScaleModal'
@@ -26,6 +24,8 @@ import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import SubjectScreen from '../screens/admin/subject'
 import ThemeScreen from '../screens/admin/theme'
+import {logoutAdmin} from '../reducers/admin/authorization'
+import {switchManager, pickAsset} from '../reducers/admin/assetManager'
 
 class App extends Component {
     constructor(props) {
@@ -33,11 +33,6 @@ class App extends Component {
         this.state = {
             open: false
         }
-    }
-
-    onAssetPicked = (assetObject, meta) => {
-        this.assetManager.hide()
-        this.props.pickAsset(assetObject, meta)
     }
 
     componentWillMount() {
@@ -61,7 +56,7 @@ class App extends Component {
     }
 
     logout = () => {
-        this.props.logoutAction()
+        this.props.logoutAdmin()
         this.props.history.push('/admin/login')
     }
 
@@ -136,13 +131,12 @@ class App extends Component {
                      })}
                 />
                 <AppContainer>
-                    <Modal
-                        ref={ref => (this.assetManager = ref)}
-                        modalStyle={{ height: '100vh', overflowY: 'auto' }}
-                        onHide={this.imageAssetPickerClose}
-                    >
-                        <ImageAssetPicker assetPicked={this.onAssetPicked} />
-                    </Modal>
+                      <Modal
+                          ref={ref => (this.assetManager = ref)}
+                          onHide={this.imageAssetPickerClose}
+                      >
+                          <ImageAssetPicker/>
+                      </Modal>
                     <div style={{minHeight: 64}}/>
                     <CommonWrapper>
                       <Switch>
@@ -234,5 +228,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { logoutAction, pickAsset }
+    { logoutAdmin, switchManager }
 )(withStyles(styles)(App))

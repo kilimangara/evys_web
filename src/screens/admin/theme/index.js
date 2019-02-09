@@ -13,6 +13,8 @@ import produce from 'immer'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import SaveButton from '../../../components/common/SaveButton'
 import { Route } from 'react-router'
+import TheoryView from './theory-view'
+
 
 
 const Container = styled.div`
@@ -55,6 +57,7 @@ class ThemeScreen extends ThemesRepository(React.Component) {
 
   componentDidMount() {
       this.getTheme()
+      this.getTheory()
   }
 
   componentDidUpdate(prevProps) {
@@ -65,12 +68,20 @@ class ThemeScreen extends ThemesRepository(React.Component) {
       this.setState({ theme })
   }
 
+  theoryUpdated = theory => {
+    this.setState({theory})
+  }
+
   saveTheme = () => {
       return this.updateTheme().then(() => this.setState({errors: {}})).catch(err => {
           const { response } = err
           if (response.status === 400) this.setState({ errors: response.data })
           throw err
       })
+  }
+
+  saveTheory = () => {
+    console.log('save theory', this.state.theory)
   }
 
   isHidden = () => this.state.theme.isHidden
@@ -83,8 +94,25 @@ class ThemeScreen extends ThemesRepository(React.Component) {
     this.saveTheme()
   }
 
+  renderTheory = () => {
+    const { theory, videos} = this.state
+    return <TheoryView theory={theory} videos={videos} updateTheory={this.theoryUpdated} theorySaved={this.saveTheory}/>
+  }
+
+  goTo = type => () => {
+      switch (type) {
+          case 'root':
+              return this.props.history.replace(`/admin/themes/${this.themeId()}`)
+          case 'theory':
+              return this.props.history.replace(`/admin/themes/${this.themeId()}/theory`)
+          case 'tests':
+              return this.props.history.replace(`/admin/themes/${this.themeId()}/tests`)
+      }
+  }
+
   render(){
     const { theme } = this.state
+    console.log(this.state)
     if (!theme)
         return (
             <div>
@@ -95,10 +123,10 @@ class ThemeScreen extends ThemesRepository(React.Component) {
       <Container>
           <Card>
               <List subheader={<ListHeader disableSticky>Настройки темы</ListHeader>} component="nav">
-                  <ListItem button>
+                  <ListItem button onClick={this.goTo('root')}>
                       <ListText primary="Основные настройки" />
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.goTo('theory')}>
                       <ListText primary="Теория"/>
                   </ListItem>
                   <ListItem button>
@@ -112,6 +140,7 @@ class ThemeScreen extends ThemesRepository(React.Component) {
                   </div>
               </List>
           </Card>
+          <Route exact path='/admin/themes/:themeId(\d+)/theory' render={this.renderTheory}/>
       </Container>
     )
   }

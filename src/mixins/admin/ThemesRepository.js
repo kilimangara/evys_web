@@ -18,6 +18,14 @@ export default superclass =>
           return this.props.loadTheme(id)
         }
 
+        getTheory = () => {
+          const id = this.themeId()
+          return this.props.loadTheory(id)
+                     .then((data) => {
+                       this.setState(data)
+                     })
+        }
+
         updateTheme = () => {
           const {theme} = this.state
           return this.props.changeTheme(this.themeId(), theme)

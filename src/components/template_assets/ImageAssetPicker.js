@@ -17,29 +17,6 @@ class ImageAssetPicker extends Component {
         this.meta = meta
     }
 
-    searchQuery = () => {
-        const { query } = this.state
-        this.props.loadAssets(1, { name: query, type: this.props.mediaType }).then(this.loadingCallback)
-    }
-
-    loadingCallback = res => {
-        this.setState({ assets: res.data.data.results, totalPages: res.data.data.count })
-    }
-
-    // renderAsset = (asset, index) => {
-    //     return (
-    //         <Card style={styles.cardStyle} key={index}>
-    //             <CardTitle title={asset.name} />
-    //             <CardMedia>
-    //                 <img src={asset.file} alt="" />
-    //             </CardMedia>
-    //             <CardActions>
-    //                 <FlatButton label={'Выбрать'} onClick={bind(this.props.assetPicked, this, asset, this.meta)} />
-    //             </CardActions>
-    //         </Card>
-    //     )
-    // }
-
     onDragEnter = () => {
         this.setState({
             dropzoneActive: true
@@ -96,7 +73,7 @@ const styles = {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 12
+        padding: 36
     },
     cardStyle: {
         margin: 8

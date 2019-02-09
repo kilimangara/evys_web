@@ -11,7 +11,7 @@ const initialState = {
 export const assetPicked = createAction('asset-manager/asset-picked')
 export const switchManager = createAction('asset-manager/switch-manager')
 
-export const uploadAsset = (data) => dispatch {
+export const uploadAsset = (data) => dispatch => {
   return createAsset(data)
 }
 

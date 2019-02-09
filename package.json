@@ -41,6 +41,7 @@
     "memoize-bind": "^1.0.3",
     "moment": "^2.19.0",
     "prop-types": "^15.6.0",
+    "quill-image-resize-module": "^3.0.0",
     "react": "^16.2.0",
     "react-animate-height": "^2.0.7",
     "react-circular-progressbar": "^1.0.0",
