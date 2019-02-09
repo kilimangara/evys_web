@@ -45,6 +45,7 @@ class ThemesScreen extends ThemesRepository(Component) {
     }
 
     componentDidMount() {
+      this.props.resetThemesList()
       this.props.loadThemes(this.subjectId())
     }
 

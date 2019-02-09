@@ -1,5 +1,6 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
+import {createAsset} from '../../api'
 
 const initialState = {
     managerOpened: false,
@@ -9,6 +10,10 @@ const initialState = {
 
 export const assetPicked = createAction('asset-manager/asset-picked')
 export const switchManager = createAction('asset-manager/switch-manager')
+
+export const uploadAsset = (data) => dispatch {
+  return createAsset(data)
+}
 
 export default createReducer(
     {

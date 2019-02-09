@@ -1,22 +1,13 @@
 import React, { Component } from 'react'
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText } from 'material-ui/Card'
-import FlatButton from 'material-ui/FlatButton'
-import { grey900 } from 'material-ui/styles/colors'
-import bind from 'memoize-bind'
-import TextField from 'material-ui/TextField'
 import Dropzone from 'react-dropzone'
 import { connect } from 'react-redux'
-import { loadAssets, createAsset } from '../../actions/admin/TemplateAssetsActions'
-import IconButton from 'material-ui/IconButton'
+import grey from '@material-ui/core/colors/grey'
+import {uploadAsset, assetPicked} from '../../reducers/admin/assetManager'
 
 class ImageAssetPicker extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            query: '',
-            currentPage: 1,
-            assets: [],
-            totalPages: 1,
             dropzoneActive: false
         }
         this.meta = {}
@@ -24,14 +15,6 @@ class ImageAssetPicker extends Component {
 
     setMeta = meta => {
         this.meta = meta
-    }
-
-    componentWillMount() {
-        this.props.loadAssets(this.state.currenPage, { type: this.props.mediaType }).then(this.loadingCallback)
-    }
-
-    searchBoxChange = (event, value) => {
-        this.setState({ query: value })
     }
 
     searchQuery = () => {
@@ -43,49 +26,43 @@ class ImageAssetPicker extends Component {
         this.setState({ assets: res.data.data.results, totalPages: res.data.data.count })
     }
 
-    renderAsset = (asset, index) => {
-        return (
-            <Card style={styles.cardStyle} key={index}>
-                <CardTitle title={asset.name} />
-                <CardMedia>
-                    <img src={asset.file} alt="" />
-                </CardMedia>
-                <CardActions>
-                    <FlatButton label={'Выбрать'} onClick={bind(this.props.assetPicked, this, asset, this.meta)} />
-                </CardActions>
-            </Card>
-        )
-    }
+    // renderAsset = (asset, index) => {
+    //     return (
+    //         <Card style={styles.cardStyle} key={index}>
+    //             <CardTitle title={asset.name} />
+    //             <CardMedia>
+    //                 <img src={asset.file} alt="" />
+    //             </CardMedia>
+    //             <CardActions>
+    //                 <FlatButton label={'Выбрать'} onClick={bind(this.props.assetPicked, this, asset, this.meta)} />
+    //             </CardActions>
+    //         </Card>
+    //     )
+    // }
 
-    onDragEnter() {
+    onDragEnter = () => {
         this.setState({
             dropzoneActive: true
         })
     }
 
-    onDragLeave() {
+    onDragLeave = () => {
         this.setState({
             dropzoneActive: false
         })
     }
 
-    onDrop(files) {
+    onDrop = (files) => {
         console.log(files)
-        files.forEach((file, index) => {
-            this.props
-                .createAsset({
-                    file,
-                    type: this.props.mediaType,
-                    name: file.name
-                })
-                .then(() => {
-                    if (index === files.length - 1) {
-                        this.props
-                            .loadAssets(this.state.currenPage, { type: this.props.mediaType })
-                            .then(this.loadingCallback)
-                    }
-                })
+        let file = files[0]
+        this.props.uploadAsset({
+          file,
+          type: this.props.mediaType,
+          name: file.name
+        }).then(({data}) => {
+          this.props.assetPicked({asset: data, meta: this.meta})
         })
+
         this.setState({
             dropzoneActive: false
         })
@@ -99,31 +76,15 @@ class ImageAssetPicker extends Component {
         }
         return (
             <div style={styles.container}>
-                <div style={styles.searchBox}>
-                    <TextField
-                        onChange={this.searchBoxChange}
-                        hintText="Поиск"
-                        value={this.state.query}
-                        underlineFocusStyle={{ borderColor: grey900 }}
-                    />
-                    <IconButton
-                        iconClassName={'fas fa-search'}
-                        onClick={this.searchQuery}
-                        style={{ color: grey900 }}
-                        tooltip={'Поиск'}
-                        tooltipPosition={'top-center'}
-                    />
-                </div>
                 <Dropzone
                     accept="image/*"
                     style={{ position: 'relative' }}
-                    onDrop={bind(this.onDrop, this)}
-                    onDragEnter={bind(this.onDragEnter, this)}
-                    onDragLeave={bind(this.onDragLeave, this)}
+                    onDrop={this.onDrop}
+                    onDragEnter={this.onDragEnter}
+                    onDragLeave={this.onDragLeave}
                 >
                     <div style={overlayStyle}>Перетащите сюда файлы или нажмите</div>
                 </Dropzone>
-                {assets.map(this.renderAsset)}
             </div>
         )
     }
@@ -149,7 +110,7 @@ const styles = {
         borderRadius: 15,
         padding: 16,
         borderWidth: 2,
-        borderColor: grey900,
+        borderColor: grey[900],
         borderStyle: 'dashed',
         justifyContent: 'center',
         alignItems: 'center',
@@ -164,5 +125,5 @@ ImageAssetPicker.defaultProps = {
 
 export default connect(
     null,
-    { loadAssets, createAsset }
+    { uploadAsset, assetPicked }
 )(ImageAssetPicker)

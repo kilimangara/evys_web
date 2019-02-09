@@ -1,6 +1,6 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
-import { merge } from 'lodash'
+import { merge, omit } from 'lodash'
 import {
   getSubjectThemes,
   createSubjectTheme,
@@ -113,7 +113,12 @@ export default createReducer(
                 if (payload.currentPage !== 1) payload.unshift(...state.list)
                 merge(draft, payload)
             }),
-        [resetThemesList]: (state, payload) => produce(state, draft => merge(draft, omit(initialState, ['current']))),
+        [resetThemesList]: (state, payload) => produce(state, draft => {
+          draft.list = []
+          draft.totalPages = 1
+          draft.currentPage = 0
+          draft.fetching = false
+        }),
         [successShowThemes]: (state, payload) =>
             produce(state, draft => {
                 draft.current = payload
