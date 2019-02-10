@@ -1,63 +1,11 @@
 import React from 'react'
-import 'react-quill/dist/quill.snow.css'
-import ReactQuill from 'react-quill'
 import withProviders from '../../../utils/withProviders'
 import AssetManagerRepository, {AssetManagerProvider} from '../../../mixins/admin/AssetManagerRepository'
 import SaveButton from '../../../components/common/SaveButton'
 import { Card } from './index'
-import ImageResize  from 'quill-image-resize-module'
-// TODO: здесь надо разобраться как лучше импортить это добро
-Quill.register('modules/imageResize', ImageResize)
-
-const formats = [
-    'header',
-    'font',
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'blockquote',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'video',
-    'formula'
-]
+import EvysQuill from '../../../components/quill/EvysQuill'
 
 class TheoryView extends AssetManagerRepository(React.Component){
-
-  modules = {
-    imageResize: {
-      displaySize: true
-    },
-      toolbar: {
-          container: [
-              [{ header: '1' }, { header: '2' }, { font: [] }],
-              [{ size: [] }],
-              ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-              [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
-              ['clean'],
-              ['image'],
-              ['formula']
-          ],
-          handlers: {
-              image: value => {
-                  this.props.switchManager()
-              }
-          }
-      },
-      clipboard: {
-          // toggle to add extra line breaks when pasting HTML:
-          matchVisual: false
-      }
-  }
-
-  componentDidUpdate(prevProps) {
-    this.passImageFromManager()
-  }
 
   changeTheoryText = (newText) => {
       const newTheoryObj = { ...this.props.theory, text: newText }
@@ -73,13 +21,9 @@ class TheoryView extends AssetManagerRepository(React.Component){
     if (!theory) return null
     return(
       <Card marginTop={12}>
-        <ReactQuill
-            ref={ref => (this.quill = ref)}
+        <EvysQuill
             value={theory.text}
-            modules={this.modules}
-            formats={formats}
-            onChange={this.changeTheoryText}
-            theme={'snow'}
+            onChangeText={this.changeTheoryText}
         />
         <SaveButton ref={(ref) => this.saveButton = ref} onClick={this.saveSubject}/>
       </Card>
