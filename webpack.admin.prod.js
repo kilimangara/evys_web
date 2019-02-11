@@ -50,6 +50,10 @@ module.exports = env =>
             comments: false
         }
       }),
+      new webpack.ProvidePlugin({
+        'window.Quill': 'quill/dist/quill.js',
+        'Quill': 'quill/dist/quill.js'
+      }),
       new HtmlWebpackPlugin({
         template: "./public/index_admin.html",
         title: 'Evys admin',
