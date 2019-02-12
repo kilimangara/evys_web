@@ -14,7 +14,7 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import SaveButton from '../../../components/common/SaveButton'
 import { Route } from 'react-router'
 import TheoryView from './theory-view'
-
+import TestCasesView from './test-cases'
 
 
 const Container = styled.div`
@@ -25,13 +25,13 @@ const Container = styled.div`
     align-items: stretch;
 `
 
-const ListHeader = styled(ListSubheader)`
+export const ListHeader = styled(ListSubheader)`
     font-weight: 600;
     font-size: 18px;
     color: black;
 `
 
-const ListText = styled(ListItemText)`
+export const ListText = styled(ListItemText)`
     & > span {
         padding-left: 20px;
     }
@@ -129,7 +129,7 @@ class ThemeScreen extends ThemesRepository(React.Component) {
                   <ListItem button onClick={this.goTo('theory')}>
                       <ListText primary="Теория"/>
                   </ListItem>
-                  <ListItem button>
+                  <ListItem button onClick={this.goTo('tests')}>
                       <ListText primary="Вопросы" />
                   </ListItem>
                   <Divider />
@@ -141,6 +141,7 @@ class ThemeScreen extends ThemesRepository(React.Component) {
               </List>
           </Card>
           <Route exact path='/admin/themes/:themeId(\d+)/theory' render={this.renderTheory}/>
+          <Route exact path='/admin/themes/:themeId(\d+)/tests' component={TestCasesView}/>
       </Container>
     )
   }

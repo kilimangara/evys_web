@@ -394,7 +394,7 @@ export function createTestCase(themeId, data) {
 
 export function getTestCases(themeId) {
     return axiosInstance.request({
-        url: `~admin2/theme/${themeId}/test_cases`
+        url: `/admin2/theme/${themeId}/test_cases`
     })
 }
 

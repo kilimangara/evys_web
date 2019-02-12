@@ -83,11 +83,6 @@ class EvysQuill extends React.Component {
                 formats={formats}
                 onChange={this.changeText}
                 theme={'snow'}
-                styles={{
-                  ".ql-editor":{
-                    'min-height': '375px'
-                  }
-                }}
             />
         )
     }

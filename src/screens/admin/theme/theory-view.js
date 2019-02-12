@@ -1,11 +1,10 @@
 import React from 'react'
 import withProviders from '../../../utils/withProviders'
-import AssetManagerRepository, {AssetManagerProvider} from '../../../mixins/admin/AssetManagerRepository'
 import SaveButton from '../../../components/common/SaveButton'
 import { Card } from './index'
 import EvysQuill from '../../../components/quill/EvysQuill'
 
-class TheoryView extends AssetManagerRepository(React.Component){
+class TheoryView extends React.Component{
 
   changeTheoryText = (newText) => {
       const newTheoryObj = { ...this.props.theory, text: newText }
@@ -31,4 +30,4 @@ class TheoryView extends AssetManagerRepository(React.Component){
   }
 }
 
-export default withProviders(AssetManagerProvider)(TheoryView)
+export default TheoryView
