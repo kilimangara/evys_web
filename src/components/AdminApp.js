@@ -3,10 +3,8 @@ import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
 import SubjectsScreen from '../screens/admin/SubjectsScreen'
-import TestCaseScreen from '../screens/admin/TestCaseScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
-import TariffScreen from '../screens/admin/TariffScreen'
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import bind from 'memoize-bind'
 import Modal from 'reboron/ScaleModal'
@@ -143,10 +141,8 @@ class App extends Component {
                           <Route exact path="/admin" component={SubjectsScreen} />
                           <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
                           <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen}/>
-                          <Route exact path="/admin/themes/:theme_id(\d+)" component={TestCaseScreen} />
                           <Route path="/admin/students" component={StudentsScreen} />
                           <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                          <Route path="/admin/tariffs" component={TariffScreen} />
                           <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
                           <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
                       </Switch>

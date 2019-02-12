@@ -38,8 +38,8 @@ class EvysQuill extends React.Component {
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
                 ['clean'],
-                ['image'],
-                ['formula']
+                [{'image': {tooltip: 'Прикрепить фотографию'}}],
+                [{'formula': {tooltip: 'Формула в KaTex формате'}}]
             ],
             handlers: {
                 image: value => {

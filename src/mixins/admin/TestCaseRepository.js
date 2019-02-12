@@ -6,9 +6,28 @@ import {
   removeAnswer,
   newTestCase
 } from '../../reducers/admin/testCase'
+import produce from 'immer'
 
 export default superclass =>
     class TestCaseRepository extends superclass {
+
+        standardTests = () => [
+          {
+              name: 'Название вопроса',
+              task: '<p>Выберите правильный ответ</p>',
+              tip: '<p>Пусто</p>',
+              answers: [
+                  {
+                      content: 'Неправильный ответ!',
+                      is_right: false
+                  },
+                  {
+                      content: 'Правильный ответ!',
+                      is_right: true
+                  }
+              ]
+          }
+        ]
 
         themeId = () => this.props.match.params['themeId']
 
@@ -22,8 +41,29 @@ export default superclass =>
                     })
         }
 
+        updateTestCase = (testCaseId) => {
+          const tsIndex = this.state.testCases.findIndex(el => el.id === testCaseId)
+          if(tsIndex === -1) return
+          const data = this.state.testCases[tsIndex]
+          return this.props.putTestCase(this.themeId(), testCaseId, data)
+                     .then(({data}) => {
+                       this.setState(produce(this.state, (draft) => {
+                         draft.testCases.splice(tsIndex, 1, data)
+                       }))
+                     })
+        }
+
+        deleteAnswer = (testId, answerId) => {
+          return this.props.removeAnswer(testId, answerId)
+        }
+
+        deleteTestCase = (testCaseId) => {
+          return this.props.removeTestCase(this.themeId(), testCaseId)
+                           .then(this.loadTestCases)
+        }
+
         createTestCase = (analogueId, description) => {
-          return this.props.newTestCase(this.themeId(),{analogueId, description})
+          return this.props.newTestCase(this.themeId(),{analogueId, description, tests: this.standardTests()})
                     .then(this.loadTestCases)
         }
     }

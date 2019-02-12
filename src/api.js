@@ -407,7 +407,7 @@ export function deleteTestCase(themeId, testCaseId) {
 
 export function updateTestCase(themeId, testCaseId, data) {
     return axiosInstance.request({
-        url: `/admin2/theme/${themId}/test_case/${testCaseId}`,
+        url: `/admin2/theme/${themeId}/test_case/${testCaseId}`,
         data,
         method: 'PUT'
     })

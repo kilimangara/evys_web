@@ -13,3 +13,16 @@
 .ql-editor{
   min-height: 200px !important;
 }
+
+.sortable-handle {
+  cursor: move;
+  cursor: -webkit-grabbing;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+}
+
+.sortable-chosen {
+
+}
