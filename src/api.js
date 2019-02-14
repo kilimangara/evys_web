@@ -70,6 +70,10 @@ axiosInstance.interceptors.response.use(data => {
     if (data.data) return data.data
     if (data.error) return data.error
     return data
+}, error => {
+    if (error.response.status === 401){
+        // window.location = '/login'
+    }
 })
 
 // student methods
@@ -81,6 +85,13 @@ export function sendCode(phone) {
         url: '/student/code',
         method: 'POST',
         data: { phone }
+    })
+}
+
+export function searchSubjects(params) {
+    return axiosInstance.request({
+        url: 'student/subjects/search',
+        params
     })
 }
 
@@ -171,6 +182,13 @@ export function sendTestQuestionAnswer(themeId, data) {
         data
     })
 }
+
+export function getPopularSubjects() {
+    return axiosInstance.request({
+        url: '/student/subjects/popular',
+    })
+}
+
 
 // admin methods
 

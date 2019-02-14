@@ -5,16 +5,9 @@ import { Route, Switch } from 'react-router'
 import HeaderAppBar from './header_app_bar/HeaderAppBar'
 import Login from '../screens/Login'
 import ProfileScreen from '../screens/ProfileScreen'
-import Drawer from 'material-ui/Drawer'
-import FontIcon from 'material-ui/FontIcon'
-import { List, ListItem } from 'material-ui/List'
-import Divider from 'material-ui/Divider'
-import Avatar from 'material-ui/Avatar'
-import RaisedButton from 'material-ui/RaisedButton'
-import TariffsScreen from '../screens/TariffsScreen'
 import ThemesScreen from '../screens/ThemesScreen'
 import SubThemesScreen from '../screens/SubThemesScreen'
-import CoursesScreen from '../screens/CoursesScreen'
+import CoursesScreen from '../screens/courses/CoursesScreen'
 import ThemeStudyScreen from '../screens/ThemeStudyScreen'
 import { exitProfile } from '../actions/AccountActions'
 import { blue500 } from 'material-ui/styles/colors'
@@ -23,8 +16,13 @@ import LeftPanel from '../components/common/LeftPanel'
 import CourseItem from '../components/courses/CourseItem'
 import { CommonWrapper } from './styled/common'
 import { StudentAppWrapper } from './styled/layout'
-import BeforeStudy from "../screens/BeforeStudy"
-import TestQuestionScreen from "../screens/TestQuestionScreen";
+import BeforeStudy from '../screens/BeforeStudy'
+import TestQuestionScreen from '../screens/TestQuestionScreen'
+import AllCoursesScreen from '../screens/courses/AllCoursesScreen'
+import SearchCoursesScreen from '../screens/courses/SearchCoursesScreen'
+import withProviders from "../utils/withProviders";
+import {AuthorizationProvider} from "../mixins/student/AuthorizationRepository";
+import NotFoundPage from "../screens/NotFoundPage";
 
 class App extends Component {
     constructor(props) {
@@ -35,21 +33,21 @@ class App extends Component {
     }
 
     componentWillMount() {
-        this.props.switchUserApp()
-        // if (!this.props.authenticated) {
-        //   this.props.history.push('/app/login')
-        // }
+        // this.props.switchUserApp()
+        if (!this.props.token) {
+          this.props.history.push('/login')
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         console.log(nextProps.valid_course)
         console.log(this.props.valid_course)
-        if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
-            this.props.history.push('/app/login')
-        }
-        if (!nextProps.valid_course && nextProps.valid_course != this.props.valid_course) {
-            this.props.history.push('/app/courses')
-        }
+        // if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
+        //     this.props.history.push('/login')
+        // }
+        // if (!nextProps.valid_course && nextProps.valid_course != this.props.valid_course) {
+        //     this.props.history.push('/app/courses')
+        // }
     }
 
     handleToggle = () => this.setState({ open: !this.state.open })
@@ -105,12 +103,27 @@ class App extends Component {
                     <HeaderAppBar />
                     <CommonWrapper>
                         <Switch>
-                            <Route path="/app/courses" component={CoursesScreen} />
-                            <Route path='/app/profile' component={ProfileScreen} />
-                            <Route exact path='/app/course/:course_id(\d+)/themes' component={ThemesScreen} />
-                            <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)' component={BeforeStudy} />
-                            <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory' component={ThemeStudyScreen} />
-                            <Route exact path='/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test' component={TestQuestionScreen} />
+                            <Route exact path="/app/student/courses" component={CoursesScreen} />
+                            <Route path="/app/profile" component={ProfileScreen} />
+                            <Route exact path={'/app/student/courses/all'} component={AllCoursesScreen} />
+                            <Route path={'/app/student/courses/search'} component={SearchCoursesScreen} />
+                            <Route exact path="/app/course/:course_id(\d+)/themes" component={ThemesScreen} />
+                            <Route
+                                exact
+                                path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)"
+                                component={BeforeStudy}
+                            />
+                            <Route
+                                exact
+                                path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory"
+                                component={ThemeStudyScreen}
+                            />
+                            <Route
+                                exact
+                                path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test"
+                                component={TestQuestionScreen}
+                            />
+                            <Route component={NotFoundPage}/>
                         </Switch>
                     </CommonWrapper>
                 </div>
@@ -165,13 +178,4 @@ class App extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    account: state.account.profileData || {},
-    authenticated: state.auth.authenticated,
-    valid_course: state.courses.valid_course
-})
-
-export default connect(
-    mapStateToProps,
-    { exitProfile, switchUserApp }
-)(App)
+export default withProviders(AuthorizationProvider)(App)

@@ -46,7 +46,6 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 
     sendAnswer = text => {
-        console.log('send')
         const answerTime = Math.floor((new Date().getTime() - this.mountTime) / 1000)
         this.mountTime = new Date().getTime()
         this.props
@@ -58,12 +57,11 @@ class TestQuestionScreen extends TestsMixin(Component) {
             .then(res => {
                 const correct = res && res.data.answerData && res.data.answerData.isRight
                 this.setState({ correct, answerSended: true })
-                // if (!res.block)
             })
     }
 
     getNextQuestion = () => {
-        this.setState({ question: null, answerSended: false })
+        this.setState({ question: null, answerSended: false, selectedAnswer: null })
         return getTestQuestion(this.themeId, { test_block: this.props.testBlockId }).then(res =>
             this.setState({ question: res.data })
         )

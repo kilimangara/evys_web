@@ -7,6 +7,7 @@ export class AuthorizationProvider {
         authenticated: state.auth.authenticated,
         userId: state.auth.user_id,
         stepIndex: state.auth.stepIndex,
+        isNew: state.auth.isNew,
         token: state.auth.token
     })
 

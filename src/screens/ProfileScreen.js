@@ -18,6 +18,8 @@ import withProviders from '../utils/withProviders'
 import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import AccountMixin, { AccountProvider } from '../mixins/student/AccountRepository'
 
+export const DEFAULT_AVATAR_IMAGE_URL = 'https://272507.selcdn.ru/evys_api_videos/evys/evys_avatar_placeholder.jpg';
+
 const profileFields = ['full_name', 'email', 'avatar']
 
 const requiredFields = ['full_name', 'email']
@@ -27,7 +29,7 @@ class ProfileScreen extends AccountMixin(Component) {
         errors: {},
         open: false,
         selectedFavoriteSubjects: [],
-        favoriteSubjectsOpened: this.props.newUser
+        favoriteSubjectsOpened: this.props.isNew
     }
 
     componentWillMount() {
@@ -122,7 +124,7 @@ class ProfileScreen extends AccountMixin(Component) {
                             width={'33%'}
                             paddingTop={'33%'}
                             loading={loading}
-                            src={profileData.avatar && profileData.avatar.original.url}
+                            src={profileData.avatar && profileData.avatar.original.url || DEFAULT_AVATAR_IMAGE_URL}
                             onChange={this.onAvatarChanged}
                         />
                         <AliasTextField
@@ -152,17 +154,5 @@ class ProfileScreen extends AccountMixin(Component) {
     }
 }
 
-// const mapStateToProps = state => ({
-//     profileData: state.account.profileData,
-//     isAuthenticated: state.auth.authenticated,
-//     userId: state.auth.user_id,
-//     newUser: state.auth.is_new,
-//     loading: state.account.fetching
-// })
-
 export default withProviders(AuthorizationProvider, AccountProvider)(ProfileScreen)
 
-// export default connect(
-//     mapStateToProps,
-//     { loadProfileData, saveProfile }
-// )(ProfileScreen)

@@ -38,9 +38,9 @@ class CourseItem extends Component {
     }
 
     render() {
-        const { courseImage, name, teacherName, subscribeTo, percent, ended } = this.props
+        const { courseImage, name, teacherName, subscribeTo, percent, ended, onClick } = this.props
         return (
-            <CourseWrapper>
+            <CourseWrapper onClick={() => onClick()}>
                 {ended && (
                     <OutdatedWrapper>
                         <OutdatedText>Истек ({this.renderExpireDate(subscribeTo)})</OutdatedText>
@@ -83,15 +83,6 @@ class CourseItem extends Component {
             </CourseWrapper>
         )
     }
-}
-
-CourseItem.defaultProps = {
-    active: true,
-    name: 'Тестовое название',
-    percent: Math.floor(Math.random() * 100),
-    teacherName: 'Фамилия И.О.',
-    subscribeTo: '2018-07-18T20:59:59.999Z',
-    courseImage: 'https://respectbet.com/upload/articles/59d7a723718e7.jpg'
 }
 
 export default CourseItem

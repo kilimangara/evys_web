@@ -5,7 +5,7 @@ import {
     loadThemeById,
     loadThemes,
     loadTheoryByThemeId,
-    loadThemeVideos
+    loadThemeVideos,
 } from '../../reducers/student/courses'
 
 export default superclass => class CoursesRepository extends superclass {
@@ -27,6 +27,6 @@ export class CoursesProvider {
         loadThemes,
         loadTheoryByThemeId,
         loadThemeById,
-        loadThemeVideos
+        loadThemeVideos,
     }
 }

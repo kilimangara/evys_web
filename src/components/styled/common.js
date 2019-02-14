@@ -18,10 +18,11 @@ export const Paper = styled.div`
     width: ${({ width }) => width || 'auto'};
     background: ${({ background }) => background || ''};
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
-    border: ${({border}) => border || ''};
+    border: ${({ border }) => border || ''};
     overflow: hidden;
     cursor: pointer;
     transition: box-shadow 0.25s ease-in-out, border 0.25s ease-in-out;
+    pointer-events: ${({ disabled }) => (disabled ? 'none' : 'all')};
 `
 
 export const ColoredContainer = styled.div`
@@ -83,7 +84,7 @@ export const StudentTypography = styled.p`
 
 export const StudentInput = styled.input`
     font-size: 14px;
-    font-family: Montserrat;
+    font-family: Montserrat, serif;
     padding: 8px 16px;
     box-sizing: border-box;
     background-color: #333333;
@@ -93,9 +94,8 @@ export const StudentInput = styled.input`
     width: ${props => props.width || '100%'};
     height: ${props => props.height || '30px'};
     outline: none;
-    text-align: center;
-    &:focus {
-        text-align: left;
+    ::placeholder {
+        text-align: center;
     }
 `
 
@@ -142,21 +142,21 @@ export const ColoredButton = styled(({ color, textColor, textHover, ...props }) 
 
 export const Error = styled.div`
     color: ${studentTheme.ERROR};
-    font: ${studentTheme.H3} ${studentTheme.FONT}
+    font: ${studentTheme.H3} ${studentTheme.FONT};
 `
 
 export const H3 = styled.div`
-    color: ${({color}) => color || studentTheme.TEXT_COLOR};
+    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H3} ${studentTheme.FONT};
 `
 
 export const H2 = styled.div`
-    color: ${({color}) => color || studentTheme.TEXT_COLOR};
+    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H2} ${studentTheme.FONT};
 `
 
 export const H1 = styled.div`
-    color: ${({color}) => color || studentTheme.TEXT_COLOR};
+    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H1} ${studentTheme.FONT};
 `
 
@@ -175,7 +175,16 @@ export const HorizontalCentered = styled.div`
 `
 
 export const SizedIconButton = styled(IconButton)`
-  width: ${({width}) => `${width}px`};
-  margin: ${({margin}) => `${margin}px`};
-  padding: 0;
+    width: ${({ width }) => `${width}px`};
+    margin: ${({ margin }) => `${margin}px`};
+    padding: 0;
+`
+export const RowFlexed = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+export const RowForm = styled.form`
+    display: flex;
+    flex-direction: row;
 `

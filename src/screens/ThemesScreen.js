@@ -18,29 +18,27 @@ class ThemesScreen extends Component {
 
     componentDidMount() {
         this.courseId = this.props.match.params['course_id']
+        if (!this.props.currentCourse || this.props.currentCourse.id !== this.courseId) {
+            this.props.getCourseById(this.courseId)
+        }
         console.log('id', this.courseId)
-        // this.props.loadThemes(this.courseId, null).then(response => {
-        //     this.setState({ themes: response.data })
-        // })
-        Promise.all([this.props.loadThemes(this.courseId, null), this.props.getCourseById(this.courseId)]).then(
-            responses => this.setState({ themes: responses[0], course: responses[1] })
-        )
+        this.props.loadThemes(this.courseId, null).then(response => this.setState({ themes: response }))
     }
 
     handleCardClick = id => this.props.history.push(`/app/course/${this.courseId}/theme/${id}`)
 
     render() {
-        const { course, themes } = this.state
-        console.log('themes', themes)
+        const { currentCourse } = this.props
+        const { themes } = this.state
         return (
             <CenteredContent>
                 <ThemesScreenWrapper>
                     <CurrentCourseItem
                         active={true}
-                        name={course && course.subject && course.subject.subject}
-                        percent={course && course.progress}
-                        teacherName={course && course.owner}
-                        subscribeTo={course && course.billingInfo && course.billingInfo.endsAt}
+                        name={currentCourse && currentCourse.subject && currentCourse.subject.subject}
+                        percent={currentCourse && currentCourse.progress}
+                        teacherName={currentCourse && currentCourse.owner}
+                        subscribeTo={currentCourse && currentCourse.billingInfo && currentCourse.billingInfo.endsAt}
                     />
                     <ThemesItemWrapper>
                         {themes &&

@@ -10,22 +10,27 @@ import CheckboxIcon from '@material-ui/icons/CheckBox'
 import { loadCourseById, loadThemeById } from '../actions/CoursesActions'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
+import { withRouter } from 'react-router'
 
 class BeforeStudy extends Component {
     state = {
         theme: null
     }
     componentDidMount() {
-        const courseId = this.props.match.params['course_id']
-        const themeId = this.props.match.params['theme_id']
-        Promise.all([this.props.getCourseById(courseId), this.props.loadThemeById(themeId)]).then(responses =>
-            this.setState({ theme: responses[1].data.data })
-        )
+        this.courseId = this.props.match.params['course_id']
+        this.themeId = this.props.match.params['theme_id']
+        this.props.loadThemeById(this.themeId).then(response => this.setState({ theme: response }))
     }
+
+    goToTheory = () => this.props.history.push(`/app/course/${this.courseId}/theme/${this.themeId}/theory`)
+
+    goToPractice = () => this.props.history.push(`/app/course/${this.courseId}/theme/${this.themeId}/test`)
 
     render() {
         const { theme } = this.state
         const { currentCourse } = this.props
+        // console.log('p', currentCourse && currentCourse.progress)
+        console.log('th', theme)
         return (
             <BeforeStudyWrapper>
                 <CurrentCourseItem
@@ -39,6 +44,7 @@ class BeforeStudy extends Component {
                 </ThemeNameBlock>
                 <CardsBlock>
                     <DataCard
+                        disabled={theme && !theme.theory}
                         hasVideo={true}
                         name={'Теория'}
                         iconsBlock={
@@ -47,7 +53,8 @@ class BeforeStudy extends Component {
                                 <DescriptionIcon />
                             </div>
                         }
-                    />
+                        onClick={() => this.goToTheory()}
+                />
                     <DataCard
                         name={'Практика'}
                         iconsBlock={
@@ -55,6 +62,8 @@ class BeforeStudy extends Component {
                                 <CheckboxIcon />
                             </div>
                         }
+                        onClick={() => this.goToPractice()}
+                        disabled={theme && theme.tests && theme.tests.count === 0}
                     />
                 </CardsBlock>
             </BeforeStudyWrapper>
@@ -62,11 +71,4 @@ class BeforeStudy extends Component {
     }
 }
 
-// const mapStateToProps = state => ({})
-//
-// export default connect(
-//     mapStateToProps,
-//     { loadThemeById, loadCourseById }
-// )(BeforeStudy)
-
-export default withProviders(CoursesProvider)(BeforeStudy)
+export default withRouter(withProviders(CoursesProvider)(BeforeStudy))
