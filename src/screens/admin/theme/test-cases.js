@@ -44,7 +44,11 @@ class TestCases extends TestCaseRepository(React.Component){
     selectedTestCase: null,
     selectedTest: null,
     loading: false,
-    description: ''
+    description: '',
+    answer: {
+      isRight: false,
+      content: ''
+    }
   }
 
   componentDidMount(){
@@ -128,26 +132,6 @@ class TestCases extends TestCaseRepository(React.Component){
         .then(() => this.setState({description: ''}))
   }
 
-  renderCreationItem = () => {
-    const {description} = this.state
-    return(
-      <ListItem className='ignore-drag' component='div'>
-        <ListItemContainer>
-          <TextField
-              onChange={this.descriptionChanged}
-              label={'Название'}
-              variant='outlined'
-              fullWidth
-              value={description}
-          />
-        </ListItemContainer>
-        <IconButton type='submit'>
-          <Add/>
-        </IconButton>
-      </ListItem>
-    )
-  }
-
   findTest = () => {
     const {selectedTestCase, selectedTest} = this.state
     const testCase = this.state.testCases.find((el) => el.id === selectedTestCase)
@@ -171,7 +155,7 @@ class TestCases extends TestCaseRepository(React.Component){
     }))
   }
 
-  answerChanged = (answerId, field) => (event) => {
+  answerChanged = (answerId, field) => (event, newValue) => {
     const {selectedTestCase, selectedTest} = this.state
     let value = event.target.value
     if( field === 'isRight') value = newValue
@@ -190,15 +174,15 @@ class TestCases extends TestCaseRepository(React.Component){
 
   deleteAnswer = (answerId) => () => {
     const {selectedTestCase, selectedTest} = this.state
-    const testCase = draft.testCases.find((el) => el.id === selectedTestCase)
-    if(!testCase) return
-    const test = testCase.tests.find((el) => el.id === selectedTest )
-    if(!test) return
-    const answerIndex = test.answers.findIndex((el) => el.id === answerId)
-    if(answerIndex === -1) return
     this.deleteAnswer(test.id, answerId)
         .then(() => {
           this.setState(produce(this.state, (draft) => {
+            const testCase = draft.testCases.find((el) => el.id === selectedTestCase)
+            if(!testCase) return
+            const test = testCase.tests.find((el) => el.id === selectedTest )
+            if(!test) return
+            const answerIndex = test.answers.findIndex((el) => el.id === answerId)
+            if(answerIndex === -1) return
             test.answers.splice(index, 1)
           }))
         })
@@ -226,8 +210,79 @@ class TestCases extends TestCaseRepository(React.Component){
               value={answer.content}
           />
         </ListItemContainer>
-        <IconButton>
+        <IconButton onClick={this.deleteAnswer(answer.id)}>
           <Delete/>
+        </IconButton>
+      </ListItem>
+    )
+  }
+
+  newAnswerChanged = (field) => (event, newValue) => {
+    let value = event.target.value
+    if( field === 'isRight') value = newValue
+    this.setState(produce(this.state,  (draft) => {
+      draft.answer[field] = value
+    }))
+  }
+
+  addAnswer = () => {
+    const {answer, selectedTest, selectedTestCase} = this.state
+    this.setState(produce(this.state, (draft) => {
+      const testCase = draft.testCases.find((el) => el.id === selectedTestCase)
+      if(!testCase) return
+      const test = testCase.tests.find((el) => el.id === selectedTest )
+      if(!test) return
+      test.draft = true
+      test.answers.push(answer)
+      draft.answer = {isRight: false, content: ''}
+    }))
+  }
+
+  renderCreationItem = () => {
+    const {description} = this.state
+    return(
+      <ListItem className='ignore-drag' component='div'>
+        <ListItemContainer>
+          <TextField
+              onChange={this.descriptionChanged}
+              label={'Добавить вопрос'}
+              variant='outlined'
+              fullWidth
+              value={description}
+          />
+        </ListItemContainer>
+        <IconButton type='submit'>
+          <Add/>
+        </IconButton>
+      </ListItem>
+    )
+  }
+
+  renderAnswerCreation = () => {
+    const {answer} = this.state
+    return(
+      <ListItem component='div'>
+        <ListItemContainer>
+          <FormControlLabel
+              control={
+                  <Checkbox
+                      color="primary"
+                      checked={answer.isRight}
+                      onChange={this.newAnswerChanged('isRight')}
+                  />
+              }
+              label="Правильный"
+          />
+          <TextField
+              onChange={this.newAnswerChanged('content')}
+              label={'Название'}
+              variant='outlined'
+              fullWidth
+              value={answer.content}
+          />
+        </ListItemContainer>
+        <IconButton onClick={this.addAnswer}>
+          <Add/>
         </IconButton>
       </ListItem>
     )
@@ -252,6 +307,7 @@ class TestCases extends TestCaseRepository(React.Component){
             onChangeText={this.testChanged('task')}
         />
         {test.answers.map(this.renderAnswerItem)}
+        {this.renderAnswerCreation()}
       </Card>
     )
   }
