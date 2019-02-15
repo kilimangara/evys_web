@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { getCode, sendCode, saveStepIndex } from '../actions/CodeActions'
 import { Step } from '@material-ui/core/'
 import { CenteredContent, ColoredButton, Error, WithVerticalMargin } from '../components/styled/common'
 import { LoginContainer, LoginDataWrapper } from '../components/styled/authorization'
@@ -8,10 +6,8 @@ import { LoginStepLabel, LoginStepper, PhoneNumberInput } from '../components/st
 import { studentTheme } from '../utils/global_theme'
 import ReactCodeInput from 'react-code-input'
 import { withWidth } from '@material-ui/core'
-import { withAuthMethods } from '../decorators/withAuthMethods'
 import AuthorisationMixin, { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import withProviders from '../utils/withProviders'
-import { getCodeByPhoneNumber, validateCode } from '../reducers/student/auth'
 
 class Login extends AuthorisationMixin(Component) {
     constructor(props) {
@@ -159,16 +155,4 @@ class Login extends AuthorisationMixin(Component) {
     }
 }
 
-// const mapStateToProps = state => ({
-//     authenticated: state.auth.authenticated,
-//     userId: state.auth.user_id,
-//     stepIndex: state.first_steps.stepIndex
-// })
-
-// export default connect(
-//     mapStateToProps,
-//     { getCode, sendCode, saveStepIndex }
-// )(withWidth()(Login))
-
 export default withProviders(AuthorizationProvider)(withWidth()(Login))
-// export default withWidth(Login)

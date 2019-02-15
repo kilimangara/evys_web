@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadCurrentCourses, loadFinishedCourses } from '../../actions/CoursesActions'
 
-import CourseItem from '../../components/courses/CourseItem'
-import { CoursesScreenContainer, CoursesTab, CoursesTabs, CoursesWrapper } from '../../components/styled/courses'
+import { CoursesScreenContainer, CoursesWrapper } from '../../components/styled/courses'
 import { Loader, LoaderWrapper } from '../../components/styled/common'
 import withProviders from '../../utils/withProviders'
 import SearchMixin, { SearchProvider } from '../../mixins/student/SearchRepository'
@@ -17,6 +14,20 @@ class SearchCoursesScreen extends SearchMixin(Component) {
     }
 
     componentDidMount() {
+        this.searchForText()
+    }
+
+    goToThemes = id => {
+        // this.props.history.push(`/app/course/${id}/themes`)
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.location.search !== prevProps.location.search) {
+            this.searchForText()
+        }
+    }
+
+    searchForText = () => {
         const searchRegex = /\?search=([^&]*)&?([^&]*)/
         const queryString = this.props.location.search
         const searchText = queryString.match(searchRegex) && queryString.match(searchRegex)[1]
@@ -25,10 +36,6 @@ class SearchCoursesScreen extends SearchMixin(Component) {
         } else {
             this.props.history.push('/app/student/subjects/all')
         }
-    }
-
-    goToThemes = id => {
-        // this.props.history.push(`/app/course/${id}/themes`)
     }
 
     render() {

@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
-import connect from 'react-redux/es/connect/connect'
-import { loadThemeById, loadTheoryByThemeId } from '../actions/CoursesActions'
 import { BorderedImage, HorizontalCentered } from '../components/styled/common'
 import { ThemeStudyTextBlock } from '../components/styled/themes'
 import { ThemeStudyTheoryItem } from '../components/themes/ThemeStudyTheoryItem'
-import VideoIcon from '@material-ui/icons/Videocam'
 import DescriptionIcon from '@material-ui/icons/Description'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
@@ -44,7 +41,6 @@ class ThemeStudyScreen extends Component {
 
     render() {
         const { theory, videos } = this.state
-        console.log(theory, videos)
 
         return (
             <HorizontalCentered direction={'column'}>
@@ -69,7 +65,10 @@ class ThemeStudyScreen extends Component {
                             }
                         />
                     ))}
-                {theory && theory.files && <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />}
+                {theory &&
+                    theory.files && (
+                        <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />
+                    )}
             </HorizontalCentered>
         )
     }

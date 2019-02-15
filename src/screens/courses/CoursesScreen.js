@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadCurrentCourses, loadFinishedCourses } from '../../actions/CoursesActions'
 
 import CourseItem from '../../components/courses/CourseItem'
 import { CoursesScreenContainer, CoursesTab, CoursesTabs, CoursesWrapper } from '../../components/styled/courses'
 import { Loader, LoaderWrapper } from '../../components/styled/common'
 import CoursesMixin, { CoursesProvider } from '../../mixins/student/CoursesRepository'
 import withProviders from '../../utils/withProviders'
-import withRouter from "react-router/es/withRouter";
+import withRouter from 'react-router/es/withRouter'
 
 class CoursesScreen extends CoursesMixin(Component) {
     state = {

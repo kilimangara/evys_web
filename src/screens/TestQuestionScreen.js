@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import {
-    CenteredContent,
     ColoredButton,
     ColumnFlexed,
     FullsizeCentered,
     H1,
     H2,
     H3,
-    HorizontalCentered,
-    Paper
+    HorizontalCentered
 } from '../components/styled/common'
 import {
     AnimatedQuestion,
@@ -22,13 +20,9 @@ import {
 } from '../components/styled/testQuestion'
 import TestsMixin, { TestsProvider } from '../mixins/student/TestsRepository'
 import withProviders from '../utils/withProviders'
-import { CoursesProvider } from '../mixins/student/CoursesRepository'
 import { getTestQuestion } from '../api'
-import { startTestsSession } from '../reducers/student/tests'
 import ReactQuill from 'react-quill'
 import { studentTheme } from '../utils/global_theme'
-import { CSSTransition } from 'react-transition-group'
-import AnimateHeight from 'react-animate-height'
 
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
@@ -41,7 +35,6 @@ class TestQuestionScreen extends TestsMixin(Component) {
     constructor(props) {
         super(props)
         this.themeId = this.props.match.params['theme_id']
-        this.courseId = this.props.match.params['course_id']
     }
 
     componentDidMount() {
@@ -75,7 +68,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
         return getTestQuestion(this.themeId, { test_block: this.props.testBlockId }).then(res =>
             this.setState({ question: res.data })
         )
-    } // TODO: why camelCase method doesn't work?
+    }
 
     addEnterListener = () => {
         addEventListener('keypress', e => {

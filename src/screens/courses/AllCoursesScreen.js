@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadCurrentCourses, loadFinishedCourses } from '../../actions/CoursesActions'
-
-import CourseItem from '../../components/courses/CourseItem'
-import { CoursesScreenContainer, CoursesTab, CoursesTabs, CoursesWrapper } from '../../components/styled/courses'
+import { CoursesScreenContainer, CoursesWrapper } from '../../components/styled/courses'
 import { Loader, LoaderWrapper } from '../../components/styled/common'
 import withProviders from '../../utils/withProviders'
 import SearchMixin, { SearchProvider } from '../../mixins/student/SearchRepository'
@@ -41,7 +37,7 @@ class AllCoursesScreen extends SearchMixin(Component) {
                                     name={name}
                                     teacherName={owner}
                                     subscribeTo={null}
-                                    courseImage={subjects[0].image}
+                                    courseImage={subjects[0].category && subjects[0].category.image} //subjects[0].image}
                                     amount={amount}
                                     onClick={() => this.goToThemes(id)}
                                 />

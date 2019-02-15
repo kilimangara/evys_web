@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { CurrentCourseItem } from '../components/themes/CurrentCourseItem'
 import { DataCard } from '../components/BeforeStudy/DataCard'
-import { BeforeStudyWrapper, CardsBlock, IconsBlock, ThemeNameBlock } from '../components/styled/BeforeStudy'
+import { BeforeStudyWrapper, CardsBlock, ThemeNameBlock } from '../components/styled/BeforeStudy'
 import VideoIcon from '@material-ui/icons/Videocam'
 import DescriptionIcon from '@material-ui/icons/Description'
 import { H1 } from '../components/styled/common'
 import CheckboxIcon from '@material-ui/icons/CheckBox'
-import { loadCourseById, loadThemeById } from '../actions/CoursesActions'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
 import { withRouter } from 'react-router'
@@ -29,8 +27,6 @@ class BeforeStudy extends Component {
     render() {
         const { theme } = this.state
         const { currentCourse } = this.props
-        // console.log('p', currentCourse && currentCourse.progress)
-        console.log('th', theme)
         return (
             <BeforeStudyWrapper>
                 <CurrentCourseItem
@@ -54,7 +50,7 @@ class BeforeStudy extends Component {
                             </div>
                         }
                         onClick={() => this.goToTheory()}
-                />
+                    />
                     <DataCard
                         name={'Практика'}
                         iconsBlock={
