@@ -1,12 +1,5 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadProfileData, saveProfile } from '../actions/AccountActions'
-import RaisedButton from 'material-ui/RaisedButton'
-import Snackbar from 'material-ui/Snackbar'
-import { Card } from 'material-ui/Card'
-import TextField from 'material-ui/TextField'
 import _ from 'lodash'
-import { blue500 } from 'material-ui/styles/colors'
 import { AliasTextField } from '../components/common/AliasTextfield'
 import { ProfileContainer } from '../components/styled/profile'
 import { CenteredContent, ColoredButton, Error } from '../components/styled/common'
@@ -18,7 +11,7 @@ import withProviders from '../utils/withProviders'
 import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import AccountMixin, { AccountProvider } from '../mixins/student/AccountRepository'
 
-export const DEFAULT_AVATAR_IMAGE_URL = 'https://272507.selcdn.ru/evys_api_videos/evys/evys_avatar_placeholder.jpg';
+export const DEFAULT_AVATAR_IMAGE_URL = 'https://272507.selcdn.ru/evys_api_videos/evys/evys_avatar_placeholder.jpg'
 
 const profileFields = ['full_name', 'email', 'avatar']
 
@@ -105,7 +98,7 @@ class ProfileScreen extends AccountMixin(Component) {
     }
 
     render() {
-        const { profileData, userId, loading } = this.props
+        const { profileData, loading } = this.props
         const { errors, full_name, email, selectedFavoriteSubjects, favoriteSubjectsOpened } = this.state
 
         return (
@@ -124,7 +117,7 @@ class ProfileScreen extends AccountMixin(Component) {
                             width={'33%'}
                             paddingTop={'33%'}
                             loading={loading}
-                            src={profileData.avatar && profileData.avatar.original.url || DEFAULT_AVATAR_IMAGE_URL}
+                            src={(profileData.avatar && profileData.avatar.original.url) || DEFAULT_AVATAR_IMAGE_URL}
                             onChange={this.onAvatarChanged}
                         />
                         <AliasTextField
@@ -155,4 +148,3 @@ class ProfileScreen extends AccountMixin(Component) {
 }
 
 export default withProviders(AuthorizationProvider, AccountProvider)(ProfileScreen)
-

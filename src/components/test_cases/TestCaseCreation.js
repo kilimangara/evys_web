@@ -31,7 +31,6 @@ const formats = [
     'indent',
     'formula',
     'image'
-
 ]
 
 class TestCaseCreation extends Component {
@@ -101,7 +100,6 @@ class TestCaseCreation extends Component {
                 <div
                     style={{
                         display: 'flex',
-                        flexDirection: 'justifyContent',
                         flexDirection: 'column',
                         alignItems: 'stretch'
                     }}

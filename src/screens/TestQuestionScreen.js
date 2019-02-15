@@ -1,5 +1,15 @@
 import React, { Component } from 'react'
-import { CenteredContent, H2, H3, HorizontalCentered, Paper } from '../components/styled/common'
+import {
+    CenteredContent,
+    ColoredButton,
+    ColumnFlexed,
+    FullsizeCentered,
+    H1,
+    H2,
+    H3,
+    HorizontalCentered,
+    Paper
+} from '../components/styled/common'
 import {
     AnimatedQuestion,
     AnswerBlank,
@@ -23,7 +33,7 @@ import AnimateHeight from 'react-animate-height'
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
         selectedAnswer: null,
-        answerSended: false,
+        answerSent: false,
         correct: null,
         question: null
     }
@@ -56,12 +66,12 @@ class TestQuestionScreen extends TestsMixin(Component) {
             })
             .then(res => {
                 const correct = res && res.data.answerData && res.data.answerData.isRight
-                this.setState({ correct, answerSended: true })
+                this.setState({ correct, answerSent: true })
             })
     }
 
     getNextQuestion = () => {
-        this.setState({ question: null, answerSended: false, selectedAnswer: null })
+        this.setState({ question: null, answerSent: false, selectedAnswer: null })
         return getTestQuestion(this.themeId, { test_block: this.props.testBlockId }).then(res =>
             this.setState({ question: res.data })
         )
@@ -70,7 +80,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
     addEnterListener = () => {
         addEventListener('keypress', e => {
             if (e.keyCode === 13) {
-                this.state.answerSended
+                this.state.answerSent
                     ? this.getNextQuestion()
                     : this.state.selectedAnswer && this.sendAnswer(this.state.selectedAnswer)
             }
@@ -89,10 +99,21 @@ class TestQuestionScreen extends TestsMixin(Component) {
     quillWorks = value => this.setState({ value })
 
     render() {
-        const { question, selectedAnswer, correct, answerSended } = this.state
+        const { question, selectedAnswer, correct, answerSent } = this.state
         const { testFinished } = this.props
         return testFinished ? (
-            <CenteredContent>PIZDEC</CenteredContent>
+            <FullsizeCentered>
+                <ColumnFlexed align={'center'}>
+                    <H1>Для данной темы больше нет тестов</H1>
+                    <ColoredButton
+                        color={studentTheme.ACCENT}
+                        textColor={studentTheme.TEXT_COLOR}
+                        style={{ width: '180px', margin: '12px 0' }}
+                    >
+                        вернуться в тему
+                    </ColoredButton>
+                </ColumnFlexed>
+            </FullsizeCentered>
         ) : (
             <HorizontalCentered direction={'column'}>
                 <AnimatedQuestion duration={500} height={'auto'}>
@@ -125,13 +146,13 @@ class TestQuestionScreen extends TestsMixin(Component) {
                                     <AnswerBlank
                                         key={question.content}
                                         correct={
-                                            answerSended && correct !== null && selectedAnswer === question.content
+                                            answerSent && correct !== null && selectedAnswer === question.content
                                                 ? correct
                                                 : null
                                         }
                                         selected={question.content === selectedAnswer}
                                         onClick={() =>
-                                            answerSended ? this.getNextQuestion() : this.selectAnswer(question.content)
+                                            answerSent ? this.getNextQuestion() : this.selectAnswer(question.content)
                                         }
                                     >
                                         <H3>{question.content}</H3>

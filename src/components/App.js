@@ -1,28 +1,20 @@
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Route, Switch } from 'react-router'
 import HeaderAppBar from './header_app_bar/HeaderAppBar'
-import Login from '../screens/Login'
 import ProfileScreen from '../screens/ProfileScreen'
 import ThemesScreen from '../screens/ThemesScreen'
-import SubThemesScreen from '../screens/SubThemesScreen'
 import CoursesScreen from '../screens/courses/CoursesScreen'
 import ThemeStudyScreen from '../screens/ThemeStudyScreen'
-import { exitProfile } from '../actions/AccountActions'
-import { blue500 } from 'material-ui/styles/colors'
-import { switchUserApp } from '../actions/AppActions'
 import LeftPanel from '../components/common/LeftPanel'
-import CourseItem from '../components/courses/CourseItem'
 import { CommonWrapper } from './styled/common'
 import { StudentAppWrapper } from './styled/layout'
 import BeforeStudy from '../screens/BeforeStudy'
 import TestQuestionScreen from '../screens/TestQuestionScreen'
 import AllCoursesScreen from '../screens/courses/AllCoursesScreen'
 import SearchCoursesScreen from '../screens/courses/SearchCoursesScreen'
-import withProviders from "../utils/withProviders";
-import {AuthorizationProvider} from "../mixins/student/AuthorizationRepository";
-import NotFoundPage from "../screens/NotFoundPage";
+import withProviders from '../utils/withProviders'
+import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
+import NotFoundPage from '../screens/NotFoundPage'
 
 class App extends Component {
     constructor(props) {
@@ -35,7 +27,7 @@ class App extends Component {
     componentWillMount() {
         // this.props.switchUserApp()
         if (!this.props.token) {
-          this.props.history.push('/login')
+            this.props.history.push('/login')
         }
     }
 
@@ -123,7 +115,7 @@ class App extends Component {
                                 path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test"
                                 component={TestQuestionScreen}
                             />
-                            <Route component={NotFoundPage}/>
+                            <Route component={NotFoundPage} />
                         </Switch>
                     </CommonWrapper>
                 </div>

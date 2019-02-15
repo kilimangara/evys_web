@@ -174,6 +174,11 @@ export const HorizontalCentered = styled.div`
     flex-direction: ${({ direction }) => direction || 'row'};
 `
 
+export const FullsizeCentered = styled(CenteredContent)`
+    width: 100%;
+    height: 100%;
+`
+
 export const SizedIconButton = styled(IconButton)`
     width: ${({ width }) => `${width}px`};
     margin: ${({ margin }) => `${margin}px`};
@@ -182,6 +187,12 @@ export const SizedIconButton = styled(IconButton)`
 export const RowFlexed = styled.div`
     display: flex;
     flex-direction: row;
+`
+
+export const ColumnFlexed = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: ${({ align }) => align || 'flex-start'};
 `
 
 export const RowForm = styled.form`
