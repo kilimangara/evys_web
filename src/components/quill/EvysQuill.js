@@ -23,7 +23,9 @@ const formats = [
     'link',
     'image',
     'video',
-    'formula'
+    'formula',
+    'imagewithstyle',
+    'alt', 'width', 'height', 'style'
 ]
 
 class EvysQuill extends React.Component {

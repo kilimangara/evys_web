@@ -82,6 +82,8 @@ class ThemeScreen extends ThemesRepository(React.Component) {
 
   saveTheory = () => {
     console.log('save theory', this.state.theory)
+    return this.props.saveTheory(this.themeId(), this.state.theory)
+               .then(this.getTheory)
   }
 
   isHidden = () => this.state.theme.isHidden

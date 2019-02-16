@@ -6,7 +6,8 @@ import {
   removeTheme,
   loadTheory,
   addTheoryVideo,
-  resetThemesList
+  resetThemesList,
+  saveTheory
 } from '../../reducers/admin/themes'
 
 export default superclass =>
@@ -52,6 +53,7 @@ export class ThemeProvider {
         changeTheme,
         deleteTheme: removeTheme,
         loadTheory,
-        resetThemesList
+        resetThemesList,
+        saveTheory
     }
 }

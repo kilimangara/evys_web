@@ -1,5 +1,4 @@
 import React from 'react'
-import withProviders from '../../../utils/withProviders'
 import SaveButton from '../../../components/common/SaveButton'
 import { Card } from './index'
 import EvysQuill from '../../../components/quill/EvysQuill'
@@ -12,7 +11,7 @@ class TheoryView extends React.Component{
   }
 
   saveTheory = () => {
-    this.props.saveTheory()
+    this.props.theorySaved().then(() => this.saveButton.success())
   }
 
   render(){
@@ -24,7 +23,7 @@ class TheoryView extends React.Component{
             value={theory.text}
             onChangeText={this.changeTheoryText}
         />
-        <SaveButton ref={(ref) => this.saveButton = ref} onClick={this.saveSubject}/>
+        <SaveButton ref={(ref) => this.saveButton = ref} onClick={this.saveTheory}/>
       </Card>
     )
   }

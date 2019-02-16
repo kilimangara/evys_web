@@ -61,9 +61,19 @@ class TestCases extends TestCaseRepository(React.Component){
       const sortable = new Sortable(listElement, {
         handle: '.sortable-handle',
         filter: '.ignore-drag',
-        onEnd: (event) => console.log(event.oldIndex, event.newIndex)
+        onEnd: this.updateVariantPositions
       })
     }
+  }
+
+  updateVariantPositions = (event) => {
+    const {oldIndex, newIndex} = event
+    console.log(oldIndex, newIndex)
+    let ts = this.state.testCases[oldIndex - 1]
+    this.setState(produce(this.state, (draft) => {
+      let tsToChanged = draft.testCases[oldIndex - 1]
+      tsToChanged.analogueId = newIndex
+    }), () => this.updateTestCase(ts.id))
   }
 
   selectTestCase = (testCaseId, testId) => () => {
@@ -73,8 +83,8 @@ class TestCases extends TestCaseRepository(React.Component){
   renderVariants = (testCaseId) => (test, index) => {
     const color = !test.draft ? 'primary' : 'secondary'
     return(
-      <div style={{marginLeft: 8}}>
-        <Button key={test.id} variant='outlined' color={color} onClick={this.selectTestCase(testCaseId, test.id)}>
+      <div style={{marginLeft: 8}} key={test.id}>
+        <Button variant='outlined' color={color} onClick={this.selectTestCase(testCaseId, test.id)}>
           Вариант {index+1}
         </Button>
       </div>
@@ -100,7 +110,7 @@ class TestCases extends TestCaseRepository(React.Component){
       <ListItem key={testCase.id} divider className='test-cases-for-filter'>
         <ListItemContainer>
           <ListIcon className={'sortable-handle'}/>
-          <Typography component={'span'}>{`${testCase.analogueId}. ${testCase.description}`}</Typography>
+          <Typography component={'span'}>{`${testCase.description}`}</Typography>
           {testCase.tests.map(this.renderVariants(testCase.id))}
         </ListItemContainer>
         {
@@ -190,7 +200,7 @@ class TestCases extends TestCaseRepository(React.Component){
 
   renderAnswerItem = (answer, index) => {
     return(
-      <ListItem component='div'>
+      <ListItem component='div' key={answer.id}>
         <ListItemContainer>
           <FormControlLabel
               control={
@@ -235,7 +245,7 @@ class TestCases extends TestCaseRepository(React.Component){
       test.draft = true
       test.answers.push(answer)
       draft.answer = {isRight: false, content: ''}
-    }))
+    }), () => this.updateTestCase(selectedTestCase))
   }
 
   renderCreationItem = () => {
@@ -275,7 +285,7 @@ class TestCases extends TestCaseRepository(React.Component){
           />
           <TextField
               onChange={this.newAnswerChanged('content')}
-              label={'Название'}
+              label={'Добавить ответ'}
               variant='outlined'
               fullWidth
               value={answer.content}
@@ -296,7 +306,7 @@ class TestCases extends TestCaseRepository(React.Component){
       <Card marginTop={12}>
         <TextField
             onChange={this.testChanged('name')}
-            label={'Название для поиска'}
+            label={'Название вопроса'}
             variant='outlined'
             value={test.name}
             fullWidth

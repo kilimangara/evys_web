@@ -32,6 +32,11 @@ export const loadTheory = (themeId) => (dispatch) => {
   })
 }
 
+export const saveTheory = (themeId, data) => (dispatch) => {
+  console.log(themeId, data, 'asdasdas')
+  return createThemeTheory(themeId, data)
+}
+
 export const addTheoryVideo = (theoryId, data) => (dispatch) => {
   return createTheoryVideo(theoryId, data)
 }
