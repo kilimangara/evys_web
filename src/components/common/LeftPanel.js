@@ -8,6 +8,7 @@ import { withRouter } from 'react-router'
 import { AccountProvider } from '../../mixins/student/AccountRepository'
 import withProviders from '../../utils/withProviders'
 import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
+import { AuthorizationProvider } from '../../mixins/student/AuthorizationRepository'
 
 class LeftPanel extends Component {
     state = {
@@ -34,7 +35,7 @@ class LeftPanel extends Component {
 
     goToNotifications = () => true //TODO: make notifications screen //this.props.history.push('/notifications/')
 
-    goToSettings = () => this.props.history.push('/settings/')
+    goToSettings = () => this.props.history.push('/app/profile')
 
     goToAllCourses = () => {
         this.setState({ selectedTab: 'all' })
@@ -50,7 +51,7 @@ class LeftPanel extends Component {
 
     isAllCourses = () => this.props.location.pathname.split('/').pop() === 'all'
 
-    exit = () => this.props.onExit
+    exit = () => this.props.exitProfile()
 
     render() {
         const { selectedTab } = this.state
@@ -108,4 +109,4 @@ class LeftPanel extends Component {
     }
 }
 
-export default withProviders(AccountProvider)(withRouter(LeftPanel))
+export default withProviders(AccountProvider, AuthorizationProvider)(withRouter(LeftPanel))

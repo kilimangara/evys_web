@@ -16,6 +16,7 @@ import { create } from 'jss'
 import {theme} from "./utils/global_theme";
 import Login from "./screens/Login"
 import { PersistGate } from 'redux-persist/integration/react'
+import NotFoundPage from './screens/NotFoundPage'
 
 const styleNode = document.createComment('insertion-point-jss')
 document.head.insertBefore(styleNode, document.head.firstChild)
@@ -36,6 +37,7 @@ class Root extends Component {
                             <Switch>
                                 <Route path="/app" component={App} />
                                 <Route path="/login" component={Login} />
+                                <Route component={NotFoundPage} />
                             </Switch>
                         </BrowserRouter>
                     </JssProvider>

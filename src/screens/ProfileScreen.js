@@ -55,6 +55,7 @@ class ProfileScreen extends AccountMixin(Component) {
 
     saveFavoriteSubjects = () => {
         this.props.saveProfile({ tags: this.state.selectedFavoriteSubjects })
+        this.props.removeIsNew()
         this.setState({ favoriteSubjectsOpened: false })
     }
 

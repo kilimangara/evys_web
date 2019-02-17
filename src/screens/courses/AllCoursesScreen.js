@@ -30,15 +30,17 @@ class AllCoursesScreen extends SearchMixin(Component) {
                 ) : (
                     <CoursesWrapper>
                         {subjectsList &&
-                            subjectsList.map(({ id, name, description, duration, subjects, owner, amount }) => (
+                            subjectsList.map(({ id, name, description, duration, subjects, owner, amount, currency }) => (
                                 <SubjectItem
                                     key={id}
                                     ended={false}
                                     name={name}
                                     teacherName={owner}
                                     subscribeTo={null}
-                                    courseImage={subjects[0].category && subjects[0].category.image} //subjects[0].image}
+                                    courseImage={subjects[0].category && subjects[0].category.image}
                                     amount={amount}
+                                    currency={currency}
+                                    duration={duration}
                                     onClick={() => this.goToThemes(id)}
                                 />
                             ))}

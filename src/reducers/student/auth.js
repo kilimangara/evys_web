@@ -16,6 +16,7 @@ const sendCodeStart = createAction('auth/load-code')
 const sendCodeSuccess = createAction('auth/load-code-success')
 const logout = createAction('auth/load-code-success')
 const saveNewStepIndex = createAction('auth/save-step-index')
+const removeIsNewBadge = createAction('auth/remove-is-new-badge')
 
 export const getCodeByPhoneNumber = phone => dispatch => {
     dispatch(getCodeStart())
@@ -38,6 +39,8 @@ export const saveStepIndex = index => dispatch => {
     dispatch(saveNewStepIndex(index))
 }
 
+export const removeIsNew = () => dispatch => dispatch(removeIsNewBadge)
+
 export const exitProfile = () => dispatch => dispatch(logout)
 
 export default createReducer(
@@ -47,6 +50,7 @@ export default createReducer(
         [sendCodeStart]: state => ({ ...state, fetching: true }),
         [sendCodeSuccess]: (state, payload) => ({ ...state, fetching: false, ...payload }),
         [saveNewStepIndex]: (state, payload) => ({...state, stepIndex: payload}),
+        [removeIsNewBadge]: state => ({...state, isNew: false}),
         [logout]: state => initialState
     },
     initialState

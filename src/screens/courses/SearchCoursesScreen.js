@@ -34,7 +34,7 @@ class SearchCoursesScreen extends SearchMixin(Component) {
         if (searchText) {
             this.props.getSearchSubjects(searchText)
         } else {
-            this.props.history.push('/app/student/subjects/all')
+            this.props.history.push('/app/student/courses/all')
         }
     }
 
@@ -49,15 +49,17 @@ class SearchCoursesScreen extends SearchMixin(Component) {
                 ) : (
                     <CoursesWrapper>
                         {searchResults &&
-                            searchResults.map(({ id, name, description, duration, subjects, owner, amount }) => (
+                            searchResults.map(({ id, name, description, duration, subjects, owner, amount, currency }) => (
                                 <SubjectItem
                                     key={id}
                                     ended={false}
                                     name={name}
                                     teacherName={owner}
                                     subscribeTo={null}
-                                    courseImage={subjects && subjects[0] && subjects[0].image}
+                                    courseImage={subjects[0].category && subjects[0].category.image}
+                                    duration={duration}
                                     amount={amount}
+                                    currency={currency}
                                     onClick={() => this.goToThemes(id)}
                                 />
                             ))}

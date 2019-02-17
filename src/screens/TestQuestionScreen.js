@@ -35,6 +35,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
     constructor(props) {
         super(props)
         this.themeId = this.props.match.params['theme_id']
+        this.courseId= this.props.match.params['course_id']
     }
 
     componentDidMount() {
@@ -89,6 +90,8 @@ class TestQuestionScreen extends TestsMixin(Component) {
         }
     }
 
+    goToTheme = () => this.props.history.push(`/app/course/${this.courseId}/theme/${this.themeId}`)
+
     quillWorks = value => this.setState({ value })
 
     render() {
@@ -102,6 +105,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
                         color={studentTheme.ACCENT}
                         textColor={studentTheme.TEXT_COLOR}
                         style={{ width: '180px', margin: '12px 0' }}
+                        onClick={this.goToTheme}
                     >
                         вернуться в тему
                     </ColoredButton>

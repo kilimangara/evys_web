@@ -1,4 +1,4 @@
-import { getCodeByPhoneNumber, validateCode, saveStepIndex } from '../../reducers/student/auth'
+import { getCodeByPhoneNumber, validateCode, saveStepIndex, removeIsNew } from '../../reducers/student/auth'
 
 export default superclass => class AuthorizationRepository extends superclass {}
 
@@ -14,6 +14,7 @@ export class AuthorizationProvider {
     static mapDispatchToProps = {
         getCodeByPhoneNumber,
         validateCode,
-        saveStepIndex
+        saveStepIndex,
+        removeIsNew
     }
 }

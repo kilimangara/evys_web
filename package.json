@@ -55,6 +55,7 @@
         "react-getscreen": "^1.1.3",
         "react-graph-vis": "^1.0.2",
         "react-infinite-scroller": "^1.2.1",
+        "react-intl": "^2.8.0",
         "react-jss": "^8.6.1",
         "react-paginate": "^5.1.0",
         "react-player": "^1.1.1",

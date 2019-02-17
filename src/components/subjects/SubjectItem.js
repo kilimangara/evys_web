@@ -28,8 +28,33 @@ class SubjectItem extends Component {
         this.setState({ hover })
     }
 
+    getPrice = () => {
+        const { amount, currency, duration } = this.props
+        if (amount === 0) {
+            return 'бесплатно'
+        }
+        const period = moment(duration).days()
+        if (!period){
+            return `${amount}${currency}`
+        }
+        let textPeriod = ''
+        if (period === 1) {
+            textPeriod = 'день'
+        } else if (period === 7) {
+            textPeriod = 'нед'
+        } else if (period === 28 || period === 29 || period === 30 || period === 30) {
+            textPeriod = 'мес'
+        } else if (period === 365 || period === 366) {
+            textPeriod = 'год'
+        } else {
+            textPeriod = `${period} дней`
+        }
+
+        return `${amount}${currency}/${textPeriod}`
+    }
+
     render() {
-        const { courseImage, name, teacherName, amount, onClick } = this.props
+        const { courseImage, name, teacherName, amount, onClick, duration } = this.props
         return (
             <CourseWrapper onClick={() => onClick()}>
                 <HoverPaper
@@ -44,10 +69,7 @@ class SubjectItem extends Component {
                             <CourseName>{name}</CourseName>
                             <div>{teacherName}</div>
                         </TextInfo>
-                        <SubjectPriceContainer>
-                            {amount}
-                            руб.\мес.
-                        </SubjectPriceContainer>
+                        <SubjectPriceContainer>{this.getPrice()}</SubjectPriceContainer>
                     </CourseInfo>
                 </HoverPaper>
             </CourseWrapper>
