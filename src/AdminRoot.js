@@ -7,7 +7,6 @@ import { Route, Switch } from 'react-router'
 import AdminApp from './components/AdminApp'
 import LoginScreen from './screens/admin/LoginScreen'
 import RegisterScreen from './screens/admin/RegisterScreen'
-import './screencss/Global.scss'
 import routes from './routes'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { createGenerateClassName, jssPreset } from '@material-ui/core'
@@ -16,6 +15,9 @@ import { create } from 'jss'
 import { theme } from './utils/global_theme'
 import { PersistGate } from 'redux-persist/integration/react'
 import lightBlue from '@material-ui/core/colors/lightBlue'
+
+import './screencss/PaginateCss.scss'
+import './screencss/Global.scss'
 
 const styleNode = document.createComment('insertion-point-jss')
 document.head.insertBefore(styleNode, document.head.firstChild)

@@ -1,7 +1,7 @@
 import React from 'react'
 import HoverPaper from '../common/HoverPaper'
 import InfiniteScroll from 'react-infinite-scroller'
-import { GridList } from 'material-ui/GridList'
+import GridList from '@material-ui/core/GridList'
 
 export default class PickYoutubeVideo extends React.Component {
     state = {
