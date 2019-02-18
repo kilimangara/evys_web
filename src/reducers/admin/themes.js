@@ -13,6 +13,8 @@ import {
   deleteTheme
 } from '../../api'
 
+import {chooseAccount} from './account'
+
 
 export const loadTheory = (themeId) => (dispatch) => {
   return getThemeTheory(themeId).then(response => {
@@ -133,7 +135,8 @@ export default createReducer(
             produce(state, draft => {
                 let subject = draft.list.find(el => el.id === payload.id)
                 if (Boolean(subject)) merge(subject, payload)
-            })
+            }),
+         [chooseAccount]: () => initialState
     },
     initialState
 )

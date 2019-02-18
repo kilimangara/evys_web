@@ -1,14 +1,31 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui/Table'
-import { grey500, grey200, grey900, blue500 } from 'material-ui/styles/colors'
 import moment from 'moment'
 import Modal from 'reboron/ScaleModal'
 import CreateAccount from '../../components/accounts/CreateAccount'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ContentAdd from 'material-ui/svg-icons/content/add'
+import Fab from '@material-ui/core/Fab'
+import Add from '@material-ui/icons/Add'
 import {AccountsProvider} from '../../mixins/admin/AccountsRepository'
 import withProviders from '../../utils/withProviders'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32px;
+`
+
+export const Card = styled.div`
+    margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: white;
+    padding-top: 12px;
+`
 
 class ChooseAccountScreen extends Component {
     componentDidMount() {
@@ -17,10 +34,10 @@ class ChooseAccountScreen extends Component {
 
     renderCompany = company => {
         return (
-            <TableRow key={company.id}>
-                <TableRowColumn>{company.id}</TableRowColumn>
-                <TableRowColumn>{company.name}</TableRowColumn>
-                <TableRowColumn>{moment(company.createdAt).format('ll')}</TableRowColumn>
+            <TableRow key={company.id} hover onClick={this.onRowSelection(company)}>
+                <TableCell>{company.id}</TableCell>
+                <TableCell>{company.name}</TableCell>
+                <TableCell>{moment(company.createdAt).format('ll')}</TableCell>
             </TableRow>
         )
     }
@@ -36,51 +53,44 @@ class ChooseAccountScreen extends Component {
         this.modal.show()
     }
 
-    onRowSelection = selectedRow => {
-        const companyIndex = selectedRow[0]
-        if (companyIndex == undefined) return
-        this.props.chooseAccount(this.props.accounts[companyIndex].permalink)
+    onRowSelection = (company) => () => {
+        if (company == undefined) return
+        this.props.chooseAccount(company.permalink)
         this.props.history.push('/admin')
     }
 
     render() {
         return (
-            <div style={styles.container}>
-                <Table selectable={true} onRowSelection={this.onRowSelection}>
-                    <TableHeader adjustForCheckbox={false} displaySelectAll={false}>
+            <Container>
+              <Card marginTop={12}>
+                <Table>
+                    <TableHead>
                         <TableRow>
-                            <TableHeaderColumn>Идентификатор</TableHeaderColumn>
-                            <TableHeaderColumn>Название</TableHeaderColumn>
-                            <TableHeaderColumn>Создано</TableHeaderColumn>
+                            <TableCell>Идентификатор</TableCell>
+                            <TableCell>Название</TableCell>
+                            <TableCell>Создано</TableCell>
                         </TableRow>
-                    </TableHeader>
-                    <TableBody displayRowCheckbox={false} showRowHover>
+                    </TableHead>
+                    <TableBody>
                         {this.props.accounts.map(this.renderCompany)}
                     </TableBody>
                 </Table>
-                <FloatingActionButton
+              </Card>
+                <Fab
                     style={styles.fabStyle}
-                    backgroundColor={grey900}
                     onClick={this.floatingButtonClicked}
                 >
-                    <ContentAdd />
-                </FloatingActionButton>
+                    <Add />
+                </Fab>
                 <Modal ref={ref => (this.modal = ref)}>
                     <CreateAccount onAccountSave={this.onAccountSave} />
                 </Modal>
-            </div>
+            </Container>
         )
     }
 }
 
 const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '32px'
-    },
     fabStyle: {
         position: 'fixed',
         right: 16,

@@ -4,6 +4,8 @@ import produce from 'immer'
 import { loadStudents, addStudent } from '../../api'
 import { merge, omit } from 'lodash'
 
+import {chooseAccount} from './account'
+
 const initialState = {
     list: [],
     totalPages: 1,
@@ -44,7 +46,8 @@ export default createReducer(
                 if (payload.currentPage !== 1) payload.unshift(...state.list)
                 merge(draft, payload)
             }),
-        [resetStudentsList]: (state, payload) => produce(state, draft => merge(draft, omit(initialState, ['current'])))
+        [resetStudentsList]: (state, payload) => produce(state, draft => merge(draft, omit(initialState, ['current']))),
+        [chooseAccount]: (state) => initialState
     },
     initialState
 )

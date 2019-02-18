@@ -4,6 +4,8 @@ import produce from 'immer'
 import { loadTariff, createTariff, deleteTariff, updateTariff, subscribeStudents } from '../../api'
 import { merge, omit } from 'lodash'
 
+import {chooseAccount} from './account'
+
 const initialState = {
     list: [],
     totalPages: 1,
@@ -66,7 +68,8 @@ export default createReducer(
             produce(state, draft => {
                 let tariff = draft.list.find(el => el.id === payload.id)
                 if (Boolean(tariff)) merge(tariff, payload)
-            })
+            }),
+        [chooseAccount]: () => initialState
     },
     initialState
 )

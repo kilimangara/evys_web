@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router'
+import { Route, Switch, Redirect } from 'react-router'
 import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
 import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
@@ -24,6 +24,7 @@ import SubjectScreen from '../screens/admin/subject'
 import ThemeScreen from '../screens/admin/theme'
 import {logoutAdmin} from '../reducers/admin/authorization'
 import {switchManager, pickAsset} from '../reducers/admin/assetManager'
+
 
 class App extends Component {
     constructor(props) {
@@ -85,12 +86,6 @@ class App extends Component {
                         </ListItemIcon>
                         <ListItemText primary={'Ученики'} />
                     </ListItem>
-                    <ListItem button onClick={bind(this.goToExactPath, this, '/admin/tariffs')}>
-                        <ListItemIcon>
-                            <ListIcon className="fas fa-tag" />
-                        </ListItemIcon>
-                        <ListItemText primary={'Мои предложения'} />
-                    </ListItem>
                     <Divider />
                 </List>
             </div>
@@ -138,7 +133,8 @@ class App extends Component {
                     <div style={{minHeight: 64}}/>
                     <CommonWrapper>
                       <Switch>
-                          <Route exact path="/admin" component={SubjectsScreen} />
+                          <Route exact path='/admin' render={() => <Redirect to='/admin/subjects'/>}/>
+                          <Route exact path="/admin/subjects" component={SubjectsScreen} />
                           <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
                           <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen}/>
                           <Route path="/admin/students" component={StudentsScreen} />

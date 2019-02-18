@@ -3,6 +3,7 @@ import produce from 'immer'
 
 import { getSubjects, getSubject, createSubject, fetchCategories, putSubject, deleteSubject } from '../../api'
 import { merge } from 'lodash'
+import {chooseAccount} from './account'
 
 const initialState = {
     list: [],
@@ -99,7 +100,8 @@ export default createReducer(
             produce(state, draft => {
                 let subject = draft.list.find(el => el.id === payload.id)
                 if (Boolean(subject)) merge(subject, payload)
-            })
+            }),
+        [chooseAccount]: () => initialState
     },
     initialState
 )

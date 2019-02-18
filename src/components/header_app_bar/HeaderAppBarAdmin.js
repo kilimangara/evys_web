@@ -92,7 +92,7 @@ class HeaderAppBarAdmin extends Component {
 
         return (
             <AppBar postion='sticky' className={className}>
-              <AppToolbar height={'64px'} disableGutters={!open}>
+              <AppToolbar height={'64px'} disableGutters>
                   <ToolbarGroup>{!open && this.menuIcon()}</ToolbarGroup>
                   <ToolbarGroup>
                       {youtubeComponent}

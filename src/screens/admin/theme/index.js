@@ -15,6 +15,7 @@ import SaveButton from '../../../components/common/SaveButton'
 import { Route } from 'react-router'
 import TheoryView from './theory-view'
 import TestCasesView from './test-cases'
+import ThemeSettings from './theme-settings'
 
 
 const Container = styled.div`
@@ -101,6 +102,16 @@ class ThemeScreen extends ThemesRepository(React.Component) {
     return <TheoryView theory={theory} videos={videos} updateTheory={this.theoryUpdated} theorySaved={this.saveTheory}/>
   }
 
+  onThemeUpdate = (theme) => {
+    this.setState({theme})
+  }
+
+  renderTheme = () => {
+    const {theme} = this.state
+    const {themesFetching} = this.props
+    return <ThemeSettings fetching={themesFetching} theme={theme} saveTheme={this.saveTheme} onThemeUpdate={this.onThemeUpdate}/>
+  }
+
   goTo = type => () => {
       switch (type) {
           case 'root':
@@ -114,7 +125,6 @@ class ThemeScreen extends ThemesRepository(React.Component) {
 
   render(){
     const { theme } = this.state
-    console.log(this.state)
     if (!theme)
         return (
             <div>
@@ -142,6 +152,7 @@ class ThemeScreen extends ThemesRepository(React.Component) {
                   </div>
               </List>
           </Card>
+          <Route exact path='/admin/themes/:themeId(\d+)' render={this.renderTheme}/>
           <Route exact path='/admin/themes/:themeId(\d+)/theory' render={this.renderTheory}/>
           <Route exact path='/admin/themes/:themeId(\d+)/tests' component={TestCasesView}/>
       </Container>

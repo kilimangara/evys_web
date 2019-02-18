@@ -1,6 +1,7 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
 import {createAsset} from '../../api'
+import {chooseAccount} from './account'
 
 const initialState = {
     managerOpened: false,
@@ -25,7 +26,8 @@ export default createReducer(
         [switchManager]: state =>
             produce(state, draft => {
                 draft.managerOpened = !state.managerOpened
-            })
+            }),
+        [chooseAccount]: state => initialState
     },
     initialState
 )
