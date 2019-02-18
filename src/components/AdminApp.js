@@ -24,6 +24,7 @@ import SubjectScreen from '../screens/admin/subject'
 import ThemeScreen from '../screens/admin/theme'
 import {logoutAdmin} from '../reducers/admin/authorization'
 import {switchManager, pickAsset} from '../reducers/admin/assetManager'
+import { SnackbarProvider } from 'notistack'
 
 
 class App extends Component {
@@ -131,6 +132,7 @@ class App extends Component {
                           <ImageAssetPicker/>
                       </Modal>
                     <div style={{minHeight: 64}}/>
+                    <SnackbarProvider maxSnack={5}>
                     <CommonWrapper>
                       <Switch>
                           <Route exact path='/admin' render={() => <Redirect to='/admin/subjects'/>}/>
@@ -143,6 +145,7 @@ class App extends Component {
                           <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
                       </Switch>
                     </CommonWrapper>
+                    </SnackbarProvider>
                 </AppContainer>
             </div>
         )

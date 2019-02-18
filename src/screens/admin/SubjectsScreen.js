@@ -10,6 +10,7 @@ import SubjectRepository, { SubjectProvider } from '../../mixins/admin/SubjectRe
 import withProviders from '../../utils/withProviders'
 import styled from 'styled-components'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import { withSnackbar } from 'notistack'
 
 const GridWrapper = styled.div`
     @media screen and (min-width: 0px) and (max-width: 1090px) {
@@ -49,8 +50,12 @@ class SubjectsScreen extends SubjectRepository(Component) {
 
     onSubjectSave = data => {
         this.props.createSubject(data).then(() => {
+            this.props.enqueueSnackbar('Предмет создан')
             this.props.loadSubjects()
             this.modal.hide()
+        }).catch(({response}) => {
+            if(response.status === 402)
+              this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {variant: 'error'})
         })
     }
 
@@ -117,4 +122,4 @@ const styles = {
     }
 }
 
-export default withProviders(SubjectProvider)(SubjectsScreen)
+export default withProviders(SubjectProvider)(withSnackbar(SubjectsScreen))
