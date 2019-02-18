@@ -43,8 +43,13 @@ module.exports = env =>
       host: HOST
     },
     plugins: [
+      new webpack.ProvidePlugin({
+        'window.Quill': 'quill/dist/quill.js',
+        'Quill': 'quill/dist/quill.js'
+      }),
       new webpack.DefinePlugin({
-        __DEV__: env.DEV
+        __DEV__: env.DEV,
+        __CURRENT_APP__: JSON.stringify('ADMIN_APP')
       }),
       new webpack.NoEmitOnErrorsPlugin(),
       new webpack.NamedModulesPlugin(),

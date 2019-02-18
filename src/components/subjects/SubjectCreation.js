@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import grey from '@material-ui/core/colors/grey'
-import { fetchCategories } from '../../actions/admin/SubjectActions'
 import { connect } from 'react-redux'
-import MenuItem from 'material-ui/MenuItem'
+import MenuItem from '@material-ui/core/MenuItem'
 import { withStyles } from '@material-ui/core/styles'
+import { fetchSubjectCategories } from '../../reducers/admin/subjects'
+
 
 class SubjectCreation extends Component {
     constructor(props) {
@@ -20,20 +21,17 @@ class SubjectCreation extends Component {
     }
 
     changeCategory = event => {
-        const category = this.state.categories.find(category => category.category_secret === event.target.value)
+        const category = this.state.categories.find(category => category.categorySecret === event.target.value)
         this.setState({ selectedCategory: category })
     }
 
     componentDidMount() {
-        this.props
-            .fetchCategories()
-            .then(response =>
-                this.setState({ ...this.state, categories: (response && response.data && response.data.data) || [] })
-            )
+        this.props.fetchCategories()
+            .then(({data}) => this.setState({ categories: data || [] }))
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState(nextProps.initialState)
+    componentDidUpdate(prevProps){
+      if(this.props.initialState !== prevProps.initialState) this.setState(this.props.initialState)
     }
 
     render() {
@@ -52,17 +50,17 @@ class SubjectCreation extends Component {
                     select
                     margin="normal"
                     label={'Категория'}
+                    fullWidth
                     value={
-                        (selectedCategory && selectedCategory.category_secret) ||
-                        (categories.length && categories[0].category_secret)
+                        (selectedCategory && selectedCategory.categorySecret) ||
+                        (categories.length && categories[0].categorySecret)
                     }
-                    className={this.props.classes.menu}
                     onChange={this.changeCategory}
                 >
                     {(categories.length &&
                         categories.map(category => (
-                            <MenuItem key={category.category_secret} value={category.category_secret}>
-                                {category.verbose_name}
+                            <MenuItem key={category.categorySecret} value={category.categorySecret}>
+                                {category.verboseName}
                             </MenuItem>
                         ))) ||
                         []}
@@ -73,7 +71,7 @@ class SubjectCreation extends Component {
                         className={classes.button}
                         onClick={this.props.onSubjectSave.bind(this, {
                             subject: this.state.subject,
-                            category_secret: selectedCategory.category_secret
+                            categorySecret: selectedCategory.categorySecret
                         })}
                     >
                         Сохранить
@@ -129,7 +127,7 @@ const styles = theme => ({
 })
 
 const mapActionsToProps = {
-    fetchCategories
+    fetchCategories: fetchSubjectCategories
 }
 
 export default connect(

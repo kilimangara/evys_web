@@ -1,32 +1,42 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadProfileData, saveProfile } from '../actions/AccountActions'
-import RaisedButton from 'material-ui/RaisedButton'
-import Snackbar from 'material-ui/Snackbar'
-import { Card } from 'material-ui/Card'
-import TextField from 'material-ui/TextField'
 import _ from 'lodash'
-import { blue500 } from 'material-ui/styles/colors'
+import { AliasTextField } from '../components/common/AliasTextfield'
+import { ProfileContainer } from '../components/styled/profile'
+import { CenteredContent, ColoredButton, Error } from '../components/styled/common'
+import { studentTheme } from '../utils/global_theme'
+import { ImageLoader } from '../components/common/ImageLoader'
+import { FavoriteSubjects } from '../components/subjects/favoriteSubjects/FavoriteSubjects'
+import { subjects } from '../utils/subjects'
+import withProviders from '../utils/withProviders'
+import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
+import AccountMixin, { AccountProvider } from '../mixins/student/AccountRepository'
 
-const profileFields = ['full_name', 'email', 'address']
+export const DEFAULT_AVATAR_IMAGE_URL = 'https://272507.selcdn.ru/evys_api_videos/evys/evys_avatar_placeholder.jpg'
+
+const profileFields = ['full_name', 'email', 'avatar']
 
 const requiredFields = ['full_name', 'email']
 
-class ProfileScreen extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            errors: {},
-            open: false
-        }
+class ProfileScreen extends AccountMixin(Component) {
+    state = {
+        errors: {},
+        open: false,
+        selectedFavoriteSubjects: [],
+        favoriteSubjectsOpened: this.props.isNew
     }
 
     componentWillMount() {
-        if (!this.props.isAuthenticated) this.props.history.push('/app/login')
-        this.props.loadProfileData()
+        if (!this.props.token) this.props.history.push('/login')
+        this.props.loadProfileData().then(() =>
+            this.setState({
+                full_name: this.props.profileData.fullName,
+                email: this.props.profileData.email,
+                avatar: this.props.profileData.avatar
+            })
+        )
     }
 
-    retrieveValue = (name, defaulVal) => this.state[name] || defaulVal
+    retrieveValue = (name, defaultVal) => this.state[name] || defaultVal
 
     checkForErrors = () => {
         const errors = {}
@@ -43,6 +53,16 @@ class ProfileScreen extends Component {
         this.props.saveProfile(profile).then(res => this.setState({ open: true }))
     }
 
+    saveFavoriteSubjects = () => {
+        this.props.saveProfile({ tags: this.state.selectedFavoriteSubjects })
+        this.props.removeIsNew()
+        this.setState({ favoriteSubjectsOpened: false })
+    }
+
+    closeFavoriteSubjects = () => {
+        this.setState({ favoriteSubjectsOpened: false })
+    }
+
     handleRequestClose = () => {
         this.setState({
             open: false
@@ -57,6 +77,20 @@ class ProfileScreen extends Component {
         })
     }
 
+    onAvatarChanged = avatar => {
+        this.setState({ avatar })
+    }
+
+    handleFavoriteSubjectSelect = subject => {
+        if (this.state.selectedFavoriteSubjects.includes(subject.alias)) {
+            this.setState({
+                selectedFavoriteSubjects: this.state.selectedFavoriteSubjects.filter(sub => sub !== subject.alias)
+            })
+        } else {
+            this.setState({ selectedFavoriteSubjects: [...this.state.selectedFavoriteSubjects, subject.alias] })
+        }
+    }
+
     telegramLink = () => {
         const { userId } = this.props
         let res = `https://telegram.me/evys_bot?start=${userId}`
@@ -65,104 +99,53 @@ class ProfileScreen extends Component {
     }
 
     render() {
-        const { profileData, userId } = this.props
-        const { errors } = this.state
+        const { profileData, loading } = this.props
+        const { errors, full_name, email, selectedFavoriteSubjects, favoriteSubjectsOpened } = this.state
+
         return (
-            <div style={styles.cardContainer}>
-                <Card style={{ padding: '24px', minWidth: '60%' }}>
-                    <div style={styles.cardContainer}>
-                        <TextField
-                            floatingLabelText="Полное имя *"
-                            hintText="Введите полное имя"
-                            errorText={errors.full_name}
-                            floatingLabelFocusStyle={{ color: blue500 }}
-                            underlineFocusStyle={{ borderColor: blue500 }}
+            <CenteredContent style={{ height: 'fitContent' }}>
+                {favoriteSubjectsOpened ? (
+                    <FavoriteSubjects
+                        subjects={subjects}
+                        selected={selectedFavoriteSubjects}
+                        onSelect={this.handleFavoriteSubjectSelect}
+                        onApply={this.saveFavoriteSubjects}
+                        onCancel={this.closeFavoriteSubjects}
+                    />
+                ) : (
+                    <ProfileContainer>
+                        <ImageLoader
+                            width={'33%'}
+                            paddingTop={'33%'}
+                            loading={loading}
+                            src={(profileData.avatar && profileData.avatar.original.url) || DEFAULT_AVATAR_IMAGE_URL}
+                            onChange={this.onAvatarChanged}
+                        />
+                        <AliasTextField
+                            fieldProps={{ value: full_name }}
                             onChange={this.onTextChanged.bind(this, 'full_name')}
-                            value={this.retrieveValue('full_name', profileData.full_name)}
+                            alias={'ФИО'}
                         />
-                        <TextField
-                            floatingLabelText="E-mail *"
-                            hintText="Введите E-mail"
-                            underlineFocusStyle={{ borderColor: blue500 }}
-                            floatingLabelFocusStyle={{ color: blue500 }}
-                            errorText={errors.email}
+                        {errors.full_name && <Error>{errors.full_name}</Error>}
+                        <AliasTextField
+                            alias={'E-mail'}
+                            fieldProps={{ value: email }}
                             onChange={this.onTextChanged.bind(this, 'email')}
-                            value={this.retrieveValue('email', profileData.email)}
                         />
-                        <TextField
-                            floatingLabelText="Адрес"
-                            hintText="Введите адрес"
-                            floatingLabelFocusStyle={{ color: blue500 }}
-                            underlineFocusStyle={{ borderColor: blue500 }}
-                            onChange={this.onTextChanged.bind(this, 'address')}
-                            value={this.retrieveValue('address', profileData.address)}
-                        />
-                    </div>
-                </Card>
-                <br />
-                <RaisedButton
-                    backgroundColor={blue500}
-                    style={{ width: '60%' }}
-                    label={'Сохранить'}
-                    labelColor={'white'}
-                    onClick={this.saveProfile}
-                />
-                <RaisedButton
-                    backgroundColor={blue500}
-                    style={{ marginTop: 12, width: '60%' }}
-                    labelColor={'white'}
-                    label={'Перейти в телеграм бота'}
-                    href={this.telegramLink()}
-                />
-                <div style={{ display: 'inline-block', fontSize: '14px', color: '#333', width: '60%', marginTop: 12 }}>
-                    Если ссылка не работает, то найдите нашего бота в телеграмме{' '}
-                    <span style={styles.botLinkStyle}>@evys_bot</span> и введите команду <br />
-                    <pre style={styles.preStyle}>/start {userId}</pre>
-                </div>
-                <Snackbar
-                    open={this.state.open}
-                    message="Изменения сохранены"
-                    autoHideDuration={2000}
-                    onRequestClose={this.handleRequestClose}
-                />
-            </div>
+                        {errors.full_name && <Error>{errors.email}</Error>}
+                        <ColoredButton
+                            color={studentTheme.ACCENT}
+                            textColor={studentTheme.BACKGROUND}
+                            style={{ marginTop: '10px' }}
+                            onClick={this.saveProfile}
+                        >
+                            сохранить
+                        </ColoredButton>
+                    </ProfileContainer>
+                )}
+            </CenteredContent>
         )
     }
 }
 
-const styles = {
-    cardContainer: {
-        flexDirection: 'column',
-        display: 'flex',
-        justifyContent: 'flex-end',
-        alignItems: 'center'
-    },
-    textStyle: {
-        marginTop: 12
-    },
-    botLinkStyle: {
-        textDecoration: 'underline',
-        color: '#23527c'
-    },
-    textFielStyle: {
-        borderColor: blue500
-    },
-    preStyle: {
-        padding: '9.5px',
-        fontSize: '13px',
-        backgroundColor: '#f5f5f5',
-        border: '1px solid #ccc',
-        borderWidht: '4px'
-    }
-}
-
-const mapStateToProps = state => ({
-    profileData: state.account.profileData,
-    isAuthenticated: state.auth.authenticated,
-    userId: state.auth.user_id
-})
-
-export default connect(
-    mapStateToProps,
-    { loadProfileData, saveProfile }
-)(ProfileScreen)
+export default withProviders(AuthorizationProvider, AccountProvider)(ProfileScreen)

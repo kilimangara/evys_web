@@ -1,30 +1,38 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import RaisedButton from 'material-ui/RaisedButton'
-import { GridList, GridTile } from 'material-ui/GridList'
-import { withGetScreen } from 'react-getscreen'
-import { loadSubjects, createSubject, updateSubject, deleteSubject } from '../../actions/admin/SubjectActions'
-import FontIcon from 'material-ui/FontIcon'
-import IconButton from 'material-ui/IconButton'
-import Subheader from 'material-ui/Subheader'
-import { grey500, grey200, grey900 } from 'material-ui/styles/colors'
-import HoverPaper from '../../components/common/HoverPaper'
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import ContentAdd from 'material-ui/svg-icons/content/add'
-// import {Modal, ModalZ} from "../../components/styled/common";
+import GridList from '@material-ui/core/GridList'
+import Fab from '@material-ui/core/Fab'
+import Add from '@material-ui/icons/Add'
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
 import { Subject } from '../../components/subjects/Subject'
+import SubjectRepository, { SubjectProvider } from '../../mixins/admin/SubjectRepository'
+import withProviders from '../../utils/withProviders'
+import styled from 'styled-components'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import { withSnackbar } from 'notistack'
 
-class SubjectsScreen extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            selectedSubject: undefined
-        }
+const GridWrapper = styled.div`
+    @media screen and (min-width: 0px) and (max-width: 1090px) {
+        max-width: 374px;
     }
+    @media screen and (min-width: 1090px) and (max-width: 1422px) {
+        max-width: 748px;
+    }
+    @media screen and (min-width: 1422px) and (max-width: 1796px) {
+        max-width: 1122px;
+    }
+    @media screen and (min-width: 1796px) {
+        max-width: 1496px;
+    }
+    width: 5000px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+`
 
-    componentWillMount() {
+class SubjectsScreen extends SubjectRepository(Component) {
+    componentDidMount() {
         this.props.loadSubjects()
     }
 
@@ -33,92 +41,54 @@ class SubjectsScreen extends Component {
     }
 
     onClickSubjectInfo = subject => {
-        this.setState({ selectedSubject: subject })
-        this.modalUpdate.show()
-    }
-
-    renderSubject = (subject, index) => {
-        return (
-            <div key={subject.id} onClick={this.onClickSubjectInfo.bind(this, subject)}>
-                <HoverPaper style={{ height: 200 }}>
-                    <GridTile
-                        title={subject.subject}
-                        subtitle={<b>{subject.grade_representation}</b>}
-                        actionIcon={
-                            <IconButton
-                                onClick={this.onClickSubject.bind(this, subject.id)}
-                                iconStyle={{ color: grey200 }}
-                                iconClassName="far fa-play-circle"
-                                tooltip={'Темы'}
-                                tooltipPosition={'top-center'}
-                            />
-                        }
-                    >
-                        <img src={IMG_SRC} />
-                    </GridTile>
-                </HoverPaper>
-            </div>
-        )
+        this.props.history.push(`/admin/subjects/${subject.id}`)
     }
 
     floatingButtonClicked = () => {
         this.modal.show()
     }
 
-    onSubjectDelete = id => {
-        this.props.deleteSubject(id).then(() => {
-            this.props.loadSubjects()
-            this.modalUpdate.hide()
-        })
-    }
-
-    onSubjectUpdate = data => {
-        this.props.updateSubject(data.id, data).then(() => {
-            this.props.loadSubjects()
-            this.modalUpdate.hide()
-        })
-    }
-
     onSubjectSave = data => {
         this.props.createSubject(data).then(() => {
+            this.props.enqueueSnackbar('Предмет создан')
             this.props.loadSubjects()
             this.modal.hide()
+        }).catch(({response}) => {
+            if(response.status === 402)
+              this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {variant: 'error'})
         })
     }
 
     render() {
-        let numberOfColumns = 2
-        if (this.props.subjectsList.length === 1 || this.props.isMobile()) numberOfColumns = 1
+        const {subjects, subjectsFetching} = this.props
+        if(!subjects.length && subjectsFetching){
+          return(
+            <div>
+              <LinearProgress/>
+            </div>
+          )
+        }
         return (
             <div style={styles.container}>
-                <GridList padding={25} cellHeight={200} cols={numberOfColumns} style={styles.gridList}>
-                    <Subheader>Предметы</Subheader>
-                    {this.props.subjectsList.map(subject => (
+                <GridWrapper>
+                    {this.props.subjects.map(subject => (
+                      <div style={{margin: '18px 6px'}} key={subject.id}>
                         <Subject
-                            key={subject.subject}
                             subject={subject}
                             onClickSubject={this.onClickSubject}
                             onClickSubjectInfo={this.onClickSubjectInfo}
                         />
+                      </div>
                     ))}
-                </GridList>
-                <FloatingActionButton
+                </GridWrapper>
+                <Fab
                     style={styles.fabStyle}
-                    backgroundColor={grey900}
                     onClick={this.floatingButtonClicked}
                 >
-                    <ContentAdd />
-                </FloatingActionButton>
+                    <Add />
+                </Fab>
                 <Modal ref={ref => (this.modal = ref)}>
                     <SubjectCreation onSubjectSave={this.onSubjectSave} />
-                </Modal>
-                <Modal ref={ref => (this.modalUpdate = ref)}>
-                    <SubjectCreation
-                        initialState={this.state.selectedSubject}
-                        onSubjectDelete={this.onSubjectDelete}
-                        updateMode
-                        onSubjectSave={this.onSubjectUpdate}
-                    />
                 </Modal>
             </div>
         )
@@ -152,11 +122,4 @@ const styles = {
     }
 }
 
-const mapStateToProps = state => ({
-    subjectsList: state.subjects_admin.subjectsList
-})
-
-export default connect(
-    mapStateToProps,
-    { loadSubjects, createSubject, updateSubject, deleteSubject }
-)(withGetScreen(SubjectsScreen))
+export default withProviders(SubjectProvider)(withSnackbar(SubjectsScreen))

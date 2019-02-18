@@ -1,29 +1,36 @@
 import React from 'react'
 import HoverPaper from '../common/HoverPaper'
-import IconButton from 'material-ui/IconButton'
-import { GridList, GridTile } from 'material-ui/GridList'
-import { grey200 } from 'material-ui/styles/colors'
+import IconButton from '@material-ui/core/IconButton'
+import GridListTileBar from '@material-ui/core/GridListTileBar'
+import GridListTile from '@material-ui/core/GridListTile'
+import styled from 'styled-components'
 
 const DEFAULT_IMG_SRC = 'http://golos-vremeni.ru/media/cache/ad/f6/93/0b/e0/55/adf6930be0555d915298b4f92934095f.jpg'
 
+const Wrapper = styled(HoverPaper)`
+  height: 300px;
+  width: 350px;
+  background: ${({image}) => `url(${image}) no-repeat center center`};
+  background-size: cover;
+`
+
+Wrapper.defaultProps = {
+  image: DEFAULT_IMG_SRC
+}
+
 export const Subject = ({ subject, index, onClickSubjectInfo, onClickSubject }) => (
-    <div key={subject.id} onClick={() => onClickSubjectInfo(subject)}>
-        <HoverPaper style={{ height: 200 }}>
-            <GridTile
+    <GridListTile key={subject.id} cols={1} component='div'>
+        <Wrapper onClick={() => onClickSubjectInfo(subject)} image={subject.category.image}>
+            <GridListTileBar
                 title={subject.subject}
-                subtitle={<b>{subject.grade_representation}</b>}
+                subtitle={<p></p>}
                 actionIcon={
                     <IconButton
                         onClick={() => onClickSubject(subject.id)}
-                        iconStyle={{ color: grey200 }}
-                        iconClassName="far fa-play-circle"
-                        tooltip={'Темы'}
-                        tooltipPosition={'top-center'}
                     />
                 }
             >
-                <img src={subject.category_image || DEFAULT_IMG_SRC} />
-            </GridTile>
-        </HoverPaper>
-    </div>
+            </GridListTileBar>
+        </Wrapper>
+    </GridListTile>
 )

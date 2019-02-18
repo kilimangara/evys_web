@@ -1,4 +1,4 @@
-import { actionTypesFor } from 'trivial-redux'
+import { actionTypesFor } from './actionTypesFor'
 import { COURSE_IS_NOT_VALID, COURSE_IS_VALID } from '../endpoints/courses'
 
 export function loadCurrentCourses() {
@@ -11,6 +11,17 @@ export function loadCurrentCourses() {
                 params: {
                     progress_to: '99'
                 }
+            }
+        }
+    }
+}
+
+export function loadCourseById(course_id) {
+    return {
+        types: actionTypesFor('index', 'courses'),
+        meta: {
+            fetch: {
+                url: `~student/course/${course_id}`
             }
         }
     }
@@ -42,6 +53,28 @@ export function loadThemes(course_id, theme_id) {
             },
             with_parent_theme: Boolean(theme_id),
             is_course: true
+        }
+    }
+}
+
+export function loadThemeById(theme_id) {
+    return {
+        types: actionTypesFor('show', 'themes'),
+        meta: {
+            fetch: {
+                url: `~student/theme/${theme_id}`
+            }
+        }
+    }
+}
+
+export function loadTheoryByThemeId(theme_id) {
+    return {
+        types: actionTypesFor('show', 'theory'),
+        meta: {
+            fetch: {
+                url: `~student/theme/${theme_id}/theory`
+            }
         }
     }
 }

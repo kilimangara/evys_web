@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
-import TextField from 'material-ui/TextField'
-import RaisedButton from 'material-ui/RaisedButton'
-import { grey900 } from 'material-ui/styles/colors'
+import TextField from '@material-ui/core/TextField'
+import SaveButton from '../common/SaveButton'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-сontent: center;
+  align-items: flex-start;
+  padding: 36px;
+`
 
 export default class CreateAccount extends Component {
     constructor(props) {
@@ -9,58 +17,37 @@ export default class CreateAccount extends Component {
         this.state = this.props.initialState
     }
 
-    textFieldChanged = (event, newValue) => {
+    saveToState = (field) => (event, newValue) => {
+        let value = event.target.value
+        if( field === 'isHidden') value = newValue
+        if( field === 'num' && value === '') value = null
         this.setState({
-            name: newValue
+            [field]: value
         })
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState(nextProps.initialState)
+    componentDidUpdate(prevProps) {
+      if(this.props != prevProps) this.setState(this.props.initialState)
+    }
+
+    saveAccount = () => {
+      this.props.onAccountSave(this.state)
     }
 
     render() {
+      const { name } = this.state
         return (
-            <div style={styles.container}>
-                <TextField
-                    onChange={this.textFieldChanged}
-                    hintText="Название"
-                    value={this.state.name}
-                    underlineFocusStyle={{ borderColor: grey900 }}
-                />
-                <RaisedButton
-                    label="Сохранить"
-                    labelStyle={{ color: 'white' }}
-                    backgroundColor={grey900}
-                    onClick={this.props.onAccountSave.bind(this, this.state)}
-                />
-                {this.props.updateMode && (
-                    <RaisedButton
-                        label="Удалить"
-                        style={{ marginTop: 20 }}
-                        labelStyle={{ color: 'white' }}
-                        backgroundColor={grey900}
-                        onClick={this.props.onAccountDelete.bind(this, this.state.id)}
-                    />
-                )}
-            </div>
+            <Container>
+              <TextField
+                  onChange={this.saveToState('name')}
+                  value={name}
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  label="Название"
+              />
+              <SaveButton onClick={this.saveAccount}/>
+            </Container>
         )
-    }
-}
-
-CreateAccount.defaultProps = {
-    onAccountSave: data => {},
-    onAccountDelete: id => {},
-    updateMode: false,
-    initialState: { name: '' }
-}
-
-const styles = {
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'flex-start',
-        padding: 36
     }
 }

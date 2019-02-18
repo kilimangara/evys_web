@@ -29,7 +29,8 @@ module.exports = env =>
       }),
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify('production'),
-        __DEV__: false
+        __DEV__: false,
+        __CURRENT_APP__: JSON.stringify('ADMIN_APP')
       }),
       new webpack.optimize.AggressiveMergingPlugin(),
       new webpack.optimize.UglifyJsPlugin({
@@ -48,6 +49,10 @@ module.exports = env =>
         output: {
             comments: false
         }
+      }),
+      new webpack.ProvidePlugin({
+        'window.Quill': 'quill/dist/quill.js',
+        'Quill': 'quill/dist/quill.js'
       }),
       new HtmlWebpackPlugin({
         template: "./public/index_admin.html",

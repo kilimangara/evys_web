@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Popover from '@material-ui/core/Popover'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
-import { chooseCompany } from '../../actions/admin/AccountActions'
-import { logoutAction } from '../../actions/admin/AccountActions'
+import { chooseAccount } from '../../reducers/admin/account'
+import { logoutAdmin } from '../../reducers/admin/authorization'
 
 const HeaderPopover = ({
     open,
@@ -12,15 +12,15 @@ const HeaderPopover = ({
     userAccounts,
     anchorEl,
     onClose,
-    chooseCompany,
-    currentCompany,
+    chooseAccount,
     currentAccount,
-    logoutAction,
+    currentProfile,
+    logoutAdmin,
     history
 }) => (
     <Popover open={open} anchorEl={anchorEl} onClose={onClose}>
         <div className={classes.contentContainer}>
-            <div className={`${classes.content} ${classes.isBold} ${classes.largeFontSize}`}>{currentAccount}</div>
+            <div className={`${classes.content} ${classes.isBold} ${classes.largeFontSize}`}>{currentProfile}</div>
             <p>
                 <span className={classes.title}>Номер аккаунта: </span>
                 <span>{accountId}</span>
@@ -40,7 +40,7 @@ const HeaderPopover = ({
                 className={classes.clickableContent}
                 onClick={() => {
                     onClose()
-                    logoutAction()
+                    logoutAdmin()
                     history.push('/admin/login')
                 }}
             >
@@ -53,10 +53,10 @@ const HeaderPopover = ({
                     <div
                         key={account.id}
                         className={`${classes.clickableContent} ${
-                            account.permalink === currentCompany ? `${classes.isBold} ${classes.isSelected}` : ''
+                            account.permalink === currentAccount ? `${classes.isBold} ${classes.isSelected}` : ''
                         }`}
                         onClick={() => {
-                            chooseCompany(account.permalink)
+                            chooseAccount(account.permalink)
                             history.push('/admin')
                             onClose()
                         }}
@@ -103,16 +103,16 @@ const styles = theme => ({
     }
 })
 
-const mapStateToProps = ({ company_admin, account_admin: { profileData } }) => ({
+const mapStateToProps = ({ account, profile: { profileData } }) => ({
     accountId: profileData && profileData.id,
-    userAccounts: company_admin && company_admin.companyList,
-    currentCompany: company_admin && company_admin.currentCompany,
-    currentAccount: profileData && profileData.username
+    userAccounts: account && account.accounts,
+    currentAccount: account && account.currentAccount,
+    currentProfile: profileData && profileData.username
 })
 
 const mapActionsToProps = {
-    chooseCompany,
-    logoutAction
+    chooseAccount,
+    logoutAdmin
 }
 
 export default withStyles(styles)(
