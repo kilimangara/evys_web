@@ -51,7 +51,10 @@ class LeftPanel extends Component {
 
     isAllCourses = () => this.props.location.pathname.split('/').pop() === 'all'
 
-    exit = () => this.props.exitProfile()
+    exit = async () => {
+        await this.props.exitProfile()
+        this.props.history.push('/login')
+    }
 
     render() {
         const { selectedTab } = this.state
@@ -93,7 +96,7 @@ class LeftPanel extends Component {
                         </LeftPanelNavigation>
                     </div>
                     <StudentTypography fontSize={20} mainColor>
-                        Злаин Н.А.
+                        {profileData.fullName}
                     </StudentTypography>
                 </div>
                 <LeftPanelNavigation>

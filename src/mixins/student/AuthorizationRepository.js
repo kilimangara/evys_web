@@ -1,4 +1,10 @@
-import { getCodeByPhoneNumber, validateCode, saveStepIndex, removeIsNew } from '../../reducers/student/auth'
+import {
+    getCodeByPhoneNumber,
+    validateCode,
+    saveStepIndex,
+    removeIsNew,
+    exitProfile
+} from '../../reducers/student/auth'
 
 export default superclass => class AuthorizationRepository extends superclass {}
 
@@ -15,6 +21,7 @@ export class AuthorizationProvider {
         getCodeByPhoneNumber,
         validateCode,
         saveStepIndex,
+        exitProfile,
         removeIsNew
     }
 }

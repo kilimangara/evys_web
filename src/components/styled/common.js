@@ -115,8 +115,9 @@ export const LoaderWrapper = styled.div`
 `
 
 export const CenteredContent = styled.div`
+    width: ${({ width }) => width || 'auto'};
     display: flex;
-    flex-direction: column;
+    flex-direction: ${({ direction }) => direction || 'column'};
     justify-content: center;
     align-items: center;
 `
@@ -132,7 +133,8 @@ export const WithVerticalMargin = styled.div`
 `
 
 export const ColoredButton = styled(({ color, textColor, textHover, ...props }) => <Button {...props} />)`
-    background-color: ${({ color }) => color || studentTheme.ACCENT};
+    background-color: ${({ color, disabled }) =>
+        disabled ? studentTheme.PRIMARY_LIGHT : color || studentTheme.ACCENT};
     color: ${({ textColor }) => textColor || studentTheme.PRIMARY};
     :hover {
         background-color: ${studentTheme.ACCENT_HOVER};
@@ -201,12 +203,12 @@ export const RowForm = styled.form`
 `
 
 export const FullPageOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left:0;
-  width: 100%;
-  height: 100%;
-  background: ${studentTheme.BACKGROUND};
-  display: flex;
-  justify-content: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: ${studentTheme.BACKGROUND};
+    display: flex;
+    justify-content: center;
 `

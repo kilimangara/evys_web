@@ -49,20 +49,22 @@ class SearchCoursesScreen extends SearchMixin(Component) {
                 ) : (
                     <CoursesWrapper>
                         {searchResults &&
-                            searchResults.map(({ id, name, description, duration, subjects, owner, amount, currency }) => (
-                                <SubjectItem
-                                    key={id}
-                                    ended={false}
-                                    name={name}
-                                    teacherName={owner}
-                                    subscribeTo={null}
-                                    courseImage={subjects[0].category && subjects[0].category.image}
-                                    duration={duration}
-                                    amount={amount}
-                                    currency={currency}
-                                    onClick={() => this.goToThemes(id)}
-                                />
-                            ))}
+                            searchResults.map(
+                                ({ id, name, description, duration, subjects, owner, amount, currency }) => (
+                                    <SubjectItem
+                                        key={id}
+                                        ended={false}
+                                        name={name}
+                                        teacherName={owner}
+                                        subscribeTo={null}
+                                        courseImage={subjects[0].category && subjects[0].category.image}
+                                        duration={duration}
+                                        amount={amount}
+                                        currency={currency}
+                                        onClick={() => this.goToThemes(id)}
+                                    />
+                                )
+                            )}
                     </CoursesWrapper>
                 )}
             </CoursesScreenContainer>

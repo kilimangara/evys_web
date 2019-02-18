@@ -39,9 +39,9 @@ export const saveStepIndex = index => dispatch => {
     dispatch(saveNewStepIndex(index))
 }
 
-export const removeIsNew = () => dispatch => dispatch(removeIsNewBadge)
+export const removeIsNew = () => dispatch => dispatch(removeIsNewBadge())
 
-export const exitProfile = () => dispatch => dispatch(logout)
+export const exitProfile = () => dispatch => dispatch(logout())
 
 export default createReducer(
     {
@@ -49,8 +49,8 @@ export default createReducer(
         [getCodeSuccess]: state => ({ ...state, fetching: false }),
         [sendCodeStart]: state => ({ ...state, fetching: true }),
         [sendCodeSuccess]: (state, payload) => ({ ...state, fetching: false, ...payload }),
-        [saveNewStepIndex]: (state, payload) => ({...state, stepIndex: payload}),
-        [removeIsNewBadge]: state => ({...state, isNew: false}),
+        [saveNewStepIndex]: (state, payload) => ({ ...state, stepIndex: payload }),
+        [removeIsNewBadge]: state => ({ ...state, isNew: false }),
         [logout]: state => initialState
     },
     initialState

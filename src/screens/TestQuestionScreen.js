@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import {
+    CenteredContent,
     ColoredButton,
     ColumnFlexed,
     FullsizeCentered,
     H1,
     H2,
     H3,
-    HorizontalCentered
+    HorizontalCentered,
+    StudentInput
 } from '../components/styled/common'
 import {
     AnimatedQuestion,
@@ -29,13 +31,14 @@ class TestQuestionScreen extends TestsMixin(Component) {
         selectedAnswer: null,
         answerSent: false,
         correct: null,
-        question: null
+        question: null,
+        textAnswer: ''
     }
 
     constructor(props) {
         super(props)
         this.themeId = this.props.match.params['theme_id']
-        this.courseId= this.props.match.params['course_id']
+        this.courseId = this.props.match.params['course_id']
     }
 
     componentDidMount() {
@@ -61,11 +64,12 @@ class TestQuestionScreen extends TestsMixin(Component) {
             .then(res => {
                 const correct = res && res.data.answerData && res.data.answerData.isRight
                 this.setState({ correct, answerSent: true })
+                this.state.textAnswer && this.getNextQuestion()
             })
     }
 
     getNextQuestion = () => {
-        this.setState({ question: null, answerSent: false, selectedAnswer: null })
+        this.setState({ question: null, answerSent: false, selectedAnswer: null, textAnswer: '' })
         return getTestQuestion(this.themeId, { test_block: this.props.testBlockId }).then(res =>
             this.setState({ question: res.data })
         )
@@ -81,6 +85,8 @@ class TestQuestionScreen extends TestsMixin(Component) {
         })
     }
 
+    onTextAnswerChange = e => this.setState({ textAnswer: e.target.value })
+
     selectAnswer = text => {
         const { selectedAnswer } = this.state
         if (text === selectedAnswer) {
@@ -95,7 +101,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
     quillWorks = value => this.setState({ value })
 
     render() {
-        const { question, selectedAnswer, correct, answerSent } = this.state
+        const { question, selectedAnswer, correct, answerSent, textAnswer } = this.state
         const { testFinished } = this.props
         return testFinished ? (
             <FullsizeCentered>
@@ -103,7 +109,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
                     <H1>Для данной темы больше нет тестов</H1>
                     <ColoredButton
                         color={studentTheme.ACCENT}
-                        textColor={studentTheme.TEXT_COLOR}
+                        textColor={studentTheme.PRIMARY_LIGHT}
                         style={{ width: '180px', margin: '12px 0' }}
                         onClick={this.goToTheme}
                     >
@@ -138,24 +144,46 @@ class TestQuestionScreen extends TestsMixin(Component) {
                     <QuestionsBlock>
                         {question &&
                             question.answers &&
-                            question.answers.map(question => {
-                                return (
-                                    <AnswerBlank
-                                        key={question.content}
-                                        correct={
-                                            answerSent && correct !== null && selectedAnswer === question.content
-                                                ? correct
-                                                : null
-                                        }
-                                        selected={question.content === selectedAnswer}
-                                        onClick={() =>
-                                            answerSent ? this.getNextQuestion() : this.selectAnswer(question.content)
-                                        }
+                            (question.answers.length > 1 ? (
+                                question.answers.map(question => {
+                                    return (
+                                        <AnswerBlank
+                                            key={question.content}
+                                            correct={
+                                                answerSent && correct !== null && selectedAnswer === question.content
+                                                    ? correct
+                                                    : null
+                                            }
+                                            selected={question.content === selectedAnswer}
+                                            onClick={() =>
+                                                answerSent
+                                                    ? this.getNextQuestion()
+                                                    : this.selectAnswer(question.content)
+                                            }
+                                        >
+                                            <H3>{question.content}</H3>
+                                        </AnswerBlank>
+                                    )
+                                })
+                            ) : (
+                                <CenteredContent
+                                    width={'40%'}
+                                    direction={'column'}
+                                    style={{ alignItems: 'center', marginTop: '18px' }}
+                                >
+                                    <H3>Введите ответ:</H3>
+                                    <StudentInput onChange={e => this.onTextAnswerChange(e)} />
+                                    <ColoredButton
+                                        color={studentTheme.ACCENT}
+                                        textColor={studentTheme.PRIMARY_LIGHT}
+                                        style={{ width: '180px', margin: '12px 0' }}
+                                        onClick={() => this.sendAnswer(textAnswer)}
+                                        disabled={!textAnswer}
                                     >
-                                        <H3>{question.content}</H3>
-                                    </AnswerBlank>
-                                )
-                            })}
+                                        отправить
+                                    </ColoredButton>
+                                </CenteredContent>
+                            ))}
                     </QuestionsBlock>
                 </TextFade>
             </HorizontalCentered>

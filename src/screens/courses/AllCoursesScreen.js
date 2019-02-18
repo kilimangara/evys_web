@@ -4,6 +4,7 @@ import { Loader, LoaderWrapper } from '../../components/styled/common'
 import withProviders from '../../utils/withProviders'
 import SearchMixin, { SearchProvider } from '../../mixins/student/SearchRepository'
 import SubjectItem from '../../components/subjects/SubjectItem'
+import { AccountProvider } from '../../mixins/student/AccountRepository'
 
 class AllCoursesScreen extends SearchMixin(Component) {
     state = {
@@ -20,7 +21,7 @@ class AllCoursesScreen extends SearchMixin(Component) {
     }
 
     render() {
-        const { loading, subjectsList } = this.props
+        const { loading, subjectsList, profileData } = this.props
         return (
             <CoursesScreenContainer>
                 {loading ? (
@@ -30,20 +31,23 @@ class AllCoursesScreen extends SearchMixin(Component) {
                 ) : (
                     <CoursesWrapper>
                         {subjectsList &&
-                            subjectsList.map(({ id, name, description, duration, subjects, owner, amount, currency }) => (
-                                <SubjectItem
-                                    key={id}
-                                    ended={false}
-                                    name={name}
-                                    teacherName={owner}
-                                    subscribeTo={null}
-                                    courseImage={subjects[0].category && subjects[0].category.image}
-                                    amount={amount}
-                                    currency={currency}
-                                    duration={duration}
-                                    onClick={() => this.goToThemes(id)}
-                                />
-                            ))}
+                            subjectsList.map(
+                                ({ id, name, description, duration, subjects, owner, amount, currency }) => (
+                                    <SubjectItem
+                                        key={id}
+                                        ended={false}
+                                        name={name}
+                                        teacherName={owner}
+                                        subscribeTo={null}
+                                        courseImage={subjects[0].category && subjects[0].category.image}
+                                        amount={amount}
+                                        currency={currency}
+                                        duration={duration}
+                                        locale={profileData && profileData.locality}
+                                        onClick={() => this.goToThemes(id)}
+                                    />
+                                )
+                            )}
                     </CoursesWrapper>
                 )}
             </CoursesScreenContainer>
@@ -51,4 +55,4 @@ class AllCoursesScreen extends SearchMixin(Component) {
     }
 }
 
-export default withProviders(SearchProvider)(AllCoursesScreen)
+export default withProviders(SearchProvider, AccountProvider)(AllCoursesScreen)
