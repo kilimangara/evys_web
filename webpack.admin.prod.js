@@ -5,6 +5,7 @@ var loaders = require('./webpack.loaders')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CompressionPlugin = require('compression-webpack-plugin')
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = env => {
     return {
@@ -18,7 +19,7 @@ module.exports = env => {
             extensions: ['.js', '.jsx', '.coffee']
         },
         module: {
-            loaders
+           rules : loaders
         },
         plugins: [
             new ExtractTextPlugin({
@@ -30,23 +31,6 @@ module.exports = env => {
                 __CURRENT_APP__: JSON.stringify('ADMIN_APP')
             }),
             new webpack.optimize.AggressiveMergingPlugin(),
-            new webpack.optimize.UglifyJsPlugin({
-                compress: {
-                    warnings: false,
-                    screw_ie8: true,
-                    conditionals: true,
-                    unused: true,
-                    comparisons: true,
-                    sequences: true,
-                    dead_code: true,
-                    evaluate: true,
-                    if_return: true,
-                    join_vars: true
-                },
-                output: {
-                    comments: false
-                }
-            }),
             new webpack.ProvidePlugin({
                 'window.Quill': 'quill/dist/quill.js',
                 Quill: 'quill/dist/quill.js'

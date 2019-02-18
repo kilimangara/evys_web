@@ -25,7 +25,7 @@ module.exports = env =>
       extensions: [".js", ".jsx", ".coffee"]
     },
     module: {
-      loaders
+      rules: loaders
     },
      devServer: {
       contentBase:'./public',

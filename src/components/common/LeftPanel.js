@@ -11,9 +11,8 @@ import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
 import { AuthorizationProvider } from '../../mixins/student/AuthorizationRepository'
 
 class LeftPanel extends Component {
-    constructor() {
-        super()
-        console.log(this.props.location)
+    constructor(props) {
+        super(props)
         this.state = {
             selectedTab:
                 this.props.location.pathname.includes('/all') || this.props.location.pathname.includes('/search')
