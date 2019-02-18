@@ -1,46 +1,36 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import TextField from '@material-ui/core/TextField'
-import Icon from '@material-ui/core/Icon'
-import SearchBar from 'react-search-bar'
-import Badge from '@material-ui/core/Badge'
-import classNames from 'classnames'
 import { StudentInput } from '../styled/common'
+import { Toolbar } from '../styled/header'
+import { SearchBar } from '../common/SearchBar'
+import { searchSubjects } from '../../api'
+import withProviders from '../../utils/withProviders'
+import { CoursesProvider } from '../../mixins/student/CoursesRepository'
+import { SearchProvider } from '../../mixins/student/SearchRepository'
+import { withRouter } from 'react-router'
 
 class HeaderAppBar extends Component {
-    handleChange = input => {}
+    state = {
+        searchValue: this.props.searchValue
+    }
+    handleChange = e => this.setState({ searchValue: e.target.value })
 
-    handleOnSearch = search => {}
-
-    handleOnClear = () => {}
+    handleOnSearch = e => {
+        e.preventDefault()
+        this.props.history.push(`/app/student/courses/search?search=${this.state.searchValue}`)
+    }
 
     render() {
-        const { classes } = this.props
+        const { searchValue } = this.state
         return (
-            <div className={classes.toolbar}>
-                <div style={{flex:1}}>
-                  <StudentInput placeholder='Поиск'/>
+            <Toolbar>
+                <div style={{ flex: 1 }}>
+                    <SearchBar value={searchValue} onChange={this.handleChange} onSubmit={this.handleOnSearch} />
                 </div>
-                <div id="additional-toolbar"/>
-            </div>
+                <div id="additional-toolbar" />
+            </Toolbar>
         )
     }
 }
 
-const styles = theme => ({
-    toolbar: {
-        display: 'flex',
-        backgroundColor: 'transparent',
-        minHeight: '60px'
-    },
-})
-
-const mapStateToProps = state => ({
-    isLogged: state.auth.authenticated,
-    profile: state.account.profileData
-})
-
-export default connect(mapStateToProps)(withStyles(styles)(HeaderAppBar))
+export default withRouter(withProviders(SearchProvider)(HeaderAppBar))

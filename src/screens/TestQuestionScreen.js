@@ -1,5 +1,15 @@
 import React, { Component } from 'react'
-import { CenteredContent, H2, H3, HorizontalCentered, Paper } from '../components/styled/common'
+import {
+    CenteredContent,
+    ColoredButton,
+    ColumnFlexed,
+    FullsizeCentered,
+    H1,
+    H2,
+    H3,
+    HorizontalCentered,
+    StudentInput
+} from '../components/styled/common'
 import {
     AnimatedQuestion,
     AnswerBlank,
@@ -12,20 +22,17 @@ import {
 } from '../components/styled/testQuestion'
 import TestsMixin, { TestsProvider } from '../mixins/student/TestsRepository'
 import withProviders from '../utils/withProviders'
-import { CoursesProvider } from '../mixins/student/CoursesRepository'
 import { getTestQuestion } from '../api'
-import { startTestsSession } from '../reducers/student/tests'
 import ReactQuill from 'react-quill'
 import { studentTheme } from '../utils/global_theme'
-import { CSSTransition } from 'react-transition-group'
-import AnimateHeight from 'react-animate-height'
 
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
         selectedAnswer: null,
-        answerSended: false,
+        answerSent: false,
         correct: null,
-        question: null
+        question: null,
+        textAnswer: ''
     }
 
     constructor(props) {
@@ -46,7 +53,6 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 
     sendAnswer = text => {
-        console.log('send')
         const answerTime = Math.floor((new Date().getTime() - this.mountTime) / 1000)
         this.mountTime = new Date().getTime()
         this.props
@@ -57,27 +63,29 @@ class TestQuestionScreen extends TestsMixin(Component) {
             })
             .then(res => {
                 const correct = res && res.data.answerData && res.data.answerData.isRight
-                this.setState({ correct, answerSended: true })
-                // if (!res.block)
+                this.setState({ correct, answerSent: true })
+                this.state.textAnswer && this.getNextQuestion()
             })
     }
 
     getNextQuestion = () => {
-        this.setState({ question: null, answerSended: false })
+        this.setState({ question: null, answerSent: false, selectedAnswer: null, textAnswer: '' })
         return getTestQuestion(this.themeId, { test_block: this.props.testBlockId }).then(res =>
             this.setState({ question: res.data })
         )
-    } // TODO: why camelCase method doesn't work?
+    }
 
     addEnterListener = () => {
         addEventListener('keypress', e => {
             if (e.keyCode === 13) {
-                this.state.answerSended
+                this.state.answerSent
                     ? this.getNextQuestion()
                     : this.state.selectedAnswer && this.sendAnswer(this.state.selectedAnswer)
             }
         })
     }
+
+    onTextAnswerChange = e => this.setState({ textAnswer: e.target.value })
 
     selectAnswer = text => {
         const { selectedAnswer } = this.state
@@ -88,13 +96,27 @@ class TestQuestionScreen extends TestsMixin(Component) {
         }
     }
 
+    goToTheme = () => this.props.history.push(`/app/course/${this.courseId}/theme/${this.themeId}`)
+
     quillWorks = value => this.setState({ value })
 
     render() {
-        const { question, selectedAnswer, correct, answerSended } = this.state
+        const { question, selectedAnswer, correct, answerSent, textAnswer } = this.state
         const { testFinished } = this.props
         return testFinished ? (
-            <CenteredContent>PIZDEC</CenteredContent>
+            <FullsizeCentered>
+                <ColumnFlexed align={'center'}>
+                    <H1>Для данной темы больше нет тестов</H1>
+                    <ColoredButton
+                        color={studentTheme.ACCENT}
+                        textColor={studentTheme.PRIMARY_LIGHT}
+                        style={{ width: '180px', margin: '12px 0' }}
+                        onClick={this.goToTheme}
+                    >
+                        вернуться в тему
+                    </ColoredButton>
+                </ColumnFlexed>
+            </FullsizeCentered>
         ) : (
             <HorizontalCentered direction={'column'}>
                 <AnimatedQuestion duration={500} height={'auto'}>
@@ -122,24 +144,46 @@ class TestQuestionScreen extends TestsMixin(Component) {
                     <QuestionsBlock>
                         {question &&
                             question.answers &&
-                            question.answers.map(question => {
-                                return (
-                                    <AnswerBlank
-                                        key={question.content}
-                                        correct={
-                                            answerSended && correct !== null && selectedAnswer === question.content
-                                                ? correct
-                                                : null
-                                        }
-                                        selected={question.content === selectedAnswer}
-                                        onClick={() =>
-                                            answerSended ? this.getNextQuestion() : this.selectAnswer(question.content)
-                                        }
+                            (question.answers.length > 1 ? (
+                                question.answers.map(question => {
+                                    return (
+                                        <AnswerBlank
+                                            key={question.content}
+                                            correct={
+                                                answerSent && correct !== null && selectedAnswer === question.content
+                                                    ? correct
+                                                    : null
+                                            }
+                                            selected={question.content === selectedAnswer}
+                                            onClick={() =>
+                                                answerSent
+                                                    ? this.getNextQuestion()
+                                                    : this.selectAnswer(question.content)
+                                            }
+                                        >
+                                            <H3>{question.content}</H3>
+                                        </AnswerBlank>
+                                    )
+                                })
+                            ) : (
+                                <CenteredContent
+                                    width={'40%'}
+                                    direction={'column'}
+                                    style={{ alignItems: 'center', marginTop: '18px' }}
+                                >
+                                    <H3>Введите ответ:</H3>
+                                    <StudentInput onChange={e => this.onTextAnswerChange(e)} />
+                                    <ColoredButton
+                                        color={studentTheme.ACCENT}
+                                        textColor={studentTheme.PRIMARY_LIGHT}
+                                        style={{ width: '180px', margin: '12px 0' }}
+                                        onClick={() => this.sendAnswer(textAnswer)}
+                                        disabled={!textAnswer}
                                     >
-                                        <H3>{question.content}</H3>
-                                    </AnswerBlank>
-                                )
-                            })}
+                                        отправить
+                                    </ColoredButton>
+                                </CenteredContent>
+                            ))}
                     </QuestionsBlock>
                 </TextFade>
             </HorizontalCentered>

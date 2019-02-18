@@ -1,14 +1,9 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
-import { loadThemes } from '../actions/CoursesActions'
 import { List, ListItem } from 'material-ui/List'
-import ActionInfo from 'material-ui/svg-icons/action/info'
-import Divider from 'material-ui/Divider'
 import Subheader from 'material-ui/Subheader'
 import Avatar from 'material-ui/Avatar'
-import FileFolder from 'material-ui/svg-icons/file/folder'
-import withProviders from "../utils/withProviders";
-import {CoursesProvider} from "../mixins/student/CoursesRepository";
+import withProviders from '../utils/withProviders'
+import { CoursesProvider } from '../mixins/student/CoursesRepository'
 
 class SubThemesScreen extends Component {
     constructor(props) {
@@ -18,7 +13,7 @@ class SubThemesScreen extends Component {
         }
     }
 
-    componentWillMount = () => {
+    componentWillMount() {
         this.courseId = this.props.match.params['course_id']
         this.themeId = this.props.match.params['theme_id']
         this.props.loadThemes(this.courseId, this.themeId).then(response => {
@@ -57,10 +52,4 @@ class SubThemesScreen extends Component {
     }
 }
 
-
 withProviders(CoursesProvider)(SubThemesScreen)
-
-// export default connect(
-//     mapStateToProps,
-//     { loadThemes }
-// )(SubThemesScreen)

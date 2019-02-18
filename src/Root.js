@@ -13,9 +13,10 @@ import JssProvider from 'react-jss/lib/JssProvider'
 import routes from './routes'
 import { jssPreset, createGenerateClassName } from '@material-ui/core/styles'
 import { create } from 'jss'
-import {theme} from "./utils/global_theme";
-import Login from "./screens/Login"
+import { theme } from './utils/global_theme'
+import Login from './screens/Login'
 import { PersistGate } from 'redux-persist/integration/react'
+import NotFoundPage from './screens/NotFoundPage'
 
 const styleNode = document.createComment('insertion-point-jss')
 document.head.insertBefore(styleNode, document.head.firstChild)
@@ -25,22 +26,22 @@ const jss = create(jssPreset())
 jss.options.insertionPoint = 'insertion-point-jss'
 
 class Root extends Component {
-
     render() {
         return (
             <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <MuiThemeProvider>
-                    <JssProvider jss={jss} generateClassName={generateClassName}>
-                        <BrowserRouter>
-                            <Switch>
-                                <Route path="/app" component={App} />
-                                <Route path="/login" component={Login} />
-                            </Switch>
-                        </BrowserRouter>
-                    </JssProvider>
-                </MuiThemeProvider>
-              </PersistGate>
+                <PersistGate loading={null} persistor={persistor}>
+                    <MuiThemeProvider>
+                        <JssProvider jss={jss} generateClassName={generateClassName}>
+                            <BrowserRouter>
+                                <Switch>
+                                    <Route path="/app" component={App} />
+                                    <Route path="/login" component={Login} />
+                                    <Route component={NotFoundPage} />
+                                </Switch>
+                            </BrowserRouter>
+                        </JssProvider>
+                    </MuiThemeProvider>
+                </PersistGate>
             </Provider>
         )
     }

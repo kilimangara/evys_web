@@ -8,7 +8,8 @@ import {
     getStudentThemes,
     getStudentThemeTheory,
     updateStudentProfile,
-    getStudentThemeVideo
+    getStudentThemeVideo,
+    searchSubjects
 } from '../../api'
 import createAction from 'redux-act/src/createAction'
 import createReducer from 'redux-act/src/createReducer'
@@ -29,7 +30,7 @@ const videosLoading = createAction('courses/videos-loading')
 const videosLoadingSuccess = createAction('courses/videos-loading-success')
 
 export const getCurrentCourses = (page = 1) => dispatch => {
-    dispatch(coursesLoading)
+    dispatch(coursesLoading())
     return getStudentCourses({ progressTo: '99', page }).then(response => {
         page === 1 ? dispatch(coursesReset(response.results)) : dispatch(coursesFetchSuccess(response.results))
     })

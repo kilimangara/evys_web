@@ -29,6 +29,12 @@ export const ProgressRingContainer = styled.div`
     margin-left: 12px;
 `
 
+export const SubjectPriceContainer = styled.div`
+    display: flex;
+    align-items: flex-end;
+    margin: 0 5px 20px 0;
+`
+
 export const CourseName = styled.p`
     overflow: hidden;
     margin: 0;

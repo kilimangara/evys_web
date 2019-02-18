@@ -44,7 +44,10 @@ const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 const axiosInstance = axios.create({
     baseURL,
     transformResponse: [...axios.defaults.transformResponse, data => humps.camelizeKeys(data)],
-    transformRequest: [data => data instanceof FormData ? data : humps.decamelizeKeys(data), ...axios.defaults.transformRequest]
+    transformRequest: [
+        data => (data instanceof FormData ? data : humps.decamelizeKeys(data)),
+        ...axios.defaults.transformRequest
+    ]
 })
 
 function basicAdminAuth(config) {
@@ -65,12 +68,19 @@ axiosInstance.interceptors.request.use(config => {
     return studentTokenAuth(config)
 })
 
-axiosInstance.interceptors.response.use(data => {
-    if (!data) return data
-    if (data.data) return data.data
-    if (data.error) return data.error
-    return data
-})
+axiosInstance.interceptors.response.use(
+    data => {
+        if (!data) return data
+        if (data.data) return data.data
+        if (data.error) return data.error
+        return data
+    },
+    error => {
+        if (error.response.status === 401) {
+            // window.location = '/login'
+        }
+    }
+)
 
 // student methods
 
@@ -81,6 +91,13 @@ export function sendCode(phone) {
         url: '/student/code',
         method: 'POST',
         data: { phone }
+    })
+}
+
+export function searchSubjects(params) {
+    return axiosInstance.request({
+        url: 'student/subjects/search',
+        params
     })
 }
 
@@ -172,6 +189,12 @@ export function sendTestQuestionAnswer(themeId, data) {
     })
 }
 
+export function getPopularSubjects() {
+    return axiosInstance.request({
+        url: '/student/subjects/popular'
+    })
+}
+
 // admin methods
 
 export function getAccounts() {
@@ -189,11 +212,11 @@ export function createAccount(name) {
 }
 
 export function createUser(data) {
-  return axiosInstance.request({
-    url: '/admin2/create_user',
-    method: 'POST',
-    data
-  })
+    return axiosInstance.request({
+        url: '/admin2/create_user',
+        method: 'POST',
+        data
+    })
 }
 
 export function profileInfo() {
@@ -260,17 +283,17 @@ export function createSubjectTheme(subjectId, data) {
 }
 
 export function getTheme(themeId) {
-  return axiosInstance.request({
-    url: `/admin2/theme/${themeId}`,
-    method: 'GET'
-  })
+    return axiosInstance.request({
+        url: `/admin2/theme/${themeId}`,
+        method: 'GET'
+    })
 }
 
 export function deleteTheme(themeId) {
-  return axiosInstance.request({
-    url: `/admin2/theme/${themeId}`,
-    method: 'DELETE'
-  })
+    return axiosInstance.request({
+        url: `/admin2/theme/${themeId}`,
+        method: 'DELETE'
+    })
 }
 
 export function updateTheme(themeId, data) {

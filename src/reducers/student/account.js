@@ -23,8 +23,7 @@ export const saveProfile = data => dispatch => {
     dispatch(profileSave())
     let body = new FormData()
     const { avatar, full_name, email, tags } = data
-    debugger
-    if (avatar) {
+    if (avatar && !avatar.id) {
         body.append('avatar', avatar)
     }
     if (full_name) {
@@ -38,8 +37,6 @@ export const saveProfile = data => dispatch => {
     }
     return updateStudentProfile(body).then(response => dispatch(profileSaveSuccess(response.data)))
 }
-
-
 
 export default createReducer(
     {
