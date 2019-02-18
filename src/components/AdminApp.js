@@ -6,7 +6,6 @@ import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
-import bind from 'memoize-bind'
 import Modal from 'reboron/ScaleModal'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
@@ -22,10 +21,9 @@ import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import SubjectScreen from '../screens/admin/subject'
 import ThemeScreen from '../screens/admin/theme'
-import {logoutAdmin} from '../reducers/admin/authorization'
-import {switchManager, pickAsset} from '../reducers/admin/assetManager'
+import { logoutAdmin } from '../reducers/admin/authorization'
+import { switchManager, pickAsset } from '../reducers/admin/assetManager'
 import { SnackbarProvider } from 'notistack'
-
 
 class App extends Component {
     constructor(props) {
@@ -42,7 +40,7 @@ class App extends Component {
         }
     }
 
-    goToExactPath = path => {
+    goToExactPath = path => () => {
         this.props.history.push(path)
     }
 
@@ -52,7 +50,7 @@ class App extends Component {
     }
 
     handleMenuClick = () => {
-        this.setState({ open: !this.state.open})
+        this.setState({ open: !this.state.open })
     }
 
     logout = () => {
@@ -65,23 +63,23 @@ class App extends Component {
     }
 
     drawerContent = () => {
-        const { account} = this.props
+        const { account } = this.props
         return (
             <div>
                 <AppToolbar inverse>
-                  <div style={{flex:1}}/>
-                  <IconButton onClick={this.handleMenuClick}>
-                     <ChevronLeftIcon/>
-                   </IconButton>
+                    <div style={{ flex: 1 }} />
+                    <IconButton onClick={this.handleMenuClick}>
+                        <ChevronLeftIcon />
+                    </IconButton>
                 </AppToolbar>
                 <List>
-                    <ListItem button onClick={bind(this.goToExactPath, this, '/admin')}>
+                    <ListItem button onClick={this.goToExactPath('/admin/subjects')}>
                         <ListItemIcon>
                             <ListIcon className={'fab fa-leanpub'} />
                         </ListItemIcon>
                         <ListItemText primary={'Курсы'} />
                     </ListItem>
-                    <ListItem button onClick={bind(this.goToExactPath, this, '/admin/students')}>
+                    <ListItem button onClick={this.goToExactPath('/admin/students')}>
                         <ListItemIcon>
                             <ListIcon className="fas fa-users" />
                         </ListItemIcon>
@@ -102,14 +100,14 @@ class App extends Component {
                     PaperProps={{ style: { zIndex: 2 } }}
                     ModalProps={{ style: { zIndex: 2 } }}
                     className={classNames(classes.drawer, {
-                      [classes.drawerOpen]: this.state.open,
-                      [classes.drawerClose]: !this.state.open,
+                        [classes.drawerOpen]: this.state.open,
+                        [classes.drawerClose]: !this.state.open
                     })}
                     classes={{
-                      paper: classNames({
-                        [classes.drawerOpen]: this.state.open,
-                        [classes.drawerClose]: !this.state.open,
-                      }),
+                        paper: classNames({
+                            [classes.drawerOpen]: this.state.open,
+                            [classes.drawerClose]: !this.state.open
+                        })
                     }}
                     open={this.state.open}
                     variant={'permanent'}
@@ -121,30 +119,27 @@ class App extends Component {
                     onMenuPressed={this.handleMenuClick}
                     open={this.state.open}
                     className={classNames(classes.appBar, {
-                       [classes.appBarShift]: this.state.open,
-                     })}
+                        [classes.appBarShift]: this.state.open
+                    })}
                 />
                 <AppContainer>
-                      <Modal
-                          ref={ref => (this.assetManager = ref)}
-                          onHide={this.imageAssetPickerClose}
-                      >
-                          <ImageAssetPicker/>
-                      </Modal>
-                    <div style={{minHeight: 64}}/>
+                    <Modal ref={ref => (this.assetManager = ref)} onHide={this.imageAssetPickerClose}>
+                        <ImageAssetPicker />
+                    </Modal>
+                    <div style={{ minHeight: 64 }} />
                     <SnackbarProvider maxSnack={5}>
-                    <CommonWrapper>
-                      <Switch>
-                          <Route exact path='/admin' render={() => <Redirect to='/admin/subjects'/>}/>
-                          <Route exact path="/admin/subjects" component={SubjectsScreen} />
-                          <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
-                          <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen}/>
-                          <Route path="/admin/students" component={StudentsScreen} />
-                          <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                          <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
-                          <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
-                      </Switch>
-                    </CommonWrapper>
+                        <CommonWrapper>
+                            <Switch>
+                                <Route exact path="/admin" render={() => <Redirect to="/admin/subjects" />} />
+                                <Route exact path="/admin/subjects" component={SubjectsScreen} />
+                                <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
+                                <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
+                                <Route path="/admin/students" component={StudentsScreen} />
+                                <Route path="/admin/choose_account" component={ChooseAccountScreen} />
+                                <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
+                                <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
+                            </Switch>
+                        </CommonWrapper>
                     </SnackbarProvider>
                 </AppContainer>
             </div>
@@ -160,58 +155,58 @@ const inlineStyles = {
     }
 }
 
-const drawerWidth = 240;
+const drawerWidth = 240
 
 const styles = theme => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
-  drawer: {
-    width: drawerWidth,
-    flexShrink: 0,
-    whiteSpace: 'nowrap',
-  },
-  drawerOpen: {
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  drawerClose: {
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: 'hidden',
-    width: 64,
-    [theme.breakpoints.up('sm')]: {
-      width: 64,
+    root: {
+        display: 'flex'
     },
-  }
-});
+    appBar: {
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        })
+    },
+    appBarShift: {
+        marginLeft: drawerWidth,
+        width: `calc(100% - ${drawerWidth}px)`,
+        transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen
+        })
+    },
+    menuButton: {
+        marginLeft: 12,
+        marginRight: 36
+    },
+    hide: {
+        display: 'none'
+    },
+    drawer: {
+        width: drawerWidth,
+        flexShrink: 0,
+        whiteSpace: 'nowrap'
+    },
+    drawerOpen: {
+        width: drawerWidth,
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen
+        })
+    },
+    drawerClose: {
+        transition: theme.transitions.create('width', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen
+        }),
+        overflowX: 'hidden',
+        width: 64,
+        [theme.breakpoints.up('sm')]: {
+            width: 64
+        }
+    }
+})
 
 const mapStateToProps = state => ({
     account: state.profile.profileData || {},

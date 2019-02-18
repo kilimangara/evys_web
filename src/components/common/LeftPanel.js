@@ -11,11 +11,15 @@ import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
 import { AuthorizationProvider } from '../../mixins/student/AuthorizationRepository'
 
 class LeftPanel extends Component {
-    state = {
-        selectedTab:
-            this.props.location.pathname.includes('/all') || this.props.location.pathname.includes('/search')
-                ? 'all'
-                : 'my'
+    constructor() {
+        super()
+        console.log(this.props.location)
+        this.state = {
+            selectedTab:
+                this.props.location.pathname.includes('/all') || this.props.location.pathname.includes('/search')
+                    ? 'all'
+                    : 'my'
+        }
     }
 
     activeButton(index) {
@@ -35,7 +39,10 @@ class LeftPanel extends Component {
 
     goToNotifications = () => true //TODO: make notifications screen //this.props.history.push('/notifications/')
 
-    goToSettings = () => this.props.history.push('/app/profile')
+    goToSettings = () => {
+        this.selectedTab({ selectedTab: null })
+        this.props.history.push('/app/profile')
+    }
 
     goToAllCourses = () => {
         this.setState({ selectedTab: 'all' })
