@@ -1,10 +1,10 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
 
-import { loadStudents, addStudent } from '../../api'
+import { loadStudents, addStudent, subscribeStudents } from '../../api'
 import { merge, omit } from 'lodash'
 
-import {chooseAccount} from './account'
+import { chooseAccount } from './account'
 
 const initialState = {
     list: [],
@@ -23,16 +23,24 @@ export const getStudents = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingStudents())
     return loadStudents(page, query).then(response => {
         const { data } = response
-        const { count, result } = data
+        const { count, results } = data
         return dispatch(
             successLoadingStudents({
-                list: result,
+                list: results,
                 totalPages: count,
                 currentPage: page,
                 fetching: false
             })
         )
     })
+}
+
+export const newStudent = data => dispatch => {
+    return addStudent(data)
+}
+
+export const addStudentsToTariff = (tariffId, studentIds) => dispatch => {
+    return subscribeStudents(tariffId, studentId)
 }
 
 export default createReducer(
@@ -43,11 +51,13 @@ export default createReducer(
             }),
         [successLoadingStudents]: (state, payload) =>
             produce(state, draft => {
-                if (payload.currentPage !== 1) payload.unshift(...state.list)
-                merge(draft, payload)
+                draft.list = payload.list
+                draft.totalPages = payload.totalPages
+                draft.currentPage = payload.currentPage
+                draft.fetching = false
             }),
         [resetStudentsList]: (state, payload) => produce(state, draft => merge(draft, omit(initialState, ['current']))),
-        [chooseAccount]: (state) => initialState
+        [chooseAccount]: state => initialState
     },
     initialState
 )
