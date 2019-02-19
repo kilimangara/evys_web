@@ -43,7 +43,13 @@ const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 
 const axiosInstance = axios.create({
     baseURL,
-    transformResponse: [...axios.defaults.transformResponse, data => humps.camelizeKeys(data)],
+    transformResponse: [
+        ...axios.defaults.transformResponse,
+        data => {
+            if (data instanceof Blob) return data
+            return humps.camelizeKeys(data)
+        }
+    ],
     transformRequest: [
         data => (data instanceof FormData ? data : humps.decamelizeKeys(data)),
         ...axios.defaults.transformRequest
@@ -322,7 +328,8 @@ export function createThemeTheory(themeId, data) {
 export function generatePDFTests(themeId) {
     return axiosInstance.request({
         url: `/admin2/theme/${themeId}/to_pdf`,
-        methpd: 'GET'
+        method: 'GET',
+        responseType: 'blob'
     })
 }
 
