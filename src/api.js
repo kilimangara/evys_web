@@ -319,6 +319,13 @@ export function createThemeTheory(themeId, data) {
     })
 }
 
+export function generatePDFTests(themeId) {
+    return axiosInstance.request({
+        url: `/admin2/theme/${themeId}/to_pdf`,
+        methpd: 'GET'
+    })
+}
+
 export function getTheoryVideos(theoryId) {
     return axiosInstance.request({
         url: `/admin2/storage/video/${theoryId}`

@@ -124,6 +124,8 @@ class StudentsScreen extends StudentsRepository(Component) {
 
     subscribeStudents = () => {
         const { selectedIds } = this.state
+        if (!this.hasTariffInQuery())
+            return this.props.enqueueSnackbar('Подписать учеников можно через раздел "Курсы"', { variant: 'error' })
         this.props
             .addStudentsToTariff(this.queryTariffId(), selectedIds)
             .then(() => {

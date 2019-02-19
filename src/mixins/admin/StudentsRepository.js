@@ -14,6 +14,10 @@ export default superclass =>
             return params.get('tariff_name')
         }
 
+        hasTariffInQuery = () => {
+            return Boolean(this.queryTariffId()) && Boolean(this.queryTariffName())
+        }
+
         hasMorePages = () => this.props.totalPages > this.props.currentPage
 
         students = () => this.props.students
