@@ -2,10 +2,16 @@ import { getStudents, newStudent, addStudentsToTariff } from '../../reducers/adm
 
 export default superclass =>
     class StudentsRepository extends superclass {
-        tariffId = () => {
+        queryTariffId = () => {
             const paramsStr = this.props.location.search
             const params = new URLSearchParams(paramsStr)
             return params.get('tariff_id')
+        }
+
+        queryTariffName = () => {
+            const paramsStr = this.props.location.search
+            const params = new URLSearchParams(paramsStr)
+            return params.get('tariff_name')
         }
 
         hasMorePages = () => this.props.totalPages > this.props.currentPage

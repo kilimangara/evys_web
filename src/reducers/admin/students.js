@@ -40,7 +40,7 @@ export const newStudent = data => dispatch => {
 }
 
 export const addStudentsToTariff = (tariffId, studentIds) => dispatch => {
-    return subscribeStudents(tariffId, studentId)
+    return subscribeStudents(tariffId, studentIds)
 }
 
 export default createReducer(

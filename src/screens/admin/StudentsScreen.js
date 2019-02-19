@@ -122,6 +122,21 @@ class StudentsScreen extends StudentsRepository(Component) {
         )
     }
 
+    subscribeStudents = () => {
+        const { selectedIds } = this.state
+        this.props
+            .addStudentsToTariff(this.queryTariffId(), selectedIds)
+            .then(() => {
+                this.props.enqueueSnackbar(`Ученики записаны на курс ${this.queryTariffName()}`)
+                this.setState({ selectedIds: [] })
+            })
+            .catch(() => {
+                this.props.enqueueSnackbar('Произошла ошибка', {
+                    variant: 'error'
+                })
+            })
+    }
+
     addStudent = () => {
         const { newStudent } = this.state
         this.props
@@ -210,6 +225,9 @@ class StudentsScreen extends StudentsRepository(Component) {
     renderToolbar = () => {
         const { selectedIds } = this.state
         const highlight = Boolean(selectedIds.length)
+        const tooltipText = Boolean(this.queryTariffId())
+            ? `Добавить учеников к курсу ${this.queryTariffName()}`
+            : 'Выбрать курс'
         return (
             <TableToolbar highlight={highlight}>
                 <ToolbarTitle>
@@ -225,8 +243,8 @@ class StudentsScreen extends StudentsRepository(Component) {
                 </ToolbarTitle>
                 <Spacer />
                 {highlight && (
-                    <Tooltip title="Добавить учеников к курсу">
-                        <IconButton aria-label="Добавить">
+                    <Tooltip title={tooltipText}>
+                        <IconButton aria-label="Добавить" onClick={this.subscribeStudents}>
                             <Add />
                         </IconButton>
                     </Tooltip>
@@ -247,7 +265,7 @@ class StudentsScreen extends StudentsRepository(Component) {
                             <TableCell padding="checkbox" />
                             <TableCell align="left">Идентификатор</TableCell>
                             <TableCell>Имя</TableCell>
-                            <TableCell align="right">Телефон</TableCell>
+                            <TableCell>Телефон</TableCell>
                             <TableCell align="right">Почта</TableCell>
                         </TableHead>
                         <TableBody>{this.students().map(this.renderStudent)}</TableBody>
