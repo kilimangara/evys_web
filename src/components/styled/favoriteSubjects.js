@@ -24,28 +24,21 @@ export const FavoriteSubjectsGrid = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     width: 100%;
-    @media screen and (min-width: 0px) and (max-width: 448px) {
-        max-width: 224px;
+    min-height: fit-content;
+    margin-top: 200px;
+    @media screen and (min-width: 0px) and (max-width: 496px) {
+        max-width: 248px;
     }
 
-    @media screen and (min-width: 449px) and (max-width: 672px) {
-        max-width: 448px;
+    @media screen and (min-width: 497px) and (max-width: 744px) {
+        max-width: 496px;
     }
 
-    @media screen and (min-width: 673px) and (max-width: 896px) {
-        max-width: 672px;
+    @media screen and (min-width: 745px) and (max-width: 992px) {
+        max-width: 744px;
     }
 
-    @media screen and (min-width: 897px) and (max-width: 1120px) {
-        max-width: 896px;
+    @media screen and (min-width: 993px) {
+        max-width: 992px;
     }
-
-    @media screen and (min-width: 1121px) {
-        max-width: 1120px;
-    }
-`
-
-export const ButtonsBlock = styled.div`
-    display: flex;
-    flex-direction: row;
 `

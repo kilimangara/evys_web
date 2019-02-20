@@ -2,7 +2,16 @@ import React, { Component } from 'react'
 import _ from 'lodash'
 import { AliasTextField } from '../components/common/AliasTextfield'
 import { ProfileContainer } from '../components/styled/profile'
-import { CenteredContent, ColoredButton, Error } from '../components/styled/common'
+import {
+    CenteredContent,
+    ColoredButton,
+    ColumnFlexed,
+    Error,
+    FullPageOverlay,
+    H2,
+    HorizontalCentered,
+    WithVerticalMargin
+} from '../components/styled/common'
 import { studentTheme } from '../utils/global_theme'
 import { ImageLoader } from '../components/common/ImageLoader'
 import { FavoriteSubjects } from '../components/subjects/favoriteSubjects/FavoriteSubjects'
@@ -105,13 +114,22 @@ class ProfileScreen extends AccountMixin(Component) {
         return (
             <CenteredContent style={{ height: 'fitContent' }}>
                 {favoriteSubjectsOpened ? (
-                    <FavoriteSubjects
-                        subjects={subjects}
-                        selected={selectedFavoriteSubjects}
-                        onSelect={this.handleFavoriteSubjectSelect}
-                        onApply={this.saveFavoriteSubjects}
-                        onCancel={this.closeFavoriteSubjects}
-                    />
+                    <FullPageOverlay>
+                        <ColumnFlexed>
+                            <HorizontalCentered>
+                                <WithVerticalMargin margin={'24px'}>
+                                    <H2>Выберите любимые темы</H2>
+                                </WithVerticalMargin>
+                            </HorizontalCentered>
+                            <FavoriteSubjects
+                                subjects={subjects}
+                                selected={selectedFavoriteSubjects}
+                                onSelect={this.handleFavoriteSubjectSelect}
+                                onApply={this.saveFavoriteSubjects}
+                                onCancel={this.closeFavoriteSubjects}
+                            />
+                        </ColumnFlexed>
+                    </FullPageOverlay>
                 ) : (
                     <ProfileContainer>
                         <ImageLoader
