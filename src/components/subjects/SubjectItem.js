@@ -49,7 +49,7 @@ class SubjectItem extends Component {
             textPeriod = 'день'
         } else if (period === 7) {
             textPeriod = 'нед'
-        } else if (period === 28 || period === 29 || period === 30 || period === 30) {
+        } else if (period === 28 || period === 29 || period === 30 || period === 31) {
             textPeriod = 'мес'
         } else if (period === 365 || period === 366) {
             textPeriod = 'год'

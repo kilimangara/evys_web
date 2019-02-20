@@ -1,13 +1,26 @@
 import React, { Component } from 'react'
-import { Step } from '@material-ui/core/'
-import { CenteredContent, ColoredButton, Error, WithVerticalMargin } from '../components/styled/common'
-import { LoginContainer, LoginDataWrapper } from '../components/styled/authorization'
-import { LoginStepLabel, LoginStepper, PhoneNumberInput } from '../components/styled/authorization'
+import {
+    CenteredContent,
+    CodeInput,
+    ColoredButton,
+    Error,
+    H3,
+    RowFlexed,
+    WithVerticalMargin
+} from '../components/styled/common'
 import { studentTheme } from '../utils/global_theme'
 import ReactCodeInput from 'react-code-input'
-import { withWidth } from '@material-ui/core'
 import AuthorisationMixin, { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
+import { ElementCountdown } from '../components/common/ElementCountdown'
 import withProviders from '../utils/withProviders'
+import { Step, withWidth } from '@material-ui/core/es/index'
+import {
+    LoginContainer,
+    LoginDataWrapper,
+    LoginStepLabel,
+    LoginStepper,
+    PhoneNumberInput
+} from '../components/styled/authorization'
 
 class Login extends AuthorisationMixin(Component) {
     constructor(props) {
@@ -17,19 +30,22 @@ class Login extends AuthorisationMixin(Component) {
         phone: '',
         code: '',
         errors: {},
-        loading: false
+        loading: false,
+        resendTimer: true
     }
 
     componentWillMount() {
         if (this.props.token) this.props.history.push('/app/profile')
     }
 
+    resendCode = () => this.props.getCodeByPhoneNumber(this.state.phone || this.props.phone)
+
     renderVerifyStage = () => {
-        const { errors } = this.state
+        const { errors, resendTimer } = this.state
         return (
             <CenteredContent>
-                <ReactCodeInput
-                    type="text"
+                <CodeInput
+                    type="number"
                     name="code"
                     onChange={this.handleCodeChange}
                     fields={6}
@@ -47,6 +63,31 @@ class Login extends AuthorisationMixin(Component) {
                     }}
                 />
                 {errors && errors.phone && <Error>{errors.phone}</Error>}
+                <RowFlexed style={{ margin: '12px 0' }}>
+                    {resendTimer && <H3>До повторной отправки </H3>}
+                    <ElementCountdown
+                        time={5}
+                        onTimerFinished={this.resendTimerFinished}
+                        onTimerReset={this.resendTimerReset}
+                    >
+                        <ColoredButton
+                            color={studentTheme.BACKGROUND}
+                            textColor={studentTheme.PRIMARY_LIGHT}
+                            style={{ padding: '0 12px', margin: '12px 0' }}
+                            onClick={this.resendCode}
+                        >
+                            отправить повторно
+                        </ColoredButton>
+                    </ElementCountdown>
+                </RowFlexed>
+                <ColoredButton
+                    color={studentTheme.BACKGROUND}
+                    textColor={studentTheme.PRIMARY_LIGHT}
+                    style={{ padding: '0 12px', margin: '12px 0' }}
+                    onClick={this.goToPhoneStage}
+                >
+                    назад к вводу номера
+                </ColoredButton>
             </CenteredContent>
         )
     }
@@ -84,6 +125,12 @@ class Login extends AuthorisationMixin(Component) {
                 .catch(() => this.setState({ errors: { phone: 'Неправильный формат' } }))
         }
     }
+
+    resendTimerFinished = () => this.setState({ resendTimer: false })
+
+    resendTimerReset = () => this.setState({ resendTimer: true })
+
+    goToPhoneStage = () => this.newStepIndex(0)
 
     renderPhoneStage = () => {
         const { errors } = this.state

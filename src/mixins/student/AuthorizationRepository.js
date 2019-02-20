@@ -14,7 +14,8 @@ export class AuthorizationProvider {
         userId: state.auth.user_id,
         stepIndex: state.auth.stepIndex,
         isNew: state.auth.isNew,
-        token: state.auth.token
+        token: state.auth.token,
+        phone: state.auth.savedPhone
     })
 
     static mapDispatchToProps = {

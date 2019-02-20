@@ -4,15 +4,16 @@ import React from 'react'
 import Modal from 'reboron/ScaleModal'
 import { Button } from '@material-ui/core'
 import { studentTheme } from '../../utils/global_theme'
+import ReactCodeInput from 'react-code-input'
 
 export const Paper = styled.div`
     box-shadow: ${({ boxShadow, hovered }) =>
         boxShadow
             ? boxShadow
             : hovered
-                ? 'rgba(0,0,0,0.19) 0px 10px 30px, rgba(0,0,0,0.23) 0px 6px 10px'
-                : '0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),' +
-                  '0px 2px 1px -1px rgba(0, 0, 0, 0.12)'};
+            ? 'rgba(0,0,0,0.19) 0px 10px 30px, rgba(0,0,0,0.23) 0px 6px 10px'
+            : '0px 1px 3px 0px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14),' +
+              '0px 2px 1px -1px rgba(0, 0, 0, 0.12)'};
     z-index: ${({ zIndex }) => zIndex || '0'};
     height: ${({ height }) => height || 'auto'};
     width: ${({ width }) => width || 'auto'};
@@ -132,6 +133,10 @@ export const WithVerticalMargin = styled.div`
     }
 `
 
+export const WithHorizontalMargin = styled.div`
+    margin: ${({ margin }) => `0 ${margin}px`};
+`
+
 export const ColoredButton = styled(({ color, textColor, textHover, ...props }) => <Button {...props} />)`
     background-color: ${({ color, disabled }) =>
         disabled ? studentTheme.PRIMARY_LIGHT : color || studentTheme.ACCENT};
@@ -211,4 +216,15 @@ export const FullPageOverlay = styled.div`
     background: ${studentTheme.BACKGROUND};
     display: flex;
     justify-content: center;
+`
+
+export const CodeInput = styled(ReactCodeInput)`
+    input[type='number']::-webkit-outer-spin-button,
+    input[type='number']::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type='number'] {
+        -moz-appearance: textfield;
+    }
 `
