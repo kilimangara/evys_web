@@ -39,6 +39,7 @@
         "create-react-class": "^15.6.2",
         "humps": "^2.0.1",
         "immer": "^1.9.3",
+        "js-file-download": "^0.4.4",
         "katex": "^0.10.0",
         "lodash": "^4.17.4",
         "moment": "^2.19.0",

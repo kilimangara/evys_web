@@ -49,42 +49,44 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     onSubjectSave = data => {
-        this.props.createSubject(data).then(() => {
-            this.props.enqueueSnackbar('Предмет создан')
-            this.props.loadSubjects()
-            this.modal.hide()
-        }).catch(({response}) => {
-            if(response.status === 402)
-              this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {variant: 'error'})
-        })
+        this.props
+            .createSubject(data)
+            .then(res => {
+                this.props.enqueueSnackbar('Предмет создан')
+                this.props.loadSubjects()
+                this.modal.hide()
+            })
+            .catch(({ response }) => {
+                if (response.status === 402)
+                    this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {
+                        variant: 'error'
+                    })
+            })
     }
 
     render() {
-        const {subjects, subjectsFetching} = this.props
-        if(!subjects.length && subjectsFetching){
-          return(
-            <div>
-              <LinearProgress/>
-            </div>
-          )
+        const { subjects, subjectsFetching } = this.props
+        if (!subjects.length && subjectsFetching) {
+            return (
+                <div>
+                    <LinearProgress />
+                </div>
+            )
         }
         return (
             <div style={styles.container}>
                 <GridWrapper>
                     {this.props.subjects.map(subject => (
-                      <div style={{margin: '18px 6px'}} key={subject.id}>
-                        <Subject
-                            subject={subject}
-                            onClickSubject={this.onClickSubject}
-                            onClickSubjectInfo={this.onClickSubjectInfo}
-                        />
-                      </div>
+                        <div style={{ margin: '18px 6px' }} key={subject.id}>
+                            <Subject
+                                subject={subject}
+                                onClickSubject={this.onClickSubject}
+                                onClickSubjectInfo={this.onClickSubjectInfo}
+                            />
+                        </div>
                     ))}
                 </GridWrapper>
-                <Fab
-                    style={styles.fabStyle}
-                    onClick={this.floatingButtonClicked}
-                >
+                <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
                     <Add />
                 </Fab>
                 <Modal ref={ref => (this.modal = ref)}>

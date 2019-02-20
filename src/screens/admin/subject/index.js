@@ -20,7 +20,7 @@ import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../ThemesScreen'
 
 const WarningIcon = styled(Warning)`
-  color: red;
+    color: red;
 `
 
 const Container = styled.div`
@@ -82,11 +82,13 @@ class SubjectScreen extends SubjectRepository(React.Component) {
     }
 
     saveSubject = () => {
-        return this.updateSubject().then(() => this.setState({errors: {}})).catch(err => {
-            const { response } = err
-            if (response.status === 400) this.setState({ errors: response.data })
-            throw err
-        })
+        return this.updateSubject()
+            .then(() => this.setState({ errors: {} }))
+            .catch(err => {
+                const { response } = err
+                if (response.status === 400) this.setState({ errors: response.data })
+                throw err
+            })
     }
 
     renderMainInfo = () => {
@@ -114,6 +116,7 @@ class SubjectScreen extends SubjectRepository(React.Component) {
     }
 
     goTo = type => () => {
+        const { subject } = this.state
         switch (type) {
             case 'root':
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}`)
@@ -121,15 +124,19 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/billing`)
             case 'themes':
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/themes`)
+            case 'subscribe':
+                return this.props.history.push(
+                    `/admin/students?tariff_id=${subject.tariff.id}&tariff_name=${subject.subject}`
+                )
         }
     }
 
     changeVisibility = () => {
-      const {subject} = this.state
-      this.state = produce(this.state, (draft) =>{
-        draft.subject.tariff.hidden = !draft.subject.tariff.hidden
-      })
-      this.saveSubject()
+        const { subject } = this.state
+        this.state = produce(this.state, draft => {
+            draft.subject.tariff.hidden = !draft.subject.tariff.hidden
+        })
+        this.saveSubject()
     }
 
     render() {
@@ -148,22 +155,32 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                             <ListText primary="Основные настройки" />
                         </ListItem>
                         <ListItem button onClick={this.goTo('themes')}>
-                            <ListText primary="Содержание курса"/>
+                            <ListText primary="Содержание курса" />
                         </ListItem>
                         <ListItem button onClick={this.goTo('billing')}>
                             <ListText primary="Информация для ученика" />
-                            {!subject.tariff.canPublish ? <WarningIcon/> : null}
+                            {!subject.tariff.canPublish ? <WarningIcon /> : null}
+                        </ListItem>
+                        <ListItem button onClick={this.goTo('subscribe')}>
+                            <ListText primary="Записать своих учеников" />
                         </ListItem>
                         <Divider />
-                        <div style={{marginLeft: 16, marginTop: 8}}>
-                          <ColoredButton type="contained" disabled={!subject.tariff.canPublish} margin='normal' onClick={this.changeVisibility}>
-                              {this.isHidden() ? 'Опубликовать курс' : 'Скрыть курс'}
-                          </ColoredButton>
-                          {!subject.tariff.canPublish && <p style={{color: 'red'}}>Некоторых данных не хватает для публикации</p>}
+                        <div style={{ marginLeft: 16, marginTop: 8 }}>
+                            <ColoredButton
+                                type="contained"
+                                disabled={!subject.tariff.canPublish}
+                                margin="normal"
+                                onClick={this.changeVisibility}
+                            >
+                                {this.isHidden() ? 'Опубликовать курс' : 'Скрыть курс'}
+                            </ColoredButton>
+                            {!subject.tariff.canPublish && (
+                                <p style={{ color: 'red' }}>Некоторых данных не хватает для публикации</p>
+                            )}
                         </div>
                     </List>
                 </Card>
-                <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen}/>
+                <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/billing" render={this.renderBillingInfo} />
             </Container>

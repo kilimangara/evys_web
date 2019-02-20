@@ -7,7 +7,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchSubjectCategories } from '../../reducers/admin/subjects'
 
-
 class SubjectCreation extends Component {
     constructor(props) {
         super(props)
@@ -26,12 +25,11 @@ class SubjectCreation extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchCategories()
-            .then(({data}) => this.setState({ categories: data || [] }))
+        this.props.fetchCategories().then(({ data }) => this.setState({ categories: data || [] }))
     }
 
-    componentDidUpdate(prevProps){
-      if(this.props.initialState !== prevProps.initialState) this.setState(this.props.initialState)
+    componentDidUpdate(prevProps) {
+        if (this.props.initialState !== prevProps.initialState) this.setState(this.props.initialState)
     }
 
     render() {
@@ -51,10 +49,7 @@ class SubjectCreation extends Component {
                     margin="normal"
                     label={'Категория'}
                     fullWidth
-                    value={
-                        (selectedCategory && selectedCategory.categorySecret) ||
-                        (categories.length && categories[0].categorySecret)
-                    }
+                    value={selectedCategory.categorySecret}
                     onChange={this.changeCategory}
                 >
                     {(categories.length &&
