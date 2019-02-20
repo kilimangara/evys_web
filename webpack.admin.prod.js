@@ -10,16 +10,18 @@ var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 module.exports = env => {
     return {
         entry: ['./src/admin_index.js'],
+        devtool: 'source-map',
         output: {
             publicPath: '/dist/',
             path: path.resolve('./dist/'),
-            filename: '[hash].admin_app_bundle.js'
+            filename: '[hash].admin_app_bundle.js',
+            sourceMapFilename: '[hash].admin_app.map'
         },
         resolve: {
             extensions: ['.js', '.jsx', '.coffee']
         },
         module: {
-           rules : loaders
+            rules: loaders
         },
         plugins: [
             new ExtractTextPlugin({

@@ -12,7 +12,6 @@ module.exports = env => {
     return {
         mode: 'development',
         entry: ['react-hot-loader/patch', './src/admin_index.js'],
-        devtool: process.env.WEBPACK_DEVTOOL || 'eval-source-map',
         output: {
             publicPath: '/',
             path: path.resolve('./dist'),
