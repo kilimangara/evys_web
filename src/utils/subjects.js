@@ -1,54 +1,114 @@
 export const subjects = [
     {
-        name: 'test',
-        alias: 'test1'
+        name: 'Программирование',
+        alias: 'программирование'
     },
     {
-        name: 'lol',
-        alias: 'test2'
+        name: 'Маркетинг',
+        alias: 'маркетинг'
     },
     {
-        name: 'kek',
-        alias: 'test3'
+        name: 'Верстка',
+        alias: 'верстка'
     },
     {
-        name: 'pisos',
-        alias: 'test4'
+        name: 'Иностранные языки',
+        alias: 'язык'
     },
     {
-        name: 'zlain',
-        alias: 'test5'
+        name: 'Преподование',
+        alias: 'репетитор'
     },
     {
-        name: 'jabka',
-        alias: 'test6'
+        name: 'Photoshop',
+        alias: 'фотошоп'
     },
     {
-        name: 'mysh',
-        alias: 'test7'
+        name: 'Фотографии',
+        alias: 'фото'
     },
     {
-        name: 'krodetsya',
-        alias: 'test8'
+        name: 'Экономика',
+        alias: 'экономика'
     },
     {
-        name: 'random',
-        alias: 'test9'
+        name: 'Бухгалтерия',
+        alias: 'бухгалтерия'
     },
     {
-        name: 'slova',
-        alias: 'test10'
+        name: 'Управленческое дело',
+        alias: 'управление'
     },
     {
-        name: 'zdes',
-        alias: 'test11'
+        name: 'Дизайн',
+        alias: 'дизайн'
     },
     {
-        name: 'napisany',
-        alias: 'test12'
+        name: 'UX/UI дизайн',
+        alias: 'дизайн'
     },
     {
-        name: 'ubeyte menya',
-        alias: 'test13'
+        name: 'Видеомонтаж',
+        alias: 'монтаж'
+    },
+    {
+        name: 'SEO продвижение',
+        alias: 'seo'
+    },
+    {
+        name: 'Разработка',
+        alias: 'разработка'
+    },
+    {
+        name: 'Блокчейн',
+        alias: 'блокчейн'
+    },
+    {
+        name: 'Криптовалюты',
+        alias: 'криптовалюта'
+    },
+    {
+        name: 'Android разработка',
+        alias: 'android'
+    },
+    {
+        name: 'iOS разработка',
+        alias: 'ios'
+    },
+    {
+        name: 'BackEnd разработка',
+        alias: 'backend'
+    },
+    {
+        name: 'Adobe After Effects',
+        alias: 'видео-монтаж'
+    },
+    {
+        name: 'Sony Vegas',
+        alias: 'видео-монтаж'
+    },
+    {
+        name: 'Математика',
+        alias: 'математика'
+    },
+    {
+        name: 'Лингвистика',
+        alias: 'лингвистика'
+    },
+    {
+        name: 'Менеджмент',
+        alias: 'менеджмент'
+    },
+    {
+        name: 'Project Management',
+        alias: 'менеджмент'
+    },
+    {
+        name: 'Рисование',
+        alias: 'рисование'
+    },
+    {
+        name: 'Sketch',
+        alias: 'дизайн'
     }
 ]
