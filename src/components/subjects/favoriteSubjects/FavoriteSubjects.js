@@ -4,7 +4,7 @@ import { ButtonsBlock, FavoriteSubject, FavoriteSubjectsGrid } from '../../style
 import { studentTheme } from '../../../utils/global_theme'
 
 export const FavoriteSubjects = ({ subjects, selected, onSelect, onApply }) => (
-    <CenteredContent>
+    <CenteredContent style={{ flex: '0 0 auto' }}>
         <FavoriteSubjectsGrid>
             {subjects.map(subject => (
                 <FavoriteSubject
