@@ -81,17 +81,6 @@ class TestCases extends TestCaseRepository(React.Component) {
         this.setState({ selectedTestCase: testCaseId, selectedTest: testId })
     }
 
-    renderVariants = testCaseId => (test, index) => {
-        const color = !test.draft ? 'primary' : 'secondary'
-        return (
-            <div style={{ marginLeft: 8 }} key={test.id}>
-                <Button variant="outlined" color={color} onClick={this.selectTestCase(testCaseId, test.id)}>
-                    Вариант {index + 1}
-                </Button>
-            </div>
-        )
-    }
-
     descriptionChanged = event => {
         this.setState({ description: event.target.value })
     }
@@ -106,25 +95,44 @@ class TestCases extends TestCaseRepository(React.Component) {
         return Boolean(testCase.tests.filter(el => el.draft).length)
     }
 
+    renderVariants = testCaseId => (test, index) => {
+        const { selectedTest } = this.state
+        const color = !test.draft ? 'primary' : 'secondary'
+        const variant = test.id === selectedTest ? 'contained' : 'outlined'
+        return (
+            <div style={{ marginLeft: 8 }} key={test.id}>
+                <Button variant={variant} color={color} onClick={this.selectTestCase(testCaseId, test.id)}>
+                    Вариант {index + 1}
+                </Button>
+            </div>
+        )
+    }
+
     renderTestCase = (testCase, index) => {
+        const showTestCase = testCase.id === this.state.selectedTestCase
         return (
             <ListItem key={testCase.id} divider className="test-cases-for-filter">
-                <ListItemContainer>
-                    <ListIcon className={'sortable-handle'} />
-                    <Typography component={'span'}>{`${testCase.description}`}</Typography>
-                    {testCase.tests.map(this.renderVariants(testCase.id))}
-                </ListItemContainer>
-                {this.testCaseHasDrafts(testCase.id) && (
-                    <IconButton onClick={() => this.updateTestCase(testCase.id)}>
-                        <SaveCheckIcon />
-                    </IconButton>
-                )}
-                <IconButton>
-                    <Add />
-                </IconButton>
-                <IconButton onClick={this.onDeleteTestCase(testCase.id)}>
-                    <Delete />
-                </IconButton>
+                <div style={{ width: '100%' }}>
+                    <div style={{ display: 'flex' }}>
+                        <ListItemContainer>
+                            <ListIcon className={'sortable-handle'} />
+                            <Typography component={'span'}>{`${testCase.description}`}</Typography>
+                            {testCase.tests.map(this.renderVariants(testCase.id))}
+                        </ListItemContainer>
+                        {this.testCaseHasDrafts(testCase.id) && (
+                            <IconButton onClick={() => this.updateTestCase(testCase.id)}>
+                                <SaveCheckIcon />
+                            </IconButton>
+                        )}
+                        <IconButton>
+                            <Add />
+                        </IconButton>
+                        <IconButton onClick={this.onDeleteTestCase(testCase.id)}>
+                            <Delete />
+                        </IconButton>
+                    </div>
+                    {showTestCase && this.renderQuestionItem()}
+                </div>
             </ListItem>
         )
     }
@@ -137,9 +145,9 @@ class TestCases extends TestCaseRepository(React.Component) {
 
     submitNewTestCase = e => {
         e.preventDefault()
-        this.createTestCase(this.getCurrentAnalogueId(), this.state.description).then(() =>
-            this.setState({ description: '' })
-        )
+        this.createTestCase(this.getCurrentAnalogueId(), this.state.description).then(({ data }) => {
+            this.setState({ description: '', selectedTestCase: data.id, selectedTest: data.tests[0].id })
+        })
     }
 
     findTest = () => {
@@ -313,7 +321,7 @@ class TestCases extends TestCaseRepository(React.Component) {
         const test = this.findTest()
         if (!test) return null
         return (
-            <Card marginTop={12}>
+            <div>
                 <TextField
                     onChange={this.testChanged('name')}
                     label={'Название вопроса'}
@@ -325,12 +333,11 @@ class TestCases extends TestCaseRepository(React.Component) {
                 <EvysQuill value={test.task} onChangeText={this.testChanged('task')} />
                 {test.answers.map(this.renderAnswerItem)}
                 {this.renderAnswerCreation()}
-            </Card>
+            </div>
         )
     }
 
     render() {
-        console.log(this.state, this.list)
         const { testCases } = this.state
         if (!testCases)
             return (
@@ -339,28 +346,25 @@ class TestCases extends TestCaseRepository(React.Component) {
                 </div>
             )
         return (
-            <div>
-                <Card marginTop={12}>
-                    <Button variant="outlined" color="primary" onClick={this.generatePDF}>
-                        Сформировать PDF
-                    </Button>
-                    <form onSubmit={this.submitNewTestCase}>
-                        <List
-                            ref={ref => (this.list = ref)}
-                            subheader={
-                                <ListHeader component="div" className="ignore-drag" disableSticky>
-                                    Вопросы
-                                </ListHeader>
-                            }
-                            component="ul"
-                        >
-                            {testCases.map(this.renderTestCase)}
-                            {this.renderCreationItem()}
-                        </List>
-                    </form>
-                </Card>
-                {this.renderQuestionItem()}
-            </div>
+            <Card marginTop={12}>
+                <Button variant="outlined" color="primary" onClick={this.generatePDF}>
+                    Сформировать PDF
+                </Button>
+                <form onSubmit={this.submitNewTestCase}>
+                    <List
+                        ref={ref => (this.list = ref)}
+                        subheader={
+                            <ListHeader component="div" className="ignore-drag" disableSticky>
+                                Вопросы
+                            </ListHeader>
+                        }
+                        component="ul"
+                    >
+                        {testCases.map(this.renderTestCase)}
+                        {this.renderCreationItem()}
+                    </List>
+                </form>
+            </Card>
         )
     }
 }
