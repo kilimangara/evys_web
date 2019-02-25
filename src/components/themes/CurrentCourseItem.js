@@ -1,18 +1,11 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import HoverPaper from '../common/HoverPaper'
 import moment from 'moment'
 import { studentTheme } from '../../utils/global_theme'
 import CircularProgressbar from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-import {
-    CourseImage,
-    CourseInfo,
-    CourseName,
-    CourseExpireDate,
-    CourseWrapper,
-} from '../styled/courses'
-import {CurrentCourseInfo, CurrentCourseWrapper, ProgressRingContainer, TextInfo} from '../styled/themes'
+import { CourseImage, CourseInfo, CourseName, CourseExpireDate, CourseWrapper } from '../styled/courses'
+import { CurrentCourseInfo, CurrentCourseWrapper, ProgressRingContainer, TextInfo } from '../styled/themes'
 
 export class CurrentCourseItem extends Component {
     state = {
@@ -40,9 +33,11 @@ export class CurrentCourseItem extends Component {
                 <HoverPaper
                     width={'calc(100% - 24px)'}
                     height={'100%'}
-                    background={`linear-gradient(to right, ${studentTheme.COURSE_GRADIENT_LEFT}, ${studentTheme.COURSE_GRADIENT_RIGHT})`}
+                    background={`linear-gradient(to right, ${studentTheme.COURSE_GRADIENT_LEFT}, ${
+                        studentTheme.COURSE_GRADIENT_RIGHT
+                    })`}
                     borderRadius={'15px'}
-                    style={{margin: '0 12px'}}
+                    style={{ margin: '0 12px' }}
                 >
                     <CurrentCourseInfo>
                         <TextInfo>

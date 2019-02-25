@@ -188,7 +188,7 @@ export const FullsizeCentered = styled(CenteredContent)`
 
 export const SizedIconButton = styled(IconButton)`
     width: ${({ width }) => `${width}px`};
-    margin: ${({ margin }) => `${margin}px`};
+    margin: ${({ margin }) => `${margin}`};
     padding: 0;
 `
 export const RowFlexed = styled.div`
@@ -227,4 +227,14 @@ export const CodeInput = styled(ReactCodeInput)`
     input[type='number'] {
         -moz-appearance: textfield;
     }
+`
+
+export const FilledImage = styled.img`
+    position: absolute;
+    top: 0;
+    left: 0;
+    max-width: 100%;
+    max-height: 100%;
+    width: ${({ type }) => (type === 'wide' ? '' : 'auto')};
+    height: ${({ type }) => (type === 'tall' ? '' : 'auto')};
 `

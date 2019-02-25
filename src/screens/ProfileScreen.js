@@ -19,6 +19,7 @@ import { subjects } from '../utils/subjects'
 import withProviders from '../utils/withProviders'
 import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import AccountMixin, { AccountProvider } from '../mixins/student/AccountRepository'
+import { withSnackbar } from 'notistack'
 
 export const DEFAULT_AVATAR_IMAGE_URL = 'https://272507.selcdn.ru/evys_api_videos/evys/evys_avatar_placeholder.jpg'
 
@@ -57,9 +58,17 @@ class ProfileScreen extends AccountMixin(Component) {
     }
 
     saveProfile = () => {
-        if (!this.checkForErrors()) return
+        // if (!this.checkForErrors()) return
         const profile = _.pick(this.state, profileFields)
-        this.props.saveProfile(profile).then(res => this.setState({ open: true }))
+        this.props
+            .saveProfile(profile)
+            .then(res => {
+                this.props.enqueueSnackbar('Профиль успешно сохранен', { variant: 'success' })
+                this.setState({ open: true })
+            })
+            .catch(err => {
+                this.props.enqueueSnackbar('При сохранении профиля произошла ошибка', { variant: 'error' })
+            })
     }
 
     saveFavoriteSubjects = () => {
@@ -166,4 +175,4 @@ class ProfileScreen extends AccountMixin(Component) {
     }
 }
 
-export default withProviders(AuthorizationProvider, AccountProvider)(ProfileScreen)
+export default withProviders(AuthorizationProvider, AccountProvider)(withSnackbar(ProfileScreen))

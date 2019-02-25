@@ -93,6 +93,10 @@ class Login extends AuthorisationMixin(Component) {
     }
 
     handleChange = e => {
+        const phoneRegex = /^([+()\-0-9 ])+$/
+        if (e.target.name === 'phone' && (e.target.value !== '' && !e.target.value.match(phoneRegex))) {
+            return
+        }
         this.setState({
             [e.target.name]: e.target.value
         })
@@ -138,8 +142,10 @@ class Login extends AuthorisationMixin(Component) {
             <CenteredContent style={{ width: '100%' }}>
                 <WithVerticalMargin margin={'10px'}>
                     <PhoneNumberInput
+                        type={'tel'}
                         placeholder="Введите номер телефона"
                         name={'phone'}
+                        value={this.state.phone}
                         onChange={this.handleChange}
                     />
                     {errors && errors.phone && <Error>{errors.phone}</Error>}

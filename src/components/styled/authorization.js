@@ -40,9 +40,16 @@ export const PhoneNumberInput = styled.input`
     width: 50%;
     min-width: 300px;
     max-width: 500px;
+    -moz-appearance: textfield;
 
     :focus {
         outline: none;
+    }
+
+    ::-webkit-outer-spin-button,
+    ::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 `
 

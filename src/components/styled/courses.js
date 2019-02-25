@@ -123,3 +123,13 @@ export const GrayscaleContent = styled.div`
     top: 0;
     filter: ${({ isOn }) => (isOn ? 'grayscale(100%)' : '')};
 `
+
+export const CourseHeader = styled.div`
+    width: 100%;
+    min-height: 400px;
+    background-color: ${studentTheme.ACCENT_DARK};
+`
+
+export const CourseHeaderTextBlock = styled.div`
+    width: 600px;
+`

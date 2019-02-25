@@ -3,6 +3,7 @@ import { Drawer, Toolbar, Icon } from '@material-ui/core'
 import styled from 'styled-components'
 import { theme, studentTheme } from '../../utils/global_theme'
 import IconButton from '@material-ui/core/IconButton/IconButton'
+import { SizedIconButton } from './common'
 export const AppDrawer = styled(Drawer)``
 
 export const AppToolbar = styled(({ height, inverse, ...props }) => <Toolbar {...props} />)`
@@ -55,6 +56,9 @@ export const LeftPanelNavigation = styled.div`
     align-items: stretch;
     display: flex;
     justify-content: center;
+    ${SizedIconButton}:first-child {
+        margin-top: 0;
+    }
 `
 
 export const LeftPanelNavigationItem = styled.div`

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import HoverPaper from '../common/HoverPaper'
 import moment from 'moment'
 import { studentTheme } from '../../utils/global_theme'
