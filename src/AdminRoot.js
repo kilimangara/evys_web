@@ -10,7 +10,7 @@ import RegisterScreen from './screens/admin/RegisterScreen'
 import routes from './routes'
 import JssProvider from 'react-jss/lib/JssProvider'
 import { createGenerateClassName, jssPreset } from '@material-ui/core'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import { create } from 'jss'
 import { theme } from './utils/global_theme'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -27,30 +27,36 @@ const jss = create(jssPreset())
 jss.options.insertionPoint = 'insertion-point-jss'
 
 const muitheme = createMuiTheme({
-  palette: {
-    primary: lightBlue,
-  },
-  typography: { useNextVariants: true },
-});
+    palette: {
+        primary: lightBlue
+    },
+    overrides: {
+        MuiButton: {
+            raisedPrimary: {
+                color: 'white'
+            }
+        }
+    },
+    typography: { useNextVariants: true }
+})
 
 class Root extends Component {
-
     render() {
         return (
             <Provider store={store}>
-              <PersistGate loading={null} persistor={persistor}>
-                <MuiThemeProvider theme={muitheme}>
-                    <JssProvider jss={jss} generateClassName={generateClassName}>
-                        <BrowserRouter>
-                            <Switch>
-                                <Route exact path="/admin/register" component={RegisterScreen} />
-                                <Route exact path="/admin/login" component={LoginScreen} />
-                                <Route path="/admin" component={AdminApp} />
-                            </Switch>
-                        </BrowserRouter>
-                    </JssProvider>
-                </MuiThemeProvider>
-              </PersistGate>
+                <PersistGate loading={null} persistor={persistor}>
+                    <MuiThemeProvider theme={muitheme}>
+                        <JssProvider jss={jss} generateClassName={generateClassName}>
+                            <BrowserRouter>
+                                <Switch>
+                                    <Route exact path="/admin/register" component={RegisterScreen} />
+                                    <Route exact path="/admin/login" component={LoginScreen} />
+                                    <Route path="/admin" component={AdminApp} />
+                                </Switch>
+                            </BrowserRouter>
+                        </JssProvider>
+                    </MuiThemeProvider>
+                </PersistGate>
             </Provider>
         )
     }

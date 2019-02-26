@@ -15,8 +15,8 @@ export default class ThemeCreation extends Component {
 
     saveToState = field => (event, newValue) => {
         let value = event.target.value
-        if( field === 'isHidden') value = newValue
-        if( field === 'num' && value === '') value = null
+        if (field === 'isHidden') value = newValue
+        if (field === 'num' && value === '') value = null
         this.setState({
             [field]: value
         })
@@ -51,7 +51,7 @@ export default class ThemeCreation extends Component {
                 <TextField
                     onChange={this.saveToState('num')}
                     label="Номер"
-                    value={num || ""}
+                    value={num || ''}
                     variant="outlined"
                     margin="normal"
                     fullWidth
@@ -88,16 +88,6 @@ export default class ThemeCreation extends Component {
                     valueChanged={this.saveToStateDuration('endRange')}
                     defaultValue={this.toInternalValue(endRange)}
                     labelText={'Время между напоминаниями'}
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            color="primary"
-                            checked={isHidden}
-                            onChange={this.saveToState('isHidden')}
-                        />
-                    }
-                    label="Скрыто"
                 />
                 <Button color="primary" onClick={this.props.onThemeSave.bind(this, this.state)}>
                     Сохранить

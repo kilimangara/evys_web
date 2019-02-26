@@ -116,6 +116,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                     <div style={{ display: 'flex' }}>
                         <ListItemContainer>
                             <ListIcon className={'sortable-handle'} />
+                            <div style={{ width: 12 }} />
                             <Typography component={'span'}>{`${testCase.description}`}</Typography>
                             {testCase.tests.map(this.renderVariants(testCase.id))}
                         </ListItemContainer>

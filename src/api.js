@@ -42,31 +42,31 @@ console.log(__DEV__, __CURRENT_APP__)
 const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 
 const axiosInstance = axios.create({
-    baseURL,
-    transformResponse: [
-        ...axios.defaults.transformResponse,
-        data => {
-            if (data instanceof Blob) return data
-            return humps.camelizeKeys(data)
-        }
-    ],
-    transformRequest: [
-        data => (data instanceof FormData ? data : humps.decamelizeKeys(data)),
-        ...axios.defaults.transformRequest
-    ]
+    baseURL
 })
+
+function transformRequest(config) {
+    if (config.data instanceof FormData) return config
+    if (config.data) {
+        config.data = humps.decamelizeKeys(config.data)
+    }
+    if (config.params) {
+        config.params = humps.decamelizeKeys(config.params)
+    }
+    return config
+}
 
 function basicAdminAuth(config) {
     const { authorization, account } = store.getState()
     if (authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
     if (account.currentAccount) config.headers['Account-Name'] = account.currentAccount
-    return config
+    return transformRequest(config)
 }
 
 function studentTokenAuth(config) {
     const { auth } = store.getState()
     if (auth.token) config.headers['Authorization'] = `Student ${auth.token}`
-    return config
+    return transformRequest(config)
 }
 
 axiosInstance.interceptors.request.use(config => {
@@ -76,6 +76,8 @@ axiosInstance.interceptors.request.use(config => {
 
 axiosInstance.interceptors.response.use(
     data => {
+        if (data instanceof Blob) return data
+        data = humps.camelizeKeys(data)
         if (!data) return data
         if (data.data) return data.data
         if (data.error) return data.error
