@@ -7,7 +7,7 @@ import CoursesScreen from '../screens/courses/CoursesScreen'
 import ThemeStudyScreen from '../screens/ThemeStudyScreen'
 import LeftPanel from '../components/common/LeftPanel'
 import { CommonWrapper } from './styled/common'
-import { StudentAppWrapper } from './styled/layout'
+import { AppContainer, StudentAppWrapper } from './styled/layout'
 import BeforeStudy from '../screens/BeforeStudy'
 import TestQuestionScreen from '../screens/TestQuestionScreen'
 import AllCoursesScreen from '../screens/courses/AllCoursesScreen'
@@ -15,6 +15,9 @@ import SearchCoursesScreen from '../screens/courses/SearchCoursesScreen'
 import withProviders from '../utils/withProviders'
 import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import NotFoundPage from '../screens/NotFoundPage'
+import { SnackbarProvider } from 'notistack'
+import { studentTheme } from '../utils/global_theme'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 class App extends Component {
     constructor(props) {
@@ -29,6 +32,7 @@ class App extends Component {
         if (!this.props.token) {
             this.props.history.push('/login')
         }
+        console.log(12312312, this.props.styles)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -93,35 +97,56 @@ class App extends Component {
                     }}
                 >
                     <HeaderAppBar />
-                    <CommonWrapper>
-                        <Switch>
-                            <Route exact path="/app/student/courses" component={CoursesScreen} />
-                            <Route path="/app/profile" component={ProfileScreen} />
-                            <Route exact path={'/app/student/courses/all'} component={AllCoursesScreen} />
-                            <Route path={'/app/student/courses/search'} component={SearchCoursesScreen} />
-                            <Route exact path="/app/course/:course_id(\d+)/themes" component={ThemesScreen} />
-                            <Route
-                                exact
-                                path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)"
-                                component={BeforeStudy}
-                            />
-                            <Route
-                                exact
-                                path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory"
-                                component={ThemeStudyScreen}
-                            />
-                            <Route
-                                exact
-                                path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test"
-                                component={TestQuestionScreen}
-                            />
-                            <Route component={NotFoundPage} />
-                        </Switch>
-                    </CommonWrapper>
+                    <SnackbarProvider
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }}
+                        classes={{
+                            variantSuccess: this.props.classes.success,
+                            variantError: this.props.classes.error,
+                            variantWarning: this.props.classes.warning,
+                            variantInfo: this.props.classes.info
+                        }}
+                        maxSnack={5}
+                    >
+                        <CommonWrapper>
+                            <Switch>
+                                <Route exact path="/app/student/courses" component={CoursesScreen} />
+                                <Route path="/app/profile" component={ProfileScreen} />
+                                <Route exact path={'/app/student/courses/all'} component={AllCoursesScreen} />
+                                <Route path={'/app/student/courses/search'} component={SearchCoursesScreen} />
+                                <Route exact path="/app/course/:course_id(\d+)/themes" component={ThemesScreen} />
+                                <Route
+                                    exact
+                                    path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)"
+                                    component={BeforeStudy}
+                                />
+                                <Route
+                                    exact
+                                    path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory"
+                                    component={ThemeStudyScreen}
+                                />
+                                <Route
+                                    exact
+                                    path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test"
+                                    component={TestQuestionScreen}
+                                />
+                                <Route component={NotFoundPage} />
+                            </Switch>
+                        </CommonWrapper>
+                    </SnackbarProvider>
                 </div>
             </StudentAppWrapper>
         )
     }
 }
 
-export default withProviders(AuthorizationProvider)(App)
+const styles = theme => ({
+    success: { backgroundColor: studentTheme.ACCENT, color: studentTheme.BACKGROUND },
+    error: { backgroundColor: studentTheme.ERROR },
+    warning: { backgroundColor: studentTheme.ACCENT_LIGHT },
+    info: { backgroundColor: studentTheme.CONTRAST_LIGHT }
+})
+
+export default withProviders(AuthorizationProvider)(withStyles(styles)(App))

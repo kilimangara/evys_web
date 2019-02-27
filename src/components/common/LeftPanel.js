@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import { LeftPanelContainer, LeftPanelNavigation, LeftPanelNavigationItem } from '../styled/layout'
 import { BorderedImage, SizedIconButton, StudentTypography } from '../styled/common'
@@ -79,7 +78,7 @@ class LeftPanel extends Component {
                         <LeftPanelNavigation style={{ justifyContent: 'space-between' }}>
                             <SizedIconButton
                                 width={18}
-                                margin={4}
+                                margin={'6px 20px'}
                                 children={
                                     <BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'} />
                                 }
@@ -87,7 +86,7 @@ class LeftPanel extends Component {
                             />
                             <SizedIconButton
                                 width={18}
-                                margin={4}
+                                margin={'6px 20px'}
                                 children={
                                     <BorderedImage image={'/images/settings.svg'} width={'18px'} height={'18px'} />
                                 }
@@ -95,7 +94,7 @@ class LeftPanel extends Component {
                             />
                             <SizedIconButton
                                 width={18}
-                                margin={4}
+                                margin={'6px 20px'}
                                 children={<BorderedImage image={'/images/exit.svg'} width={'18px'} height={'18px'} />}
                                 onClick={this.exit}
                             />

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { ImageCoverContainer, ImageLoaderContainer } from '../styled/ImageLoader'
 import CloudUploadIcon from '@material-ui/icons/CloudUpload'
 import Dropzone from 'react-dropzone'
-import { Loader, LoaderWrapper } from '../styled/common'
+import { BorderedImage, FilledImage, Loader, LoaderWrapper } from '../styled/common'
 
 export class ImageLoader extends Component {
     state = {
@@ -51,6 +51,8 @@ export class ImageLoader extends Component {
         }
     }
 
+    getImageType = img => (img.width > img.height ? 'wide' : 'tall')
+
     onDrop = e => {
         e.stopPropagation()
         e.preventDefault()
@@ -78,17 +80,11 @@ export class ImageLoader extends Component {
                         <Loader />
                     </LoaderWrapper>
                 ) : (
-                    <img
-                        src={uploadedImage || src}
-                        style={{
-                            objectFit: 'contain',
-                            maxWidth: '100%',
-                            height: '100%',
-                            maxHeight: '100%',
-                            position: 'absolute',
-                            top: '0',
-                            left: '0'
-                        }}
+                    <BorderedImage
+                        width={'100%'}
+                        height={'100%'}
+                        image={uploadedImage || src}
+                        style={{ position: 'absolute', top: '0', left: '0' }}
                     />
                 )}
                 <ImageCoverContainer hovered={hovered} onClick={this.uploadFile}>

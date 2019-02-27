@@ -8,6 +8,7 @@ export const FavoriteSubject = styled.div`
   border-radius: 50%;
   margin: 24px;
   display: flex;
+  text-align: center;
   justify-content: center;
   align-items: center;
   font-family: ${studentTheme.FONT};
@@ -25,7 +26,7 @@ export const FavoriteSubjectsGrid = styled.div`
     flex-wrap: wrap;
     width: 100%;
     min-height: fit-content;
-    margin-top: 200px;
+    margin-top: 100px;
     @media screen and (min-width: 0px) and (max-width: 496px) {
         max-width: 248px;
     }
