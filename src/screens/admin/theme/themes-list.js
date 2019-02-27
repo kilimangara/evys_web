@@ -19,6 +19,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
 import Sortable from 'sortablejs'
 import FolderOpen from '@material-ui/icons/FolderOpen'
+import { withSnackbar } from 'notistack'
 
 const ListItemContainer = styled.div`
     padding-left: 8px;
@@ -48,7 +49,6 @@ class ThemesScreen extends ThemesRepository(Component) {
         const prevParentId = new URLSearchParams(prevProps.location.search).get('parent')
         if (this.parentId() !== prevParentId) this.reloadList()
         if (this.props.themes.length && !this.props.themesFetching) {
-            console.log('sortable')
             const listElement = ReactDOM.findDOMNode(this.list)
             const sortable = new Sortable(listElement, {
                 handle: '.sortable-handle',
@@ -58,14 +58,32 @@ class ThemesScreen extends ThemesRepository(Component) {
         }
     }
 
+    updateTheme = (themeId, data) => {
+        return this.props.changeTheme(themeId, data)
+    }
+
     updateVariantPositions = event => {
         const { oldIndex, newIndex } = event
         console.log(oldIndex, newIndex)
+        const theme = this.props.themes[oldIndex - 1]
+        if (!theme) return
+        this.updateTheme(theme.id, { num: newIndex })
     }
 
     goToTheme = theme => () => {
         if (theme.type === 'Theme') this.props.history.push(`/admin/themes/${theme.id}`)
         else this.props.history.push(`/admin/subjects/${this.subjectId()}/themes?parent=${theme.id}`)
+    }
+
+    updateVisibility = theme => () => {
+        this.updateTheme(theme.id, { isHidden: !theme.isHidden })
+    }
+
+    deleteTheme = theme => () => {
+        const type = theme.type === 'Section' ? 'Раздел' : 'Тема'
+        this.props.deleteTheme(theme.id).then(() => {
+            this.props.enqueueSnackbar(`${type} '${theme.name}' удален(а)`)
+        })
     }
 
     renderTheme = (theme, index) => {
@@ -82,8 +100,8 @@ class ThemesScreen extends ThemesRepository(Component) {
                             </IconButton>
                             <Typography component={'span'}>{`${type}. ${theme.name}`}</Typography>
                         </ListItemContainer>
-                        <IconButton>{visibilityComponent}</IconButton>
-                        <IconButton>
+                        <IconButton onClick={this.updateVisibility(theme)}>{visibilityComponent}</IconButton>
+                        <IconButton onClick={this.deleteTheme(theme)}>
                             <Delete />
                         </IconButton>
                     </div>
@@ -162,4 +180,4 @@ const styles = {
     }
 }
 
-export default withProviders(ThemeProvider)(ThemesScreen)
+export default withProviders(ThemeProvider)(withSnackbar(ThemesScreen))

@@ -37,9 +37,21 @@ export default class ThemeCreation extends Component {
     }
 
     render() {
-        const { name, num, isHidden, testsModelType, endRange, repetitionRange, requiredRepeats } = this.state
+        const { type, name, num } = this.state
         return (
             <div style={styles.container}>
+                <TextField
+                    select
+                    variant="outlined"
+                    margin="normal"
+                    label="Раздил или тема?"
+                    fullWidth
+                    value={type}
+                    onChange={this.saveToState('type')}
+                >
+                    <MenuItem value={'Theme'}>Тема</MenuItem>
+                    <MenuItem value={'Section'}>Раздел</MenuItem>
+                </TextField>
                 <TextField
                     onChange={this.saveToState('name')}
                     value={name}
@@ -57,38 +69,6 @@ export default class ThemeCreation extends Component {
                     fullWidth
                     type={'number'}
                 />
-                <TextField
-                    onChange={this.saveToState('requiredRepeats')}
-                    label="Минимальное число повторений"
-                    value={requiredRepeats}
-                    fullWidth
-                    variant="outlined"
-                    margin="normal"
-                    type={'number'}
-                />
-                <TextField
-                    select
-                    variant="outlined"
-                    margin="normal"
-                    label="Модель вопросов"
-                    fullWidth
-                    value={testsModelType}
-                    onChange={this.saveToState('testsModelType')}
-                >
-                    <MenuItem value={0}>Линейная модель</MenuItem>
-                    <MenuItem value={1}>Древовидная модель</MenuItem>
-                    <MenuItem value={2}>Стандартная модель</MenuItem>
-                </TextField>
-                <DurationPicker
-                    valueChanged={this.saveToStateDuration('repetitionRange')}
-                    defaultValue={this.toInternalValue(repetitionRange)}
-                    labelText={'Время между повторениями'}
-                />
-                <DurationPicker
-                    valueChanged={this.saveToStateDuration('endRange')}
-                    defaultValue={this.toInternalValue(endRange)}
-                    labelText={'Время между напоминаниями'}
-                />
                 <Button color="primary" onClick={this.props.onThemeSave.bind(this, this.state)}>
                     Сохранить
                 </Button>
@@ -102,6 +82,7 @@ ThemeCreation.defaultProps = {
     onThemeDelete: id => {},
     updateMode: false,
     initialState: {
+        type: 'Theme',
         num: null,
         name: '',
         isHidden: true,
