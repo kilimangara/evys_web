@@ -127,7 +127,7 @@ export const WithVerticalMargin = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: ${({ align }) => align || 'center'};
     & > * {
         margin: ${({ margin }) => `${margin} 0`};
     }
@@ -135,6 +135,10 @@ export const WithVerticalMargin = styled.div`
 
 export const WithHorizontalMargin = styled.div`
     margin: ${({ margin }) => `0 ${margin}px`};
+`
+
+export const WithCustomMargin = styled.div`
+    margin: ${({ margin }) => margin};
 `
 
 export const ColoredButton = styled(({ color, textColor, textHover, ...props }) => <Button {...props} />)`
@@ -150,6 +154,11 @@ export const ColoredButton = styled(({ color, textColor, textHover, ...props }) 
 export const Error = styled.div`
     color: ${studentTheme.ERROR};
     font: ${studentTheme.H3} ${studentTheme.FONT};
+`
+
+export const H4 = styled.div`
+    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
+    font: ${studentTheme.H4} ${studentTheme.FONT};
 `
 
 export const H3 = styled.div`
@@ -179,6 +188,13 @@ export const HorizontalCentered = styled.div`
     width: 100%;
     justify-content: center;
     flex-direction: ${({ direction }) => direction || 'row'};
+`
+
+export const VerticalCentered = styled.div`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: ${({ direction }) => direction || 'column'};
 `
 
 export const FullsizeCentered = styled(CenteredContent)`
@@ -227,6 +243,15 @@ export const CodeInput = styled(ReactCodeInput)`
     input[type='number'] {
         -moz-appearance: textfield;
     }
+`
+
+export const ColoredText = styled.div`
+    color: ${({ color }) => color};
+`
+
+export const ColoredIcon = styled.div`
+  & > svg {
+  color: ${({ color }) => color};
 `
 
 export const FilledImage = styled.img`

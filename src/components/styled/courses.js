@@ -3,6 +3,7 @@ import React from 'react'
 import { studentTheme } from '../../utils/global_theme'
 import Tabs from '@material-ui/core/Tabs/Tabs'
 import Tab from '@material-ui/core/Tab/Tab'
+import { ColoredButton, H1, H3, Paper, RowFlexed } from './common'
 
 export const CourseImage = styled.img`
     height: 50%;
@@ -131,5 +132,107 @@ export const CourseHeader = styled.div`
 `
 
 export const CourseHeaderTextBlock = styled.div`
-    width: 600px;
+    width: 40%;
+    min-width: 560px;
+    max-width: 700px;
+`
+
+export const CourseContentInfo = styled.div`
+    width: 100%;
+    margin: 20px;
+`
+
+export const CorsesHeaderWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+export const CourseHeaderBlock = styled(Paper)`
+    padding: 18px;
+    min-width: 880px;
+    max-width: 2000px;
+    position: relative;
+    overflow: inherit;
+`
+
+export const CourseInfoCardBlock = styled(Paper)`
+    position: absolute;
+    bottom: -150px;
+    right: 50px;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 0 15px;
+    //margin-right: 5%;
+`
+
+export const CardInfoPrice = styled(H1)`
+    margin-top: 15px;
+    padding-left: 20px;
+`
+
+export const BuyCourseButton = styled(ColoredButton)`
+    width: calc(100% - 50px);
+    margin: 20px;
+`
+
+export const CourseResultsBlock = styled(Paper)`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 65%;
+    min-width: 600px;
+    max-width: 1000px;
+    margin-top: 50px;
+    padding: 15px;
+`
+
+export const CourseResultsTitle = styled.div`
+    width: 100%;
+    margin-bottom: 10px;
+`
+
+export const ResultBlock = styled(RowFlexed)`
+    width: 40%;
+    margin: 15px 0;
+`
+
+export const ThemesTreeWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+export const ThemeTreeBranch = styled.div`
+    margin-top: 10px;
+    margin-bottom: 10px;
+    & > div {
+        margin-left: 25px;
+    }
+`
+
+export const ThemeName = styled(H3)`
+    margin-left: 10px;
+    margin-right: 100px;
+`
+
+export const ThemeTheory = styled(H3)`
+    width: 100px;
+`
+export const ThemeTest = styled(H3)`
+    margin-left: 10px;
+    width: 100px;
+`
+
+export const ThemeContentSplit = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+export const FieldsTitle = styled.div`
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
 `

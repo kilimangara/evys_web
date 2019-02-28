@@ -34,7 +34,7 @@ class SearchCoursesScreen extends SearchMixin(Component) {
         if (searchText) {
             this.props.getSearchSubjects(searchText)
         } else {
-            this.props.history.push('/app/student/courses/all')
+            this.props.history.push('/app/courses/all')
         }
     }
 

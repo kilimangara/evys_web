@@ -18,6 +18,36 @@ import {
     SubjectPriceContainer
 } from '../styled/courses'
 
+export const getPrice = (amount, currency, duration, locale) => {
+    const currencyNumber = new Intl.NumberFormat(locale, {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 0
+    }).format(amount)
+
+    if (amount === 0) {
+        return 'бесплатно'
+    }
+    const period = moment(duration).days()
+    if (!period) {
+        return currencyNumber
+    }
+    let textPeriod = ''
+    if (period === 1) {
+        textPeriod = 'день'
+    } else if (period === 7) {
+        textPeriod = 'нед'
+    } else if (period === 28 || period === 29 || period === 30 || period === 31) {
+        textPeriod = 'мес'
+    } else if (period === 365 || period === 366) {
+        textPeriod = 'год'
+    } else {
+        textPeriod = `${period} дней`
+    }
+    return `${currencyNumber}/${textPeriod}`
+}
+
 class SubjectItem extends Component {
     state = {
         hover: false
@@ -27,39 +57,8 @@ class SubjectItem extends Component {
         this.setState({ hover })
     }
 
-    getPrice = () => {
-        const { amount, currency, duration, locale } = this.props
-        const currencyNumber = new Intl.NumberFormat(locale, {
-            style: 'currency',
-            currency,
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 0
-        }).format(amount)
-
-        if (amount === 0) {
-            return 'бесплатно'
-        }
-        const period = moment(duration).days()
-        if (!period) {
-            return currencyNumber
-        }
-        let textPeriod = ''
-        if (period === 1) {
-            textPeriod = 'день'
-        } else if (period === 7) {
-            textPeriod = 'нед'
-        } else if (period === 28 || period === 29 || period === 30 || period === 31) {
-            textPeriod = 'мес'
-        } else if (period === 365 || period === 366) {
-            textPeriod = 'год'
-        } else {
-            textPeriod = `${period} дней`
-        }
-        return `${currencyNumber}/${textPeriod}`
-    }
-
     render() {
-        const { courseImage, name, teacherName, onClick } = this.props
+        const { courseImage, name, teacherName, onClick, amount, currency, duration, locale } = this.props
         return (
             <CourseWrapper onClick={() => onClick()}>
                 <HoverPaper
@@ -74,7 +73,7 @@ class SubjectItem extends Component {
                             <CourseName>{name}</CourseName>
                             <div>{teacherName}</div>
                         </TextInfo>
-                        <SubjectPriceContainer>{this.getPrice()}</SubjectPriceContainer>
+                        <SubjectPriceContainer>{getPrice(amount, currency, duration, locale)}</SubjectPriceContainer>
                     </CourseInfo>
                 </HoverPaper>
             </CourseWrapper>

@@ -168,6 +168,24 @@ export function getStudentThemeTheory(themeId) {
     })
 }
 
+export function getTariffInfo(subjectId) {
+    return axiosInstance.request({
+        url: `/tariff/${subjectId}`
+    })
+}
+
+export function getTariffThemes(subjectId) {
+    return axiosInstance.request({
+        url: `/tariff/${subjectId}/materials`
+    })
+}
+
+export function getTariffRates(subjectId) {
+    return axiosInstance.request({
+        url: `/tariff/${subjectId}/rates`
+    })
+}
+
 export function getStudentThemeVideo(themeId) {
     return axiosInstance.request({
         url: `/student/theme/${themeId}/theory_video`
@@ -181,7 +199,6 @@ export function startTestingSession(themeId) {
 }
 
 export function getTestQuestion(themeId, params) {
-    console.log('params', params)
     return axiosInstance.request({
         url: `student/theme/${themeId}/question`,
         params
