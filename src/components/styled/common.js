@@ -85,10 +85,10 @@ export const StudentTypography = styled.p`
 
 export const StudentInput = styled.input`
     font-size: 14px;
-    font-family: Montserrat, serif;
+    font-family: ${studentTheme.FONT}, serif;
     padding: 8px 16px;
     box-sizing: border-box;
-    background-color: #333333;
+    background-color: ${studentTheme.INPUT_COLOR};
     color: white;
     border: 0;
     border-radius: 8px;
@@ -98,6 +98,20 @@ export const StudentInput = styled.input`
     ::placeholder {
         text-align: center;
     }
+`
+
+export const StudentTextarea = styled.textarea`
+    font-size: 14px;
+    font-family: ${studentTheme.FONT}, serif;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    background-color: ${studentTheme.INPUT_COLOR};
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    width: ${({ width }) => width || '100%'};
+    height: ${({ height }) => height || '150px'};
+    outline: none;
 `
 
 export const Loader = styled.div`

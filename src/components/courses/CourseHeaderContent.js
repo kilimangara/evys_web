@@ -30,7 +30,7 @@ export const CourseHeaderContent = ({ title, subtitle, ratingCount, rating, buye
                     {ratingCount > 0 ? (
                         <div>
                             <Rating
-                                rating={rating}
+                                initialRating={rating}
                                 emptySymbol={
                                     <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
                                         <StarBorderComponent />
@@ -41,6 +41,7 @@ export const CourseHeaderContent = ({ title, subtitle, ratingCount, rating, buye
                                         <StarComponent />
                                     </ColoredIconButton>
                                 }
+                                readonly
                             />
                             <H4 style={{ marginLeft: '5px' }}>
                                 {rating} ({ratingCount} оценок){' '}

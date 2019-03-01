@@ -201,33 +201,57 @@ export const ResultBlock = styled(RowFlexed)`
 export const ThemesTreeWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    max-width: 1000px;
+    min-width: 500px;
+    width: 60%;
 `
 
 export const ThemeTreeBranch = styled.div`
-    margin-top: 10px;
-    margin-bottom: 10px;
-    & > div {
-        margin-left: 25px;
+    //margin-top: 10px;
+    margin-bottom: ${({ single }) => (single ? '0' : '20px')};
+    ${ThemeName} > * {
+        padding-left: 25px;
     }
+    width: 100%;
 `
 
 export const ThemeName = styled(H3)`
-    margin-left: 10px;
-    margin-right: 100px;
+    //margin-left: 10px;
+    //margin-right: 100px;
+    width: 33%;
+    min-width: 200px;
+    max-width: 350px;
 `
 
 export const ThemeTheory = styled(H3)`
-    width: 100px;
+    width: 33%;
+    min-width: 150px;
+    max-width: 250px;
+    justify-content: center;
+    text-align: center;
 `
+
 export const ThemeTest = styled(H3)`
-    margin-left: 10px;
-    width: 100px;
+    width: 33%;
+    min-width: 150px;
+    max-width: 250px;
+    justify-content: center;
+    text-align: center;
+`
+
+export const ThemeVideo = styled(H3)`
+    width: 33%;
+    min-width: 150px;
+    max-width: 250px;
+    justify-content: center;
+    text-align: center;
 `
 
 export const ThemeContentSplit = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 100%;
 `
 
 export const FieldsTitle = styled.div`
@@ -236,3 +260,42 @@ export const FieldsTitle = styled.div`
     flex-direction: row;
     justify-content: space-between;
 `
+
+export const ThemeAlias = styled(H3)`
+    margin-left: 15px;
+`
+
+export const CheckboxesBlock = styled(RowFlexed)`
+    width: 66%;
+`
+
+export const TreeBranchContentWrapper = styled(RowFlexed)`
+    margin-bottom: ${({ single }) => (single ? '20px' : '0')};
+`
+
+export const CommentsBlockWrapper = styled.div`
+    display: flex;
+`
+
+export const RatingBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    justify-content: center;
+    margin-left: 30px;
+`
+
+export const RateBlock = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+export const CourseRating = styled.div`
+    font: 72px ${studentTheme.FONT};
+    color: ${studentTheme.TEXT_COLOR};
+`
+
+export const Commentator = styled.div``
+export const CommentatorAvatar = styled.div``
+
+export const CommentBlock = styled.div``

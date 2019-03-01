@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import CoursesMixin, { CoursesProvider } from '../../mixins/student/CoursesRepository'
-import { H2, HorizontalCentered, Paper } from '../../components/styled/common'
+import { H2, HorizontalCentered, Paper, WithVerticalMargin } from '../../components/styled/common'
 import withProviders from '../../utils/withProviders'
 import withRouter from 'react-router/es/withRouter'
 import { studentTheme } from '../../utils/global_theme'
@@ -10,6 +10,7 @@ import { getCourseMaterials, getTariffInfo, getTariffRates, getTariffThemes } fr
 import { CorsesHeaderWrapper, CourseHeaderBlock } from '../../components/styled/courses'
 import { CourseResults } from '../../components/courses/CourseResults'
 import { CourseThemesTree } from '../../components/courses/CourseThemesTree'
+import { CommentsBlock } from '../../components/courses/CommentsBlock'
 
 class CourseScreen extends CoursesMixin(Component) {
     state = { tariff: {}, themes: [], rates: [] }
@@ -28,19 +29,8 @@ class CourseScreen extends CoursesMixin(Component) {
     getSubjectInfo = () => {
         const id = this.props.currentCourse && this.props.currentCourse.subject.id
         Promise.all([getTariffInfo(id), getTariffThemes(id), getTariffRates(id)]).then(results =>
-            this.setState({ tariff: results[0].data, themes: results[1].data, rates: results[2] })
+            this.setState({ tariff: results[0].data, themes: results[1].data, rates: results[2].data })
         )
-    }
-
-    makeTreeFromThemes = themes => {
-        const parentMap = {}
-
-        themes.forEach(theme => {
-            parentMap[theme.parentThemeId] =
-                parentMap[theme.parentThemeId] && parentMap[theme.parentThemeId].length
-                    ? [...parentMap[theme.parentThemeId], theme.id]
-                    : [theme.id]
-        })
     }
 
     getVideosCount = themes => themes.reduce((acc, cur) => acc + cur.mediaCount || 0, 0)
@@ -77,6 +67,7 @@ class CourseScreen extends CoursesMixin(Component) {
             'лдавыофдлао фывдла фылвао фывлаофж ылвоафжлвыао фыжлвоа джловфыад жлфыовалд офыва длофыжад лофывжла о',
             'ыфва фыва фыавлф оыадлоыаджл оывадлж офывждлаофы жвлофыв ларфылоарлф ыовдфытва лфыовалфд оытвдфоыва л'
         ]
+        console.log(rates)
         return (
             <HorizontalCentered direction={'column'}>
                 <CourseHeaderBlock background={studentTheme.ACCENT_DARK} borderRadius={'5px'}>
@@ -100,7 +91,12 @@ class CourseScreen extends CoursesMixin(Component) {
                     </CorsesHeaderWrapper>
                 </CourseHeaderBlock>
                 <CourseResults results={results || []} />
+                <WithVerticalMargin margin={'25px'} align={'flex-start'}>
+                    <H2>Содержание курса</H2>
+                </WithVerticalMargin>
                 <CourseThemesTree themes={themes || []} />
+                <H2>Отзывы</H2>
+                <CommentsBlock comments={rates && rates.results} />
             </HorizontalCentered>
         )
     }
