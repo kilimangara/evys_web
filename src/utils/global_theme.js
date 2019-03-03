@@ -18,6 +18,7 @@ export const studentTheme = {
     ACCENT_HOVER: '#00ffe4',
     ACCENT_LIGHT: '#ff009c',
     TEXT_COLOR: '#FFFFFF',
+    SECONDARY_TEXT_COLOR: '#949494',
     CONTRAST_LIGHT: '#EEE',
     FONT: 'Montserrat',
     H1: `24px`,

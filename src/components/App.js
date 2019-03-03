@@ -33,6 +33,7 @@ class App extends Component {
         if (!this.props.token) {
             this.props.history.push('/login')
         }
+        window.__localeId__ = 'ru'
     }
 
     componentWillReceiveProps(nextProps) {

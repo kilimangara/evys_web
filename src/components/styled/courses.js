@@ -3,7 +3,7 @@ import React from 'react'
 import { studentTheme } from '../../utils/global_theme'
 import Tabs from '@material-ui/core/Tabs/Tabs'
 import Tab from '@material-ui/core/Tab/Tab'
-import { ColoredButton, H1, H3, Paper, RowFlexed } from './common'
+import { CenteredContent, ColoredButton, ColumnFlexed, H1, H3, Paper, RowFlexed } from './common'
 
 export const CourseImage = styled.img`
     height: 50%;
@@ -196,6 +196,7 @@ export const CourseResultsTitle = styled.div`
 export const ResultBlock = styled(RowFlexed)`
     width: 40%;
     margin: 15px 0;
+    word-break: break-all;
 `
 
 export const ThemesTreeWrapper = styled.div`
@@ -212,6 +213,7 @@ export const ThemeTreeBranch = styled.div`
     ${ThemeName} > * {
         padding-left: 25px;
     }
+    min-height: 30px;
     width: 100%;
 `
 
@@ -275,6 +277,7 @@ export const TreeBranchContentWrapper = styled(RowFlexed)`
 
 export const CommentsBlockWrapper = styled.div`
     display: flex;
+    flex-direction: column;
 `
 
 export const RatingBlock = styled.div`
@@ -293,6 +296,31 @@ export const RateBlock = styled.div`
 export const CourseRating = styled.div`
     font: 72px ${studentTheme.FONT};
     color: ${studentTheme.TEXT_COLOR};
+`
+
+export const RatingWrapper = styled.div`
+    margin-bottom: 15px;
+`
+
+export const CommentsWrapper = styled.div`
+    margin-top: 50px;
+`
+
+export const CourseRatingBlock = styled(CenteredContent)`
+    width: 250px;
+`
+
+export const CommentatorInfoBlock = styled(RowFlexed)`
+    width: 250px;
+`
+
+export const CommentAuthorInfo = styled(ColumnFlexed)`
+    justify-content: center;
+    margin-left: 10px;
+`
+
+export const CommentTextWrapper = styled(ColumnFlexed)`
+    margin-left: 30px;
 `
 
 export const Commentator = styled.div``

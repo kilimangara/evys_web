@@ -11,8 +11,8 @@ import {
     WithVerticalMargin
 } from '../styled/common'
 import Rating from 'react-rating'
-import StarBorderComponent from '@material-ui/icons/starBorder'
-import StarComponent from '@material-ui/icons/star'
+import StarBorderComponent from '@material-ui/icons/StarBorder'
+import StarComponent from '@material-ui/icons/Star'
 import React from 'react'
 import { declOfNum } from '../../utils/utilFunctions'
 
@@ -22,14 +22,12 @@ export const CourseHeaderContent = ({ title, subtitle, ratingCount, rating, buye
             <WithVerticalMargin margin={'10px'} align={'flex-start'}>
                 <H1>{title}</H1>
             </WithVerticalMargin>
-            <WithVerticalMargin margin={'10px'} align={'flex-start'}>
-                <H3>{subtitle}</H3>
-            </WithVerticalMargin>
             <RowFlexed>
                 <VerticalCentered direction={'row'}>
                     {ratingCount > 0 ? (
                         <div>
                             <Rating
+                                stop={10}
                                 initialRating={rating}
                                 emptySymbol={
                                     <ColoredIconButton color={'gold'} style={{ padding: 0 }}>

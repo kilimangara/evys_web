@@ -17,7 +17,7 @@ import {
 import { ColoredIcon, H2, H3, RowFlexed } from '../styled/common'
 import { declOfNum } from '../../utils/utilFunctions'
 import { studentTheme } from '../../utils/global_theme'
-import CheckIcon from '@material-ui/icons/check'
+import CheckIcon from '@material-ui/icons/Check'
 
 export class CourseThemesTree extends Component {
     makeTreeFromThemes = themes => {

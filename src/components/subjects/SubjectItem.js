@@ -66,6 +66,7 @@ class SubjectItem extends Component {
                     height={'100%'}
                     background={studentTheme.PRIMARY_LIGHT}
                     borderRadius={'15px'}
+                    clickable
                 >
                     <CourseImage src={courseImage} />
                     <CourseInfo>

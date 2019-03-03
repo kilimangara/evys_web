@@ -17,8 +17,8 @@ class SearchCoursesScreen extends SearchMixin(Component) {
         this.searchForText()
     }
 
-    goToThemes = id => {
-        // this.props.history.push(`/app/course/${id}/themes`)
+    goToCourse = id => {
+        this.props.history.push(`/app/course/${id}`)
     }
 
     componentDidUpdate(prevProps) {
@@ -61,7 +61,7 @@ class SearchCoursesScreen extends SearchMixin(Component) {
                                         duration={duration}
                                         amount={amount}
                                         currency={currency}
-                                        onClick={() => this.goToThemes(id)}
+                                        onClick={() => this.goToCourse(id)}
                                     />
                                 )
                             )}

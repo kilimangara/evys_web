@@ -21,7 +21,7 @@ export const Paper = styled.div`
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
     border: ${({ border }) => border || ''};
     overflow: hidden;
-    cursor: pointer;
+    cursor: ${({ clickable }) => (clickable ? 'pointer' : 'auto')};
     transition: box-shadow 0.25s ease-in-out, border 0.25s ease-in-out;
     pointer-events: ${({ disabled }) => (disabled ? 'none' : 'all')};
 `
