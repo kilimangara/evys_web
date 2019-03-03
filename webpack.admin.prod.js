@@ -50,8 +50,7 @@ module.exports = env => {
                 template: './public/index_admin.html',
                 title: 'Evys.Курсы',
                 filename: 'index_admin.html',
-                description: 'Создадим онлайн школу вместе с Evys.',
-                jsExtension: '.gz'
+                description: 'Создадим онлайн школу вместе с Evys.'
             }),
             new CompressionPlugin({
                 asset: '[path].gz[query]',
@@ -59,8 +58,7 @@ module.exports = env => {
                 test: /\.js$/,
                 threshold: 10240,
                 minRatio: 0.8
-            }),
-            new HtmlWebpackChangeAssetsExtensionPlugin()
+            })
         ]
     }
 }
