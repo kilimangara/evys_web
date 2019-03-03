@@ -1,56 +1,58 @@
 <!DOCTYPE html>
 
-<html lang="en" style="height:100%">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <meta name="description" content=<%= htmlWebpackPlugin.options.description %>>
-    <meta name="author" content="Evys">
-    <link href="/favicon/evys_favicon.ico" rel="shortcut icon" type="image/x-icon">
-    <meta name="theme-color" content="#ffffff">
-    <!--
+<html lang="ru" style="height:100%">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+        <meta name="description" content=<%= htmlWebpackPlugin.options.description %>>
+        <meta name="author" content="Evys" />
+        <link href="/favicon/evys_favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <meta name="theme-color" content="#ffffff" />
+        <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <script src="https://apis.google.com/js/api.js">
-    </script>
-    <style>
-        .body_div {
-            margin: 0;
-            height: 100%;
-        }
+        <script src="https://apis.google.com/js/api.js"></script>
+        <style>
+            .body_div {
+                margin: 0;
+                height: 100%;
+            }
 
-        .fade {
-            animation-name: fade;
-            animation-duration: 2s;
-            animation-iteration-count: infinite;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 480px;
-        }
+            .fade {
+                animation-name: fade;
+                animation-duration: 2s;
+                animation-iteration-count: infinite;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                height: 480px;
+            }
 
-        @keyframes fade {
-            0% {opacity: 0}
-            50%{opacity:1;}
-            100%{opacity:0;}
-        }
+            @keyframes fade {
+                0% {
+                    opacity: 0;
+                }
+                50% {
+                    opacity: 1;
+                }
+                100% {
+                    opacity: 0;
+                }
+            }
 
-        .img_width {
-            width: 220px;
-        }
-
-    </style>
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
-  </head>
-  <body class="body_div">
-       <div id="react-app" style="height:100%">
-           <div class="fade">
-              <img class="img_width" src="/images/EQ4.png"/>
-           </div>
-       </div>
-  </body>
+            .img_width {
+                width: 220px;
+            }
+        </style>
+        <title><%= htmlWebpackPlugin.options.title %></title>
+    </head>
+    <body class="body_div">
+        <div id="react-app" style="height:100%">
+            <div class="fade">
+                <img class="img_width" src="/images/EQ4.png" />
+            </div>
+        </div>
+    </body>
 </html>
