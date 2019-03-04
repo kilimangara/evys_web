@@ -3,6 +3,7 @@ import React from 'react'
 import { studentTheme } from '../../utils/global_theme'
 import Tabs from '@material-ui/core/Tabs/Tabs'
 import Tab from '@material-ui/core/Tab/Tab'
+import { CenteredContent, ColoredButton, ColumnFlexed, H1, H3, Paper, RowFlexed, WithVerticalMargin } from './common'
 
 export const CourseImage = styled.img`
     height: 50%;
@@ -131,5 +132,206 @@ export const CourseHeader = styled.div`
 `
 
 export const CourseHeaderTextBlock = styled.div`
-    width: 600px;
+    width: 40%;
+    min-width: 560px;
+    max-width: 700px;
+`
+
+export const CourseContentInfo = styled.div`
+    width: 100%;
+    margin: 20px;
+`
+
+export const CorsesHeaderWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+export const CourseHeaderBlock = styled(Paper)`
+    padding: 18px;
+    min-width: 880px;
+    max-width: 2000px;
+    position: relative;
+    overflow: inherit;
+`
+
+export const CourseInfoCardBlock = styled(Paper)`
+    position: absolute;
+    bottom: -150px;
+    right: 50px;
+    min-width: 200px;
+    max-width: 400px;
+    padding: 0 15px;
+    //margin-right: 5%;
+`
+
+export const CardInfoPrice = styled(H1)`
+    margin-top: 15px;
+    padding-left: 20px;
+`
+
+export const BuyCourseButton = styled(ColoredButton)`
+    width: calc(100% - 50px);
+    margin: 20px;
+`
+
+export const CourseResultsBlock = styled(Paper)`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 63%;
+    min-width: 570px;
+    max-width: 1000px;
+    margin-top: 50px;
+    padding: 15px;
+`
+
+export const CourseResultsTitle = styled.div`
+    width: 100%;
+    margin-bottom: 10px;
+`
+
+export const ResultBlock = styled(RowFlexed)`
+    width: 40%;
+    margin: 15px 0;
+    word-break: break-all;
+`
+
+export const ThemesTreeWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 63%;
+    min-width: 570px;
+    max-width: 1000px;
+`
+
+export const ThemeTreeBranch = styled.div`
+    //margin-top: 10px;
+    margin-bottom: ${({ single }) => (single ? '0' : '20px')};
+    ${ThemeName} > * {
+        padding-left: 25px;
+    }
+    min-height: 30px;
+    width: 100%;
+`
+
+export const ThemeName = styled(H3)`
+    //margin-left: 10px;
+    //margin-right: 100px;
+    width: 33%;
+    min-width: 200px;
+    max-width: 350px;
+`
+
+export const ThemeTheory = styled(H3)`
+    width: 33%;
+    min-width: 150px;
+    max-width: 250px;
+    justify-content: center;
+    text-align: center;
+`
+
+export const ThemeTest = styled(H3)`
+    width: 33%;
+    min-width: 150px;
+    max-width: 250px;
+    justify-content: center;
+    text-align: center;
+`
+
+export const ThemeVideo = styled(H3)`
+    width: 33%;
+    min-width: 150px;
+    max-width: 250px;
+    justify-content: center;
+    text-align: center;
+`
+
+export const ThemeContentSplit = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+`
+
+export const FieldsTitle = styled.div`
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+export const ThemeAlias = styled(H3)`
+    margin-left: 15px;
+`
+
+export const CheckboxesBlock = styled(RowFlexed)`
+    width: 66%;
+`
+
+export const TreeBranchContentWrapper = styled(RowFlexed)`
+    margin-bottom: ${({ single }) => (single ? '20px' : '0')};
+`
+
+export const DescriptionWrapper = styled(WithVerticalMargin)`
+    width: 63%;
+    min-width: 570px;
+    max-width: 1000px;
+`
+
+export const CommentsBlockWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+export const RatingBlock = styled.div`
+    display: flex;
+    flex-direction: column;
+    //align-items: center;
+    justify-content: center;
+    margin-left: 30px;
+`
+
+export const RateBlock = styled.div`
+    display: flex;
+    flex-direction: row;
+`
+
+export const CourseRating = styled.div`
+    font: 72px ${studentTheme.FONT};
+    color: ${studentTheme.TEXT_COLOR};
+`
+
+export const RatingWrapper = styled.div`
+    margin-bottom: 15px;
+`
+
+export const CommentsWrapper = styled.div`
+    margin-top: 50px;
+`
+
+export const CourseRatingBlock = styled(CenteredContent)`
+    width: 250px;
+`
+
+export const CommentatorInfoBlock = styled(RowFlexed)`
+    width: 250px;
+`
+
+export const CommentAuthorInfo = styled(ColumnFlexed)`
+    justify-content: center;
+    margin-left: 10px;
+`
+
+export const CommentTextWrapper = styled(ColumnFlexed)`
+    margin-left: 30px;
+`
+
+export const Commentator = styled.div``
+export const CommentatorAvatar = styled.div``
+
+export const CommentBlock = styled.div`
+    margin-bottom: 30px;
 `

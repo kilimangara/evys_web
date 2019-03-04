@@ -22,7 +22,6 @@ export const startTestsSession = themeId => dispatch => {
 export const sendAnswer = (themeId, data) => dispatch => {
     return sendTestQuestionAnswer(themeId, data).then(res => {
         dispatch(questionSended(res))
-        console.log('res', res)
 
         if (res.data.blockEnd) {
             if (res.data.changeBlockId !== null) {

@@ -21,7 +21,7 @@ export const Paper = styled.div`
     border-radius: ${({ borderRadius }) => borderRadius || '0'};
     border: ${({ border }) => border || ''};
     overflow: hidden;
-    cursor: pointer;
+    cursor: ${({ clickable }) => (clickable ? 'pointer' : 'auto')};
     transition: box-shadow 0.25s ease-in-out, border 0.25s ease-in-out;
     pointer-events: ${({ disabled }) => (disabled ? 'none' : 'all')};
 `
@@ -85,10 +85,10 @@ export const StudentTypography = styled.p`
 
 export const StudentInput = styled.input`
     font-size: 14px;
-    font-family: Montserrat, serif;
+    font-family: ${studentTheme.FONT}, serif;
     padding: 8px 16px;
     box-sizing: border-box;
-    background-color: #333333;
+    background-color: ${studentTheme.INPUT_COLOR};
     color: white;
     border: 0;
     border-radius: 8px;
@@ -98,6 +98,20 @@ export const StudentInput = styled.input`
     ::placeholder {
         text-align: center;
     }
+`
+
+export const StudentTextarea = styled.textarea`
+    font-size: 14px;
+    font-family: ${studentTheme.FONT}, serif;
+    padding: 8px 16px;
+    box-sizing: border-box;
+    background-color: ${studentTheme.INPUT_COLOR};
+    color: white;
+    border: 0;
+    border-radius: 8px;
+    width: ${({ width }) => width || '100%'};
+    height: ${({ height }) => height || '150px'};
+    outline: none;
 `
 
 export const Loader = styled.div`
@@ -127,7 +141,7 @@ export const WithVerticalMargin = styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: ${({ align }) => align || 'center'};
     & > * {
         margin: ${({ margin }) => `${margin} 0`};
     }
@@ -135,6 +149,10 @@ export const WithVerticalMargin = styled.div`
 
 export const WithHorizontalMargin = styled.div`
     margin: ${({ margin }) => `0 ${margin}px`};
+`
+
+export const WithCustomMargin = styled.div`
+    margin: ${({ margin }) => margin};
 `
 
 export const ColoredButton = styled(({ color, textColor, textHover, ...props }) => <Button {...props} />)`
@@ -150,6 +168,11 @@ export const ColoredButton = styled(({ color, textColor, textHover, ...props }) 
 export const Error = styled.div`
     color: ${studentTheme.ERROR};
     font: ${studentTheme.H3} ${studentTheme.FONT};
+`
+
+export const H4 = styled.div`
+    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
+    font: ${studentTheme.H4} ${studentTheme.FONT};
 `
 
 export const H3 = styled.div`
@@ -179,6 +202,13 @@ export const HorizontalCentered = styled.div`
     width: 100%;
     justify-content: center;
     flex-direction: ${({ direction }) => direction || 'row'};
+`
+
+export const VerticalCentered = styled.div`
+    display: flex;
+    width: 100%;
+    align-items: center;
+    flex-direction: ${({ direction }) => direction || 'column'};
 `
 
 export const FullsizeCentered = styled(CenteredContent)`
@@ -227,6 +257,15 @@ export const CodeInput = styled(ReactCodeInput)`
     input[type='number'] {
         -moz-appearance: textfield;
     }
+`
+
+export const ColoredText = styled.div`
+    color: ${({ color }) => color};
+`
+
+export const ColoredIcon = styled.div`
+  & > svg {
+  color: ${({ color }) => color};
 `
 
 export const FilledImage = styled.img`

@@ -18,6 +18,7 @@ import NotFoundPage from '../screens/NotFoundPage'
 import { SnackbarProvider } from 'notistack'
 import { studentTheme } from '../utils/global_theme'
 import withStyles from '@material-ui/core/styles/withStyles'
+import CourseScreen from '../screens/courses/CourseScreen'
 
 class App extends Component {
     constructor(props) {
@@ -32,7 +33,7 @@ class App extends Component {
         if (!this.props.token) {
             this.props.history.push('/login')
         }
-        console.log(12312312, this.props.styles)
+        window.__localeId__ = 'ru'
     }
 
     componentWillReceiveProps(nextProps) {
@@ -112,11 +113,12 @@ class App extends Component {
                     >
                         <CommonWrapper>
                             <Switch>
-                                <Route exact path="/app/student/courses" component={CoursesScreen} />
+                                <Route exact path="/app/courses" component={CoursesScreen} />
                                 <Route path="/app/profile" component={ProfileScreen} />
-                                <Route exact path={'/app/student/courses/all'} component={AllCoursesScreen} />
-                                <Route path={'/app/student/courses/search'} component={SearchCoursesScreen} />
+                                <Route exact path="/app/courses/all" component={AllCoursesScreen} />
+                                <Route path="/app/courses/search" component={SearchCoursesScreen} />
                                 <Route exact path="/app/course/:course_id(\d+)/themes" component={ThemesScreen} />
+                                <Route exact path="/app/course/:course_id(\d+)" component={CourseScreen} />
                                 <Route
                                     exact
                                     path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)"

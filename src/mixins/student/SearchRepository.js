@@ -1,4 +1,4 @@
-import { getSearchSubjects, getAllSubjects } from '../../reducers/student/search'
+import { getSearchSubjects, getAllSubjects, setSearch } from '../../reducers/student/search'
 
 export default superclass => class SearchRepository extends superclass {}
 
@@ -11,6 +11,7 @@ export class SearchProvider {
 
     static mapDispatchToProps = {
         getSearchSubjects,
-        getAllSubjects
+        getAllSubjects,
+        setSearch
     }
 }

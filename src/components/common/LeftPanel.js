@@ -8,12 +8,33 @@ import { AccountProvider } from '../../mixins/student/AccountRepository'
 import withProviders from '../../utils/withProviders'
 import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
 import { AuthorizationProvider } from '../../mixins/student/AuthorizationRepository'
+import { SearchProvider } from '../../mixins/student/SearchRepository'
 
 class LeftPanel extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedTab: this.activeButton()
+            selectedTab: null
+        }
+    }
+
+    componentDidMount() {
+        if (this.isAllCourses()) {
+            this.setState({ selectedTab: 'all' })
+        } else if (this.isMyCourses()) {
+            this.setState({ selectedTab: 'my' })
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const { selectedTab } = this.state
+
+        if (prevProps.location !== this.props.location) {
+            if (this.isAllCourses() && selectedTab !== 'all') {
+                this.setState({ selectedTab: 'all' })
+            } else if (this.isMyCourses() && selectedTab !== 'my') {
+                this.setState({ selectedTab: 'my' })
+            }
         }
     }
 
@@ -41,17 +62,18 @@ class LeftPanel extends Component {
 
     goToAllCourses = () => {
         this.setState({ selectedTab: 'all' })
-        this.props.history.push('/app/student/courses/all')
+        this.props.history.push('/app/courses/all')
     }
 
     goToMyCourses = () => {
         this.setState({ selectedTab: 'my' })
-        this.props.history.push('/app/student/courses')
+        this.props.history.push('/app/courses')
     }
 
-    isMyCourses = () => this.props.location.pathname.contains('/')
+    isMyCourses = () => this.props.location.pathname === '/app/courses'
 
-    isAllCourses = () => this.props.location.pathname.split('/').pop() === 'all'
+    isAllCourses = () =>
+        this.props.location.pathname.includes('/search') || this.props.location.pathname.includes('/all')
 
     exit = async () => {
         await this.props.exitProfile()
@@ -114,4 +136,4 @@ class LeftPanel extends Component {
     }
 }
 
-export default withProviders(AccountProvider, AuthorizationProvider)(withRouter(LeftPanel))
+export default withRouter(withProviders(AccountProvider, AuthorizationProvider, SearchProvider)(LeftPanel))

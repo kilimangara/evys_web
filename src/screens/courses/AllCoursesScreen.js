@@ -16,8 +16,8 @@ class AllCoursesScreen extends SearchMixin(Component) {
         this.props.getAllSubjects()
     }
 
-    goToThemes = id => {
-        // this.props.history.push(`/app/course/${id}/themes`)
+    goToCourse = id => {
+        this.props.history.push(`/app/course/${id}`)
     }
 
     render() {
@@ -44,7 +44,7 @@ class AllCoursesScreen extends SearchMixin(Component) {
                                         currency={currency}
                                         duration={duration}
                                         locale={profileData && profileData.locality}
-                                        onClick={() => this.goToThemes(id)}
+                                        onClick={() => this.goToCourse(id)}
                                     />
                                 )
                             )}

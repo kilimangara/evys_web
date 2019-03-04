@@ -23,6 +23,8 @@ export const getSearchSubjects = searchText => dispatch => {
     })
 }
 
+export const setSearch = text => dispatch => dispatch(setSearchValue(text))
+
 export const getAllSubjects = () => dispatch => {
     dispatch(allSubjectsLoading())
     return getPopularSubjects().then(response => {

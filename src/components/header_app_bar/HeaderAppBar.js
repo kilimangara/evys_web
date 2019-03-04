@@ -11,13 +11,13 @@ import { withRouter } from 'react-router'
 
 class HeaderAppBar extends Component {
     state = {
-        searchValue: this.props.searchValue
+        searchValue: ''
     }
     handleChange = e => this.setState({ searchValue: e.target.value })
 
     handleOnSearch = e => {
         e.preventDefault()
-        this.props.history.push(`/app/student/courses/search?search=${this.state.searchValue}`)
+        this.props.history.push(`/app/courses/search?search=${this.state.searchValue}`)
     }
 
     render() {
