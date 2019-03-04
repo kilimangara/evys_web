@@ -186,6 +186,14 @@ export function getTariffRates(subjectId) {
     })
 }
 
+export function sendComment(subjectId, data) {
+    return axiosInstance.request({
+        url: `/tariff/${subjectId}/rates`,
+        method: 'POST',
+        data
+    })
+}
+
 export function subscribeToTariff(subjectId) {
     return axiosInstance.request({
         url: `/tariff/${subjectId}/subscribe`,

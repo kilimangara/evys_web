@@ -3,7 +3,7 @@ import React from 'react'
 import { studentTheme } from '../../utils/global_theme'
 import Tabs from '@material-ui/core/Tabs/Tabs'
 import Tab from '@material-ui/core/Tab/Tab'
-import { CenteredContent, ColoredButton, ColumnFlexed, H1, H3, Paper, RowFlexed } from './common'
+import { CenteredContent, ColoredButton, ColumnFlexed, H1, H3, Paper, RowFlexed, WithVerticalMargin } from './common'
 
 export const CourseImage = styled.img`
     height: 50%;
@@ -181,8 +181,8 @@ export const CourseResultsBlock = styled(Paper)`
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
-    width: 65%;
-    min-width: 600px;
+    width: 63%;
+    min-width: 570px;
     max-width: 1000px;
     margin-top: 50px;
     padding: 15px;
@@ -202,9 +202,9 @@ export const ResultBlock = styled(RowFlexed)`
 export const ThemesTreeWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    width: 63%;
+    min-width: 570px;
     max-width: 1000px;
-    min-width: 500px;
-    width: 60%;
 `
 
 export const ThemeTreeBranch = styled.div`
@@ -275,6 +275,12 @@ export const TreeBranchContentWrapper = styled(RowFlexed)`
     margin-bottom: ${({ single }) => (single ? '20px' : '0')};
 `
 
+export const DescriptionWrapper = styled(WithVerticalMargin)`
+    width: 63%;
+    min-width: 570px;
+    max-width: 1000px;
+`
+
 export const CommentsBlockWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -326,4 +332,6 @@ export const CommentTextWrapper = styled(ColumnFlexed)`
 export const Commentator = styled.div``
 export const CommentatorAvatar = styled.div``
 
-export const CommentBlock = styled.div``
+export const CommentBlock = styled.div`
+    margin-bottom: 30px;
+`

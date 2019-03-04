@@ -42,7 +42,7 @@ export const CourseHeaderContent = ({ title, subtitle, ratingCount, rating, buye
                                 readonly
                             />
                             <H4 style={{ marginLeft: '5px' }}>
-                                {rating} ({ratingCount} оценок){' '}
+                                {rating} ({ratingCount} {declOfNum(ratingCount, ['оценка', 'оценки', 'оценок'])}){' '}
                             </H4>{' '}
                         </div>
                     ) : (

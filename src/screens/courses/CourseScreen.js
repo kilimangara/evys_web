@@ -7,7 +7,7 @@ import { studentTheme } from '../../utils/global_theme'
 import { CourseHeaderContent } from '../../components/courses/CourseHeaderContent'
 import { CourseInfoCard } from '../../components/courses/CourseInfoCard'
 import { getCourseMaterials, getTariffInfo, getTariffRates, getTariffThemes, subscribeToTariff } from '../../api'
-import { CorsesHeaderWrapper, CourseHeaderBlock } from '../../components/styled/courses'
+import { CorsesHeaderWrapper, CourseHeaderBlock, DescriptionWrapper } from '../../components/styled/courses'
 import { CourseResults } from '../../components/courses/CourseResults'
 import { CourseThemesTree } from '../../components/courses/CourseThemesTree'
 import { CommentsBlock } from '../../components/courses/CommentsBlock'
@@ -94,19 +94,26 @@ class CourseScreen extends CoursesMixin(Component) {
                     </CorsesHeaderWrapper>
                 </CourseHeaderBlock>
                 {results && results.length > 0 && <CourseResults results={results || []} />}
-                <WithVerticalMargin margin={'25px'} align={'flex-start'}>
+                <WithVerticalMargin margin={'20px'} align={'flex-start'}>
                     <H2>Содержание курса</H2>
                 </WithVerticalMargin>
                 <CourseThemesTree themes={themes || []} />
                 {requirements && <CourseRequirements requirements={requirements} />}
                 {description && (
-                    <WithVerticalMargin margin={'15px'} align={'flex-start'}>
+                    <DescriptionWrapper margin={'20px'} align={'flex-start'}>
                         <H2>Описание</H2>
                         <H3>{description}</H3>
-                    </WithVerticalMargin>
+                    </DescriptionWrapper>
                 )}
-                <H2>Отзывы</H2>
-                <CommentsBlock comments={rates && rates.results} />
+                <WithVerticalMargin margin={'20px'} align={'flex-start'}>
+                    <H2>Отзывы</H2>
+                </WithVerticalMargin>
+                <CommentsBlock
+                    rating={averageRate}
+                    comments={rates && rates.results}
+                    courseId={this.courseId}
+                    onCommentSended={() => this.getSubjectInfo()}
+                />
             </HorizontalCentered>
         )
     }

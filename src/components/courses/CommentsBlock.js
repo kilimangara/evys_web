@@ -37,6 +37,7 @@ import StarComponent from '@material-ui/icons/Star'
 import { studentTheme } from '../../utils/global_theme'
 import { distanceInWords } from 'date-fns'
 import ruLocale from 'date-fns/locale/ru'
+import { sendComment } from '../../api'
 
 export class CommentsBlock extends Component {
     state = {
@@ -49,7 +50,14 @@ export class CommentsBlock extends Component {
 
     handleTextChange = e => this.setState({ commentText: e.target.value })
 
-    sendComment = () => sendComment(this.state.chosenRating, this.state.commentText)
+    sendPostComment = () => {
+        sendComment(this.props.courseId, { comment: this.state.commentText, rate: this.state.chosenRating }).then(
+            () => {
+                this.setState({ chosenRating: null, commentText: null })
+                this.props.onCommentSended()
+            }
+        )
+    }
 
     render() {
         const { comments, hasCourse = true, userComment = false, rating } = this.props
@@ -94,7 +102,7 @@ export class CommentsBlock extends Component {
                                         <ColoredButton
                                             color={studentTheme.ACCENT}
                                             textColor={studentTheme.PRIMARY_LIGHT}
-                                            onClick={this.sendComment}
+                                            onClick={this.sendPostComment}
                                         >
                                             отправить
                                         </ColoredButton>
@@ -119,7 +127,6 @@ export class CommentsBlock extends Component {
                                                 height={'60px'}
                                                 image={author && author.avatar.medium.url}
                                             />
-                                            {console.log(author.avatar.medium.url)}
                                             <CommentAuthorInfo>
                                                 <H4>
                                                     <ColoredText color={studentTheme.SECONDARY_TEXT_COLOR}>
