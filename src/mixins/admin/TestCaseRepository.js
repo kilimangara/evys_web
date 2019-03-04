@@ -68,7 +68,10 @@ export default superclass =>
         createTestCase = (analogueId, description) => {
             return this.props
                 .newTestCase(this.themeId(), { analogueId, description, tests: this.standardTests() })
-                .then(this.loadTestCases)
+                .then(response => {
+                    this.loadTestCases()
+                    return response
+                })
         }
 
         generatePDF = () => {

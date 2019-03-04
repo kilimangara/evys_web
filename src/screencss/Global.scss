@@ -10,19 +10,17 @@
     border-radius: 0px;
 }
 
-.ql-editor{
-  min-height: 200px !important;
+.ql-editor {
+    min-height: 200px !important;
 }
 
 .sortable-handle {
-  cursor: move;
-  cursor: -webkit-grabbing;
+    cursor: row-resize;
 }
 
 .sortable-ghost {
-  opacity: 0.4;
+    opacity: 0.4;
 }
 
 .sortable-chosen {
-
 }

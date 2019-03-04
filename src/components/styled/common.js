@@ -159,7 +159,7 @@ export const ColoredButton = styled(({ color, textColor, textHover, ...props }) 
     background-color: ${({ color, disabled }) =>
         disabled ? studentTheme.PRIMARY_LIGHT : color || studentTheme.ACCENT};
     color: ${({ textColor }) => textColor || studentTheme.PRIMARY};
-    :hover {
+    &:hover {
         background-color: ${studentTheme.ACCENT_HOVER};
         color: ${({ textHover }) => textHover || studentTheme.BACKGROUND};
     }

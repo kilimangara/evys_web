@@ -38,19 +38,19 @@ class LeftPanel extends Component {
         }
     }
 
-    activeButton(index) {
-        switch (index) {
-            case 0:
-                return { chart: true }
-            case 1:
-                return { graduation: true }
-            case 2:
-                return { accounts: true }
-            case 3:
-                return { user: true }
-            default:
-                return { graduation: true }
-        }
+    activeButton = () => {
+        const { location } = this.props
+        if (location.pathname.includes('/all') || location.pathname.includes('/search')) return 'all'
+        if (location.pathname === '/app/student/courses') return 'my'
+        return null
+    }
+
+    componentDidUpdate(prevProps) {
+        console.log(prevProps.location, this.props.location, 'updated')
+        if (prevProps.location.pathname !== this.props.location.pathname)
+            this.setState({
+                selectedTab: this.activeButton()
+            })
     }
 
     goToNotifications = () => true //TODO: make notifications screen //this.props.history.push('/notifications/')
@@ -83,7 +83,6 @@ class LeftPanel extends Component {
     render() {
         const { selectedTab } = this.state
         const { buttonIndexActive, profileData } = this.props
-        const active = this.activeButton(buttonIndexActive)
         return (
             <LeftPanelContainer>
                 <div style={{ padding: '0px 0px 0px 50px' }}>
@@ -97,6 +96,7 @@ class LeftPanel extends Component {
                         <LeftPanelNavigation style={{ justifyContent: 'space-between' }}>
                             <SizedIconButton
                                 width={18}
+                                disabled
                                 margin={'6px 20px'}
                                 children={
                                     <BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'} />

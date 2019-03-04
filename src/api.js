@@ -1,72 +1,47 @@
-// import trivialRedux from 'trivial-redux'
-//
-// import auth from './endpoints/auth'
-// import account from './endpoints/account'
-// import tariffs from './endpoints/tariffs'
-// import courses from './endpoints/courses'
-// import stats from './endpoints/stats'
-// import account_admin from './endpoints/admin/account_admin'
-// import auth_admin from './endpoints/admin/auth_admin'
-// import subjects_admin from './endpoints/admin/subjects_admin'
-// import test_cases_admin from './endpoints/admin/test_cases_admin'
-// import themes_admin from './endpoints/admin/themes_admin'
-// import students_admin from './endpoints/admin/students_admin'
-// import tariffs_admin from './endpoints/admin/tariffs_admin'
-// import company_admin from './endpoints/admin/company_admin'
-//
-// export const adminAPI = trivialRedux({
-//     auth_admin,
-//     account_admin,
-//     subjects_admin,
-//     test_cases_admin,
-//     themes_admin,
-//     students_admin,
-//     tariffs_admin,
-//     company_admin
-// })
-//
-// export const studentAPI = trivialRedux({
-//     auth,
-//     account,
-//     tariffs,
-//     courses,
-//     stats
-// })
 import axios from 'axios'
 import humps from 'humps'
 import { store } from './store'
 import { ADMIN_APP } from './utils/constants'
+import { logoutAdmin } from './reducers/admin/authorization'
 
 console.log(__DEV__, __CURRENT_APP__)
 
 const baseURL = __DEV__ ? 'http://localhost:8000/api/' : 'https://evys.ru/api/'
 
 const axiosInstance = axios.create({
-    baseURL,
-    transformResponse: [
-        ...axios.defaults.transformResponse,
-        data => {
-            if (data instanceof Blob) return data
-            return humps.camelizeKeys(data)
-        }
-    ],
-    transformRequest: [
-        data => (data instanceof FormData ? data : humps.decamelizeKeys(data)),
-        ...axios.defaults.transformRequest
-    ]
+    baseURL
 })
+
+function transformRequest(config) {
+    if (config.data instanceof FormData) return config
+    if (config.data) {
+        config.data = humps.decamelizeKeys(config.data)
+    }
+    if (config.params) {
+        config.params = humps.decamelizeKeys(config.params)
+    }
+    return config
+}
 
 function basicAdminAuth(config) {
     const { authorization, account } = store.getState()
     if (authorization.token) config.headers['Authorization'] = `Basic ${authorization.token}`
     if (account.currentAccount) config.headers['Account-Name'] = account.currentAccount
-    return config
+    return transformRequest(config)
 }
 
 function studentTokenAuth(config) {
     const { auth } = store.getState()
     if (auth.token) config.headers['Authorization'] = `Student ${auth.token}`
-    return config
+    return transformRequest(config)
+}
+
+function autoLogoutAdmin(error) {
+    store.dispatch(logoutAdmin())
+}
+
+function autoLogoutStudent(error) {
+    // student logout logic
 }
 
 axiosInstance.interceptors.request.use(config => {
@@ -76,6 +51,8 @@ axiosInstance.interceptors.request.use(config => {
 
 axiosInstance.interceptors.response.use(
     data => {
+        if (data instanceof Blob) return data
+        data = humps.camelizeKeys(data)
         if (!data) return data
         if (data.data) return data.data
         if (data.error) return data.error
@@ -83,6 +60,8 @@ axiosInstance.interceptors.response.use(
     },
     error => {
         if (error.response.status === 401) {
+            if (__CURRENT_APP__ === ADMIN_APP) autoLogoutAdmin(error)
+            else autoLogoutStudent(error)
             // window.location = '/login'
         }
         return Promise.reject(error)
@@ -494,5 +473,33 @@ export function deleteTest(testCaseId, testId) {
     return axiosInstance.request({
         url: `/admin2/test_case/${testCaseId}/test/${testId}`,
         method: 'DELETE'
+    })
+}
+
+// admin billing methods
+
+export function getBillingPlan() {
+    return axiosInstance.request({
+        url: `/admin2/personal_tariff`,
+        method: 'GET'
+    })
+}
+
+export function createBillingPlan(data, isDraft = false) {
+    return axiosInstance.request({
+        url: `/admin2/personal_tariff`,
+        method: 'POST',
+        data: {
+            ...data,
+            draft: isDraft
+        }
+    })
+}
+
+export function getInvoices(params = {}) {
+    return axiosInstance.request({
+        url: '/admin2/invoices',
+        method: 'GET',
+        params
     })
 }

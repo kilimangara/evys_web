@@ -17,7 +17,7 @@ import MainInfo from './main-info'
 import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
-import ThemesScreen from '../ThemesScreen'
+import ThemesScreen from '../theme/themes-list'
 
 const WarningIcon = styled(Warning)`
     color: red;

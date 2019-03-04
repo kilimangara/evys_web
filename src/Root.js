@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { store, persistor } from './store'
 import { Route, Switch } from 'react-router'
 import App from './components/App'
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import './screencss/Global.scss'
 import { pick } from 'lodash'
 import { createTheming } from 'react-jss'
@@ -25,12 +25,14 @@ const generateClassName = createGenerateClassName()
 const jss = create(jssPreset())
 jss.options.insertionPoint = 'insertion-point-jss'
 
+const muitheme = createMuiTheme()
+
 class Root extends Component {
     render() {
         return (
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
-                    <MuiThemeProvider>
+                    <MuiThemeProvider theme={muitheme}>
                         <JssProvider jss={jss} generateClassName={generateClassName}>
                             <BrowserRouter>
                                 <Switch>

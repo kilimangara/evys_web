@@ -14,16 +14,16 @@ import styled from 'styled-components'
 
 const GridWrapper = styled.div`
     @media screen and (min-width: 0px) and (max-width: 1090px) {
-        max-width: 374px;
+        max-width: 474px;
     }
     @media screen and (min-width: 1090px) and (max-width: 1422px) {
-        max-width: 748px;
+        max-width: 898px;
     }
     @media screen and (min-width: 1422px) and (max-width: 1796px) {
-        max-width: 1122px;
+        max-width: 1272px;
     }
     @media screen and (min-width: 1796px) {
-        max-width: 1496px;
+        max-width: 1646px;
     }
     width: 5000px;
     display: flex;
@@ -32,39 +32,56 @@ const GridWrapper = styled.div`
 `
 
 const Wrapper = styled(HoverPaper)`
-  height: 300px;
-  width: 450px;
-  background: ${({image}) => `url(${image}) no-repeat center center`};
-  background-size: contain;
+    height: 300px;
+    width: 400px;
+    background: ${({ image }) => `url(${image}) no-repeat center center`};
+    background-size: contain;
 `
 
 class ThemesScreen extends ThemesRepository(Component) {
-
     state = {
-      page: 1
+        page: 1
     }
 
     componentDidMount() {
-      this.props.resetThemesList()
-      this.props.loadThemes(this.subjectId())
+        this.reloadList()
     }
 
-    goToTheme = (theme) => () => this.props.history.push(`/admin/themes/${theme.id}`)
+    reloadList = () => {
+        this.props.resetThemesList()
+        this.props.loadThemes(this.subjectId(), {
+            parentTheme: this.parentId()
+        })
+    }
+
+    componentDidUpdate(prevProps) {
+        const prevParentId = new URLSearchParams(prevProps.location.search).get('parent')
+        if (this.parentId() !== prevParentId) this.reloadList()
+    }
+
+    goToTheme = theme => () => {
+        if (theme.type === 'Theme') this.props.history.push(`/admin/themes/${theme.id}`)
+        else this.props.history.push(`/admin/subjects/${this.subjectId()}/themes?parent=${theme.id}`)
+    }
 
     renderTheme = (theme, index) => {
         const hidden = !theme.isHidden ? 'Выставлен' : 'Скрыт'
+        const type = theme.type === 'Section' ? 'Раздел' : 'Тема'
         return (
-          <div style={{margin: '18px 6px', backgroundColor: 'white'}} key={theme.id}>
-          <GridListTile cols={1} component='div' onClick={this.goToTheme(theme)}>
-              <Wrapper image={'/images/EQ4.png'}>
-                  <GridListTileBar
-                      title={`${theme.num}. ${theme.name}`}
-                      subtitle={<b>{hidden}</b>}
-                  >
-                  </GridListTileBar>
-              </Wrapper>
-          </GridListTile>
-          </div>
+            <div style={{ margin: '18px 6px', backgroundColor: 'white' }} key={theme.id}>
+                <GridListTile cols={1} component="div" onClick={this.goToTheme(theme)}>
+                    <Wrapper image={'/images/EQ4.png'}>
+                        <GridListTileBar
+                            title={`${theme.num}. ${theme.name}`}
+                            subtitle={
+                                <b>
+                                    {type} {hidden}
+                                </b>
+                            }
+                        />
+                    </Wrapper>
+                </GridListTile>
+            </div>
         )
     }
 
@@ -73,35 +90,32 @@ class ThemesScreen extends ThemesRepository(Component) {
     }
 
     onThemeSave = data => {
-      this.props.createTheme(this.subjectId(), data).then(() => {
-          this.props.loadThemes(this.subjectId())
-          this.modal.hide()
-      })
+        const newData = { ...data }
+        newData.parentTheme = this.parentId()
+        this.props.createTheme(this.subjectId(), newData).then(() => {
+            this.reloadList()
+            this.modal.hide()
+        })
     }
 
     render() {
-        const {themes, themesFetching} = this.props
-        if(!themes.length && themesFetching){
-          return(
-            <div>
-              <LinearProgress/>
-            </div>
-          )
+        const { themes, themesFetching } = this.props
+        if (!themes.length && themesFetching) {
+            return (
+                <div>
+                    <LinearProgress />
+                </div>
+            )
         }
         return (
             <div style={styles.container}>
-              <GridWrapper>
-                  {themes.map(this.renderTheme)}
-              </GridWrapper>
-                <Fab
-                    style={styles.fabStyle}
-                    onClick={this.floatingButtonClicked}
-                >
-                  <Add />
+                <GridWrapper>{themes.map(this.renderTheme)}</GridWrapper>
+                <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
+                    <Add />
                 </Fab>
-              <Modal ref={ref => this.modal = ref}>
-                <ThemeCreation onThemeSave={this.onThemeSave}/>
-              </Modal>
+                <Modal ref={ref => (this.modal = ref)}>
+                    <ThemeCreation onThemeSave={this.onThemeSave} />
+                </Modal>
             </div>
         )
     }
