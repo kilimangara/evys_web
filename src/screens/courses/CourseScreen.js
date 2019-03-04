@@ -20,17 +20,11 @@ class CourseScreen extends CoursesMixin(Component) {
 
     componentDidMount() {
         this.courseId = this.props.match.params['course_id']
-        if (!this.props.currentCourse || this.props.currentCourse.id !== this.courseId) {
-            this.props.getCourseById(this.courseId).then(() => {
-                this.getSubjectInfo()
-            })
-        } else {
-            this.getSubjectInfo()
-        }
+        this.getSubjectInfo()
     }
 
     getSubjectInfo = () => {
-        const id = this.props.currentCourse && this.props.currentCourse.id
+        const id = this.courseId
         if (!id) return
         Promise.all([getTariffInfo(id), getTariffThemes(id), getTariffRates(id)]).then(results =>
             this.setState({ tariff: results[0].data, themes: results[1].data, rates: results[2].data })
