@@ -1,41 +1,8 @@
-// import trivialRedux from 'trivial-redux'
-//
-// import auth from './endpoints/auth'
-// import account from './endpoints/account'
-// import tariffs from './endpoints/tariffs'
-// import courses from './endpoints/courses'
-// import stats from './endpoints/stats'
-// import account_admin from './endpoints/admin/account_admin'
-// import auth_admin from './endpoints/admin/auth_admin'
-// import subjects_admin from './endpoints/admin/subjects_admin'
-// import test_cases_admin from './endpoints/admin/test_cases_admin'
-// import themes_admin from './endpoints/admin/themes_admin'
-// import students_admin from './endpoints/admin/students_admin'
-// import tariffs_admin from './endpoints/admin/tariffs_admin'
-// import company_admin from './endpoints/admin/company_admin'
-//
-// export const adminAPI = trivialRedux({
-//     auth_admin,
-//     account_admin,
-//     subjects_admin,
-//     test_cases_admin,
-//     themes_admin,
-//     students_admin,
-//     tariffs_admin,
-//     company_admin
-// })
-//
-// export const studentAPI = trivialRedux({
-//     auth,
-//     account,
-//     tariffs,
-//     courses,
-//     stats
-// })
 import axios from 'axios'
 import humps from 'humps'
 import { store } from './store'
 import { ADMIN_APP } from './utils/constants'
+import { logoutAdmin } from './reducers/admin/authorization'
 
 console.log(__DEV__, __CURRENT_APP__)
 
@@ -69,6 +36,14 @@ function studentTokenAuth(config) {
     return transformRequest(config)
 }
 
+function autoLogoutAdmin(error) {
+    store.dispatch(logoutAdmin())
+}
+
+function autoLogoutStudent(error) {
+    // student logout logic
+}
+
 axiosInstance.interceptors.request.use(config => {
     if (__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
     return studentTokenAuth(config)
@@ -85,6 +60,8 @@ axiosInstance.interceptors.response.use(
     },
     error => {
         if (error.response.status === 401) {
+            if (__CURRENT_APP__ === ADMIN_APP) autoLogoutAdmin(error)
+            else autoLogoutStudent(error)
             // window.location = '/login'
         }
         return Promise.reject(error)
@@ -464,5 +441,33 @@ export function deleteTest(testCaseId, testId) {
     return axiosInstance.request({
         url: `/admin2/test_case/${testCaseId}/test/${testId}`,
         method: 'DELETE'
+    })
+}
+
+// admin billing methods
+
+export function getBillingPlan() {
+    return axiosInstance.request({
+        url: `/admin2/personal_tariff`,
+        method: 'GET'
+    })
+}
+
+export function createBillingPlan(data, isDraft = false) {
+    return axiosInstance.request({
+        url: `/admin2/personal_tariff`,
+        method: 'POST',
+        data: {
+            ...data,
+            draft: isDraft
+        }
+    })
+}
+
+export function getInvoices(params = {}) {
+    return axiosInstance.request({
+        url: '/admin2/invoices',
+        method: 'GET',
+        params
     })
 }

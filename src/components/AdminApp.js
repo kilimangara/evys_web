@@ -5,6 +5,7 @@ import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
 import SubjectsScreen from '../screens/admin/SubjectsScreen'
 import StudentsScreen from '../screens/admin/StudentsScreen'
 import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
+import BillingPlanScreen from '../screens/admin/billing'
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import Modal from 'reboron/ScaleModal'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -24,6 +25,7 @@ import ThemeScreen from '../screens/admin/theme'
 import { logoutAdmin } from '../reducers/admin/authorization'
 import { switchManager, pickAsset } from '../reducers/admin/assetManager'
 import { SnackbarProvider } from 'notistack'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 class App extends Component {
     constructor(props) {
@@ -33,7 +35,7 @@ class App extends Component {
         }
     }
 
-    componentWillMount() {
+    componentDidMount() {
         if (!this.props.authenticated) this.props.history.push('/admin/login')
         else {
             if (!this.props.currentAccount) this.props.history.push('/admin/choose_account')
@@ -85,6 +87,14 @@ class App extends Component {
                         </ListItemIcon>
                         <ListItemText primary={'Ученики'} />
                     </ListItem>
+                    <ListItem button onClick={this.goToExactPath('/admin/billing_plan')}>
+                        <ListItemIcon>
+                            <ListIcon>
+                                <SettingsIcon />
+                            </ListIcon>
+                        </ListItemIcon>
+                        <ListItemText primary={'Настройки'} />
+                    </ListItem>
                     <Divider />
                 </List>
             </div>
@@ -130,7 +140,15 @@ class App extends Component {
                     <SnackbarProvider maxSnack={5}>
                         <CommonWrapper>
                             <Switch>
-                                <Route exact path="/admin" render={() => <Redirect to="/admin/subjects" />} />
+                                <Route
+                                    exact
+                                    path="/admin"
+                                    render={() => {
+                                        if (!this.props.authenticated) return null
+                                        if (!this.props.currentAccount) return null
+                                        return <Redirect to="/admin/subjects" />
+                                    }}
+                                />
                                 <Route exact path="/admin/subjects" component={SubjectsScreen} />
                                 <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
                                 <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
@@ -138,6 +156,7 @@ class App extends Component {
                                 <Route path="/admin/choose_account" component={ChooseAccountScreen} />
                                 <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
                                 <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
+                                <Route exact path="/admin/billing_plan" component={BillingPlanScreen} />
                             </Switch>
                         </CommonWrapper>
                     </SnackbarProvider>
