@@ -14,6 +14,7 @@ import { Card } from './index'
 import Button from '@material-ui/core/Button'
 import { theme } from '../../../utils/global_theme'
 import { withSnackbar } from 'notistack'
+import moment from 'moment'
 
 const Header = styled(Typography)`
     font-weight: 600;
@@ -26,6 +27,14 @@ const CurrencyText = styled(Typography)`
     font-size: 16px;
     color: black;
     margin-left: 4px;
+`
+
+const ExpirationText = styled(Typography)`
+    font-weight: 300;
+    font-size: 16px;
+    color: rgba(128, 128, 128, 0.5);
+    margin-left: 4px;
+    align-self: 'center';
 `
 
 const SliderHeader = styled(Typography)`
@@ -132,6 +141,11 @@ class BillingPlanScreen extends BillingProvider(React.Component) {
                     <div style={{ display: 'flex', alignItems: 'flex-end' }}>
                         <Header component={'span'}>{formatter.format(billingPlan.amount)}</Header>
                         <CurrencyText component={'span'}>₽/мес</CurrencyText>
+                        {billingPlan.expiresAt && (
+                            <ExpirationText component={'span'}>
+                                (действует до {moment(billingPlan.expiresAt).format('ll')})
+                            </ExpirationText>
+                        )}
                     </div>
                     <Divider />
                     <SliderContainer>
