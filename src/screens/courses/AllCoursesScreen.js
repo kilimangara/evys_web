@@ -21,10 +21,10 @@ class AllCoursesScreen extends SearchMixin(Component) {
     }
 
     render() {
-        const { loading, subjectsList, profileData } = this.props
+        const { searchFetching, subjectsList, profileData } = this.props
         return (
             <CoursesScreenContainer>
-                {loading ? (
+                {searchFetching ? (
                     <LoaderWrapper>
                         <Loader />
                     </LoaderWrapper>

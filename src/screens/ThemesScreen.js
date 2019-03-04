@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { relative } from 'path'
-import { CenteredContent } from '../components/styled/common'
+import { CenteredContent, Loader } from '../components/styled/common'
 import { CurrentCourseItem } from '../components/themes/CurrentCourseItem'
 import { ThemeItem } from '../components/themes/ThemeItem'
 import { ThemesItemWrapper, ThemesScreenWrapper } from '../components/styled/themes'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
+import withRouter from 'react-router/es/withRouter'
+import { withSnackbar } from 'notistack'
 
 class ThemesScreen extends Component {
     state = {
@@ -18,15 +20,27 @@ class ThemesScreen extends Component {
         if (!this.props.currentCourse || this.props.currentCourse.id !== this.courseId) {
             this.props.getCourseById(this.courseId)
         }
-        this.props.loadThemes(this.courseId, null).then(response => this.setState({ themes: response }))
+        this.props
+            .loadThemes(this.courseId, null)
+            .then(response => this.setState({ themes: response }))
+            .catch(err => {
+                if (err.response.data.status_code === 403) {
+                    this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                    this.props.history.push('/app/courses')
+                }
+            })
     }
 
     handleCardClick = id => this.props.history.push(`/app/course/${this.courseId}/theme/${id}`)
 
     render() {
-        const { currentCourse } = this.props
+        const { currentCourse, coursesFetching } = this.props
         const { themes } = this.state
-        return (
+        return coursesFetching ? (
+            <CenteredContent height={'100%'}>
+                <Loader />
+            </CenteredContent>
+        ) : (
             <CenteredContent>
                 <ThemesScreenWrapper>
                     <CurrentCourseItem
@@ -52,4 +66,4 @@ class ThemesScreen extends Component {
     }
 }
 
-export default withProviders(CoursesProvider)(ThemesScreen)
+export default withProviders(CoursesProvider)(withSnackbar(withRouter(ThemesScreen)))

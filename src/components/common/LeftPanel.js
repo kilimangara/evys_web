@@ -34,23 +34,10 @@ class LeftPanel extends Component {
                 this.setState({ selectedTab: 'all' })
             } else if (this.isMyCourses() && selectedTab !== 'my') {
                 this.setState({ selectedTab: 'my' })
+            } else if (!this.isAllCourses() && !this.isMyCourses()) {
+                this.setState({ selectedTab: null })
             }
         }
-    }
-
-    activeButton = () => {
-        const { location } = this.props
-        if (location.pathname.includes('/all') || location.pathname.includes('/search')) return 'all'
-        if (location.pathname === '/app/student/courses') return 'my'
-        return null
-    }
-
-    componentDidUpdate(prevProps) {
-        console.log(prevProps.location, this.props.location, 'updated')
-        if (prevProps.location.pathname !== this.props.location.pathname)
-            this.setState({
-                selectedTab: this.activeButton()
-            })
     }
 
     goToNotifications = () => true //TODO: make notifications screen //this.props.history.push('/notifications/')

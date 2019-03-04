@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
-import { BorderedImage, HorizontalCentered } from '../components/styled/common'
+import { BorderedImage, CenteredContent, HorizontalCentered, Loader } from '../components/styled/common'
 import { ThemeStudyTextBlock } from '../components/styled/themes'
 import { ThemeStudyTheoryItem } from '../components/themes/ThemeStudyTheoryItem'
 import DescriptionIcon from '@material-ui/icons/Description'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
+import { withSnackbar } from 'notistack'
 
 class ThemeStudyScreen extends Component {
     state = {
@@ -20,16 +21,21 @@ class ThemeStudyScreen extends Component {
     }
 
     componentDidMount() {
-        Promise.all([this.props.loadThemeById(this.themeId), this.props.loadTheoryByThemeId(this.themeId)]).then(
-            responses => {
+        Promise.all([this.props.loadThemeById(this.themeId), this.props.loadTheoryByThemeId(this.themeId)])
+            .then(responses => {
                 if (responses[0] && responses[0].theory.videos) {
                     this.props.loadThemeVideos(this.themeId).then(response => {
                         this.setState({ videos: response })
                     })
                 }
                 this.setState({ theme: responses[0], theory: responses[1] })
-            }
-        )
+            })
+            .catch(err => {
+                if (err.response.data.status_code === 403) {
+                    this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                    this.props.history.push('/app/courses')
+                }
+            })
     }
 
     createMarkup = markup => {
@@ -41,8 +47,13 @@ class ThemeStudyScreen extends Component {
 
     render() {
         const { theory, videos } = this.state
+        const { coursesFetching } = this.props
 
-        return (
+        return coursesFetching ? (
+            <CenteredContent height={'100%'}>
+                <Loader />
+            </CenteredContent>
+        ) : (
             <HorizontalCentered direction={'column'}>
                 <ThemeStudyTextBlock>
                     <div dangerouslySetInnerHTML={theory && theory.text && this.createMarkup(theory.text)} />
@@ -65,13 +76,12 @@ class ThemeStudyScreen extends Component {
                             }
                         />
                     ))}
-                {theory &&
-                    theory.files && (
-                        <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />
-                    )}
+                {theory && theory.files && (
+                    <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />
+                )}
             </HorizontalCentered>
         )
     }
 }
 
-export default withProviders(CoursesProvider)(ThemeStudyScreen)
+export default withProviders(CoursesProvider)(withSnackbar(ThemeStudyScreen))

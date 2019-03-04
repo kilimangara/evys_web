@@ -6,7 +6,8 @@ export class SearchProvider {
     static mapStateToProps = state => ({
         subjectsList: state.search.subjectsList,
         searchResults: state.search.searchResults,
-        searchValue: state.search.searchValue
+        searchValue: state.search.searchValue,
+        searchFetching: state.search.fetching
     })
 
     static mapDispatchToProps = {

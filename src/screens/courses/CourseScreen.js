@@ -1,6 +1,14 @@
 import React, { Component } from 'react'
 import CoursesMixin, { CoursesProvider } from '../../mixins/student/CoursesRepository'
-import { H2, H3, HorizontalCentered, Paper, WithVerticalMargin } from '../../components/styled/common'
+import {
+    CenteredContent,
+    H2,
+    H3,
+    HorizontalCentered,
+    Loader,
+    Paper,
+    WithVerticalMargin
+} from '../../components/styled/common'
 import withProviders from '../../utils/withProviders'
 import withRouter from 'react-router/es/withRouter'
 import { studentTheme } from '../../utils/global_theme'
@@ -16,7 +24,7 @@ import { AccountProvider } from '../../mixins/student/AccountRepository'
 import { CourseRequirements } from '../../components/courses/CourseRequirements'
 
 class CourseScreen extends CoursesMixin(Component) {
-    state = { tariff: {}, themes: [], rates: [] }
+    state = { tariff: {}, themes: [], rates: [], loading: true }
 
     componentDidMount() {
         this.courseId = this.props.match.params['course_id']
@@ -27,7 +35,7 @@ class CourseScreen extends CoursesMixin(Component) {
         const id = this.courseId
         if (!id) return
         Promise.all([getTariffInfo(id), getTariffThemes(id), getTariffRates(id)]).then(results =>
-            this.setState({ tariff: results[0].data, themes: results[1].data, rates: results[2].data })
+            this.setState({ tariff: results[0].data, themes: results[1].data, rates: results[2].data, loading: false })
         )
     }
 
@@ -47,7 +55,7 @@ class CourseScreen extends CoursesMixin(Component) {
     getVideosCount = themes => themes.reduce((acc, cur) => acc + cur.mediaCount || 0, 0)
 
     render() {
-        const { tariff, themes, rates } = this.state
+        const { tariff, themes, rates, loading } = this.state
         const {
             results,
             buys,
@@ -63,7 +71,11 @@ class CourseScreen extends CoursesMixin(Component) {
             requirements
         } = tariff
         const { profileData } = this.props
-        return (
+        return loading ? (
+            <CenteredContent height={'100%'}>
+                <Loader />
+            </CenteredContent>
+        ) : (
             <HorizontalCentered direction={'column'}>
                 <CourseHeaderBlock background={studentTheme.ACCENT_DARK} borderRadius={'5px'}>
                     <CorsesHeaderWrapper>
