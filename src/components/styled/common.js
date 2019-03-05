@@ -131,6 +131,7 @@ export const LoaderWrapper = styled.div`
 
 export const CenteredContent = styled.div`
     width: ${({ width }) => width || 'auto'};
+    height: ${({ height }) => height || 'auto'};
     display: flex;
     flex-direction: ${({ direction }) => direction || 'column'};
     justify-content: center;

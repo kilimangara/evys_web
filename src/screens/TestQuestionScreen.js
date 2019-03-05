@@ -25,6 +25,7 @@ import withProviders from '../utils/withProviders'
 import { getTestQuestion } from '../api'
 import ReactQuill from 'react-quill'
 import { studentTheme } from '../utils/global_theme'
+import { withSnackbar } from 'notistack'
 
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
@@ -48,7 +49,15 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 
     getTestBlockIdAndQuestion = async () => {
-        await this.props.startTestsSession(this.themeId)
+        try {
+            await this.props.startTestsSession(this.themeId)
+        } catch (err) {
+            if (err.response.data.status_code === 403) {
+                this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                this.props.history.push('/app/courses')
+            }
+            return
+        }
         this.getNextQuestion()
     }
 
@@ -191,4 +200,4 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 }
 
-export default withProviders(TestsProvider)(TestQuestionScreen)
+export default withProviders(TestsProvider)(withSnackbar(TestQuestionScreen))

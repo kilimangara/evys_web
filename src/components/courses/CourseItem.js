@@ -37,9 +37,9 @@ class CourseItem extends Component {
     }
 
     render() {
-        const { courseImage, name, teacherName, subscribeTo, percent, ended, onClick } = this.props
+        const { courseImage, name, teacherName, subscribeTo, percent, ended, onClick, disabled } = this.props
         return (
-            <CourseWrapper onClick={() => onClick()}>
+            <CourseWrapper>
                 {ended && (
                     <OutdatedWrapper>
                         <OutdatedText>Истек ({this.renderExpireDate(subscribeTo)})</OutdatedText>
@@ -51,6 +51,9 @@ class CourseItem extends Component {
                         height={'100%'}
                         background={studentTheme.PRIMARY_LIGHT}
                         borderRadius={'15px'}
+                        clickable
+                        disabled={disabled}
+                        onClick={() => onClick()}
                     >
                         <CourseImage src={courseImage} />
                         <CourseInfo>

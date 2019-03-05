@@ -65,6 +65,9 @@ axiosInstance.interceptors.response.use(
             else autoLogoutStudent(error)
             // window.location = '/login'
         }
+        if (error.response.data.error) {
+            error.response.data = error.response.data.error
+        }
         return Promise.reject(error)
     }
 )
