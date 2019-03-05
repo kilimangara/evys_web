@@ -1,7 +1,9 @@
 var express = require('express')
+var compress = require('compression')
 var app = express()
 //serves the index.html
 
+app.use(compress())
 app.use('/dist', express.static(__dirname + '/dist'))
 app.use('/frontend/favicon', express.static(__dirname + '/public/favicon'))
 app.use('/frontend/images', express.static(__dirname + '/public/images'))
