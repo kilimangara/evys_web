@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
+        "start-production-server": "node server.js",
         "build-dev": "webpack  --env.DEV --progress --colors",
         "build-prod": "webpack --config webpack.prod.config.js --env.DEV=false --progress --colors",
         "build-admin-prod": "webpack --config webpack.admin.prod.js --env.DEV=false --progress --colors",
@@ -90,6 +91,7 @@
         "css-loader": "^0.28.7",
         "eslint": "^4.11.0",
         "eslint-plugin-react": "^7.5.1",
+        "express": "^4.16.4",
         "extract-text-webpack-plugin": "^4.0.0-beta.0",
         "file-loader": "^1.1.11",
         "html-webpack-change-assets-extension-plugin": "^1.1.0",

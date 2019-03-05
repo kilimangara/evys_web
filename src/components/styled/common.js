@@ -117,7 +117,7 @@ export const StudentTextarea = styled.textarea`
 export const Loader = styled.div`
     width: 100px;
     height: 100px;
-    background-image: url(/images/Ripple-1s-200px.svg);
+    background-image: url(/frontend/images/Ripple-1s-200px.svg);
     background-size: 100px 100px;
 `
 
