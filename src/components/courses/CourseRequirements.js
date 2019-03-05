@@ -7,7 +7,9 @@ export const CourseRequirements = ({ requirements }) => (
             <H2>Требования</H2>
             <H4>
                 <ul>
-                    {requirements && requirements.length > 0 && requirements.map(requirement => <li>{requirement}</li>)}
+                    {requirements &&
+                        requirements.length > 0 &&
+                        requirements.map(requirement => <li key={requirement}>{requirement}</li>)}
                 </ul>
             </H4>
         </ColumnFlexed>

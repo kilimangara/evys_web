@@ -123,7 +123,7 @@ export class CommentsBlock extends Component {
                                 <Commentator>
                                     <RowFlexed>
                                         <CommentatorInfoBlock>
-                                            <BorderedImage
+                                            <CommentatorAvatar
                                                 width={'60px'}
                                                 height={'60px'}
                                                 image={

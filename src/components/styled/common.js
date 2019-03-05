@@ -76,9 +76,9 @@ export const BorderedImage = styled.div`
 
 export const StudentTypography = styled.p`
     font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '18px')};
-    font-family: Montserrat;
+    font-family: ${studentTheme.FONT};
     margin: 0;
-    padding: 12px 0;
+    padding: 15px 15px 15px 0;
     color: ${props => (props.mainColor ? 'white' : 'inherit')};
     font-weight: ${props => (props.bold ? 'bold' : props.fontWeight || '300')};
 `

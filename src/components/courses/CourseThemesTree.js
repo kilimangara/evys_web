@@ -37,7 +37,7 @@ export class CourseThemesTree extends Component {
         const subThemes = themesTree[theme.id]
         const { name, type, testsCount, hasTheory, mediaCount } = theme
         return (
-            <ThemeTreeBranch single={!!subThemes}>
+            <ThemeTreeBranch single={!!subThemes} key={theme.id}>
                 <TreeBranchContentWrapper single={!!subThemes}>
                     <ThemeContentSplit>
                         <ThemeName>
