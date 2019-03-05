@@ -93,7 +93,7 @@ export const ThemeStudyTextBlock = styled(Paper)`
 
 export const ThemeStudyTheoryItemContainer = styled(Paper)`
     background-color: ${studentTheme.PRIMARY_LIGHT};
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     border-radius: 15px;
     display: flex;
     font: ${studentTheme.h3} ${studentTheme.FONT};
@@ -103,4 +103,3 @@ export const ThemeStudyTheoryItemContainer = styled(Paper)`
     height: 150px;
     margin: 12px 0;
 `
-

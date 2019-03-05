@@ -33,6 +33,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
         answerSent: false,
         correct: null,
         question: null,
+        testFinished: false,
         textAnswer: ''
     }
 
@@ -73,6 +74,10 @@ class TestQuestionScreen extends TestsMixin(Component) {
             .then(res => {
                 const correct = res && res.data.answerData && res.data.answerData.isRight
                 this.setState({ correct, answerSent: true })
+                if (res.data.blockEnd && res.data.changeBlockId === null) {
+                    this.setState({ testFinished: true })
+                    return
+                }
                 this.state.textAnswer && this.getNextQuestion()
             })
     }
@@ -110,8 +115,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
     quillWorks = value => this.setState({ value })
 
     render() {
-        const { question, selectedAnswer, correct, answerSent, textAnswer } = this.state
-        const { testFinished } = this.props
+        const { question, selectedAnswer, correct, answerSent, textAnswer, testFinished } = this.state
         return testFinished ? (
             <FullsizeCentered>
                 <ColumnFlexed align={'center'}>

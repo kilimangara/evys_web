@@ -19,6 +19,7 @@ import { SnackbarProvider } from 'notistack'
 import { studentTheme } from '../utils/global_theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import CourseScreen from '../screens/courses/CourseScreen'
+import VideoStudyScreen from '../screens/VideoStudyScreen'
 
 class App extends Component {
     constructor(props) {
@@ -133,6 +134,11 @@ class App extends Component {
                                     exact
                                     path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test"
                                     component={TestQuestionScreen}
+                                />
+                                <Route
+                                    exact
+                                    path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory/videos/:video_id(\d+)"
+                                    component={VideoStudyScreen}
                                 />
                                 <Route component={NotFoundPage} />
                             </Switch>
