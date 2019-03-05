@@ -3,8 +3,8 @@ var app = express()
 //serves the index.html
 
 app.use('/dist', express.static(__dirname + '/dist'))
-app.use('/favicon', express.static(__dirname + '/public/favicon'))
-app.use('/images', express.static(__dirname + '/public/images'))
+app.use('/frontend/favicon', express.static(__dirname + '/public/favicon'))
+app.use('/frontend/images', express.static(__dirname + '/public/images'))
 
 app.get('*.js', function(req, res, next) {
     req.url = req.url + '.gz'
