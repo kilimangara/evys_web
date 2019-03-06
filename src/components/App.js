@@ -38,8 +38,8 @@ class App extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.valid_course)
-        console.log(this.props.valid_course)
+        // console.log(nextProps.valid_course)
+        // console.log(this.props.valid_course)
         // if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
         //     this.props.history.push('/login')
         // }

@@ -86,7 +86,11 @@ class LeftPanel extends Component {
                                 disabled
                                 margin={'6px 20px'}
                                 children={
-                                    <BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'} />
+                                    <BorderedImage
+                                        image={'/frontend/images/notifications.svg'}
+                                        width={'18px'}
+                                        height={'18px'}
+                                    />
                                 }
                                 onClick={this.goToNotifications}
                             />
@@ -94,14 +98,20 @@ class LeftPanel extends Component {
                                 width={18}
                                 margin={'6px 20px'}
                                 children={
-                                    <BorderedImage image={'/images/settings.svg'} width={'18px'} height={'18px'} />
+                                    <BorderedImage
+                                        image={'/frontend/images/settings.svg'}
+                                        width={'18px'}
+                                        height={'18px'}
+                                    />
                                 }
                                 onClick={this.goToSettings}
                             />
                             <SizedIconButton
                                 width={18}
                                 margin={'6px 20px'}
-                                children={<BorderedImage image={'/images/exit.svg'} width={'18px'} height={'18px'} />}
+                                children={
+                                    <BorderedImage image={'/frontend/images/exit.svg'} width={'18px'} height={'18px'} />
+                                }
                                 onClick={this.exit}
                             />
                         </LeftPanelNavigation>

@@ -19,7 +19,7 @@ export const CourseResults = ({ results }) => (
             <H2>Чему вы научитесь?</H2>
         </CourseResultsTitle>
         {results.map(result => (
-            <Result resultText={result} />
+            <Result key={result} resultText={result} />
         ))}
     </CourseResultsBlock>
 )

@@ -38,6 +38,7 @@ import { studentTheme } from '../../utils/global_theme'
 import { distanceInWords } from 'date-fns'
 import ruLocale from 'date-fns/locale/ru'
 import { sendComment } from '../../api'
+import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
 
 export class CommentsBlock extends Component {
     state = {
@@ -122,10 +123,13 @@ export class CommentsBlock extends Component {
                                 <Commentator>
                                     <RowFlexed>
                                         <CommentatorInfoBlock>
-                                            <BorderedImage
+                                            <CommentatorAvatar
                                                 width={'60px'}
                                                 height={'60px'}
-                                                image={author && author.avatar.medium.url}
+                                                image={
+                                                    (author && author.avatar && author.avatar.medium.url) ||
+                                                    DEFAULT_AVATAR_IMAGE_URL
+                                                }
                                             />
                                             <CommentAuthorInfo>
                                                 <H4>

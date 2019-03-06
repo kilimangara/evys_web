@@ -54,6 +54,7 @@ class ThemesScreen extends Component {
                         {themes &&
                             themes.map(({ progress, theme, id }) => (
                                 <ThemeItem
+                                    key={id}
                                     alias={theme.name}
                                     percent={progress}
                                     onClick={() => this.handleCardClick(id)}

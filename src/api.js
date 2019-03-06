@@ -3,6 +3,7 @@ import humps from 'humps'
 import { store } from './store'
 import { ADMIN_APP } from './utils/constants'
 import { logoutAdmin } from './reducers/admin/authorization'
+import { exitProfile } from './reducers/student/auth'
 
 console.log(__DEV__, __CURRENT_APP__)
 
@@ -41,7 +42,7 @@ function autoLogoutAdmin(error) {
 }
 
 function autoLogoutStudent(error) {
-    // student logout logic
+    store.dispatch(exitProfile())
 }
 
 axiosInstance.interceptors.request.use(config => {
