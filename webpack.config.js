@@ -60,7 +60,7 @@ module.exports = env => {
                 template: './public/index.html',
                 title: 'Evys.Школа',
                 filename: 'index_student.html',
-                description: 'Обучающая платформа Evys',
+                description: 'Образовательная платформа Evys',
                 keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить',
                 files: {
                     css: ['styles.css'],
