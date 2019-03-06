@@ -56,9 +56,10 @@ module.exports = env => {
             }),
             new HtmlWebpackPlugin({
                 template: './public/index_admin.html',
-                title: 'Evys admin',
+                title: 'Evys.Курсы',
                 filename: 'index_admin.html',
                 description: 'Создадим онлайн школу вместе с Evys.',
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить',
                 files: {
                     css: ['styles_admin.css'],
                     js: ['admin_bundle_dev.js']

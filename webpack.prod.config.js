@@ -21,18 +21,6 @@ module.exports = env => {
         module: {
             rules: loaders
         },
-        optimization: {
-            splitChunks: {
-                chunks: 'async',
-                minSize: 30000,
-                maxSize: 0,
-                minChunks: 1,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
-                automaticNameDelimiter: '~',
-                name: true
-            }
-        },
         plugins: [
             new ExtractTextPlugin({
                 filename: '[hash].styles.css'
@@ -42,12 +30,12 @@ module.exports = env => {
                 __DEV__: false,
                 __CURRENT_APP__: JSON.stringify('USER_APP')
             }),
-            new webpack.optimize.AggressiveMergingPlugin(),
             new HtmlWebpackPlugin({
                 template: './public/index.html',
-                title: 'Evys',
+                title: 'Evys.Школа - инновационный способ обучения',
                 filename: 'index_student.html',
-                description: 'Обучающая платформа Evys.'
+                description: 'Бесплатная обучающая платформа нового поколения.',
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             }),
             new CompressionPlugin({
                 asset: '[path].gz[query]',

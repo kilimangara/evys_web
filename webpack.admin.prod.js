@@ -50,9 +50,11 @@ module.exports = env => {
             }),
             new HtmlWebpackPlugin({
                 template: './public/index_admin.html',
-                title: 'Evys.Курсы',
+                title: 'Evys.Курсы - создание онлайн-школ бесплатно за 1 день',
                 filename: 'index_admin.html',
-                description: 'Создадим онлайн школу вместе с Evys.'
+                description:
+                    'Платформа для онлайн-школ позволяет быстро создавать курсы, внести своих учеников и следить за ними в автоматизированном режиме.',
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             }),
             new CompressionPlugin({
                 asset: '[path].gz[query]',

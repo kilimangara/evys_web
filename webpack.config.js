@@ -52,9 +52,10 @@ module.exports = env => {
             }),
             new HtmlWebpackPlugin({
                 template: './public/index.html',
-                title: 'Evys',
+                title: 'Evys.Школа',
                 filename: 'index_student.html',
-                description: 'Обучающая платформа Evys.',
+                description: 'Обучающая платформа Evys',
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить',
                 files: {
                     css: ['styles.css'],
                     js: ['app_bundle_dev.js']
