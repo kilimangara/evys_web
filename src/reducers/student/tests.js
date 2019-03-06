@@ -26,8 +26,6 @@ export const sendAnswer = (themeId, data) => dispatch => {
         if (res.data.blockEnd) {
             if (res.data.changeBlockId !== null) {
                 dispatch(changeTestBlock(res.data.changeBlockId))
-            } else {
-                dispatch(testFinished())
             }
         }
         return res

@@ -37,7 +37,13 @@ module.exports = env => {
             },
             compress: true,
             port: PORT,
-            host: HOST
+            host: HOST,
+            proxy: {
+                '/frontend': {
+                    target: 'http://localhost:3000',
+                    pathRewrite: { '^/frontend': '' }
+                }
+            }
         },
         plugins: [
             new webpack.DefinePlugin({
