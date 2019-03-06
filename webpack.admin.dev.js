@@ -39,6 +39,7 @@ module.exports = env => {
             port: PORT,
             host: HOST
         },
+
         plugins: [
             new webpack.ProvidePlugin({
                 'window.Quill': 'quill/dist/quill.js',

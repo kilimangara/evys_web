@@ -103,3 +103,11 @@ export const ThemeStudyTheoryItemContainer = styled(Paper)`
     height: 150px;
     margin: 12px 0;
 `
+
+export const VideoWrapper = styled.div`
+    overflow: hidden;
+    width: 100%;
+    padding-top: calc(591.44 / 1127.34 * 100%);
+    background: white;
+    position: relative;
+`

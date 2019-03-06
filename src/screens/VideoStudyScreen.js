@@ -3,6 +3,7 @@ import { CenteredContent } from '../components/styled/common'
 import ReactPlayer from 'react-player'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
+import { VideoWrapper } from '../components/styled/themes'
 
 export class VideoStudyScreen extends Component {
     state = {
@@ -25,8 +26,21 @@ export class VideoStudyScreen extends Component {
 
     render() {
         const { video } = this.state
-        console.log('v', video)
-        return <CenteredContent>{video && <ReactPlayer src={video.youtubeVideo} />}</CenteredContent>
+        return (
+            <CenteredContent height={'100%'}>
+                {video && (
+                    <VideoWrapper>
+                        <ReactPlayer
+                            width={'100%'}
+                            height={'100%'}
+                            style={{ position: 'absolute', top: '0', left: '0' }}
+                            playing
+                            url={video.youtubeVideo}
+                        />
+                    </VideoWrapper>
+                )}
+            </CenteredContent>
+        )
     }
 }
 
