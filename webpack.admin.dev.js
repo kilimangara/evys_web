@@ -35,6 +35,12 @@ module.exports = env => {
             historyApiFallback: {
                 index: '/index_admin.html'
             },
+            proxy: {
+                '/frontend': {
+                    target: 'http://localhost:3000',
+                    pathRewrite: { '^/frontend': '/' }
+                }
+            },
             compress: true,
             port: PORT,
             host: HOST
@@ -59,11 +65,7 @@ module.exports = env => {
                 title: 'Evys.Курсы',
                 filename: 'index_admin.html',
                 description: 'Создадим онлайн школу вместе с Evys.',
-                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить',
-                files: {
-                    css: ['styles_admin.css'],
-                    js: ['admin_bundle_dev.js']
-                }
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             })
         ]
     }

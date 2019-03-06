@@ -36,9 +36,10 @@ class App extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.authenticated) this.props.history.push('/admin/login')
+        console.log(this.props.authenticated, this.props.currentAccount)
+        if (!this.props.authenticated) this.props.history.replace('/admin/login')
         else {
-            if (!this.props.currentAccount) this.props.history.push('/admin/choose_account')
+            if (!this.props.currentAccount) this.props.history.replace('/admin/choose_account')
         }
     }
 
@@ -49,6 +50,8 @@ class App extends Component {
     componentDidUpdate(prevProps) {
         if (!prevProps.assetOpened && this.props.assetOpened) this.assetManager.show()
         if (prevProps.assetOpened && !this.props.assetOpened) this.assetManager.hide()
+        if (prevProps.authenticated && !this.props.authenticated) this.props.history.replace('/admin/login')
+        if (prevProps.currentAccount && !this.props.currentAccount) this.props.history.replace('/admin/choose_account')
     }
 
     handleMenuClick = () => {
@@ -154,7 +157,11 @@ class App extends Component {
                                 <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
                                 <Route path="/admin/students" component={StudentsScreen} />
                                 <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                                <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
+                                <Route
+                                    exact
+                                    path="/admin/storage/:theme_id(\d+)/add_video"
+                                    component={AddVideoScreen}
+                                />
                                 <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
                                 <Route path="/admin/settings" component={SettingsScreen} />
                             </Switch>

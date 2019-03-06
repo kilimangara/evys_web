@@ -3,6 +3,8 @@ import humps from 'humps'
 import { store } from './store'
 import { ADMIN_APP } from './utils/constants'
 import { logoutAdmin } from './reducers/admin/authorization'
+import { logoutAccount } from './reducers/admin/account'
+
 import { exitProfile } from './reducers/student/auth'
 
 console.log(__DEV__, __CURRENT_APP__)
@@ -45,6 +47,12 @@ function autoLogoutStudent(error) {
     store.dispatch(exitProfile())
 }
 
+function adminAccountLogout(error) {
+    if (error.response.data.error.type === 'INVALID ACCOUNT') {
+        store.dispatch(logoutAccount())
+    }
+}
+
 axiosInstance.interceptors.request.use(config => {
     if (__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
     return studentTokenAuth(config)
@@ -64,6 +72,9 @@ axiosInstance.interceptors.response.use(
             if (__CURRENT_APP__ === ADMIN_APP) autoLogoutAdmin(error)
             else autoLogoutStudent(error)
             // window.location = '/login'
+        }
+        if (error.response.status === 403) {
+            if (__CURRENT_APP__ === ADMIN_APP) adminAccountLogout(error)
         }
         if (error.response.data.error) {
             error.response.data = error.response.data.error

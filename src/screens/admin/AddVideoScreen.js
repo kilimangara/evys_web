@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import PickYoutubeVideo from '../../components/youtube/PickYoutubeVideo'
-import { createVideo } from '../../actions/admin/ThemesActions'
+import { addTheoryVideo } from '../../reducers/admin/themes'
 
 class AddVideoScreen extends React.Component {
     constructor(props) {
@@ -21,7 +21,7 @@ class AddVideoScreen extends React.Component {
             .createVideo(this.theoryId, data)
             .then(res => {
                 console.log(res)
-                this.props.history.push(`/admin/themes/${this.themeId}?tab_selected=theory`)
+                this.props.history.push(`/admin/themes/${this.themeId}/theory`)
             })
             .catch(err => {
                 console.log(err)
@@ -29,6 +29,7 @@ class AddVideoScreen extends React.Component {
     }
 
     render() {
+        console.log(this, 'ADDVIDEO')
         if (!this.theoryId) return null
         return <PickYoutubeVideo playlistId={this.props.playlistId} videoPicked={this.saveVideoCallback} />
     }
@@ -39,7 +40,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-    createVideo
+    createVideo: addTheoryVideo
 }
 
 export default connect(
