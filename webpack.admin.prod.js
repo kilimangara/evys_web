@@ -13,7 +13,8 @@ module.exports = env => {
         output: {
             publicPath: '/dist/',
             path: path.resolve('./dist/'),
-            filename: '[hash].admin_app_bundle.js'
+            filename: '[name].chunkhash.bundle.js',
+            chunkFilename: '[name].chunkhash.bundle.js'
         },
         resolve: {
             extensions: ['.js', '.jsx', '.coffee']
@@ -22,15 +23,16 @@ module.exports = env => {
             rules: loaders
         },
         optimization: {
+            runtimeChunk: 'single',
             splitChunks: {
-                chunks: 'async',
-                minSize: 30000,
-                maxSize: 0,
-                minChunks: 1,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
-                automaticNameDelimiter: '~',
-                name: true
+                cacheGroups: {
+                    vendor: {
+                        test: /node_modules/,
+                        chunks: 'initial',
+                        name: 'vendor',
+                        enforce: true
+                    }
+                }
             }
         },
         plugins: [
