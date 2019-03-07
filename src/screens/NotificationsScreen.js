@@ -11,11 +11,11 @@ class NotificationsScreen extends Component {
     }
 
     componentDidMount() {
-        getEvents().then(response => console.log(response))
+        getEvents().then(response => console.log('AE', response))
     }
 
     handleRangeChange = dates => {
-        console.log(dates)
+        console.log('FUCK', dates)
     }
 
     getEventsFromProps = eventsArray =>
@@ -37,6 +37,10 @@ class NotificationsScreen extends Component {
                     startAccessor="start"
                     endAccessor="end"
                     onRangeChange={this.handleRangeChange}
+                    views={['month', 'agenda']}
+                    defaultView={'agenda'}
+                    messages={{ today: 'Сегодня', previous: 'Назад', next: 'Вперед', month: 'Месяц', agenda: 'Лента' }}
+                    culture={'ru'}
                 />
             </CenteredContent>
         )

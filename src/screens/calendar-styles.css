@@ -31,7 +31,7 @@ button.rbc-input::-moz-focus-inner {
     -ms-flex-align: stretch;
     align-items: stretch;
     color: white;
-    font: 18px var(--font);
+    font: 200 14px var(--font);
 }
 .rbc-calendar *,
 .rbc-calendar *:before,
@@ -118,7 +118,9 @@ button.rbc-input::-moz-focus-inner {
     -ms-flex-align: center;
     align-items: center;
     margin-bottom: 10px;
-    font-size: 16px;
+    /*font-size: 16px;*/
+    outline-style: none;
+    font: 200 11px var(--font);
 }
 .rbc-toolbar .rbc-toolbar-label {
     -webkit-flex-grow: 1;

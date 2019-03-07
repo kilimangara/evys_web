@@ -219,7 +219,7 @@ export function getPopularSubjects() {
 
 export function getEvents(params) {
     return axiosInstance.request({
-        url: 'api/events',
+        url: '/events',
         params
     })
 }
