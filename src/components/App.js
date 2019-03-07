@@ -20,6 +20,7 @@ import { studentTheme } from '../utils/global_theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import CourseScreen from '../screens/courses/CourseScreen'
 import VideoStudyScreen from '../screens/VideoStudyScreen'
+import NotificationsScreen from '../screens/NotificationsScreen'
 
 class App extends Component {
     constructor(props) {
@@ -115,6 +116,7 @@ class App extends Component {
                         <CommonWrapper>
                             <Switch>
                                 <Route exact path="/app/courses" component={CoursesScreen} />
+                                <Route exact path="/app/notifications" component={NotificationsScreen} />
                                 <Route path="/app/profile" component={ProfileScreen} />
                                 <Route exact path="/app/courses/all" component={AllCoursesScreen} />
                                 <Route path="/app/courses/search" component={SearchCoursesScreen} />

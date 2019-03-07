@@ -217,6 +217,13 @@ export function getPopularSubjects() {
     })
 }
 
+export function getEvents(params) {
+    return axiosInstance.request({
+        url: 'api/events',
+        params
+    })
+}
+
 // admin methods
 
 export function getAccounts() {
