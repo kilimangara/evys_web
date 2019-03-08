@@ -13,8 +13,10 @@ module.exports = env => {
         output: {
             publicPath: '/dist/',
             path: path.resolve('./dist/'),
-            filename: '[name].chunkhash.bundle.js',
-            chunkFilename: '[name].chunkhash.bundle.js'
+            filename: '[hash].admin_bundle.js'
+            // Чанки ломают css
+            // filename: '[name].chunkhash.bundle.js',
+            // chunkFilename: '[name].chunkhash.bundle.js'
         },
         resolve: {
             extensions: ['.js', '.jsx', '.coffee']
@@ -22,19 +24,19 @@ module.exports = env => {
         module: {
             rules: loaders
         },
-        optimization: {
-            runtimeChunk: 'single',
-            splitChunks: {
-                cacheGroups: {
-                    vendor: {
-                        test: /node_modules/,
-                        chunks: 'initial',
-                        name: 'vendor',
-                        enforce: true
-                    }
-                }
-            }
-        },
+        // optimization: {
+        //     runtimeChunk: 'single',
+        //     splitChunks: {
+        //         cacheGroups: {
+        //             vendor: {
+        //                 test: /node_modules/,
+        //                 chunks: 'initial',
+        //                 name: 'vendor',
+        //                 enforce: true
+        //             }
+        //         }
+        //     }
+        // },
         plugins: [
             new ExtractTextPlugin({
                 filename: '[hash].styles_admin.css'
