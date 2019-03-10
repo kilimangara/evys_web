@@ -2,6 +2,9 @@
 - hosts: deploy-hosts
   vars_files:
       - vars.yml
+  vars:
+      build_admin: no
+      build_student: no
   gather_facts: false
   remote_user: deploy
   become_method: sudo
