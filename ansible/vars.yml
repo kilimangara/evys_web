@@ -1,0 +1,6 @@
+---
+project_name: evys_web
+
+install_root: /projects
+
+project_repo: git@github.com:kilimangara/evys_web.git

@@ -1,0 +1,52 @@
+---
+- hosts: deploy-hosts
+  vars_files:
+      - vars.yml
+  gather_facts: false
+  remote_user: deploy
+  become_method: sudo
+
+  tasks:
+      - name: Checkout lock
+        shell: git checkout package-lock.json
+        args:
+            chdir: '{{ install_root }}/{{ project_name }}'
+            executable: /bin/bash
+
+      - name: Clone/pull project repo
+        become: yes
+        git: repo={{ project_repo }} dest={{ install_root }}/{{ project_name }} accept_hostkey=yes
+        register: git_result
+
+      - name: Install npm
+        shell: npm install
+        when:
+            - git_result.changed == True
+            - build_admin or build_student
+        become: yes
+        args:
+            chdir: '{{ install_root }}/{{ project_name }}'
+            executable: /bin/bash
+
+      - name: Build Admin App
+        when:
+            - git_result.changed == True
+            - build_admin
+        shell: npm run build-admin-prod
+        args:
+            chdir: '{{ install_root }}/{{ project_name }}'
+            executable: /bin/bash
+
+      - name: Build Student App
+        when:
+            - git_result.changed == True
+            - build_student
+        shell: npm run build-prod
+        args:
+            chdir: '{{ install_root }}/{{ project_name }}'
+            executable: /bin/bash
+
+  handlers:
+      - name: restart express
+        supervisorctl: name={{ project_name }} state=restarted
+        become: yes
