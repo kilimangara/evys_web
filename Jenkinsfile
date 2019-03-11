@@ -9,14 +9,14 @@ pipeline {
               stage("Выкатить Админскую часть"){
                 steps {
                    input([message: 'Выкатить админа?', ok: 'Да', id:'production-admin-rolout'])
-                   sh "ansible-playbook -i ansible/hosts ansible/deploy.yml -e 'build_admin=yes'"
+                   sh "ansible-playbook -i ansible/hosts ansible/deploy.yml -e 'build_admin=True'"
                 }
               }
 
               stage("Выкатить Студенческую часть"){
                 steps {
                   input([message: 'Выкатить ученика?', ok: 'Да', id:'production-student-rolout'])
-                  sh "ansible-playbook -i ansible/hosts ansible/deploy.yml -e 'build_student=yes'"
+                  sh "ansible-playbook -i ansible/hosts ansible/deploy.yml -e 'build_student=True'"
                 }
               }
             }
