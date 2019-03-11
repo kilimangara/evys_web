@@ -4,7 +4,8 @@ export const theme = {
     ACCENT_COLOR_A: a => `rgba(3, 169, 244, ${a})`,
     SECONDARY: '#757575',
     BACKGROUND_DARK: '#3B3A3F',
-    CONTRAST_LIGHT: '#FFFFFF'
+    CONTRAST_LIGHT: '#FFFFFF',
+    TOOLBAR_COLOR: '#5e35b1'
 }
 
 export const studentTheme = {

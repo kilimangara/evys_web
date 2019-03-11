@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
 import TextField from '@material-ui/core/TextField'
 import Table from '@material-ui/core/Table'
@@ -68,6 +69,21 @@ const ToolbarTitle = styled.div`
 const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
     color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR : 'black')};
     background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
+`
+
+const NoStudentsWrapper = styled.div`
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+`
+
+const NoStudentsText = styled(Typography)`
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    color: black;
 `
 
 class StudentsScreen extends StudentsRepository(Component) {
@@ -255,11 +271,28 @@ class StudentsScreen extends StudentsRepository(Component) {
         )
     }
 
-    render() {
+    renderIntro = () => {
+        if (!this.noStudents()) return null
         return (
-            <Container>
-                {this.renderCreationItem()}
-                {this.renderSearch()}
+            <NoStudentsWrapper>
+                <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-students.svg'} />
+                <NoStudentsText component={'p'}>
+                    Добавляйте своих учеников в систему! Таким образом вы сможете контролировать их процесс обучения:
+                    раздавать обучающий контент и выставлять персональные задания
+                </NoStudentsText>
+                <div style={{ height: 12 }} />
+                <Button color="primary" variant={'contained'}>
+                    Узнать подробнее
+                </Button>
+            </NoStudentsWrapper>
+        )
+    }
+
+    renderBody = () => {
+        if (this.noStudents()) return null
+        return (
+            <React.Fragment>
+                {this.renderSearch()} (
                 <Card marginTop={12} noPadding>
                     {this.renderToolbar()}
                     <Table>
@@ -287,6 +320,16 @@ class StudentsScreen extends StudentsRepository(Component) {
                         containerClassName={'pagination'}
                     />
                 </div>
+            </React.Fragment>
+        )
+    }
+
+    render() {
+        return (
+            <Container>
+                {this.renderIntro()}
+                {this.renderCreationItem()}
+                {this.renderBody()}
             </Container>
         )
     }

@@ -12,9 +12,10 @@ const Container = styled.div`
     align-items: center;
 `
 const Text = styled(Typography)`
-    font-weight: 600;
-    font-size: 24px;
+    font-weight: 300;
+    font-size: 22px;
     color: black;
+    text-align: center;
 `
 
 class AccountBlocked extends Component {

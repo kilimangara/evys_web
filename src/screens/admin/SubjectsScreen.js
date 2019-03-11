@@ -42,8 +42,9 @@ const NoSubjectsWrapper = styled.div`
 `
 
 const Text = styled(Typography)`
-    font-weight: 600;
-    font-size: 24px;
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
     color: black;
 `
 
