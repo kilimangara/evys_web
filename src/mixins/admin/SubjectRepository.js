@@ -21,7 +21,6 @@ export default superclass =>
             const { subject } = this.state
             const sendedTariff = { ...subject.tariff }
             const sendedSubject = { ...subject, tariff: pickBy(sendedTariff, el => el != undefined && el != '') }
-            console.log(sendedTariff, sendedSubject)
             return this.props.updateSubject(this.subjectId(), sendedSubject)
         }
 

@@ -31,6 +31,10 @@ export default superclass =>
             return this.props.changeTheme(this.themeId(), theme)
         }
 
+        noThemes = () => {
+            return !this.props.themes.length && !this.themesFetching && !this.parentId()
+        }
+
         subjectId = () => this.props.match.params['subjectId']
 
         themeId = () => this.props.match.params['themeId']

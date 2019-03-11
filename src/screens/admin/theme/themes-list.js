@@ -15,6 +15,7 @@ import { ListHeader, ListText, Card } from './index'
 import ListItem from '@material-ui/core/ListItem'
 import ListIcon from '@material-ui/icons/List'
 import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Delete from '@material-ui/icons/Delete'
 import Sortable from 'sortablejs'
@@ -27,6 +28,21 @@ const ListItemContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: flex-start;
+`
+
+const NoThemesWrapper = styled.div`
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+`
+
+const NoThemesText = styled(Typography)`
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    color: black;
 `
 
 class ThemesScreen extends ThemesRepository(Component) {
@@ -123,6 +139,46 @@ class ThemesScreen extends ThemesRepository(Component) {
         })
     }
 
+    renderNoThemes = () => {
+        return (
+            <NoThemesWrapper>
+                <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-themes.svg'} />
+                <NoThemesText component={'span'}>
+                    Следующим этапом после создания курса является наполнение курса... Начнем с формирования тем!
+                </NoThemesText>
+                <div style={{ height: 12 }} />
+                <Button color="primary" variant={'contained'} onClick={this.floatingButtonClicked}>
+                    Создать свой первый тему!
+                </Button>
+                <div style={{ height: 12 }} />
+                <Button color="primary">Узнать подробнее</Button>
+            </NoThemesWrapper>
+        )
+    }
+
+    renderBody = () => {
+        const { themes, themesFetching } = this.props
+        if (this.noThemes()) return this.renderNoThemes()
+        return (
+            <List
+                ref={ref => (this.list = ref)}
+                subheader={
+                    <ListHeader component="div" className="ignore-drag" disableSticky>
+                        Темы
+                    </ListHeader>
+                }
+                component="ul"
+            >
+                {themes.map(this.renderTheme)}
+                {!themes.length && (
+                    <Button color="primary" variant={'contained'} onClick={this.floatingButtonClicked}>
+                        Создать тему
+                    </Button>
+                )}
+            </List>
+        )
+    }
+
     render() {
         const { themes, themesFetching } = this.props
         if (!themes.length && themesFetching) {
@@ -134,17 +190,7 @@ class ThemesScreen extends ThemesRepository(Component) {
         }
         return (
             <Card marginTop={12}>
-                <List
-                    ref={ref => (this.list = ref)}
-                    subheader={
-                        <ListHeader component="div" className="ignore-drag" disableSticky>
-                            Темы
-                        </ListHeader>
-                    }
-                    component="ul"
-                >
-                    {themes.map(this.renderTheme)}
-                </List>
+                {this.renderBody()}
                 <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
                     <Add />
                 </Fab>

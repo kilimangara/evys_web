@@ -62,13 +62,20 @@ axiosInstance.interceptors.request.use(config => {
 })
 
 axiosInstance.interceptors.response.use(
-    data => {
-        if (data instanceof Blob) return data
+    response => {
+        let { data } = response
+        if (data instanceof Blob) return response
         data = humps.camelizeKeys(data)
-        if (!data) return data
-        if (data.data) return data.data
-        if (data.error) return data.error
-        return data
+        if (!data) return response
+        if (data.data) {
+            response.data = data.data
+            return response
+        }
+        if (data.error) {
+            response.data = data.error
+            return response
+        }
+        return response
     },
     error => {
         if (error.response.status === 401) {

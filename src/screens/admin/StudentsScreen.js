@@ -160,7 +160,7 @@ class StudentsScreen extends StudentsRepository(Component) {
         this.props
             .newStudent(newStudent)
             .then(() => {
-                this.props.enqueueSnackbar(`Ученик ${newStudent.name} добавлен`)
+                this.props.enqueueSnackbar(`Ученик ${newStudent.fullName} добавлен`)
                 this.setState({
                     newStudent: {
                         phone: '',
@@ -234,7 +234,7 @@ class StudentsScreen extends StudentsRepository(Component) {
                 </TableCell>
                 <TableCell align="left">{student.id}</TableCell>
                 <TableCell>{student.fullName}</TableCell>
-                <TableCell align="right">{student.phone}</TableCell>
+                <TableCell align="center">{student.phone}</TableCell>
                 <TableCell align="right">{student.email}</TableCell>
             </TableRow>
         )
@@ -292,7 +292,7 @@ class StudentsScreen extends StudentsRepository(Component) {
         if (this.noStudents()) return null
         return (
             <React.Fragment>
-                {this.renderSearch()} (
+                {this.renderSearch()}
                 <Card marginTop={12} noPadding>
                     {this.renderToolbar()}
                     <Table>
