@@ -31,15 +31,15 @@ const videosLoadingSuccess = createAction('courses/videos-loading-success')
 
 export const getCurrentCourses = (page = 1) => dispatch => {
     dispatch(coursesLoading())
-    return getStudentCourses({ progressTo: '99', page }).then(response => {
-        page === 1 ? dispatch(coursesReset(response.results)) : dispatch(coursesFetchSuccess(response.results))
+    return getStudentCourses({ progressTo: '99', page }).then(({ data }) => {
+        page === 1 ? dispatch(coursesReset(data.results)) : dispatch(coursesFetchSuccess(data.results))
     })
 }
 
 export const getFinishedCourses = (page = 1) => dispatch => {
     dispatch(coursesLoading())
-    return getStudentCourses({ progressFrom: '100', page }).then(response => {
-        page === 1 ? dispatch(coursesReset(response.data)) : dispatch(coursesFetchSuccess(response.data))
+    return getStudentCourses({ progressFrom: '100', page }).then(({ data }) => {
+        page === 1 ? dispatch(coursesReset(data.results)) : dispatch(coursesFetchSuccess(data.results))
     })
 }
 

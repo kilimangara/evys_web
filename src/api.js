@@ -75,6 +75,7 @@ axiosInstance.interceptors.response.use(
             response.data = data.error
             return response
         }
+        response.data = data
         return response
     },
     error => {
