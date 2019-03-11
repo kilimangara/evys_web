@@ -82,7 +82,7 @@ export default class BillingInfo extends React.Component {
                         margin={'normal'}
                     />
                     <div style={{ position: 'absolute', right: 12, top: 20 }}>
-                        <IconButton type="submit" onClick={this.handleAddTag(field)}>
+                        <IconButton type="submit">
                             <Add />
                         </IconButton>
                     </div>

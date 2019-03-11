@@ -76,7 +76,7 @@ class StudentsScreen extends StudentsRepository(Component) {
         query: '',
         newStudent: {
             phone: '',
-            name: '',
+            fullName: '',
             email: ''
         },
         errors: {}
@@ -148,7 +148,7 @@ class StudentsScreen extends StudentsRepository(Component) {
                 this.setState({
                     newStudent: {
                         phone: '',
-                        name: '',
+                        fullName: '',
                         email: ''
                     }
                 })
@@ -163,7 +163,7 @@ class StudentsScreen extends StudentsRepository(Component) {
     }
 
     renderCreationItem = () => {
-        const { phone, email, name } = this.state.newStudent
+        const { phone, email, fullName } = this.state.newStudent
         return (
             <Card>
                 <Typography variant="h6">Добавить ученика</Typography>
@@ -177,10 +177,10 @@ class StudentsScreen extends StudentsRepository(Component) {
                 />
 
                 <TextField
-                    onChange={this.newStudentFieldChanged('name')}
+                    onChange={this.newStudentFieldChanged('fullName')}
                     label={'Имя'}
                     variant="outlined"
-                    value={name}
+                    value={fullName}
                     fullWidth
                     margin={'normal'}
                 />

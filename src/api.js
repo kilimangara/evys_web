@@ -3,7 +3,7 @@ import humps from 'humps'
 import { store } from './store'
 import { ADMIN_APP } from './utils/constants'
 import { logoutAdmin } from './reducers/admin/authorization'
-import { logoutAccount } from './reducers/admin/account'
+import { logoutAccount, changeBlockedAccount } from './reducers/admin/account'
 
 import { exitProfile } from './reducers/student/auth'
 
@@ -47,9 +47,12 @@ function autoLogoutStudent(error) {
     store.dispatch(exitProfile())
 }
 
-function adminAccountLogout(error) {
+function handleForbiddenAdmin(error) {
     if (error.response.data.error.type === 'INVALID ACCOUNT') {
         store.dispatch(logoutAccount())
+    }
+    if (error.response.data.error.type === 'ACCOUNT BLOCKED') {
+        store.dispatch(changeBlockedAccount(true))
     }
 }
 
@@ -74,7 +77,7 @@ axiosInstance.interceptors.response.use(
             // window.location = '/login'
         }
         if (error.response.status === 403) {
-            if (__CURRENT_APP__ === ADMIN_APP) adminAccountLogout(error)
+            if (__CURRENT_APP__ === ADMIN_APP) handleForbiddenAdmin(error)
         }
         if (error.response.data.error) {
             error.response.data = error.response.data.error
@@ -236,11 +239,11 @@ export function getAccounts() {
     })
 }
 
-export function createAccount(name) {
+export function createAccount(data) {
     return axiosInstance.request({
         url: '/admin2/accounts',
         method: 'POST',
-        data: { name }
+        data
     })
 }
 
