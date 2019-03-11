@@ -75,7 +75,9 @@ export default superclass =>
         }
 
         generatePDF = () => {
-            return this.props.generatePDF(this.themeId()).then(data => downloadFile(data, 'generated_tests.pdf'))
+            return this.props.generatePDF(this.themeId()).then(({ data }) => {
+                downloadFile(data, 'generated_tests.pdf')
+            })
         }
     }
 

@@ -29,7 +29,6 @@ class AddVideoScreen extends React.Component {
     }
 
     render() {
-        console.log(this, 'ADDVIDEO')
         if (!this.theoryId) return null
         return <PickYoutubeVideo playlistId={this.props.playlistId} videoPicked={this.saveVideoCallback} />
     }

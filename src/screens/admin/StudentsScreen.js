@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import IconButton from '@material-ui/core/IconButton'
+import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
 import TextField from '@material-ui/core/TextField'
 import Table from '@material-ui/core/Table'
@@ -70,13 +71,28 @@ const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)
     background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
 `
 
+const NoStudentsWrapper = styled.div`
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+`
+
+const NoStudentsText = styled(Typography)`
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    color: black;
+`
+
 class StudentsScreen extends StudentsRepository(Component) {
     state = {
         selectedIds: [],
         query: '',
         newStudent: {
             phone: '',
-            name: '',
+            fullName: '',
             email: ''
         },
         errors: {}
@@ -144,11 +160,11 @@ class StudentsScreen extends StudentsRepository(Component) {
         this.props
             .newStudent(newStudent)
             .then(() => {
-                this.props.enqueueSnackbar(`Ученик ${newStudent.name} добавлен`)
+                this.props.enqueueSnackbar(`Ученик ${newStudent.fullName} добавлен`)
                 this.setState({
                     newStudent: {
                         phone: '',
-                        name: '',
+                        fullName: '',
                         email: ''
                     }
                 })
@@ -163,7 +179,7 @@ class StudentsScreen extends StudentsRepository(Component) {
     }
 
     renderCreationItem = () => {
-        const { phone, email, name } = this.state.newStudent
+        const { phone, email, fullName } = this.state.newStudent
         return (
             <Card>
                 <Typography variant="h6">Добавить ученика</Typography>
@@ -177,10 +193,10 @@ class StudentsScreen extends StudentsRepository(Component) {
                 />
 
                 <TextField
-                    onChange={this.newStudentFieldChanged('name')}
+                    onChange={this.newStudentFieldChanged('fullName')}
                     label={'Имя'}
                     variant="outlined"
-                    value={name}
+                    value={fullName}
                     fullWidth
                     margin={'normal'}
                 />
@@ -218,7 +234,7 @@ class StudentsScreen extends StudentsRepository(Component) {
                 </TableCell>
                 <TableCell align="left">{student.id}</TableCell>
                 <TableCell>{student.fullName}</TableCell>
-                <TableCell align="right">{student.phone}</TableCell>
+                <TableCell align="center">{student.phone}</TableCell>
                 <TableCell align="right">{student.email}</TableCell>
             </TableRow>
         )
@@ -255,10 +271,27 @@ class StudentsScreen extends StudentsRepository(Component) {
         )
     }
 
-    render() {
+    renderIntro = () => {
+        if (!this.noStudents()) return null
         return (
-            <Container>
-                {this.renderCreationItem()}
+            <NoStudentsWrapper>
+                <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-students.svg'} />
+                <NoStudentsText component={'p'}>
+                    Добавляйте своих учеников в систему! Таким образом вы сможете контролировать их процесс обучения:
+                    раздавать обучающий контент и выставлять персональные задания
+                </NoStudentsText>
+                <div style={{ height: 12 }} />
+                <Button color="primary" variant={'contained'}>
+                    Узнать подробнее
+                </Button>
+            </NoStudentsWrapper>
+        )
+    }
+
+    renderBody = () => {
+        if (this.noStudents()) return null
+        return (
+            <React.Fragment>
                 {this.renderSearch()}
                 <Card marginTop={12} noPadding>
                     {this.renderToolbar()}
@@ -287,6 +320,16 @@ class StudentsScreen extends StudentsRepository(Component) {
                         containerClassName={'pagination'}
                     />
                 </div>
+            </React.Fragment>
+        )
+    }
+
+    render() {
+        return (
+            <Container>
+                {this.renderIntro()}
+                {this.renderCreationItem()}
+                {this.renderBody()}
             </Container>
         )
     }

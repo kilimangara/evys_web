@@ -10,7 +10,7 @@ export const AppToolbar = styled(({ height, inverse, ...props }) => <Toolbar {..
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    background-color: ${({ inverse }) => (inverse ? 'white' : `${theme.PRIMARY}`)};
+    background-color: ${({ inverse }) => (inverse ? 'white' : `${theme.TOOLBAR_COLOR}`)};
     height: ${({ height }) => height};
 `
 
@@ -31,6 +31,8 @@ export const AppContainer = styled.div`
 
 export const ToolbarGroup = styled.div`
     display: flex;
+    align-items: center;
+    justifycontent: center;
 `
 
 export const ListIcon = styled(Icon)`

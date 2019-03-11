@@ -4,7 +4,7 @@ import Modal from 'reboron/ScaleModal'
 import CreateAccount from '../../components/accounts/CreateAccount'
 import Fab from '@material-ui/core/Fab'
 import Add from '@material-ui/icons/Add'
-import {AccountsProvider} from '../../mixins/admin/AccountsRepository'
+import { AccountsProvider } from '../../mixins/admin/AccountsRepository'
 import withProviders from '../../utils/withProviders'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
@@ -14,10 +14,10 @@ import TableRow from '@material-ui/core/TableRow'
 import styled from 'styled-components'
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 32px;
 `
 
 export const Card = styled.div`
@@ -43,6 +43,7 @@ class ChooseAccountScreen extends Component {
     }
 
     onAccountSave = accountObj => {
+        console.log(accountObj)
         this.props.newAccount(accountObj).then(() => {
             this.props.loadAccounts()
         })
@@ -53,7 +54,7 @@ class ChooseAccountScreen extends Component {
         this.modal.show()
     }
 
-    onRowSelection = (company) => () => {
+    onRowSelection = company => () => {
         if (company == undefined) return
         this.props.chooseAccount(company.permalink)
         this.props.history.push('/admin')
@@ -62,24 +63,19 @@ class ChooseAccountScreen extends Component {
     render() {
         return (
             <Container>
-              <Card marginTop={12}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Идентификатор</TableCell>
-                            <TableCell>Название</TableCell>
-                            <TableCell>Создано</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {this.props.accounts.map(this.renderCompany)}
-                    </TableBody>
-                </Table>
-              </Card>
-                <Fab
-                    style={styles.fabStyle}
-                    onClick={this.floatingButtonClicked}
-                >
+                <Card marginTop={12}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Идентификатор</TableCell>
+                                <TableCell>Название</TableCell>
+                                <TableCell>Создано</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>{this.props.accounts.map(this.renderCompany)}</TableBody>
+                    </Table>
+                </Card>
+                <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
                     <Add />
                 </Fab>
                 <Modal ref={ref => (this.modal = ref)}>

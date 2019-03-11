@@ -6,7 +6,8 @@ import { AppToolbar, ColoredMenuIcon, ToolbarGroup } from '../styled/layout'
 import MenuIcon from '@material-ui/icons/Menu'
 import { theme } from '../../utils/global_theme'
 import { ColoredIconButton } from '../styled/common'
-import AppBar from '@material-ui/core/AppBar';
+import AppBar from '@material-ui/core/AppBar'
+import styled from 'styled-components'
 
 class AppBarButton extends Component {
     state = {
@@ -57,15 +58,15 @@ class AppBarButton extends Component {
 class HeaderAppBarAdmin extends Component {
     menuIcon = () => {
         return (
-          <div style={{ marginLeft: 12, marginRight: 36}}>
-            <ColoredIconButton
-                color={theme.CONTRAST_LIGHT}
-                rippleColor={theme.SECONDARY}
-                onClick={this.props.onMenuPressed}
-            >
-                <MenuIcon />
-            </ColoredIconButton>
-          </div>
+            <div style={{ marginLeft: 12, marginRight: 36 }}>
+                <ColoredIconButton
+                    color={theme.CONTRAST_LIGHT}
+                    rippleColor={theme.SECONDARY}
+                    onClick={this.props.onMenuPressed}
+                >
+                    <MenuIcon />
+                </ColoredIconButton>
+            </div>
         )
     }
 
@@ -80,7 +81,7 @@ class HeaderAppBarAdmin extends Component {
     render() {
         const { isLogged, youtubeSigned, history, profile, className, open } = this.props
         const rightComponent = isLogged ? (
-            <AppBarButton history={history} label={profile.username} accountId={profile.id} acco />
+            <AppBarButton history={history} label={profile.username} accountId={profile.id} />
         ) : (
             <AppBarButton register label={'Войти'} onPress={() => history.push('/admin/login')} />
         )
@@ -91,14 +92,14 @@ class HeaderAppBarAdmin extends Component {
         )
 
         return (
-            <AppBar postion='sticky' className={className}>
-              <AppToolbar height={'64px'} disableGutters>
-                  <ToolbarGroup>{!open && this.menuIcon()}</ToolbarGroup>
-                  <ToolbarGroup>
-                      {youtubeComponent}
-                      {rightComponent}
-                  </ToolbarGroup>
-              </AppToolbar>
+            <AppBar postion="sticky" className={className}>
+                <AppToolbar height={'64px'} disableGutters>
+                    <ToolbarGroup>{!open && this.menuIcon()}</ToolbarGroup>
+                    <ToolbarGroup>
+                        {youtubeComponent}
+                        {rightComponent}
+                    </ToolbarGroup>
+                </AppToolbar>
             </AppBar>
         )
     }
