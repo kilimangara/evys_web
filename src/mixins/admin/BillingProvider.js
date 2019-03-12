@@ -15,13 +15,23 @@ export default superclass =>
         createDraftBillingPlan = data => {
             return createBillingPlan(data, true).then(({ data }) => {
                 console.log(data)
-                this.setState({ billingPlan: data, changed: true })
+                this.setState({
+                    billingPlan: data,
+                    personalStudents: data.personalStudents,
+                    personalSubjects: data.personalSubjects,
+                    changed: true
+                })
             })
         }
 
         changeBillingPlan = data => {
             return createBillingPlan(data, false).then(({ data }) => {
-                this.setState({ billingPlan: data, changed: false })
+                this.setState({
+                    billingPlan: data,
+                    personalStudents: data.personalStudents,
+                    personalSubjects: data.personalSubjects,
+                    changed: true
+                })
                 this.props.history.replace(`/admin/settings/invoices`)
             })
         }

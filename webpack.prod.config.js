@@ -34,7 +34,7 @@ module.exports = env => {
                 template: './public/index.html',
                 title: 'Evys.Школа - инновационный способ обучения',
                 filename: 'index_student.html',
-                description: 'Бесплатная обучающая платформа нового поколения.',
+                description: 'Образовательная платформа нового поколения.',
                 keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             }),
             new CompressionPlugin({

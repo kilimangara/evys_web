@@ -1,0 +1,9 @@
+[evys-hosts]
+root ansible_ssh_host=85.143.173.152 ansible_ssh_user=root ansible_ssh_pass=M5jxBt4z ansible_sudo_pass=M5jxBt4z ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+deploy ansible_ssh_host=85.143.173.152 ansible_ssh_user=deploy ansible_ssh_pass=20bdcb05e7be6d6ad53b360055c9a5 ansible_sudo_pass=20bdcb05e7be6d6ad53b360055c9a5 ansible_ssh_extra_args='-o StrictHostKeyChecking=no'
+
+[deploy-hosts]
+deploy
+
+[root-hosts]
+root

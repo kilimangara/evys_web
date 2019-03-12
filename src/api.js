@@ -3,6 +3,8 @@ import humps from 'humps'
 import { store } from './store'
 import { ADMIN_APP } from './utils/constants'
 import { logoutAdmin } from './reducers/admin/authorization'
+import { logoutAccount, changeBlockedAccount } from './reducers/admin/account'
+
 import { exitProfile } from './reducers/student/auth'
 
 console.log(__DEV__, __CURRENT_APP__)
@@ -45,25 +47,45 @@ function autoLogoutStudent(error) {
     store.dispatch(exitProfile())
 }
 
+function handleForbiddenAdmin(error) {
+    if (error.response.data.error.type === 'INVALID ACCOUNT') {
+        store.dispatch(logoutAccount())
+    }
+    if (error.response.data.error.type === 'ACCOUNT BLOCKED') {
+        store.dispatch(changeBlockedAccount(true))
+    }
+}
+
 axiosInstance.interceptors.request.use(config => {
     if (__CURRENT_APP__ === ADMIN_APP) return basicAdminAuth(config)
     return studentTokenAuth(config)
 })
 
 axiosInstance.interceptors.response.use(
-    data => {
-        if (data instanceof Blob) return data
+    response => {
+        let { data } = response
+        if (data instanceof Blob) return response
         data = humps.camelizeKeys(data)
-        if (!data) return data
-        if (data.data) return data.data
-        if (data.error) return data.error
-        return data
+        if (!data) return response
+        if (data.data) {
+            response.data = data.data
+            return response
+        }
+        if (data.error) {
+            response.data = data.error
+            return response
+        }
+        response.data = data
+        return response
     },
     error => {
         if (error.response.status === 401) {
             if (__CURRENT_APP__ === ADMIN_APP) autoLogoutAdmin(error)
             else autoLogoutStudent(error)
             // window.location = '/login'
+        }
+        if (error.response.status === 403) {
+            if (__CURRENT_APP__ === ADMIN_APP) handleForbiddenAdmin(error)
         }
         if (error.response.data.error) {
             error.response.data = error.response.data.error
@@ -232,11 +254,11 @@ export function getAccounts() {
     })
 }
 
-export function createAccount(name) {
+export function createAccount(data) {
     return axiosInstance.request({
         url: '/admin2/accounts',
         method: 'POST',
-        data: { name }
+        data
     })
 }
 

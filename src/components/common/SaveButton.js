@@ -1,7 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import green from '@material-ui/core/colors/green'
 import Button from '@material-ui/core/Button'
 import { theme } from '../../utils/global_theme'
 import pt from 'prop-types'
@@ -12,7 +11,7 @@ const Container = styled.div`
 `
 
 const Progress = styled(CircularProgress)`
-    color: ${green[500]};
+    color: ${theme.TOOLBAR_COLOR};
     position: absolute;
     top: 50%;
     left: 50%;
@@ -22,7 +21,7 @@ const Progress = styled(CircularProgress)`
 
 const CustomButton = styled(Button)`
     color: white;
-    background-color: ${({ success }) => (!!success ? `${green[500]}` : `${theme.ACCENT_COLOR}`)};
+    background-color: ${({ success }) => (!!success ? `${theme.TOOLBAR_COLOR}` : `${theme.ACCENT_COLOR}`)};
 `
 
 export default class SaveButton extends React.Component {

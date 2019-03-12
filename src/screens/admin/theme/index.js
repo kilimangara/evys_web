@@ -1,5 +1,6 @@
 import React from 'react'
 import ThemesRepository, { ThemeProvider } from '../../../mixins/admin/ThemesRepository'
+import { YoutubeProvider } from '../../../mixins/admin/YoutubeProvider'
 import withProviders from '../../../utils/withProviders'
 import styled from 'styled-components'
 import List from '@material-ui/core/List'
@@ -97,6 +98,12 @@ class ThemeScreen extends ThemesRepository(React.Component) {
         this.saveTheme()
     }
 
+    goToAddVideo = () => {
+        const { theory } = this.state
+        if (!theory.id) return
+        this.props.history.push(`/admin/storage/${this.themeId()}/add_video?theory_id=${theory.id}`)
+    }
+
     renderTheory = () => {
         const { theory, videos } = this.state
         return (
@@ -105,6 +112,8 @@ class ThemeScreen extends ThemesRepository(React.Component) {
                 videos={videos}
                 updateTheory={this.theoryUpdated}
                 theorySaved={this.saveTheory}
+                youtubeSigned={this.props.isSigned}
+                goToAddVideo={this.goToAddVideo}
             />
         )
     }
@@ -174,4 +183,4 @@ class ThemeScreen extends ThemesRepository(React.Component) {
     }
 }
 
-export default withProviders(ThemeProvider)(ThemeScreen)
+export default withProviders(ThemeProvider, YoutubeProvider)(ThemeScreen)

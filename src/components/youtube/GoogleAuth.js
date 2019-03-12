@@ -1,6 +1,6 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { saveYoutubeData, clearYoutubeData } from '../../actions/admin/YoutubeActions'
+import withProviders from '../../utils/withProviders'
+import { YoutubeProvider } from '../../mixins/admin/YoutubeProvider'
 
 class GoogleAuth extends React.Component {
     componentDidMount() {
@@ -32,10 +32,11 @@ class GoogleAuth extends React.Component {
 
     afterSignedIn = async () => {
         const channel = (await this.loadChannels()).result.items[0]
+        console.log(channel)
         if (!channel) return null
         const channelId = channel.id
         const uploadPlaylistId = channel.contentDetails.relatedPlaylists.uploads
-        this.props.saveYoutubeData(channelId, uploadPlaylistId)
+        this.props.saveYoutubeData({ channelId, uploadPlaylistId })
         return { channelId, uploadPlaylistId }
     }
 
@@ -55,7 +56,4 @@ class GoogleAuth extends React.Component {
     }
 }
 
-export default connect(
-    null,
-    { saveYoutubeData, clearYoutubeData }
-)(GoogleAuth)
+export default withProviders(YoutubeProvider)(GoogleAuth)

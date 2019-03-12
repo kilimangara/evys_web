@@ -11,6 +11,8 @@ import withProviders from '../../utils/withProviders'
 import styled from 'styled-components'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { withSnackbar } from 'notistack'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 const GridWrapper = styled.div`
     @media screen and (min-width: 0px) and (max-width: 1090px) {
@@ -29,6 +31,21 @@ const GridWrapper = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
+`
+
+const NoSubjectsWrapper = styled.div`
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+`
+
+const Text = styled(Typography)`
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    color: black;
 `
 
 class SubjectsScreen extends SubjectRepository(Component) {
@@ -64,17 +81,23 @@ class SubjectsScreen extends SubjectRepository(Component) {
             })
     }
 
-    render() {
-        const { subjects, subjectsFetching } = this.props
-        if (!subjects.length && subjectsFetching) {
-            return (
-                <div>
-                    <LinearProgress />
-                </div>
-            )
-        }
+    renderNoSubjects = () => {
         return (
-            <div style={styles.container}>
+            <NoSubjectsWrapper>
+                <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-subjects.svg'} />
+                <Text component={'span'}>{'У вас нет ни одного курса :('}</Text>
+                <Button color="primary" variant={'contained'} onClick={this.floatingButtonClicked}>
+                    Создать свой первый курс!
+                </Button>
+            </NoSubjectsWrapper>
+        )
+    }
+
+    renderBody = () => {
+        const { subjects, subjectsFetching } = this.props
+        if (!subjects.length) return this.renderNoSubjects()
+        else
+            return (
                 <GridWrapper>
                     {this.props.subjects.map(subject => (
                         <div style={{ margin: '18px 6px' }} key={subject.id}>
@@ -86,6 +109,21 @@ class SubjectsScreen extends SubjectRepository(Component) {
                         </div>
                     ))}
                 </GridWrapper>
+            )
+    }
+
+    render() {
+        const { subjects, subjectsFetching } = this.props
+        if (!subjects.length && subjectsFetching) {
+            return (
+                <div>
+                    <LinearProgress />
+                </div>
+            )
+        }
+        return (
+            <div style={styles.container}>
+                {this.renderBody()}
                 <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
                     <Add />
                 </Fab>

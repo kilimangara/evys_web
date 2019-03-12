@@ -24,8 +24,16 @@ import SubjectScreen from '../screens/admin/subject'
 import ThemeScreen from '../screens/admin/theme'
 import { logoutAdmin } from '../reducers/admin/authorization'
 import { switchManager, pickAsset } from '../reducers/admin/assetManager'
+import { loadAccounts } from '../reducers/admin/account'
 import { SnackbarProvider } from 'notistack'
 import SettingsIcon from '@material-ui/icons/Settings'
+import accountBlockedHOC from '../mixins/admin/AccountBlockedHOC'
+import styled from 'styled-components'
+
+const LeftMenuIcon = styled.img`
+  width: 36px
+  height: 36px
+`
 
 class App extends Component {
     constructor(props) {
@@ -36,10 +44,11 @@ class App extends Component {
     }
 
     componentDidMount() {
-        if (!this.props.authenticated) this.props.history.push('/admin/login')
+        if (!this.props.authenticated) return this.props.history.replace('/admin/login')
         else {
-            if (!this.props.currentAccount) this.props.history.push('/admin/choose_account')
+            if (!this.props.currentAccount) return this.props.history.replace('/admin/choose_account')
         }
+        this.props.loadAccounts()
     }
 
     goToExactPath = path => () => {
@@ -49,6 +58,8 @@ class App extends Component {
     componentDidUpdate(prevProps) {
         if (!prevProps.assetOpened && this.props.assetOpened) this.assetManager.show()
         if (prevProps.assetOpened && !this.props.assetOpened) this.assetManager.hide()
+        if (prevProps.authenticated && !this.props.authenticated) this.props.history.replace('/admin/login')
+        if (prevProps.currentAccount && !this.props.currentAccount) this.props.history.replace('/admin/choose_account')
     }
 
     handleMenuClick = () => {
@@ -77,21 +88,19 @@ class App extends Component {
                 <List>
                     <ListItem button onClick={this.goToExactPath('/admin/subjects')}>
                         <ListItemIcon>
-                            <ListIcon className={'fab fa-leanpub'} />
+                            <LeftMenuIcon src={'/frontend/images/subjects-left-panel.svg'} />
                         </ListItemIcon>
                         <ListItemText primary={'Курсы'} />
                     </ListItem>
                     <ListItem button onClick={this.goToExactPath('/admin/students')}>
                         <ListItemIcon>
-                            <ListIcon className="fas fa-users" />
+                            <LeftMenuIcon src={'/frontend/images/students-left-panel.svg'} />
                         </ListItemIcon>
                         <ListItemText primary={'Ученики'} />
                     </ListItem>
                     <ListItem button onClick={this.goToExactPath('/admin/settings')}>
                         <ListItemIcon>
-                            <ListIcon>
-                                <SettingsIcon />
-                            </ListIcon>
+                            <LeftMenuIcon src={'/frontend/images/settings-left-panel.svg'} />
                         </ListItemIcon>
                         <ListItemText primary={'Настройки'} />
                     </ListItem>
@@ -149,13 +158,24 @@ class App extends Component {
                                         return <Redirect to="/admin/subjects" />
                                     }}
                                 />
-                                <Route exact path="/admin/subjects" component={SubjectsScreen} />
-                                <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
-                                <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
-                                <Route path="/admin/students" component={StudentsScreen} />
+                                <Route exact path="/admin/subjects" component={accountBlockedHOC(SubjectsScreen)} />
+                                <Route
+                                    path="/admin/subjects/:subjectId(\d+)"
+                                    component={accountBlockedHOC(SubjectScreen)}
+                                />
+                                <Route path="/admin/themes/:themeId(\d+)" component={accountBlockedHOC(ThemeScreen)} />
+                                <Route path="/admin/students" component={accountBlockedHOC(StudentsScreen)} />
                                 <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                                <Route exact path="/admin/themes/:theme_id(\d+)/add_video" component={AddVideoScreen} />
-                                <Route exact path="/admin/theory/:theory_id(\d+)/watch" component={VideoScreen} />
+                                <Route
+                                    exact
+                                    path="/admin/storage/:theme_id(\d+)/add_video"
+                                    component={accountBlockedHOC(AddVideoScreen)}
+                                />
+                                <Route
+                                    exact
+                                    path="/admin/theory/:theory_id(\d+)/watch"
+                                    component={accountBlockedHOC(VideoScreen)}
+                                />
                                 <Route path="/admin/settings" component={SettingsScreen} />
                             </Switch>
                         </CommonWrapper>
@@ -181,6 +201,7 @@ const styles = theme => ({
         display: 'flex'
     },
     appBar: {
+        backgroundColor: '#673AB7',
         zIndex: theme.zIndex.drawer + 1,
         transition: theme.transitions.create(['width', 'margin'], {
             easing: theme.transitions.easing.sharp,
@@ -237,5 +258,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { logoutAdmin, switchManager }
+    { logoutAdmin, switchManager, loadAccounts }
 )(withStyles(styles)(App))
