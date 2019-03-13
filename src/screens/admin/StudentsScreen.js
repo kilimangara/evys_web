@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
@@ -22,6 +23,8 @@ import { theme } from '../../utils/global_theme'
 import Add from '@material-ui/icons/Add'
 import Tooltip from '@material-ui/core/Tooltip'
 import SaveButton from '../../components/common/SaveButton'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 const Card = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
@@ -86,7 +89,7 @@ const NoStudentsText = styled(Typography)`
     color: black;
 `
 
-class StudentsScreen extends StudentsRepository(Component) {
+class StudentsScreen extends StudentsRepository(withNav(Component)) {
     state = {
         selectedIds: [],
         query: '',
@@ -100,6 +103,7 @@ class StudentsScreen extends StudentsRepository(Component) {
 
     componentDidMount() {
         this.props.getStudents(1)
+        this.changeHeader('Мои ученики')
     }
 
     searchStudents = () => {
@@ -335,4 +339,10 @@ class StudentsScreen extends StudentsRepository(Component) {
     }
 }
 
-export default withProviders(StudentsProvider)(withSnackbar(StudentsScreen))
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(StudentsProvider, NavigationProvider),
+    withSnackbar
+)
+
+export default enhance(StudentsScreen)

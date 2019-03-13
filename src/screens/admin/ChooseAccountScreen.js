@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import moment from 'moment'
 import Modal from 'reboron/ScaleModal'
 import CreateAccount from '../../components/accounts/CreateAccount'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 import Fab from '@material-ui/core/Fab'
 import Add from '@material-ui/icons/Add'
 import { AccountsProvider } from '../../mixins/admin/AccountsRepository'
@@ -12,6 +13,7 @@ import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import styled from 'styled-components'
+import { compose } from 'recompose'
 
 const Container = styled.div`
     display: flex;
@@ -27,8 +29,9 @@ export const Card = styled.div`
     padding-top: 12px;
 `
 
-class ChooseAccountScreen extends Component {
+class ChooseAccountScreen extends withNav(Component) {
     componentDidMount() {
+        this.changeHeader('Выбрать аккаунт')
         this.props.loadAccounts()
     }
 
@@ -94,4 +97,6 @@ const styles = {
     }
 }
 
-export default withProviders(AccountsProvider)(ChooseAccountScreen)
+const enhance = compose(withProviders(AccountsProvider, NavigationProvider))
+
+export default enhance(ChooseAccountScreen)

@@ -5,7 +5,8 @@ export const theme = {
     SECONDARY: '#757575',
     BACKGROUND_DARK: '#3B3A3F',
     CONTRAST_LIGHT: '#FFFFFF',
-    TOOLBAR_COLOR: '#5e35b1'
+    TOOLBAR_COLOR: '#5e35b1',
+    CONTRAST_RIPPLE: 'rgba(255,255,255, .5)'
 }
 
 export const studentTheme = {

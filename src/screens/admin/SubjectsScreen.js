@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 import { connect } from 'react-redux'
 import GridList from '@material-ui/core/GridList'
 import Fab from '@material-ui/core/Fab'
@@ -13,6 +14,8 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import { withSnackbar } from 'notistack'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 const GridWrapper = styled.div`
     @media screen and (min-width: 0px) and (max-width: 1090px) {
@@ -48,8 +51,10 @@ const Text = styled(Typography)`
     color: black;
 `
 
-class SubjectsScreen extends SubjectRepository(Component) {
+class SubjectsScreen extends SubjectRepository(withNav(Component)) {
     componentDidMount() {
+        console.log('mount subjects', this)
+        this.changeHeader('Мои курсы')
         this.props.loadSubjects()
     }
 
@@ -162,4 +167,10 @@ const styles = {
     }
 }
 
-export default withProviders(SubjectProvider)(withSnackbar(SubjectsScreen))
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(SubjectProvider, NavigationProvider),
+    withSnackbar
+)
+
+export default enhance(SubjectsScreen)

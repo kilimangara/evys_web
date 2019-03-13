@@ -1,4 +1,5 @@
 import React from 'react'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import BillingProvider from '../../../mixins/admin/BillingProvider'
 import styled from 'styled-components'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -15,6 +16,7 @@ import Button from '@material-ui/core/Button'
 import { theme } from '../../../utils/global_theme'
 import { withSnackbar } from 'notistack'
 import moment from 'moment'
+import withProviders from '../../../utils/withProviders'
 
 const Header = styled(Typography)`
     font-weight: 600;
@@ -77,7 +79,7 @@ const formatter = new Intl.NumberFormat('ru', {
     minimumFractionDigits: 0
 })
 
-class BillingPlanScreen extends BillingProvider(React.Component) {
+class BillingPlanScreen extends BillingProvider(withNav(React.Component)) {
     state = {
         billingPlan: null,
         changed: false,
@@ -87,6 +89,7 @@ class BillingPlanScreen extends BillingProvider(React.Component) {
 
     componentDidMount() {
         this.loadBillingPlan()
+        this.changeHeader('Подписка')
         this.showErrorDebounced = debounce(this.showError, 5000, { leading: true })
     }
 
@@ -213,4 +216,4 @@ const styles = theme => ({
     }
 })
 
-export default withStyles(styles)(withSnackbar(BillingPlanScreen))
+export default withProviders(NavigationProvider)(withStyles(styles)(withSnackbar(BillingPlanScreen)))

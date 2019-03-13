@@ -1,5 +1,6 @@
 import React from 'react'
 import SubjectRepository, { SubjectProvider } from '../../../mixins/admin/SubjectRepository'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import withProviders from '../../../utils/withProviders'
 import styled from 'styled-components'
 import List from '@material-ui/core/List'
@@ -18,6 +19,8 @@ import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
+import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 const WarningIcon = styled(Warning)`
     color: red;
@@ -63,9 +66,10 @@ export const TagChip = styled(Chip)`
     border: 1px solid ${theme.ACCENT_COLOR};
 `
 
-class SubjectScreen extends SubjectRepository(React.Component) {
+class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
     state = {
-        errors: {}
+        errors: {},
+        categories: []
     }
 
     componentDidMount() {
@@ -74,7 +78,10 @@ class SubjectScreen extends SubjectRepository(React.Component) {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.subject !== prevProps.subject) this.setState({ subject: this.props.subject })
+        if (this.props.subject !== prevProps.subject) {
+            this.changeNavigation({ header: `Курс ${this.props.subject.subject}`, backUrl: '/admin/subjects' })
+            this.setState({ subject: this.props.subject })
+        }
     }
 
     subjectUpdated = subject => {
@@ -89,6 +96,11 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                 if (response.status === 400) this.setState({ errors: response.data })
                 throw err
             })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        console.log(nextProps, nextState, this.state, this.props)
+        return true
     }
 
     renderMainInfo = () => {
@@ -188,4 +200,9 @@ class SubjectScreen extends SubjectRepository(React.Component) {
     }
 }
 
-export default withProviders(SubjectProvider)(SubjectScreen)
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(SubjectProvider, NavigationProvider)
+)
+
+export default enhance(SubjectScreen)

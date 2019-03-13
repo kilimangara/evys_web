@@ -14,7 +14,11 @@ export default superclass =>
 
         getSubject = () => {
             const id = this.subjectId()
+            // if(this.props.subject && this.props.subject.id == id){
+            //   this.setState({ subject: this.props.subject })
+            // } else {
             this.props.loadSubject(id)
+            // }
         }
 
         updateSubject = () => {
