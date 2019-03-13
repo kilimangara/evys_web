@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { LeftPanelContainer, LeftPanelNavigation, LeftPanelNavigationItem } from '../styled/layout'
-import { BorderedImage, SizedIconButton, StudentTypography } from '../styled/common'
+import {
+    BorderedImage,
+    NotificationsCircle,
+    RelativeBorderedImage,
+    SizedIconButton,
+    StudentTypography
+} from '../styled/common'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import { withRouter } from 'react-router'
 import { AccountProvider } from '../../mixins/student/AccountRepository'
@@ -9,6 +15,7 @@ import withProviders from '../../utils/withProviders'
 import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
 import { AuthorizationProvider } from '../../mixins/student/AuthorizationRepository'
 import { SearchProvider } from '../../mixins/student/SearchRepository'
+import { NotificationsProvider } from '../../mixins/student/NotificationsRepository'
 
 class LeftPanel extends Component {
     constructor(props) {
@@ -40,7 +47,10 @@ class LeftPanel extends Component {
         }
     }
 
-    goToNotifications = () => true //TODO: make notifications screen //this.props.history.push('/notifications/')
+    goToNotifications = () => {
+        this.setState({ selectedTab: null })
+        this.props.history.push('/app/notifications/')
+    }
 
     goToSettings = () => {
         this.setState({ selectedTab: null })
@@ -69,7 +79,7 @@ class LeftPanel extends Component {
 
     render() {
         const { selectedTab } = this.state
-        const { buttonIndexActive, profileData } = this.props
+        const { buttonIndexActive, profileData, hasNotifications } = this.props
         return (
             <LeftPanelContainer>
                 <div style={{ padding: '0px 0px 0px 50px' }}>
@@ -86,11 +96,13 @@ class LeftPanel extends Component {
                                 disabled
                                 margin={'6px 20px'}
                                 children={
-                                    <BorderedImage
+                                    <RelativeBorderedImage
                                         image={'/frontend/images/notifications.svg'}
                                         width={'18px'}
                                         height={'18px'}
-                                    />
+                                    >
+                                        <NotificationsCircle />
+                                    </RelativeBorderedImage>
                                 }
                                 onClick={this.goToNotifications}
                             />
@@ -133,4 +145,6 @@ class LeftPanel extends Component {
     }
 }
 
-export default withRouter(withProviders(AccountProvider, AuthorizationProvider, SearchProvider)(LeftPanel))
+export default withRouter(
+    withProviders(AccountProvider, AuthorizationProvider, SearchProvider, NotificationsProvider)(LeftPanel)
+)

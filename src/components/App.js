@@ -21,6 +21,10 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import CourseScreen from '../screens/courses/CourseScreen'
 import VideoStudyScreen from '../screens/VideoStudyScreen'
 import NotificationsScreen from '../screens/NotificationsScreen'
+import { NotificationsProvider } from '../mixins/student/NotificationsRepository'
+import startOfDay from 'date-fns/start_of_day'
+import endOfDay from 'date-fns/end_of_day'
+import addMonths from 'date-fns/add_months'
 
 class App extends Component {
     constructor(props) {
@@ -36,6 +40,7 @@ class App extends Component {
             this.props.history.push('/login')
         }
         window.__localeId__ = 'ru'
+        this.props.fetchNotifications({ dateFrom: startOfDay(new Date()), dateTo: endOfDay(addMonths(new Date(), 1)) })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -159,4 +164,4 @@ const styles = theme => ({
     info: { backgroundColor: studentTheme.CONTRAST_LIGHT }
 })
 
-export default withProviders(AuthorizationProvider)(withStyles(styles)(App))
+export default withProviders(AuthorizationProvider, NotificationsProvider)(withStyles(styles)(App))

@@ -61,7 +61,7 @@ class BeforeStudy extends Component {
                         name={'Теория'}
                         iconsBlock={
                             <div>
-                                {theme && theme.theory && theme.theory.videos && <VideoIcon />}
+                                {!!theme && !!theme.theory && !!theme.theory.videos && <VideoIcon />}
                                 <DescriptionIcon />
                             </div>
                         }

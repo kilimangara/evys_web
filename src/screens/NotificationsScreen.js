@@ -4,6 +4,10 @@ import { CenteredContent } from '../components/styled/common'
 import { getEvents } from '../api'
 import moment from 'moment'
 import './calendar-styles.css'
+import { FullWidthCalendar } from '../components/styled/notifications'
+import startOfDay from 'date-fns/start_of_day'
+import endOfDay from 'date-fns/end_of_day'
+import addMonths from 'date-fns/add_months'
 
 class NotificationsScreen extends Component {
     state = {
@@ -11,27 +15,38 @@ class NotificationsScreen extends Component {
     }
 
     componentDidMount() {
-        getEvents().then(response => console.log('AE', response))
+        getEvents({ dateFrom: startOfDay(new Date()), dateTo: endOfDay(addMonths(new Date(), 1)) }).then(response =>
+            this.setState({ events: response.data })
+        )
     }
 
     handleRangeChange = dates => {
-        console.log('FUCK', dates)
+        getEvents({ dateFrom: dates.start, dateTo: dates.end }).then(response =>
+            this.setState({ events: response.data })
+        )
+    }
+
+    goToEvent = event => {
+        console.log('ev', event)
+        this.props.history.push(`course/${event.course}/themes/${event.eventObject.id}`)
     }
 
     getEventsFromProps = eventsArray =>
-        eventsArray.map(({ expiresAt, eventObject }) => ({
+        eventsArray.map(({ expiresAt, eventObject, course }) => ({
             title: eventObject.name,
             start: expiresAt,
             end: expiresAt,
-            allDay: true
+            allDay: true,
+            eventObject,
+            course
         }))
 
     render() {
-        const { events } = this.props
+        const { events } = this.state
         const localizer = BigCalendar.momentLocalizer(moment)
         return (
             <CenteredContent height={'100%'}>
-                <BigCalendar
+                <FullWidthCalendar
                     events={(events && this.getEventsFromProps(events)) || []}
                     localizer={localizer}
                     startAccessor="start"
@@ -39,7 +54,19 @@ class NotificationsScreen extends Component {
                     onRangeChange={this.handleRangeChange}
                     views={['month', 'agenda']}
                     defaultView={'agenda'}
-                    messages={{ today: 'Сегодня', previous: 'Назад', next: 'Вперед', month: 'Месяц', agenda: 'Лента' }}
+                    onDoubleClickEvent={this.goToEvent}
+                    messages={{
+                        today: 'Сегодня',
+                        previous: 'Назад',
+                        next: 'Вперед',
+                        month: 'Месяц',
+                        agenda: 'Лента',
+                        noEventsInRange: 'В выбранном временном отрезке отсутствуют события.',
+                        date: 'Дата',
+                        time: 'Время',
+                        allDay: 'Весь день',
+                        event: 'Событие'
+                    }}
                     culture={'ru'}
                 />
             </CenteredContent>
