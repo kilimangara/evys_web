@@ -71,15 +71,16 @@ class SubjectsScreen extends SubjectRepository(withNav(Component)) {
     }
 
     onSubjectSave = data => {
+        this.modal.hide()
         this.props
             .createSubject(data)
             .then(res => {
                 this.props.enqueueSnackbar('Предмет создан')
                 this.props.loadSubjects()
-                this.modal.hide()
             })
-            .catch(({ response }) => {
-                if (response.status === 402)
+            .catch(error => {
+                console.log('error in create subject', error)
+                if (error.response.status === 402)
                     this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {
                         variant: 'error'
                     })
@@ -91,6 +92,7 @@ class SubjectsScreen extends SubjectRepository(withNav(Component)) {
             <NoSubjectsWrapper>
                 <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-subjects.svg'} />
                 <Text component={'span'}>{'У вас нет ни одного курса :('}</Text>
+                <div style={{ height: 12 }} />
                 <Button color="primary" variant={'contained'} onClick={this.floatingButtonClicked}>
                     Создать свой первый курс!
                 </Button>

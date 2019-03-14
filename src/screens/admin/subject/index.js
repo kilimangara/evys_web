@@ -21,6 +21,7 @@ import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
+import { withSnackbar } from 'notistack'
 
 const WarningIcon = styled(Warning)`
     color: red;
@@ -98,11 +99,6 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
             })
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log(nextProps, nextState, this.state, this.props)
-        return true
-    }
-
     renderMainInfo = () => {
         return (
             <MainInfo
@@ -151,6 +147,17 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
         this.saveSubject()
     }
 
+    onSubjectDelete = () => {
+        this.deleteSubject()
+            .then(() => {
+                this.props.history.replace('/admin/subjects')
+                this.props.enqueueSnackbar(`Курс удален`)
+            })
+            .catch(error => {
+                this.props.enqueueSnackbar(`Что-то пошло не так`, { variant: 'error' })
+            })
+    }
+
     render() {
         const { subject, categories } = this.state
         if (!subject || !categories)
@@ -179,7 +186,7 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                         <Divider />
                         <div style={{ marginLeft: 16, marginTop: 8 }}>
                             <ColoredButton
-                                type="contained"
+                                variant="contained"
                                 disabled={!subject.tariff.canPublish}
                                 margin="normal"
                                 onClick={this.changeVisibility}
@@ -189,6 +196,11 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                             {!subject.tariff.canPublish && (
                                 <p style={{ color: 'red' }}>Некоторых данных не хватает для публикации</p>
                             )}
+                        </div>
+                        <div style={{ marginLeft: 16, marginTop: 8 }}>
+                            <Button variant="outlined" color="secondary" onClick={this.onSubjectDelete}>
+                                Удалить курс
+                            </Button>
                         </div>
                     </List>
                 </Card>
@@ -202,7 +214,8 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
 
 const enhance = compose(
     accountBlockedHOC,
-    withProviders(SubjectProvider, NavigationProvider)
+    withProviders(SubjectProvider, NavigationProvider),
+    withSnackbar
 )
 
 export default enhance(SubjectScreen)
