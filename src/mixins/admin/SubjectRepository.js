@@ -2,7 +2,7 @@ import {
     loadSubject,
     loadSubjects,
     newSubject,
-    deleteSubject,
+    removeSubject,
     updateSubject,
     fetchSubjectCategories
 } from '../../reducers/admin/subjects'
@@ -28,6 +28,10 @@ export default superclass =>
             this.props.fetchSubjectCategories().then(({ data }) => this.setState({ categories: data }))
         }
 
+        deleteSubject = () => {
+            return this.props.deleteSubject(this.subjectId())
+        }
+
         subjectId = () => this.props.match.params['subjectId']
 
         subject = () => this.props.subject
@@ -49,7 +53,7 @@ export class SubjectProvider {
         loadSubjects,
         createSubject: newSubject,
         updateSubject,
-        deleteSubject,
+        deleteSubject: removeSubject,
         fetchSubjectCategories
     }
 }

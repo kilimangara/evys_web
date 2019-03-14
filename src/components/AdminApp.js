@@ -27,7 +27,6 @@ import { switchManager, pickAsset } from '../reducers/admin/assetManager'
 import { loadAccounts } from '../reducers/admin/account'
 import { SnackbarProvider } from 'notistack'
 import SettingsIcon from '@material-ui/icons/Settings'
-import accountBlockedHOC from '../mixins/admin/AccountBlockedHOC'
 import styled from 'styled-components'
 
 const LeftMenuIcon = styled.img`
@@ -134,7 +133,7 @@ class App extends Component {
                     {this.drawerContent()}
                 </AppDrawer>
                 <HeaderAppBarAdmin
-                    history={this.props.history}
+                    {...this.props}
                     onMenuPressed={this.handleMenuClick}
                     open={this.state.open}
                     className={classNames(classes.appBar, {
@@ -158,23 +157,16 @@ class App extends Component {
                                         return <Redirect to="/admin/subjects" />
                                     }}
                                 />
-                                <Route exact path="/admin/subjects" component={accountBlockedHOC(SubjectsScreen)} />
-                                <Route
-                                    path="/admin/subjects/:subjectId(\d+)"
-                                    component={accountBlockedHOC(SubjectScreen)}
-                                />
-                                <Route path="/admin/themes/:themeId(\d+)" component={accountBlockedHOC(ThemeScreen)} />
-                                <Route path="/admin/students" component={accountBlockedHOC(StudentsScreen)} />
+                                <Route exact path="/admin/subjects" component={SubjectsScreen} />
+                                <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
+                                <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
+                                <Route path="/admin/students" component={StudentsScreen} />
                                 <Route path="/admin/choose_account" component={ChooseAccountScreen} />
+                                <Route exact path="/admin/storage/:themeId(\d+)/add_video" component={AddVideoScreen} />
                                 <Route
                                     exact
-                                    path="/admin/storage/:theme_id(\d+)/add_video"
-                                    component={accountBlockedHOC(AddVideoScreen)}
-                                />
-                                <Route
-                                    exact
-                                    path="/admin/theory/:theory_id(\d+)/watch"
-                                    component={accountBlockedHOC(VideoScreen)}
+                                    path="/admin/theme/:theme_id/theory/:theory_id(\d+)/watch"
+                                    component={VideoScreen}
                                 />
                                 <Route path="/admin/settings" component={SettingsScreen} />
                             </Switch>

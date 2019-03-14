@@ -3,7 +3,7 @@ import produce from 'immer'
 
 import { getSubjects, getSubject, createSubject, fetchCategories, putSubject, deleteSubject } from '../../api'
 import { merge } from 'lodash'
-import {chooseAccount} from './account'
+import { chooseAccount } from './account'
 
 const initialState = {
     list: [],
@@ -20,6 +20,7 @@ export const successCreateSubject = createAction('subjects/success-create')
 export const replaceSubject = createAction('subjects/replace')
 export const resetSubjectList = createAction('subjects/reset-list')
 export const endLoadingSubjects = createAction('subjects/end-loading')
+export const deleteSubjectSuccess = createAction('subjects/delete-success')
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingSubjects())
@@ -47,7 +48,7 @@ export const loadSubject = subjectId => dispatch => {
     })
 }
 
-export const newSubject = (data) => dispatch => {
+export const newSubject = data => dispatch => {
     return createSubject(data)
 }
 
@@ -56,26 +57,33 @@ export const fetchSubjectCategories = () => dispatch => {
 }
 
 export const updateSubject = (subjectId, data) => dispatch => {
-  dispatch(startLoadingSubjects())
-  return putSubject(subjectId, data).then((response) =>{
-    const { data } = response
-    dispatch(successShowSubject(data))
-    dispatch(replaceSubject(data))
-    return response
-  }).catch((err)=>{
-    dispatch(endLoadingSubjects())
-    throw err
-  })
+    dispatch(startLoadingSubjects())
+    return putSubject(subjectId, data)
+        .then(response => {
+            const { data } = response
+            dispatch(successShowSubject(data))
+            dispatch(replaceSubject(data))
+            return response
+        })
+        .catch(err => {
+            dispatch(endLoadingSubjects())
+            throw err
+        })
 }
 
-export const removeSubject = (subjectId) => dispatch => deleteSubject(subjectId)
+export const removeSubject = subjectId => dispatch => {
+    return deleteSubject(subjectId).then(res => {
+        dispatch(deleteSubjectSuccess(subjectId))
+        return res
+    })
+}
 
 export default createReducer(
     {
         [endLoadingSubjects]: state =>
-          produce(state, draft => {
-              draft.fetching = false
-          }),
+            produce(state, draft => {
+                draft.fetching = false
+            }),
         [startLoadingSubjects]: state =>
             produce(state, draft => {
                 draft.fetching = true
@@ -85,16 +93,22 @@ export default createReducer(
                 if (payload.currentPage !== 1) payload.unshift(...state.list)
                 merge(draft, payload)
             }),
-        [resetSubjectList]:(state, payload) => produce(state, draft => {
-              draft.list = []
-              draft.totalPages = 1
-              draft.currentPage = 0
-              draft.fetching = false
+        [resetSubjectList]: (state, payload) =>
+            produce(state, draft => {
+                draft.list = []
+                draft.totalPages = 1
+                draft.currentPage = 0
+                draft.fetching = false
             }),
         [successShowSubject]: (state, payload) =>
             produce(state, draft => {
                 draft.current = payload
                 draft.fetching = false
+            }),
+        [deleteSubjectSuccess]: (state, subjectId) =>
+            produce(state, draft => {
+                const index = draft.list.findIndex(el => el.id == subjectId)
+                if (index !== -1) draft.list.splice(index, 1)
             }),
         [replaceSubject]: (state, payload) =>
             produce(state, draft => {

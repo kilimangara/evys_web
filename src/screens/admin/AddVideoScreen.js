@@ -2,13 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PickYoutubeVideo from '../../components/youtube/PickYoutubeVideo'
 import { addTheoryVideo } from '../../reducers/admin/themes'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 class AddVideoScreen extends React.Component {
     constructor(props) {
         super(props)
         const params = new URLSearchParams(this.props.location.search)
         this.theoryId = params.get('theory_id')
-        this.themeId = this.props.match.params['theme_id']
+        this.themeId = this.props.match.params['themeId']
     }
 
     saveVideoCallback = (videoName, videoURL) => {
@@ -42,7 +44,12 @@ const mapDispatchToProps = {
     createVideo: addTheoryVideo
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AddVideoScreen)
+const enhance = compose(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    ),
+    accountBlockedHOC
+)
+
+export default enhance(AddVideoScreen)

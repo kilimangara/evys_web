@@ -1,4 +1,6 @@
 import React from 'react'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
+import withProviders from '../../../utils/withProviders'
 import { Card, TagChip } from './index'
 import SaveButton from '../../../components/common/SaveButton'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,7 +12,7 @@ import fe from '../../../utils/get-errors'
 
 const CURRENCIES = [{ code: 'RUB', label: '₽' }, { code: 'USD', label: '$' }]
 
-export default class BillingInfo extends React.Component {
+class BillingInfo extends React.Component {
     state = {
         targetAudience: '',
         results: '',
@@ -105,7 +107,6 @@ export default class BillingInfo extends React.Component {
     render() {
         const { tariff } = this.props.subject
         const { errors } = this.props
-        console.log(this.state, tariff)
         return (
             <Card marginTop={12}>
                 <TextField
@@ -170,3 +171,5 @@ export default class BillingInfo extends React.Component {
         )
     }
 }
+
+export default withProviders()(BillingInfo)
