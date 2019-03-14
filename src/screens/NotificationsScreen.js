@@ -8,37 +8,54 @@ import { FullWidthCalendar } from '../components/styled/notifications'
 import startOfDay from 'date-fns/start_of_day'
 import endOfDay from 'date-fns/end_of_day'
 import addMonths from 'date-fns/add_months'
+import withProviders from '../utils/withProviders'
+import { NotificationsProvider } from '../mixins/student/NotificationsRepository'
 
 class NotificationsScreen extends Component {
     state = {
         events: null
     }
+    currentView = 'agenda'
 
     componentDidMount() {
-        getEvents({ dateFrom: startOfDay(new Date()), dateTo: endOfDay(addMonths(new Date(), 1)) }).then(response =>
-            this.setState({ events: response.data })
-        )
+        this.props
+            .fetchNotifications({ dateFrom: startOfDay(new Date()), dateTo: endOfDay(new Date()) })
+            .then(response => this.setState({ events: response.data }))
     }
 
     handleRangeChange = dates => {
-        getEvents({ dateFrom: dates.start, dateTo: dates.end }).then(response =>
+        if (this.currentView !== 'month') return
+        getEvents({ dateFrom: startOfDay(dates.start), dateTo: startOfDay(dates.end) }).then(response =>
             this.setState({ events: response.data })
         )
     }
 
     goToEvent = event => {
-        console.log('ev', event)
-        this.props.history.push(`course/${event.course}/themes/${event.eventObject.id}`)
+        this.props.history.push(`course/${event && event.course}/themes/${event && event.eventId}`)
     }
 
+    handleNavigate = date => {
+        if (this.currentView !== 'agenda') return
+        getEvents({ dateFrom: startOfDay(date), dateTo: endOfDay(date) }).then(response =>
+            this.setState({ events: response.data })
+        )
+    }
+
+    handleViewChange = view => {
+        console.log('view', view)
+        this.currentView = view //this wouldn't work if you put it in state (or i'm an idiot)
+    }
+
+    renderAgendaEvent = event => <div onClick={() => this.goToEvent(event.event)}>{event.title}</div>
+
     getEventsFromProps = eventsArray =>
-        eventsArray.map(({ expiresAt, eventObject, course }) => ({
-            title: eventObject.name,
+        eventsArray.map(({ expiresAt, title, course, eventId }) => ({
+            title,
             start: expiresAt,
             end: expiresAt,
             allDay: true,
-            eventObject,
-            course
+            course,
+            eventId
         }))
 
     render() {
@@ -51,9 +68,12 @@ class NotificationsScreen extends Component {
                     localizer={localizer}
                     startAccessor="start"
                     endAccessor="end"
-                    onRangeChange={this.handleRangeChange}
+                    onNavigate={this.handleNavigate}
+                    onRangeChange={range => setTimeout(this.handleRangeChange(range), 50)}
+                    onView={this.handleViewChange}
                     views={['month', 'agenda']}
                     defaultView={'agenda'}
+                    length={1}
                     onDoubleClickEvent={this.goToEvent}
                     messages={{
                         today: 'Сегодня',
@@ -67,6 +87,11 @@ class NotificationsScreen extends Component {
                         allDay: 'Весь день',
                         event: 'Событие'
                     }}
+                    components={{
+                        agenda: {
+                            event: this.renderAgendaEvent
+                        }
+                    }}
                     culture={'ru'}
                 />
             </CenteredContent>
@@ -74,4 +99,4 @@ class NotificationsScreen extends Component {
     }
 }
 
-export default NotificationsScreen
+export default withProviders(NotificationsProvider)(NotificationsScreen)

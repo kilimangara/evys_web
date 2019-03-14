@@ -151,10 +151,8 @@ export function getStudentCourse(courseId) {
 export function getStudentThemes(courseId, themeId, params) {
     return axiosInstance.request({
         url: `/student/course/${courseId}/themes`,
+        params,
         meta: {
-            fetch: {
-                params
-            },
             with_parent_theme: Boolean(themeId),
             is_course: true
         }

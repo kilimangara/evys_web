@@ -93,7 +93,6 @@ class LeftPanel extends Component {
                         <LeftPanelNavigation style={{ justifyContent: 'space-between' }}>
                             <SizedIconButton
                                 width={18}
-                                disabled
                                 margin={'6px 20px'}
                                 children={
                                     <RelativeBorderedImage
@@ -101,7 +100,7 @@ class LeftPanel extends Component {
                                         width={'18px'}
                                         height={'18px'}
                                     >
-                                        <NotificationsCircle />
+                                        {hasNotifications && <NotificationsCircle />}
                                     </RelativeBorderedImage>
                                 }
                                 onClick={this.goToNotifications}
