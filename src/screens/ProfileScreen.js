@@ -122,7 +122,6 @@ class ProfileScreen extends AccountMixin(Component) {
     render() {
         const { profileData, loading } = this.props
         const { errors, full_name, email, selectedFavoriteSubjects, favoriteSubjectsOpened } = this.state
-        console.log(selectedFavoriteSubjects)
         return (
             <CenteredContent style={{ height: 'fitContent' }}>
                 {favoriteSubjectsOpened ? (
