@@ -28,6 +28,7 @@ export const ThemeItem = ({ alias, percent, onClick }) => (
         borderRadius={'15px'}
         boxShadow={getThemeItemBoxShadow(percent)}
         style={{ margin: '24px' }}
+        clickable
         onClick={onClick}
     >
         <ThemeWrapper>

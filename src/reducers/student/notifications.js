@@ -11,7 +11,10 @@ const notificationsFetched = createAction('notifications/notifications-started')
 
 export const fetchNotifications = params => dispatch => {
     dispatch(fetchStart())
-    return getEvents(params).then(response => dispatch(notificationsFetched(response && response.data.count)))
+    return getEvents(params).then(response => {
+        dispatch(notificationsFetched(response && response.data.length))
+        return response
+    })
 }
 
 export default createReducer(

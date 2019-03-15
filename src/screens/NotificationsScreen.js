@@ -31,7 +31,7 @@ class NotificationsScreen extends Component {
     }
 
     goToEvent = event => {
-        this.props.history.push(`course/${event && event.course}/themes/${event && event.eventId}`)
+        this.props.history.push(`/app/course/${event && event.course}/theme/${event && event.eventId}`)
     }
 
     handleNavigate = date => {
@@ -42,11 +42,14 @@ class NotificationsScreen extends Component {
     }
 
     handleViewChange = view => {
-        console.log('view', view)
         this.currentView = view //this wouldn't work if you put it in state (or i'm an idiot)
     }
 
-    renderAgendaEvent = event => <div onClick={() => this.goToEvent(event.event)}>{event.title}</div>
+    renderAgendaEvent = event => (
+        <div style={{ cursor: 'pointer' }} onClick={() => this.goToEvent(event.event)}>
+            {event.title}
+        </div>
+    )
 
     getEventsFromProps = eventsArray =>
         eventsArray.map(({ expiresAt, title, course, eventId }) => ({
@@ -60,20 +63,22 @@ class NotificationsScreen extends Component {
 
     render() {
         const { events } = this.state
+        const formEvents = (events && this.getEventsFromProps(events)) || []
         const localizer = BigCalendar.momentLocalizer(moment)
         return (
             <CenteredContent height={'100%'}>
                 <FullWidthCalendar
-                    events={(events && this.getEventsFromProps(events)) || []}
+                    events={formEvents}
                     localizer={localizer}
                     startAccessor="start"
                     endAccessor="end"
                     onNavigate={this.handleNavigate}
-                    onRangeChange={range => setTimeout(this.handleRangeChange(range), 50)}
+                    onRangeChange={this.handleRangeChange}
                     onView={this.handleViewChange}
                     views={['month', 'agenda']}
                     defaultView={'agenda'}
                     length={1}
+                    onSelectEvent={this.goToEvent}
                     onDoubleClickEvent={this.goToEvent}
                     messages={{
                         today: 'Сегодня',
