@@ -22,6 +22,7 @@ export const AnswerBlank = styled(Paper)`
     height: 60px;
     border-radius: 5px;
     box-sizing: border-box;
+    cursor: pointer;
 `
 
 export const QuestionBlank = styled(Paper)`

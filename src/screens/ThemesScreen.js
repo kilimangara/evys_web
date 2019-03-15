@@ -16,12 +16,24 @@ class ThemesScreen extends Component {
     }
 
     componentDidMount() {
+        this.fetchThemes()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (prevProps.location.search !== this.props.location.search) {
+            this.fetchThemes()
+        }
+    }
+
+    fetchThemes = () => {
         this.courseId = this.props.match.params['course_id']
+        const params = new URLSearchParams(this.props.location.search)
+        const parentTheme = parseInt(params.get('parent'))
         if (!this.props.currentCourse || this.props.currentCourse.id !== this.courseId) {
             this.props.getCourseById(this.courseId)
         }
         this.props
-            .loadThemes(this.courseId, null)
+            .loadThemes(this.courseId, parentTheme || null)
             .then(response => this.setState({ themes: response }))
             .catch(err => {
                 if (err.response.data.status_code === 403) {
@@ -31,7 +43,13 @@ class ThemesScreen extends Component {
             })
     }
 
-    handleCardClick = id => this.props.history.push(`/app/course/${this.courseId}/theme/${id}`)
+    handleCardClick = (id, type) => {
+        this.props.history.push(
+            type === 'Section'
+                ? `/app/course/${this.courseId}/themes?parent=${id}`
+                : `/app/course/${this.courseId}/theme/${id}`
+        )
+    }
 
     render() {
         const { currentCourse, coursesFetching } = this.props
@@ -57,7 +75,7 @@ class ThemesScreen extends Component {
                                     key={id}
                                     alias={theme.name}
                                     percent={progress}
-                                    onClick={() => this.handleCardClick(id)}
+                                    onClick={() => this.handleCardClick(theme.id, theme.type)}
                                 />
                             ))}
                     </ThemesItemWrapper>

@@ -9,7 +9,6 @@ class VideoScreen extends React.Component {
     constructor(props) {
         super(props)
         const params = new URLSearchParams(this.props.location.search)
-        console.log(params, params.get('v'))
         this.theoryId = this.props.match.params['theory_id']
         this.videoIndex = parseInt(params.get('v'))
         this.state = {

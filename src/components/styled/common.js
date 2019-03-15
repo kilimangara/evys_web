@@ -278,3 +278,17 @@ export const FilledImage = styled.img`
     width: ${({ type }) => (type === 'wide' ? '' : 'auto')};
     height: ${({ type }) => (type === 'tall' ? '' : 'auto')};
 `
+
+export const NotificationsCircle = styled.div`
+    background-color: yellow;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    top: 0;
+    right: -3px;
+`
+
+export const RelativeBorderedImage = styled(BorderedImage)`
+    position: relative;
+`

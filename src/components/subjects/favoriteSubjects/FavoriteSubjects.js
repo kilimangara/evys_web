@@ -9,7 +9,7 @@ export const FavoriteSubjects = ({ subjects, selected, onSelect, onApply }) => (
             {subjects.map(subject => (
                 <FavoriteSubject
                     key={subject.name}
-                    selected={selected.includes(subject.alias)}
+                    selected={!!selected.find(selectedSubject => selectedSubject.name === subject.name)}
                     onClick={() => onSelect(subject)}
                 >
                     {subject.name}

@@ -35,6 +35,7 @@ export class VideoStudyScreen extends Component {
                             height={'100%'}
                             style={{ position: 'absolute', top: '0', left: '0' }}
                             playing
+                            controls
                             url={video.youtubeVideo}
                         />
                     </VideoWrapper>

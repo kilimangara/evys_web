@@ -26,6 +26,10 @@ class BeforeStudy extends Component {
                     this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
                     this.props.history.push('/app/courses')
                 }
+                if (err.response.data.status_code === 404) {
+                    this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                    this.props.history.push(`/app/course/${this.courseId}/themes/`)
+                }
             })
         if (!this.currentCourse) {
             this.props.getCourseById(this.courseId)
@@ -61,7 +65,7 @@ class BeforeStudy extends Component {
                         name={'Теория'}
                         iconsBlock={
                             <div>
-                                {theme && theme.theory && theme.theory.videos && <VideoIcon />}
+                                {!!theme && !!theme.theory && !!theme.theory.videos && <VideoIcon />}
                                 <DescriptionIcon />
                             </div>
                         }

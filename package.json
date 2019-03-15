@@ -50,6 +50,7 @@
         "quill-image-resize-module": "^3.0.0",
         "react": "^16.2.0",
         "react-animate-height": "^2.0.7",
+        "react-big-calendar": "^0.20.3",
         "react-circular-progressbar": "^1.0.0",
         "react-code-input": "^3.8.1",
         "react-dom": "^16.1.1",
