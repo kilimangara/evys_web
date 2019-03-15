@@ -75,7 +75,9 @@ class ThemesScreen extends Component {
                                     key={id}
                                     alias={theme.name}
                                     percent={progress}
-                                    onClick={() => this.handleCardClick(theme.id, theme.type)}
+                                    onClick={() =>
+                                        this.handleCardClick(theme.type === 'Section' ? theme.id : id, theme.type)
+                                    }
                                 />
                             ))}
                     </ThemesItemWrapper>
