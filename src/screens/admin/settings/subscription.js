@@ -1,4 +1,5 @@
 import React from 'react'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import BillingProvider from '../../../mixins/admin/BillingProvider'
 import styled from 'styled-components'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -15,6 +16,7 @@ import Button from '@material-ui/core/Button'
 import { theme } from '../../../utils/global_theme'
 import { withSnackbar } from 'notistack'
 import moment from 'moment'
+import withProviders from '../../../utils/withProviders'
 
 const Header = styled(Typography)`
     font-weight: 600;
@@ -77,7 +79,7 @@ const formatter = new Intl.NumberFormat('ru', {
     minimumFractionDigits: 0
 })
 
-class BillingPlanScreen extends BillingProvider(React.Component) {
+class BillingPlanScreen extends BillingProvider(withNav(React.Component)) {
     state = {
         billingPlan: null,
         changed: false,
@@ -87,16 +89,26 @@ class BillingPlanScreen extends BillingProvider(React.Component) {
 
     componentDidMount() {
         this.loadBillingPlan()
+        this.changeHeader('Подписка')
         this.showErrorDebounced = debounce(this.showError, 5000, { leading: true })
     }
 
     handleSlider = field => (event, value) => {
-        this.setState({ [field]: value }, this.syncBillingData)
+        this.setState({ [field]: value })
+    }
+
+    onDragEnd = (event, value) => {
+        this.syncBillingData()
     }
 
     showError = error => {
         const formattedError = error.join(', ')
         this.props.enqueueSnackbar(formattedError, { variant: 'error' })
+        const { personalStudents, personalSubjects } = this.state.billingPlan
+        this.setState({
+            personalStudents,
+            personalSubjects
+        })
     }
 
     syncBillingData = () => {
@@ -151,7 +163,7 @@ class BillingPlanScreen extends BillingProvider(React.Component) {
                     <SliderContainer>
                         <div style={{ marginTop: 0, display: 'flex', marginBottom: 18, alignItems: 'center' }}>
                             <SliderHeader component="span">Учеников:</SliderHeader>
-                            <SliderValue component="span"> {billingPlan.personalStudents}</SliderValue>
+                            <SliderValue component="span"> {personalStudents}</SliderValue>
                             <Tooltip title={`Стоимость 25 учеников - ${billingPlan.studentPrice} ₽/мес`}>
                                 <IconButtonForHelp>
                                     <InfoIcon fontSize={'small'} />
@@ -159,18 +171,19 @@ class BillingPlanScreen extends BillingProvider(React.Component) {
                             </Tooltip>
                         </div>
                         <Slider
-                            min={50}
+                            min={5}
                             max={1000}
-                            step={25}
+                            step={5}
+                            onDragEnd={this.onDragEnd}
                             classes={{ track: classes.sliderHeight }}
-                            value={billingPlan.personalStudents}
+                            value={personalStudents}
                             onChange={this.handleSlider('personalStudents')}
                         />
                     </SliderContainer>
                     <SliderContainer>
                         <div style={{ marginTop: 48, display: 'flex', marginBottom: 18, alignItems: 'center' }}>
                             <SliderHeader component="span">Предметов:</SliderHeader>
-                            <SliderValue component="span"> {billingPlan.personalSubjects}</SliderValue>
+                            <SliderValue component="span"> {personalSubjects}</SliderValue>
                             <Tooltip title={`Стоимость 1 предмета - ${billingPlan.subjectPrice} ₽/мес`}>
                                 <IconButtonForHelp>
                                     <InfoIcon fontSize={'small'} />
@@ -179,10 +192,11 @@ class BillingPlanScreen extends BillingProvider(React.Component) {
                         </div>
                         <Slider
                             min={1}
-                            max={26}
+                            max={30}
                             step={1}
+                            onDragEnd={this.onDragEnd}
                             classes={{ track: classes.sliderHeight }}
-                            value={billingPlan.personalSubjects}
+                            value={personalSubjects}
                             onChange={this.handleSlider('personalSubjects')}
                         />
                     </SliderContainer>
@@ -202,4 +216,4 @@ const styles = theme => ({
     }
 })
 
-export default withStyles(styles)(withSnackbar(BillingPlanScreen))
+export default withProviders(NavigationProvider)(withStyles(styles)(withSnackbar(BillingPlanScreen)))

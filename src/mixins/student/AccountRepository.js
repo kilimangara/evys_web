@@ -5,7 +5,7 @@ export default superclass => class AccountRepository extends superclass {}
 export class AccountProvider {
     static mapStateToProps = state => ({
         profileData: state.account.profileData,
-        fetching: state.account.fetching
+        accountFetching: state.account.fetching
     })
 
     static mapDispatchToProps = {

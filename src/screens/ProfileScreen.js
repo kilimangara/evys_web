@@ -20,6 +20,7 @@ import withProviders from '../utils/withProviders'
 import { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import AccountMixin, { AccountProvider } from '../mixins/student/AccountRepository'
 import { withSnackbar } from 'notistack'
+import { shuffle } from '../utils/utilFunctions'
 
 export const DEFAULT_AVATAR_IMAGE_URL = 'https://272507.selcdn.ru/evys_api_videos/evys/evys_avatar_placeholder.jpg'
 
@@ -44,6 +45,8 @@ class ProfileScreen extends AccountMixin(Component) {
                 avatar: this.props.profileData.avatar
             })
         )
+        const subjectsCopy = [...subjects]
+        this.croppedRandomSubjects = shuffle(subjectsCopy).splice(0, 12)
     }
 
     retrieveValue = (name, defaultVal) => this.state[name] || defaultVal
@@ -72,7 +75,7 @@ class ProfileScreen extends AccountMixin(Component) {
     }
 
     saveFavoriteSubjects = () => {
-        this.props.saveProfile({ tags: this.state.selectedFavoriteSubjects })
+        this.props.saveProfile({ tags: this.state.selectedFavoriteSubjects.map(sub => sub.alias) })
         this.props.removeIsNew()
         this.setState({ favoriteSubjectsOpened: false })
     }
@@ -100,12 +103,12 @@ class ProfileScreen extends AccountMixin(Component) {
     }
 
     handleFavoriteSubjectSelect = subject => {
-        if (this.state.selectedFavoriteSubjects.includes(subject.alias)) {
+        if (!!this.state.selectedFavoriteSubjects.find(stateSubject => stateSubject.name === subject.name)) {
             this.setState({
-                selectedFavoriteSubjects: this.state.selectedFavoriteSubjects.filter(sub => sub !== subject.alias)
+                selectedFavoriteSubjects: this.state.selectedFavoriteSubjects.filter(sub => sub.name !== subject.name)
             })
         } else {
-            this.setState({ selectedFavoriteSubjects: [...this.state.selectedFavoriteSubjects, subject.alias] })
+            this.setState({ selectedFavoriteSubjects: [...this.state.selectedFavoriteSubjects, subject] })
         }
     }
 
@@ -119,7 +122,6 @@ class ProfileScreen extends AccountMixin(Component) {
     render() {
         const { profileData, loading } = this.props
         const { errors, full_name, email, selectedFavoriteSubjects, favoriteSubjectsOpened } = this.state
-
         return (
             <CenteredContent style={{ height: 'fitContent' }}>
                 {favoriteSubjectsOpened ? (
@@ -131,7 +133,7 @@ class ProfileScreen extends AccountMixin(Component) {
                                 </WithVerticalMargin>
                             </HorizontalCentered>
                             <FavoriteSubjects
-                                subjects={subjects}
+                                subjects={this.croppedRandomSubjects}
                                 selected={selectedFavoriteSubjects}
                                 onSelect={this.handleFavoriteSubjectSelect}
                                 onApply={this.saveFavoriteSubjects}

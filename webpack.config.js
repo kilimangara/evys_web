@@ -37,7 +37,13 @@ module.exports = env => {
             },
             compress: true,
             port: PORT,
-            host: HOST
+            host: HOST,
+            proxy: {
+                '/frontend': {
+                    target: 'http://localhost:3000',
+                    pathRewrite: { '^/frontend': '' }
+                }
+            }
         },
         plugins: [
             new webpack.DefinePlugin({
@@ -52,9 +58,10 @@ module.exports = env => {
             }),
             new HtmlWebpackPlugin({
                 template: './public/index.html',
-                title: 'Evys',
+                title: 'Evys.Школа',
                 filename: 'index_student.html',
-                description: 'Обучающая платформа Evys.',
+                description: 'Образовательная платформа Evys',
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить',
                 files: {
                     css: ['styles.css'],
                     js: ['app_bundle_dev.js']

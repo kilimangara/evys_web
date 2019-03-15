@@ -1,4 +1,5 @@
 import React from 'react'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import styled from 'styled-components'
 import ReactPaginate from 'react-paginate'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -13,6 +14,7 @@ import { Card } from './index'
 import produce from 'immer'
 import moment from 'moment'
 import { theme } from '../../../utils/global_theme'
+import withProviders from '../../../utils/withProviders'
 
 const Container = styled.div`
     display: flex;
@@ -27,7 +29,7 @@ const ColoredButton = styled(Button)`
     color: white;
 `
 
-class InvoicesScreen extends React.Component {
+class InvoicesScreen extends withNav(React.Component) {
     state = {
         invoices: null,
         currentPage: 0,
@@ -36,6 +38,7 @@ class InvoicesScreen extends React.Component {
 
     componentDidMount() {
         this.loadInvoices()
+        this.changeHeader('Счета')
     }
 
     onPageChanged = page => {
@@ -114,4 +117,4 @@ class InvoicesScreen extends React.Component {
     }
 }
 
-export default InvoicesScreen
+export default withProviders(NavigationProvider)(InvoicesScreen)

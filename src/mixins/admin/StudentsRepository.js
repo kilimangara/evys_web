@@ -21,6 +21,10 @@ export default superclass =>
         hasMorePages = () => this.props.totalPages > this.props.currentPage
 
         students = () => this.props.students
+
+        noStudents = () => {
+            return !this.props.students.length && !this.props.studentsFetching && this.props.currentPage === 1
+        }
     }
 
 export class StudentsProvider {

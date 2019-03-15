@@ -1,21 +1,35 @@
-import { loadSubject, loadSubjects, newSubject, deleteSubject, updateSubject, fetchSubjectCategories } from '../../reducers/admin/subjects'
+import {
+    loadSubject,
+    loadSubjects,
+    newSubject,
+    removeSubject,
+    updateSubject,
+    fetchSubjectCategories
+} from '../../reducers/admin/subjects'
+import { pickBy } from 'lodash'
 
 export default superclass =>
     class SubjectRepository extends superclass {
         //Здесь методы для работы с данными из компонента
 
         getSubject = () => {
-          const id = this.subjectId()
-          this.props.loadSubject(id)
+            const id = this.subjectId()
+            this.props.loadSubject(id)
         }
 
         updateSubject = () => {
-          const {subject} = this.state
-          return this.props.updateSubject(this.subjectId(), subject)
+            const { subject } = this.state
+            const sendedTariff = { ...subject.tariff }
+            const sendedSubject = { ...subject, tariff: pickBy(sendedTariff, el => el != undefined && el != '') }
+            return this.props.updateSubject(this.subjectId(), sendedSubject)
         }
 
         syncCategories = () => {
-          this.props.fetchSubjectCategories().then(({data}) => this.setState({categories: data}))
+            this.props.fetchSubjectCategories().then(({ data }) => this.setState({ categories: data }))
+        }
+
+        deleteSubject = () => {
+            return this.props.deleteSubject(this.subjectId())
         }
 
         subjectId = () => this.props.match.params['subjectId']
@@ -39,7 +53,7 @@ export class SubjectProvider {
         loadSubjects,
         createSubject: newSubject,
         updateSubject,
-        deleteSubject,
+        deleteSubject: removeSubject,
         fetchSubjectCategories
     }
 }

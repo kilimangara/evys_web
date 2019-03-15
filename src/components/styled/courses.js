@@ -3,7 +3,17 @@ import React from 'react'
 import { studentTheme } from '../../utils/global_theme'
 import Tabs from '@material-ui/core/Tabs/Tabs'
 import Tab from '@material-ui/core/Tab/Tab'
-import { CenteredContent, ColoredButton, ColumnFlexed, H1, H3, Paper, RowFlexed, WithVerticalMargin } from './common'
+import {
+    BorderedImage,
+    CenteredContent,
+    ColoredButton,
+    ColumnFlexed,
+    H1,
+    H3,
+    Paper,
+    RowFlexed,
+    WithVerticalMargin
+} from './common'
 
 export const CourseImage = styled.img`
     height: 50%;
@@ -330,8 +340,11 @@ export const CommentTextWrapper = styled(ColumnFlexed)`
 `
 
 export const Commentator = styled.div``
-export const CommentatorAvatar = styled.div``
 
 export const CommentBlock = styled.div`
     margin-bottom: 30px;
+`
+
+export const CommentatorAvatar = styled(BorderedImage)`
+    min-width: ${({ width }) => width};
 `

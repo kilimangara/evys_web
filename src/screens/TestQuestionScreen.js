@@ -25,6 +25,7 @@ import withProviders from '../utils/withProviders'
 import { getTestQuestion } from '../api'
 import ReactQuill from 'react-quill'
 import { studentTheme } from '../utils/global_theme'
+import { withSnackbar } from 'notistack'
 
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
@@ -32,6 +33,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
         answerSent: false,
         correct: null,
         question: null,
+        testFinished: false,
         textAnswer: ''
     }
 
@@ -48,7 +50,15 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 
     getTestBlockIdAndQuestion = async () => {
-        await this.props.startTestsSession(this.themeId)
+        try {
+            await this.props.startTestsSession(this.themeId)
+        } catch (err) {
+            if (err.response.data.status_code === 403) {
+                this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                this.props.history.push('/app/courses')
+            }
+            return
+        }
         this.getNextQuestion()
     }
 
@@ -64,6 +74,10 @@ class TestQuestionScreen extends TestsMixin(Component) {
             .then(res => {
                 const correct = res && res.data.answerData && res.data.answerData.isRight
                 this.setState({ correct, answerSent: true })
+                if (res.data.blockEnd && res.data.changeBlockId === null) {
+                    this.setState({ testFinished: true })
+                    return
+                }
                 this.state.textAnswer && this.getNextQuestion()
             })
     }
@@ -101,8 +115,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
     quillWorks = value => this.setState({ value })
 
     render() {
-        const { question, selectedAnswer, correct, answerSent, textAnswer } = this.state
-        const { testFinished } = this.props
+        const { question, selectedAnswer, correct, answerSent, textAnswer, testFinished } = this.state
         return testFinished ? (
             <FullsizeCentered>
                 <ColumnFlexed align={'center'}>
@@ -191,4 +204,4 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 }
 
-export default withProviders(TestsProvider)(TestQuestionScreen)
+export default withProviders(TestsProvider)(withSnackbar(TestQuestionScreen))

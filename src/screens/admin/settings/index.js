@@ -1,4 +1,5 @@
 import React from 'react'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import styled from 'styled-components'
 import Typography from '@material-ui/core/Typography'
 import { pick } from 'lodash'
@@ -12,6 +13,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import BillingPlanScreen from './subscription'
 import InvoicesScreen from './invoices'
 import { Route } from 'react-router'
+import withProviders from '../../../utils/withProviders'
 
 export const Card = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
@@ -40,7 +42,11 @@ const ListText = styled(ListItemText)`
     }
 `
 
-class SettingsScreen extends React.Component {
+class SettingsScreen extends withNav(React.Component) {
+    componentDidMount() {
+        this.changeHeader('Настройки')
+    }
+
     goTo = type => () => {
         switch (type) {
             case 'subscription':
@@ -70,4 +76,4 @@ class SettingsScreen extends React.Component {
     }
 }
 
-export default SettingsScreen
+export default withProviders(NavigationProvider)(SettingsScreen)

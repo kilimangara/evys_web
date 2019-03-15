@@ -8,7 +8,6 @@ import AnimateHeight from 'react-animate-height'
 
 export const AnswerBlank = styled(Paper)`
     border: ${({ selected, correct }) => {
-        console.log(correct)
         if (correct !== null) {
             return correct ? `8px solid ${studentTheme.ACCENT}` : `8px solid ${studentTheme.ACCENT_LIGHT}`
         } else return selected ? `8px solid ${studentTheme.PRIMARY_LIGHT}` : 'none'
@@ -23,6 +22,7 @@ export const AnswerBlank = styled(Paper)`
     height: 60px;
     border-radius: 5px;
     box-sizing: border-box;
+    cursor: pointer;
 `
 
 export const QuestionBlank = styled(Paper)`

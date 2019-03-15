@@ -19,6 +19,12 @@ import { SnackbarProvider } from 'notistack'
 import { studentTheme } from '../utils/global_theme'
 import withStyles from '@material-ui/core/styles/withStyles'
 import CourseScreen from '../screens/courses/CourseScreen'
+import VideoStudyScreen from '../screens/VideoStudyScreen'
+import NotificationsScreen from '../screens/NotificationsScreen'
+import { NotificationsProvider } from '../mixins/student/NotificationsRepository'
+import startOfDay from 'date-fns/start_of_day'
+import endOfDay from 'date-fns/end_of_day'
+import addMonths from 'date-fns/add_months'
 
 class App extends Component {
     constructor(props) {
@@ -34,11 +40,12 @@ class App extends Component {
             this.props.history.push('/login')
         }
         window.__localeId__ = 'ru'
+        this.props.fetchNotifications({ dateFrom: startOfDay(new Date()), dateTo: endOfDay(addMonths(new Date(), 1)) })
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(nextProps.valid_course)
-        console.log(this.props.valid_course)
+        // console.log(nextProps.valid_course)
+        // console.log(this.props.valid_course)
         // if (!nextProps.authenticated && nextProps.authenticated != this.props.authenticated) {
         //     this.props.history.push('/login')
         // }
@@ -114,6 +121,7 @@ class App extends Component {
                         <CommonWrapper>
                             <Switch>
                                 <Route exact path="/app/courses" component={CoursesScreen} />
+                                <Route exact path="/app/notifications" component={NotificationsScreen} />
                                 <Route path="/app/profile" component={ProfileScreen} />
                                 <Route exact path="/app/courses/all" component={AllCoursesScreen} />
                                 <Route path="/app/courses/search" component={SearchCoursesScreen} />
@@ -134,6 +142,11 @@ class App extends Component {
                                     path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/test"
                                     component={TestQuestionScreen}
                                 />
+                                <Route
+                                    exact
+                                    path="/app/course/:course_id(\d+)/theme/:theme_id(\d+)/theory/videos/:video_id(\d+)"
+                                    component={VideoStudyScreen}
+                                />
                                 <Route component={NotFoundPage} />
                             </Switch>
                         </CommonWrapper>
@@ -151,4 +164,4 @@ const styles = theme => ({
     info: { backgroundColor: studentTheme.CONTRAST_LIGHT }
 })
 
-export default withProviders(AuthorizationProvider)(withStyles(styles)(App))
+export default withProviders(AuthorizationProvider, NotificationsProvider)(withStyles(styles)(App))

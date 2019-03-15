@@ -31,51 +31,51 @@ const videosLoadingSuccess = createAction('courses/videos-loading-success')
 
 export const getCurrentCourses = (page = 1) => dispatch => {
     dispatch(coursesLoading())
-    return getStudentCourses({ progressTo: '99', page }).then(response => {
-        page === 1 ? dispatch(coursesReset(response.results)) : dispatch(coursesFetchSuccess(response.results))
+    return getStudentCourses({ progressTo: '99', page }).then(({ data }) => {
+        page === 1 ? dispatch(coursesReset(data.results)) : dispatch(coursesFetchSuccess(data.results))
     })
 }
 
 export const getFinishedCourses = (page = 1) => dispatch => {
-    dispatch(coursesLoading)
-    return getStudentCourses({ progressFrom: '100', page }).then(response => {
-        page === 1 ? dispatch(coursesReset(response.data)) : dispatch(coursesFetchSuccess(response.data))
+    dispatch(coursesLoading())
+    return getStudentCourses({ progressFrom: '100', page }).then(({ data }) => {
+        page === 1 ? dispatch(coursesReset(data.results)) : dispatch(coursesFetchSuccess(data.results))
     })
 }
 
 export const getCourseById = id => dispatch => {
-    dispatch(coursesLoading)
+    dispatch(coursesLoading())
     return getStudentCourse(id).then(response => dispatch(currentCourseFetchSuccess(response.data)))
 }
 
 export const loadThemes = (courseId, parentThemeId) => dispatch => {
-    dispatch(themesLoading)
+    dispatch(themesLoading())
     return getStudentThemes(courseId, parentThemeId, { parentTheme: parentThemeId }).then(response => {
-        dispatch(themesLoadingSuccess)
+        dispatch(themesLoadingSuccess())
         return response.data
     })
 }
 
 export const loadThemeById = themeId => dispatch => {
-    dispatch(themesLoading)
+    dispatch(themesLoading())
     return getStudentTheme(themeId).then(response => {
-        dispatch(themesLoadingSuccess)
+        dispatch(themesLoadingSuccess())
         return response.data
     })
 }
 
 export const loadTheoryByThemeId = themeId => dispatch => {
-    dispatch(themesLoading)
+    dispatch(themesLoading())
     return getStudentThemeTheory(themeId).then(response => {
-        dispatch(themesLoadingSuccess)
+        dispatch(themesLoadingSuccess())
         return response.data
     })
 }
 
 export const loadThemeVideos = themeId => dispatch => {
-    dispatch(videosLoading)
+    dispatch(videosLoading())
     return getStudentThemeVideo(themeId).then(response => {
-        dispatch(videosLoadingSuccess)
+        dispatch(videosLoadingSuccess())
         return response.data
     })
 }

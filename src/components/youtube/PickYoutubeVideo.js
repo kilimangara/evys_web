@@ -1,7 +1,40 @@
 import React from 'react'
 import HoverPaper from '../common/HoverPaper'
 import InfiniteScroll from 'react-infinite-scroller'
+import styled from 'styled-components'
 import GridList from '@material-ui/core/GridList'
+
+const GridWrapper = styled.div`
+    @media screen and (min-width: 0px) and (max-width: 750px) {
+        max-width: 250px;
+    }
+    @media screen and (min-width: 750px) and (max-width: 1075px) {
+        max-width: 750px;
+    }
+    @media screen and (min-width: 1075px) and (max-width: 1505px) {
+        max-width: 1075px;
+    }
+    @media screen and (min-width: 1505px) and (max-width: 1935px) {
+        max-width: 1505px;
+    }
+    @media screen and (min-width: 1935px) {
+        max-width: 1935px;
+    }
+    width: 5000px;
+    display: flex;
+    overflowy: auto;
+    flex-wrap: wrap;
+    flex-direction: row;
+`
+
+const Container = styled.div`
+    display: flex;
+    width: 100%;
+    padding: 12px;
+    justify-content: center;
+    flex-direction: center;
+    align-items: center;
+`
 
 export default class PickYoutubeVideo extends React.Component {
     state = {
@@ -22,8 +55,12 @@ export default class PickYoutubeVideo extends React.Component {
 
     renderItem = (item, index) => {
         return (
-            <div key={index} onClick={this.videoClicked.bind(this, item)}>
-                <HoverPaper style={{ height: 250 }}>
+            <div
+                key={index}
+                onClick={this.videoClicked.bind(this, item)}
+                style={{ margin: '18px 6px', cursor: 'pointer' }}
+            >
+                <HoverPaper style={{ height: 240, width: 200 }}>
                     <img src={item.snippet.thumbnails.medium.url} width={'100%'} height={120} />
                     <div style={{ padding: 8 }}>
                         <p style={styles.titleStyle}>{item.snippet.title}</p>
@@ -50,29 +87,20 @@ export default class PickYoutubeVideo extends React.Component {
     }
 
     render() {
+        console.log(this)
         if (!this.props.playlistId) return null
         let hasMore = Boolean(this.state.nextPageToken) || !this.state.items.length
         return (
-            <div style={styles.container}>
+            <Container>
                 <InfiniteScroll hasMore={hasMore} initialLoad pageStart={0} loadMore={this.loadPage}>
-                    <GridList padding={12} cellHeight={250} cols={5} style={styles.gridList}>
-                        {this.state.items.map(this.renderItem)}
-                    </GridList>
+                    <GridWrapper>{this.state.items.map(this.renderItem)}</GridWrapper>
                 </InfiniteScroll>
-            </div>
+            </Container>
         )
     }
 }
 
 const styles = {
-    container: {
-        display: 'flex',
-        width: '100%',
-        padding: 12
-    },
-    gridList: {
-        overflowY: 'auto'
-    },
     titleStyle: {
         color: 'black',
         fontSize: 16

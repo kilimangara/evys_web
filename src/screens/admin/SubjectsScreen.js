@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 import { connect } from 'react-redux'
 import GridList from '@material-ui/core/GridList'
 import Fab from '@material-ui/core/Fab'
@@ -11,6 +12,10 @@ import withProviders from '../../utils/withProviders'
 import styled from 'styled-components'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import { withSnackbar } from 'notistack'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 const GridWrapper = styled.div`
     @media screen and (min-width: 0px) and (max-width: 1090px) {
@@ -31,8 +36,25 @@ const GridWrapper = styled.div`
     flex-direction: row;
 `
 
-class SubjectsScreen extends SubjectRepository(Component) {
+const NoSubjectsWrapper = styled.div`
+    margin-top: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+`
+
+const Text = styled(Typography)`
+    font-weight: 300;
+    font-size: 22px;
+    text-align: center;
+    color: black;
+`
+
+class SubjectsScreen extends SubjectRepository(withNav(Component)) {
     componentDidMount() {
+        console.log('mount subjects', this)
+        this.changeHeader('Мои курсы')
         this.props.loadSubjects()
     }
 
@@ -49,19 +71,52 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     onSubjectSave = data => {
+        this.modal.hide()
         this.props
             .createSubject(data)
             .then(res => {
                 this.props.enqueueSnackbar('Предмет создан')
                 this.props.loadSubjects()
-                this.modal.hide()
             })
-            .catch(({ response }) => {
-                if (response.status === 402)
+            .catch(error => {
+                console.log('error in create subject', error)
+                if (error.response.status === 402)
                     this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {
                         variant: 'error'
                     })
             })
+    }
+
+    renderNoSubjects = () => {
+        return (
+            <NoSubjectsWrapper>
+                <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-subjects.svg'} />
+                <Text component={'span'}>{'У вас нет ни одного курса :('}</Text>
+                <div style={{ height: 12 }} />
+                <Button color="primary" variant={'contained'} onClick={this.floatingButtonClicked}>
+                    Создать свой первый курс!
+                </Button>
+            </NoSubjectsWrapper>
+        )
+    }
+
+    renderBody = () => {
+        const { subjects, subjectsFetching } = this.props
+        if (!subjects.length) return this.renderNoSubjects()
+        else
+            return (
+                <GridWrapper>
+                    {this.props.subjects.map(subject => (
+                        <div style={{ margin: '18px 6px' }} key={subject.id}>
+                            <Subject
+                                subject={subject}
+                                onClickSubject={this.onClickSubject}
+                                onClickSubjectInfo={this.onClickSubjectInfo}
+                            />
+                        </div>
+                    ))}
+                </GridWrapper>
+            )
     }
 
     render() {
@@ -75,17 +130,7 @@ class SubjectsScreen extends SubjectRepository(Component) {
         }
         return (
             <div style={styles.container}>
-                <GridWrapper>
-                    {this.props.subjects.map(subject => (
-                        <div style={{ margin: '18px 6px' }} key={subject.id}>
-                            <Subject
-                                subject={subject}
-                                onClickSubject={this.onClickSubject}
-                                onClickSubjectInfo={this.onClickSubjectInfo}
-                            />
-                        </div>
-                    ))}
-                </GridWrapper>
+                {this.renderBody()}
                 <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
                     <Add />
                 </Fab>
@@ -124,4 +169,10 @@ const styles = {
     }
 }
 
-export default withProviders(SubjectProvider)(withSnackbar(SubjectsScreen))
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(SubjectProvider, NavigationProvider),
+    withSnackbar
+)
+
+export default enhance(SubjectsScreen)

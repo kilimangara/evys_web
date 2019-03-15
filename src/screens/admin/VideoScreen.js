@@ -2,12 +2,13 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactPlayer from 'react-player'
 import { getVideos } from '../../actions/admin/ThemesActions'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 class VideoScreen extends React.Component {
     constructor(props) {
         super(props)
         const params = new URLSearchParams(this.props.location.search)
-        console.log(params, params.get('v'))
         this.theoryId = this.props.match.params['theory_id']
         this.videoIndex = parseInt(params.get('v'))
         this.state = {
@@ -53,7 +54,12 @@ const styles = {
     }
 }
 
-export default connect(
-    null,
-    { getVideos }
-)(VideoScreen)
+const enhance = compose(
+    connect(
+        null,
+        { getVideos }
+    ),
+    accountBlockedHOC
+)
+
+export default enhance(VideoScreen)

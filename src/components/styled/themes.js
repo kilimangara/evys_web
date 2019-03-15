@@ -93,7 +93,7 @@ export const ThemeStudyTextBlock = styled(Paper)`
 
 export const ThemeStudyTheoryItemContainer = styled(Paper)`
     background-color: ${studentTheme.PRIMARY_LIGHT};
-    width: calc(100% - 20px);
+    width: calc(100% - 40px);
     border-radius: 15px;
     display: flex;
     font: ${studentTheme.h3} ${studentTheme.FONT};
@@ -104,3 +104,10 @@ export const ThemeStudyTheoryItemContainer = styled(Paper)`
     margin: 12px 0;
 `
 
+export const VideoWrapper = styled.div`
+    overflow: hidden;
+    width: 100%;
+    padding-top: calc(591.44 / 1127.34 * 100%);
+    background: white;
+    position: relative;
+`

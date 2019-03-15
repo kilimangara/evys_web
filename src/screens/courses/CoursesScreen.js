@@ -32,14 +32,14 @@ class CoursesScreen extends CoursesMixin(Component) {
 
     render() {
         const { selectedTab } = this.state
-        const { loading, coursesList } = this.props
+        const { coursesFetching, coursesList } = this.props
         return (
             <CoursesScreenContainer>
                 <CoursesTabs value={selectedTab} fullWidth onChange={this.handleChange}>
                     <CoursesTab label={'Текущие'} />
                     <CoursesTab label={'Пройденые'} />
                 </CoursesTabs>
-                {loading ? (
+                {coursesFetching ? (
                     <LoaderWrapper>
                         <Loader />
                     </LoaderWrapper>
@@ -50,6 +50,7 @@ class CoursesScreen extends CoursesMixin(Component) {
                                 <CourseItem
                                     key={id}
                                     ended={billingInfo.ended}
+                                    disabled={billingInfo.ended}
                                     name={subject.subject}
                                     percent={progress}
                                     teacherName={owner}

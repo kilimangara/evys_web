@@ -4,11 +4,12 @@ import { DataCard } from '../components/BeforeStudy/DataCard'
 import { BeforeStudyWrapper, CardsBlock, ThemeNameBlock } from '../components/styled/BeforeStudy'
 import VideoIcon from '@material-ui/icons/Videocam'
 import DescriptionIcon from '@material-ui/icons/Description'
-import { H1 } from '../components/styled/common'
+import { CenteredContent, H1, Loader } from '../components/styled/common'
 import CheckboxIcon from '@material-ui/icons/CheckBox'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
 import { withRouter } from 'react-router'
+import { withSnackbar } from 'notistack'
 
 class BeforeStudy extends Component {
     state = {
@@ -17,7 +18,22 @@ class BeforeStudy extends Component {
     componentDidMount() {
         this.courseId = this.props.match.params['course_id']
         this.themeId = this.props.match.params['theme_id']
-        this.props.loadThemeById(this.themeId).then(response => this.setState({ theme: response }))
+        this.props
+            .loadThemeById(this.themeId)
+            .then(response => this.setState({ theme: response }))
+            .catch(err => {
+                if (err.response.data.status_code === 403) {
+                    this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                    this.props.history.push('/app/courses')
+                }
+                if (err.response.data.status_code === 404) {
+                    this.props.enqueueSnackbar(err.response.data.description, { variant: 'error' })
+                    this.props.history.push(`/app/course/${this.courseId}/themes/`)
+                }
+            })
+        if (!this.currentCourse) {
+            this.props.getCourseById(this.courseId)
+        }
     }
 
     goToTheory = () => this.props.history.push(`/app/course/${this.courseId}/theme/${this.themeId}/theory`)
@@ -26,8 +42,12 @@ class BeforeStudy extends Component {
 
     render() {
         const { theme } = this.state
-        const { currentCourse } = this.props
-        return (
+        const { coursesFetching, currentCourse } = this.props
+        return coursesFetching ? (
+            <CenteredContent height={'100%'}>
+                <Loader />
+            </CenteredContent>
+        ) : (
             <BeforeStudyWrapper>
                 <CurrentCourseItem
                     name={currentCourse && currentCourse.subject && currentCourse.subject.subject}
@@ -45,7 +65,7 @@ class BeforeStudy extends Component {
                         name={'Теория'}
                         iconsBlock={
                             <div>
-                                {theme && theme.theory && theme.theory.videos && <VideoIcon />}
+                                {!!theme && !!theme.theory && !!theme.theory.videos && <VideoIcon />}
                                 <DescriptionIcon />
                             </div>
                         }
@@ -67,4 +87,4 @@ class BeforeStudy extends Component {
     }
 }
 
-export default withRouter(withProviders(CoursesProvider)(BeforeStudy))
+export default withRouter(withProviders(CoursesProvider)(withSnackbar(BeforeStudy)))

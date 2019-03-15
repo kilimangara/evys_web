@@ -76,9 +76,9 @@ export const BorderedImage = styled.div`
 
 export const StudentTypography = styled.p`
     font-size: ${props => (props.fontSize ? `${props.fontSize}px` : '18px')};
-    font-family: Montserrat;
+    font-family: ${studentTheme.FONT};
     margin: 0;
-    padding: 12px 0;
+    padding: 15px 15px 15px 0;
     color: ${props => (props.mainColor ? 'white' : 'inherit')};
     font-weight: ${props => (props.bold ? 'bold' : props.fontWeight || '300')};
 `
@@ -117,7 +117,7 @@ export const StudentTextarea = styled.textarea`
 export const Loader = styled.div`
     width: 100px;
     height: 100px;
-    background-image: url(/images/Ripple-1s-200px.svg);
+    background-image: url(/frontend/images/Ripple-1s-200px.svg);
     background-size: 100px 100px;
 `
 
@@ -131,6 +131,7 @@ export const LoaderWrapper = styled.div`
 
 export const CenteredContent = styled.div`
     width: ${({ width }) => width || 'auto'};
+    height: ${({ height }) => height || 'auto'};
     display: flex;
     flex-direction: ${({ direction }) => direction || 'column'};
     justify-content: center;
@@ -276,4 +277,18 @@ export const FilledImage = styled.img`
     max-height: 100%;
     width: ${({ type }) => (type === 'wide' ? '' : 'auto')};
     height: ${({ type }) => (type === 'tall' ? '' : 'auto')};
+`
+
+export const NotificationsCircle = styled.div`
+    background-color: yellow;
+    border-radius: 50%;
+    width: 5px;
+    height: 5px;
+    position: absolute;
+    top: 0;
+    right: -3px;
+`
+
+export const RelativeBorderedImage = styled(BorderedImage)`
+    position: relative;
 `

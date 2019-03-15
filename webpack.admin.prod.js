@@ -13,7 +13,10 @@ module.exports = env => {
         output: {
             publicPath: '/dist/',
             path: path.resolve('./dist/'),
-            filename: '[hash].admin_app_bundle.js'
+            filename: '[hash].admin_bundle.js'
+            // Чанки ломают css
+            // filename: '[name].chunkhash.bundle.js',
+            // chunkFilename: '[name].chunkhash.bundle.js'
         },
         resolve: {
             extensions: ['.js', '.jsx', '.coffee']
@@ -21,18 +24,19 @@ module.exports = env => {
         module: {
             rules: loaders
         },
-        optimization: {
-            splitChunks: {
-                chunks: 'async',
-                minSize: 30000,
-                maxSize: 0,
-                minChunks: 1,
-                maxAsyncRequests: 5,
-                maxInitialRequests: 3,
-                automaticNameDelimiter: '~',
-                name: true
-            }
-        },
+        // optimization: {
+        //     runtimeChunk: 'single',
+        //     splitChunks: {
+        //         cacheGroups: {
+        //             vendor: {
+        //                 test: /node_modules/,
+        //                 chunks: 'initial',
+        //                 name: 'vendor',
+        //                 enforce: true
+        //             }
+        //         }
+        //     }
+        // },
         plugins: [
             new ExtractTextPlugin({
                 filename: '[hash].styles_admin.css'
@@ -48,9 +52,11 @@ module.exports = env => {
             }),
             new HtmlWebpackPlugin({
                 template: './public/index_admin.html',
-                title: 'Evys.Курсы',
+                title: 'Evys.Курсы - создание онлайн-школ бесплатно за 1 день',
                 filename: 'index_admin.html',
-                description: 'Создадим онлайн школу вместе с Evys.'
+                description:
+                    'Платформа для онлайн-школ позволяет быстро создавать курсы, внести своих учеников и следить за ними в автоматизированном режиме.',
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             }),
             new CompressionPlugin({
                 asset: '[path].gz[query]',

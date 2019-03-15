@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import classNames from 'classnames'
 import { LeftPanelContainer, LeftPanelNavigation, LeftPanelNavigationItem } from '../styled/layout'
-import { BorderedImage, SizedIconButton, StudentTypography } from '../styled/common'
+import {
+    BorderedImage,
+    NotificationsCircle,
+    RelativeBorderedImage,
+    SizedIconButton,
+    StudentTypography
+} from '../styled/common'
 import IconButton from '@material-ui/core/IconButton/IconButton'
 import { withRouter } from 'react-router'
 import { AccountProvider } from '../../mixins/student/AccountRepository'
@@ -9,6 +15,7 @@ import withProviders from '../../utils/withProviders'
 import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
 import { AuthorizationProvider } from '../../mixins/student/AuthorizationRepository'
 import { SearchProvider } from '../../mixins/student/SearchRepository'
+import { NotificationsProvider } from '../../mixins/student/NotificationsRepository'
 
 class LeftPanel extends Component {
     constructor(props) {
@@ -34,26 +41,16 @@ class LeftPanel extends Component {
                 this.setState({ selectedTab: 'all' })
             } else if (this.isMyCourses() && selectedTab !== 'my') {
                 this.setState({ selectedTab: 'my' })
+            } else if (!this.isAllCourses() && !this.isMyCourses()) {
+                this.setState({ selectedTab: null })
             }
         }
     }
 
-    activeButton = () => {
-        const { location } = this.props
-        if (location.pathname.includes('/all') || location.pathname.includes('/search')) return 'all'
-        if (location.pathname === '/app/student/courses') return 'my'
-        return null
+    goToNotifications = () => {
+        this.setState({ selectedTab: null })
+        this.props.history.push('/app/notifications/')
     }
-
-    componentDidUpdate(prevProps) {
-        console.log(prevProps.location, this.props.location, 'updated')
-        if (prevProps.location.pathname !== this.props.location.pathname)
-            this.setState({
-                selectedTab: this.activeButton()
-            })
-    }
-
-    goToNotifications = () => true //TODO: make notifications screen //this.props.history.push('/notifications/')
 
     goToSettings = () => {
         this.setState({ selectedTab: null })
@@ -82,7 +79,7 @@ class LeftPanel extends Component {
 
     render() {
         const { selectedTab } = this.state
-        const { buttonIndexActive, profileData } = this.props
+        const { buttonIndexActive, profileData, hasNotifications } = this.props
         return (
             <LeftPanelContainer>
                 <div style={{ padding: '0px 0px 0px 50px' }}>
@@ -96,10 +93,15 @@ class LeftPanel extends Component {
                         <LeftPanelNavigation style={{ justifyContent: 'space-between' }}>
                             <SizedIconButton
                                 width={18}
-                                disabled
                                 margin={'6px 20px'}
                                 children={
-                                    <BorderedImage image={'/images/notifications.svg'} width={'18px'} height={'18px'} />
+                                    <RelativeBorderedImage
+                                        image={'/frontend/images/notifications.svg'}
+                                        width={'18px'}
+                                        height={'18px'}
+                                    >
+                                        {hasNotifications && <NotificationsCircle />}
+                                    </RelativeBorderedImage>
                                 }
                                 onClick={this.goToNotifications}
                             />
@@ -107,14 +109,20 @@ class LeftPanel extends Component {
                                 width={18}
                                 margin={'6px 20px'}
                                 children={
-                                    <BorderedImage image={'/images/settings.svg'} width={'18px'} height={'18px'} />
+                                    <BorderedImage
+                                        image={'/frontend/images/settings.svg'}
+                                        width={'18px'}
+                                        height={'18px'}
+                                    />
                                 }
                                 onClick={this.goToSettings}
                             />
                             <SizedIconButton
                                 width={18}
                                 margin={'6px 20px'}
-                                children={<BorderedImage image={'/images/exit.svg'} width={'18px'} height={'18px'} />}
+                                children={
+                                    <BorderedImage image={'/frontend/images/exit.svg'} width={'18px'} height={'18px'} />
+                                }
                                 onClick={this.exit}
                             />
                         </LeftPanelNavigation>
@@ -136,4 +144,6 @@ class LeftPanel extends Component {
     }
 }
 
-export default withRouter(withProviders(AccountProvider, AuthorizationProvider, SearchProvider)(LeftPanel))
+export default withRouter(
+    withProviders(AccountProvider, AuthorizationProvider, SearchProvider, NotificationsProvider)(LeftPanel)
+)
