@@ -60,13 +60,14 @@ export const ThemeWrapper = styled.div`
 
 export const ThemesScreenWrapper = styled.div`
     width: 100%;
-    @media screen and (min-width: 0px) and (max-width: 796px) {
+    //min-width: fit-content;
+    @media screen and (min-width: 0px) and (max-width: ${398 * 2 + 400}px) {
         max-width: 398px;
     }
-    @media screen and (min-width: 797px) and (max-width: 1194px) {
+    @media screen and (min-width: ${398 * 2 + 400 + 1}px) and (max-width: ${398 * 3 + 400}px) {
         max-width: 796px;
     }
-    @media screen and (min-width: 1195px) {
+    @media screen and (min-width: ${398 * 3 + 400 + 1}px) {
         max-width: 1194px;
     }
 `

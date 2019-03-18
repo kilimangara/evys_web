@@ -13,6 +13,7 @@ import {
 import {
     AnimatedQuestion,
     AnswerBlank,
+    AnswerText,
     QuestionBlank,
     QuestionsBlock,
     QuestionText,
@@ -47,6 +48,10 @@ class TestQuestionScreen extends TestsMixin(Component) {
         this.mountTime = new Date().getTime()
         this.getTestBlockIdAndQuestion()
         this.addEnterListener()
+    }
+
+    componentWillUnmount() {
+        removeEventListener('keypress', this.handleEnterPress)
     }
 
     getTestBlockIdAndQuestion = async () => {
@@ -90,13 +95,15 @@ class TestQuestionScreen extends TestsMixin(Component) {
     }
 
     addEnterListener = () => {
-        addEventListener('keypress', e => {
-            if (e.keyCode === 13) {
-                this.state.answerSent
-                    ? this.getNextQuestion()
-                    : this.state.selectedAnswer && this.sendAnswer(this.state.selectedAnswer)
-            }
-        })
+        this.enterListener = addEventListener('keypress', this.handleEnterPress)
+    }
+
+    handleEnterPress = e => {
+        if (e.keyCode === 13) {
+            this.state.answerSent
+                ? this.getNextQuestion()
+                : this.state.selectedAnswer && this.sendAnswer(this.state.selectedAnswer)
+        }
     }
 
     onTextAnswerChange = e => this.setState({ textAnswer: e.target.value })
@@ -174,7 +181,7 @@ class TestQuestionScreen extends TestsMixin(Component) {
                                                     : this.selectAnswer(question.content)
                                             }
                                         >
-                                            <H3>{question.content}</H3>
+                                            <AnswerText>{question.content}</AnswerText>
                                         </AnswerBlank>
                                     )
                                 })

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import HoverPaper from '../common/HoverPaper'
-import { HorizontalCentered, Paper } from './common'
+import { H3, HorizontalCentered, Paper } from './common'
 import { studentTheme } from '../../utils/global_theme'
 import transition from 'styled-transition-group'
 import AnimateHeight from 'react-animate-height'
@@ -86,4 +86,8 @@ export const AnimatedQuestion = styled(AnimateHeight)`
         justify-content: center;
         width: 100%;
     }
+`
+
+export const AnswerText = styled(H3)`
+    text-align: center;
 `
