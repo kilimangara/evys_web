@@ -1,5 +1,6 @@
 import React from 'react'
 import ThemesRepository, { ThemeProvider } from '../../../mixins/admin/ThemesRepository'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import { YoutubeProvider } from '../../../mixins/admin/YoutubeProvider'
 import withProviders from '../../../utils/withProviders'
 import styled from 'styled-components'
@@ -17,6 +18,8 @@ import { Route } from 'react-router'
 import TheoryView from './theory-view'
 import TestCasesView from './test-cases'
 import ThemeSettings from './theme-settings'
+import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 const Container = styled.div`
     display: flex;
@@ -51,7 +54,7 @@ const ColoredButton = styled(Button)`
     color: white;
 `
 
-class ThemeScreen extends ThemesRepository(React.Component) {
+class ThemeScreen extends ThemesRepository(withNav(React.Component)) {
     state = {
         errors: {}
     }
@@ -62,7 +65,13 @@ class ThemeScreen extends ThemesRepository(React.Component) {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.theme !== prevProps.theme) this.setState({ theme: this.props.theme })
+        if (this.props.theme !== prevProps.theme) {
+            this.setState({ theme: this.props.theme })
+            this.changeNavigation({
+                header: `Тема ${this.props.theme.name}`,
+                backUrl: `/admin/subjects/${this.props.theme.subject}`
+            })
+        }
     }
 
     themeUpdated = theme => {
@@ -183,4 +192,9 @@ class ThemeScreen extends ThemesRepository(React.Component) {
     }
 }
 
-export default withProviders(ThemeProvider, YoutubeProvider)(ThemeScreen)
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(ThemeProvider, YoutubeProvider, NavigationProvider)
+)
+
+export default enhance(ThemeScreen)

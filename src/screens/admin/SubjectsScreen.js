@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 import { connect } from 'react-redux'
 import GridList from '@material-ui/core/GridList'
 import Fab from '@material-ui/core/Fab'
@@ -13,6 +14,8 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import { withSnackbar } from 'notistack'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 const GridWrapper = styled.div`
     @media screen and (min-width: 0px) and (max-width: 1090px) {
@@ -48,8 +51,10 @@ const Text = styled(Typography)`
     color: black;
 `
 
-class SubjectsScreen extends SubjectRepository(Component) {
+class SubjectsScreen extends SubjectRepository(withNav(Component)) {
     componentDidMount() {
+        console.log('mount subjects', this)
+        this.changeHeader('Мои курсы')
         this.props.loadSubjects()
     }
 
@@ -66,15 +71,16 @@ class SubjectsScreen extends SubjectRepository(Component) {
     }
 
     onSubjectSave = data => {
+        this.modal.hide()
         this.props
             .createSubject(data)
             .then(res => {
                 this.props.enqueueSnackbar('Предмет создан')
                 this.props.loadSubjects()
-                this.modal.hide()
             })
-            .catch(({ response }) => {
-                if (response.status === 402)
+            .catch(error => {
+                console.log('error in create subject', error)
+                if (error.response.status === 402)
                     this.props.enqueueSnackbar('Ваш тарифный план не поддерживает большее кол-во предметов', {
                         variant: 'error'
                     })
@@ -86,6 +92,7 @@ class SubjectsScreen extends SubjectRepository(Component) {
             <NoSubjectsWrapper>
                 <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-subjects.svg'} />
                 <Text component={'span'}>{'У вас нет ни одного курса :('}</Text>
+                <div style={{ height: 12 }} />
                 <Button color="primary" variant={'contained'} onClick={this.floatingButtonClicked}>
                     Создать свой первый курс!
                 </Button>
@@ -162,4 +169,10 @@ const styles = {
     }
 }
 
-export default withProviders(SubjectProvider)(withSnackbar(SubjectsScreen))
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(SubjectProvider, NavigationProvider),
+    withSnackbar
+)
+
+export default enhance(SubjectsScreen)

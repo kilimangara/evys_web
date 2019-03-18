@@ -87,8 +87,8 @@ ThemeCreation.defaultProps = {
         name: '',
         isHidden: true,
         testsModelType: 2,
-        endRange: '24:00:00',
-        repetitionRange: '03:00:00',
+        endRange: '03:00:00',
+        repetitionRange: '24:00:00',
         requiredRepeats: 3
     }
 }

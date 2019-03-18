@@ -1,4 +1,6 @@
 import React from 'react'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
+import withProviders from '../../../utils/withProviders'
 import { Card, TagChip } from './index'
 import SaveButton from '../../../components/common/SaveButton'
 import IconButton from '@material-ui/core/IconButton'
@@ -7,7 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import produce from 'immer'
 import Add from '@material-ui/icons/Add'
 
-export default class MainInfo extends React.Component {
+class MainInfo extends React.Component {
     state = {
         tag: ''
     }
@@ -115,3 +117,5 @@ export default class MainInfo extends React.Component {
         )
     }
 }
+
+export default withProviders()(MainInfo)

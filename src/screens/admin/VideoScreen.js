@@ -2,6 +2,8 @@ import React from 'react'
 import { connect } from 'react-redux'
 import ReactPlayer from 'react-player'
 import { getVideos } from '../../actions/admin/ThemesActions'
+import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
 
 class VideoScreen extends React.Component {
     constructor(props) {
@@ -52,7 +54,12 @@ const styles = {
     }
 }
 
-export default connect(
-    null,
-    { getVideos }
-)(VideoScreen)
+const enhance = compose(
+    connect(
+        null,
+        { getVideos }
+    ),
+    accountBlockedHOC
+)
+
+export default enhance(VideoScreen)

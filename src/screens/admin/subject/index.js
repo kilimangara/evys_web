@@ -1,5 +1,6 @@
 import React from 'react'
 import SubjectRepository, { SubjectProvider } from '../../../mixins/admin/SubjectRepository'
+import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableComponent'
 import withProviders from '../../../utils/withProviders'
 import styled from 'styled-components'
 import List from '@material-ui/core/List'
@@ -18,6 +19,9 @@ import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
+import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
+import { compose } from 'recompose'
+import { withSnackbar } from 'notistack'
 
 const WarningIcon = styled(Warning)`
     color: red;
@@ -63,9 +67,10 @@ export const TagChip = styled(Chip)`
     border: 1px solid ${theme.ACCENT_COLOR};
 `
 
-class SubjectScreen extends SubjectRepository(React.Component) {
+class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
     state = {
-        errors: {}
+        errors: {},
+        categories: []
     }
 
     componentDidMount() {
@@ -74,7 +79,10 @@ class SubjectScreen extends SubjectRepository(React.Component) {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.subject !== prevProps.subject) this.setState({ subject: this.props.subject })
+        if (this.props.subject !== prevProps.subject) {
+            this.changeNavigation({ header: `Курс ${this.props.subject.subject}`, backUrl: '/admin/subjects' })
+            this.setState({ subject: this.props.subject })
+        }
     }
 
     subjectUpdated = subject => {
@@ -139,6 +147,17 @@ class SubjectScreen extends SubjectRepository(React.Component) {
         this.saveSubject()
     }
 
+    onSubjectDelete = () => {
+        this.deleteSubject()
+            .then(() => {
+                this.props.history.replace('/admin/subjects')
+                this.props.enqueueSnackbar(`Курс удален`)
+            })
+            .catch(error => {
+                this.props.enqueueSnackbar(`Что-то пошло не так`, { variant: 'error' })
+            })
+    }
+
     render() {
         const { subject, categories } = this.state
         if (!subject || !categories)
@@ -167,7 +186,7 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                         <Divider />
                         <div style={{ marginLeft: 16, marginTop: 8 }}>
                             <ColoredButton
-                                type="contained"
+                                variant="contained"
                                 disabled={!subject.tariff.canPublish}
                                 margin="normal"
                                 onClick={this.changeVisibility}
@@ -177,6 +196,11 @@ class SubjectScreen extends SubjectRepository(React.Component) {
                             {!subject.tariff.canPublish && (
                                 <p style={{ color: 'red' }}>Некоторых данных не хватает для публикации</p>
                             )}
+                        </div>
+                        <div style={{ marginLeft: 16, marginTop: 8 }}>
+                            <Button variant="outlined" color="secondary" onClick={this.onSubjectDelete}>
+                                Удалить курс
+                            </Button>
                         </div>
                     </List>
                 </Card>
@@ -188,4 +212,10 @@ class SubjectScreen extends SubjectRepository(React.Component) {
     }
 }
 
-export default withProviders(SubjectProvider)(SubjectScreen)
+const enhance = compose(
+    accountBlockedHOC,
+    withProviders(SubjectProvider, NavigationProvider),
+    withSnackbar
+)
+
+export default enhance(SubjectScreen)
