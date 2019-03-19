@@ -50,12 +50,14 @@ export const PercentBlock = styled.div`
 export const ThemeWrapper = styled.div`
     max-height: 100%;
     max-width: 100%;
+    height: calc(100% - 20px);
     font-family: ${studentTheme.FONT};
     color: ${studentTheme.TEXT_COLOR};
     font-size: ${studentTheme.H2};
     display: flex;
     flex-direction: column;
     padding: 20px;
+    position: relative;
 `
 
 export const ThemesScreenWrapper = styled.div`

@@ -3,6 +3,13 @@ import Paper from '@material-ui/core/Paper'
 import HoverPaper from '../common/HoverPaper'
 import { studentTheme } from '../../utils/global_theme'
 import { PercentBlock, TextBlock, ThemeWrapper } from '../styled/themes'
+import {
+    CourseWrapper,
+    OutdatedText,
+    OutdatedThemeText,
+    OutdatedThemeWrapper,
+    OutdatedWrapper
+} from '../styled/courses'
 
 const getThemeItemBoxShadow = percent => {
     if (percent <= 33) {
@@ -14,7 +21,7 @@ const getThemeItemBoxShadow = percent => {
     } else return ''
 }
 
-export const ThemeItem = ({ alias, percent, onClick }) => (
+export const ThemeItem = ({ alias, percent, onClick, hidden }) => (
     <HoverPaper
         width={'350px'}
         height={'150px'}
@@ -32,6 +39,11 @@ export const ThemeItem = ({ alias, percent, onClick }) => (
         onClick={onClick}
     >
         <ThemeWrapper>
+            {hidden && (
+                <OutdatedWrapper>
+                    <OutdatedThemeText>Скоро выйдет</OutdatedThemeText>
+                </OutdatedWrapper>
+            )}
             <TextBlock>{alias}</TextBlock>
             <PercentBlock>{percent}%</PercentBlock>
         </ThemeWrapper>

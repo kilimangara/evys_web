@@ -4,16 +4,20 @@ import { CenteredContent } from '../components/styled/common'
 import { getEvents } from '../api'
 import moment from 'moment'
 import './calendar-styles.css'
-import { FullWidthCalendar } from '../components/styled/notifications'
+import { Event, FullWidthCalendar } from '../components/styled/notifications'
 import startOfDay from 'date-fns/start_of_day'
 import endOfDay from 'date-fns/end_of_day'
 import addMonths from 'date-fns/add_months'
 import withProviders from '../utils/withProviders'
 import { NotificationsProvider } from '../mixins/student/NotificationsRepository'
+import HoverPaper from '../components/common/HoverPaper'
+import Fade from '@material-ui/core/Fade/Fade'
+import Popper from '@material-ui/core/Popper/Popper'
 
 class NotificationsScreen extends Component {
     state = {
-        events: null
+        events: null,
+        target: null
     }
     currentView = 'agenda'
 
@@ -22,6 +26,23 @@ class NotificationsScreen extends Component {
             .fetchNotifications({ dateFrom: startOfDay(new Date()), dateTo: endOfDay(new Date()) })
             .then(response => this.setState({ events: response.data }))
     }
+
+    setComponentHovered = e => {
+        // debugger
+        this.setState({ target: e.currentTarget })
+    }
+
+    unsetComponentHovered = () => {
+        this.setState({ target: null })
+    }
+
+    renderMonthEvent = event => (
+        <Event id={event.title}>
+            <div onMouseEnter={e => this.setComponentHovered(e)} onMouseLeave={e => this.unsetComponentHovered(e)}>
+                {event.title}
+            </div>
+        </Event>
+    )
 
     handleRangeChange = dates => {
         if (this.currentView !== 'month') return
@@ -62,11 +83,19 @@ class NotificationsScreen extends Component {
         }))
 
     render() {
-        const { events } = this.state
+        const { events, target } = this.state
         const formEvents = (events && this.getEventsFromProps(events)) || []
         const localizer = BigCalendar.momentLocalizer(moment)
+        // console.log(target)
         return (
             <CenteredContent height={'100%'}>
+                <Popper id={'pop'} open={!!this.state.target} anchorEl={this.event} transition>
+                    {({ TransitionProps }) => (
+                        <Fade {...TransitionProps} timeout={350}>
+                            <HoverPaper>123</HoverPaper>
+                        </Fade>
+                    )}
+                </Popper>
                 <FullWidthCalendar
                     events={formEvents}
                     localizer={localizer}
@@ -95,6 +124,9 @@ class NotificationsScreen extends Component {
                     components={{
                         agenda: {
                             event: this.renderAgendaEvent
+                        },
+                        month: {
+                            event: this.renderMonthEvent
                         }
                     }}
                     culture={'ru'}
