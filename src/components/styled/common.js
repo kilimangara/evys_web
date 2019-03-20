@@ -170,6 +170,10 @@ export const Error = styled.div`
     color: ${studentTheme.ERROR};
     font: ${studentTheme.H3} ${studentTheme.FONT};
 `
+export const H5 = styled.div`
+    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
+    font: ${studentTheme.H5} ${studentTheme.FONT};
+`
 
 export const H4 = styled.div`
     color: ${({ color }) => color || studentTheme.TEXT_COLOR};
@@ -236,6 +240,7 @@ export const ColumnFlexed = styled.div`
 export const RowForm = styled.form`
     display: flex;
     flex-direction: row;
+    position: relative;
 `
 
 export const FullPageOverlay = styled.div`

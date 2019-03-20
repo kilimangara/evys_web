@@ -31,7 +31,7 @@ button.rbc-input::-moz-focus-inner {
     -ms-flex-align: stretch;
     align-items: stretch;
     color: white;
-    font: 200 14px var(--font);
+    font: 300 16px var(--font);
 }
 .rbc-calendar *,
 .rbc-calendar *:before,

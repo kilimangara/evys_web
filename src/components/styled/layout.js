@@ -90,7 +90,8 @@ export const StudentAppWrapper = styled.div`
 
 export const SearchButton = styled(IconButton)`
     padding: 0;
-    position: relative;
-    right: 30px;
+    position: absolute;
+    right: 5px;
+    top: 3px;
     color: ${studentTheme.TEXT_COLOR};
 `
