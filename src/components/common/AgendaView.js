@@ -28,7 +28,7 @@ class AgendaView extends Component {
     onCurrentDate = () => {
         this.props.onDateChange(
             startOfDay(new Date()),
-            addDays(startOfDay(new Date()), differenceInDays(this.props.startDate, this.props.endDate))
+            addDays(startOfDay(new Date()), differenceInDays(this.props.endDate, this.props.startDate))
         )
     }
 

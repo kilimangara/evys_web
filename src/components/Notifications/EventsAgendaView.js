@@ -37,7 +37,7 @@ class EventsAgendaView extends Component {
                 <AgendaView startDate={dateFrom} endDate={dateTo} onDateChange={this.onDateChange} step={1}>
                     {events &&
                         events.map(event => (
-                            <EventPaper clickable onClick={() => this.goToEvent(event)}>
+                            <EventPaper key={event.title} clickable onClick={() => this.goToEvent(event)}>
                                 <WithVerticalMargin margin={'20px'}>
                                     <H3>{event.title}</H3>
                                 </WithVerticalMargin>
