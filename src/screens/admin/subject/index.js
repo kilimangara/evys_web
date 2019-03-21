@@ -80,10 +80,16 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
 
     componentDidUpdate(prevProps) {
         if (this.props.subject !== prevProps.subject) {
-            this.changeNavigation({ header: `Курс ${this.props.subject.subject}`, backUrl: '/admin/subjects' })
+            this.reloadNavigation()
             this.setState({ subject: this.props.subject })
         }
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.reloadNavigation()
+        }
     }
+
+    reloadNavigation = () =>
+        this.changeNavigation({ header: `Курс ${this.props.subject.subject}`, backUrl: '/admin/subjects' })
 
     subjectUpdated = subject => {
         this.setState({ subject })
