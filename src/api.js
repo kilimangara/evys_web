@@ -338,6 +338,13 @@ export function fetchCategories() {
     })
 }
 
+export function searchSubjectthemes(subjectId, params) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/search_themes`,
+        params: params
+    })
+}
+
 export function getSubjectThemes(subjectId, params) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/themes`,
