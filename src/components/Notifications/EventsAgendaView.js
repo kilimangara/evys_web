@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { AgendaHeader, EventPaper, EventsAgendaWrapper } from '../styled/notifications'
-import { ColoredButton, H3, H5, RowFlexed, WithVerticalMargin } from '../styled/common'
+import { EventPaper, EventsAgendaWrapper } from '../styled/notifications'
+import { H3, H5, WithVerticalMargin } from '../styled/common'
 import AgendaView from '../common/AgendaView'
 import { getEvents } from '../../api'
 import { startOfDay, endOfDay } from 'date-fns'

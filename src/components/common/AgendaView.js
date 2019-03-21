@@ -7,9 +7,8 @@ import {
     AgendaHeaderInfo,
     EventsAgendaWrapper
 } from '../styled/notifications'
-import { ColoredButton, H3, RowFlexed } from '../styled/common'
+import { ColoredButton } from '../styled/common'
 import { studentTheme } from '../../utils/global_theme'
-import { ProfileContainer } from '../styled/profile'
 import { startOfDay, addDays, format, differenceInDays } from 'date-fns'
 
 class AgendaView extends Component {

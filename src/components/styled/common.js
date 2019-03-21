@@ -5,6 +5,7 @@ import Modal from 'reboron/ScaleModal'
 import { Button } from '@material-ui/core'
 import { studentTheme } from '../../utils/global_theme'
 import ReactCodeInput from 'react-code-input'
+import Downshift from 'downshift'
 
 export const Paper = styled.div`
     box-shadow: ${({ boxShadow, hovered }) =>
@@ -296,4 +297,8 @@ export const NotificationsCircle = styled.div`
 
 export const RelativeBorderedImage = styled(BorderedImage)`
     position: relative;
+`
+
+export const FullWidthDownshift = styled(Downshift)`
+    width: 100%;
 `

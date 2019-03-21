@@ -7,6 +7,10 @@ import MenuItem from '@material-ui/core/MenuItem'
 import { withStyles } from '@material-ui/core/styles'
 import { fetchSubjectCategories } from '../../reducers/admin/subjects'
 
+import Paper from '@material-ui/core/Paper'
+import { deburr } from 'lodash'
+import { FullWidthDownshift } from '../styled/common'
+
 class SubjectCreation extends Component {
     constructor(props) {
         super(props)
@@ -19,8 +23,8 @@ class SubjectCreation extends Component {
         })
     }
 
-    changeCategory = event => {
-        const category = this.state.categories.find(category => category.categorySecret === event.target.value)
+    changeCategory = name => {
+        const category = this.state.categories.find(category => category.verboseName === name)
         this.setState({ selectedCategory: category })
     }
 
@@ -30,6 +34,43 @@ class SubjectCreation extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.props.initialState !== prevProps.initialState) this.setState(this.props.initialState)
+    }
+
+    getSuggestions = value => {
+        const inputValue = deburr(value.trim()).toLowerCase()
+        const inputLength = inputValue.length
+        let count = 0
+
+        return inputLength === 0
+            ? []
+            : this.state.categories.filter(suggestion => {
+                  const keep = count < 5 && suggestion.verboseName.slice(0, inputLength).toLowerCase() === inputValue
+
+                  if (keep) {
+                      count += 1
+                  }
+
+                  return keep
+              })
+    }
+
+    renderSuggestion = ({ suggestion, index, itemProps, highlightedIndex, selectedItem }) => {
+        const isHighlighted = highlightedIndex === index
+        const isSelected = (selectedItem || '').indexOf(suggestion.verboseName) > -1
+
+        return (
+            <MenuItem
+                {...itemProps}
+                key={suggestion.label}
+                selected={isHighlighted}
+                component="div"
+                style={{
+                    fontWeight: isSelected ? 500 : 400
+                }}
+            >
+                {suggestion.verboseName}
+            </MenuItem>
+        )
     }
 
     render() {
@@ -44,22 +85,43 @@ class SubjectCreation extends Component {
                     fullWidth
                     margin={'normal'}
                 />
-                <TextField
-                    select
-                    margin="normal"
-                    label={'Категория'}
-                    fullWidth
-                    value={selectedCategory.categorySecret}
-                    onChange={this.changeCategory}
-                >
-                    {(categories.length &&
-                        categories.map(category => (
-                            <MenuItem key={category.categorySecret} value={category.categorySecret}>
-                                {category.verboseName}
-                            </MenuItem>
-                        ))) ||
-                        []}
-                </TextField>
+                <FullWidthDownshift id="downshift-simple" onSelect={this.changeCategory}>
+                    {({
+                        getInputProps,
+                        getItemProps,
+                        getMenuProps,
+                        highlightedIndex,
+                        inputValue,
+                        isOpen,
+                        selectedItem
+                    }) => (
+                        <div style={{ width: '100%' }}>
+                            <TextField
+                                margin="normal"
+                                label={'Категория'}
+                                fullWidth
+                                value={selectedCategory.categorySecret}
+                                onChange={this.changeCategory}
+                                InputProps={getInputProps()}
+                            />
+                            <div {...getMenuProps()}>
+                                {isOpen ? (
+                                    <Paper square>
+                                        {this.getSuggestions(inputValue).map((suggestion, index) =>
+                                            this.renderSuggestion({
+                                                suggestion,
+                                                index,
+                                                itemProps: getItemProps({ item: suggestion.verboseName }),
+                                                highlightedIndex,
+                                                selectedItem
+                                            })
+                                        )}
+                                    </Paper>
+                                ) : null}
+                            </div>
+                        </div>
+                    )}
+                </FullWidthDownshift>
                 <div className={classes.buttonsContainer}>
                     <Button
                         variant="contained"
