@@ -310,6 +310,28 @@ export function deleteSubject(subjectId) {
     })
 }
 
+export function getSubjectStudents(subjectId, params) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students`,
+        params
+    })
+}
+
+export function getSubjectStudentTests(subjectId, studentId, params) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/student/${studentId}/tests`,
+        params
+    })
+}
+
+export function createSubjectStudentEvent(subjectId, studentId, data) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/student/${studentId}/events`,
+        data,
+        method: 'POST'
+    })
+}
+
 export function fetchCategories() {
     return axiosInstance.request({
         url: `/category`
