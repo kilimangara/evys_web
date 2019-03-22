@@ -71,12 +71,22 @@ const NoStudentsText = styled(Typography)`
     color: black;
 `
 
+const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
+    color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR : 'black')};
+    background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
+`
+
+const ToolbarTitle = styled.div`
+    flex: 0 0 auto;
+`
+
 class StudentManagement extends Component {
     state = {
         students: [],
         totalPages: 1,
         currentPage: 0,
-        query: ''
+        query: '',
+        fetching: false
     }
 
     componentDidMount() {
@@ -114,7 +124,19 @@ class StudentManagement extends Component {
     }
 
     renderStudent = (student, index) => {
-        return <TableRow key={student.id} />
+        return (
+            <TableRow key={student.id}>
+                <TableCell align="left">{student.id}</TableCell>
+                <TableCell>{student.fullName}</TableCell>
+                <TableCell align="center">{student.progress}</TableCell>
+                <TableCell align="center">{student.academicPerformance}</TableCell>
+                <TableCell>
+                    <Button variant="outlined" color="primary">
+                        Подробнее
+                    </Button>
+                </TableCell>
+            </TableRow>
+        )
     }
 
     renderSearch = () => {
@@ -132,8 +154,24 @@ class StudentManagement extends Component {
 
     students = () => this.state.students
 
+    renderToolbar = () => {
+        return (
+            <TableToolbar highlight={false}>
+                <ToolbarTitle>
+                    <Typography variant="h6" id="tableTitle">
+                        Мои ученики
+                    </Typography>
+                </ToolbarTitle>
+            </TableToolbar>
+        )
+    }
+
+    noStudents = () => {
+        return !this.state.students.length && !this.state.fetching && this.state.currentPage === 1
+    }
+
     renderIntro = () => {
-        if (!!this.state.students.length) return null
+        if (!this.noStudents()) return null
         return (
             <NoStudentsWrapper>
                 <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-students.svg'} />
@@ -155,13 +193,16 @@ class StudentManagement extends Component {
             <React.Fragment>
                 {this.renderSearch()}
                 <Card marginTop={12} noPadding>
+                    {this.renderToolbar()}
                     <Table>
                         <TableHead>
-                            <TableCell align="left">Идентификатор</TableCell>
-                            <TableCell>Имя</TableCell>
-                            <TableCell>Прогресс</TableCell>
-                            <TableCell>Успеваемость</TableCell>
-                            <TableCell />
+                            <TableRow>
+                                <TableCell align="left">Идентификатор</TableCell>
+                                <TableCell>Имя</TableCell>
+                                <TableCell>Прогрес</TableCell>
+                                <TableCell>Успеваемость</TableCell>
+                                <TableCell />
+                            </TableRow>
                         </TableHead>
                         <TableBody>{this.students().map(this.renderStudent)}</TableBody>
                     </Table>
@@ -185,8 +226,6 @@ class StudentManagement extends Component {
     }
 
     render() {
-        const { students, currentPage, totalPages } = this.state
-        console.log(students)
         return (
             <Container>
                 {this.renderIntro()}
