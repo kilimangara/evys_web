@@ -1,7 +1,15 @@
 import { createAction, createReducer } from 'redux-act'
 import produce from 'immer'
 
-import { getSubjects, getSubject, createSubject, fetchCategories, putSubject, deleteSubject } from '../../api'
+import {
+    getSubjects,
+    getSubject,
+    createSubject,
+    fetchCategories,
+    putSubject,
+    deleteSubject,
+    getSubjectStudents
+} from '../../api'
 import { merge } from 'lodash'
 import { chooseAccount } from './account'
 
@@ -21,6 +29,10 @@ export const replaceSubject = createAction('subjects/replace')
 export const resetSubjectList = createAction('subjects/reset-list')
 export const endLoadingSubjects = createAction('subjects/end-loading')
 export const deleteSubjectSuccess = createAction('subjects/delete-success')
+
+export const loadSubjectStudents = (subjectId, params) => dispatch => {
+    return getSubjectStudents(subjectId, params)
+}
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {
     dispatch(startLoadingSubjects())

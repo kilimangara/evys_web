@@ -19,6 +19,7 @@ import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
+import StudentManagementScreen from './student-management'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
@@ -138,6 +139,8 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/billing`)
             case 'themes':
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/themes`)
+            case 'students':
+                return this.props.history.replace(`/admin/subjects/${this.subjectId()}/students`)
             case 'subscribe':
                 return this.props.history.push(
                     `/admin/students?tariff_id=${subject.tariff.id}&tariff_name=${subject.subject}`
@@ -186,6 +189,9 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                             <ListText primary="Информация для ученика" />
                             {!subject.tariff.canPublish ? <WarningIcon /> : null}
                         </ListItem>
+                        <ListItem button onClick={this.goTo('students')}>
+                            <ListText primary="Мои ученики" />
+                        </ListItem>
                         <ListItem button onClick={this.goTo('subscribe')}>
                             <ListText primary="Записать своих учеников" />
                         </ListItem>
@@ -211,6 +217,7 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                     </List>
                 </Card>
                 <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen} />
+                <Route exact path="/admin/subjects/:subjectId(\d+)/students" component={StudentManagementScreen} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/billing" render={this.renderBillingInfo} />
             </Container>
