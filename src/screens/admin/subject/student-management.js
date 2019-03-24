@@ -21,14 +21,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { loadSubjectStudents } from '../../../reducers/admin/subjects'
-
-const Card = styled.div`
-    margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background-color: white;
-    box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
-    padding: ${({ noPadding }) => (noPadding ? '0px' : '12px')};
-`
+import { Card } from './index.js'
 
 const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
@@ -71,12 +64,12 @@ const NoStudentsText = styled(Typography)`
     color: black;
 `
 
-const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
+export const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
     color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR : 'black')};
     background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
 `
 
-const ToolbarTitle = styled.div`
+export const ToolbarTitle = styled.div`
     flex: 0 0 auto;
 `
 
@@ -123,6 +116,10 @@ class StudentManagement extends Component {
         this.loadStudents(1, this.state.query)
     }
 
+    goToStudent = studentId => () => {
+        this.props.history.push(`/admin/subjects/${this.subjectId()}/students/${studentId}`)
+    }
+
     renderStudent = (student, index) => {
         return (
             <TableRow key={student.id}>
@@ -131,7 +128,7 @@ class StudentManagement extends Component {
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">{student.academicPerformance}</TableCell>
                 <TableCell>
-                    <Button variant="outlined" color="primary">
+                    <Button variant="outlined" color="primary" onClick={this.goToStudent(student.id)}>
                         Подробнее
                     </Button>
                 </TableCell>

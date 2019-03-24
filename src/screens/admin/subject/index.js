@@ -21,6 +21,7 @@ import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
 import StudentManagementScreen from './student-management'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
+import StudentTestBlockScreen from './student-test-blocks'
 import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
 
@@ -36,13 +37,13 @@ const Container = styled.div`
     align-items: stretch;
 `
 
-const ListHeader = styled(ListSubheader)`
+export const ListHeader = styled(ListSubheader)`
     font-weight: 600;
     font-size: 18px;
     color: black;
 `
 
-const ListText = styled(ListItemText)`
+export const ListText = styled(ListItemText)`
     & > span {
         padding-left: 20px;
     }
@@ -53,7 +54,7 @@ export const Card = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.12);
     background-color: white;
     box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
-    padding: 12px;
+    padding: ${({ noPadding }) => (noPadding ? '0px' : '12px')};
 `
 
 const ColoredButton = styled(Button)`
@@ -218,6 +219,11 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 </Card>
                 <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/students" component={StudentManagementScreen} />
+                <Route
+                    exact
+                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
+                    component={StudentTestBlockScreen}
+                />
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/billing" render={this.renderBillingInfo} />
             </Container>
