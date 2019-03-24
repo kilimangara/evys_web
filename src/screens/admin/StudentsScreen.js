@@ -301,11 +301,13 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                     {this.renderToolbar()}
                     <Table>
                         <TableHead>
-                            <TableCell padding="checkbox" />
-                            <TableCell align="left">Идентификатор</TableCell>
-                            <TableCell>Имя</TableCell>
-                            <TableCell>Телефон</TableCell>
-                            <TableCell align="right">Почта</TableCell>
+                            <TableRow>
+                                <TableCell padding="checkbox" />
+                                <TableCell align="left">Идентификатор</TableCell>
+                                <TableCell>Имя</TableCell>
+                                <TableCell>Телефон</TableCell>
+                                <TableCell align="right">Почта</TableCell>
+                            </TableRow>
                         </TableHead>
                         <TableBody>{this.students().map(this.renderStudent)}</TableBody>
                     </Table>

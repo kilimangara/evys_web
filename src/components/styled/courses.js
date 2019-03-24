@@ -166,6 +166,14 @@ export const CourseHeaderBlock = styled(Paper)`
     overflow: inherit;
 `
 
+export const OutdatedThemeWrapper = styled(OutdatedWrapper)`
+    height: calc(100% - 20px);
+`
+
+export const OutdatedThemeText = styled(OutdatedText)`
+    bottom: 30px;
+`
+
 export const CourseInfoCardBlock = styled(Paper)`
     position: absolute;
     bottom: -150px;

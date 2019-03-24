@@ -53,7 +53,6 @@ const Text = styled(Typography)`
 
 class SubjectsScreen extends SubjectRepository(withNav(Component)) {
     componentDidMount() {
-        console.log('mount subjects', this)
         this.changeHeader('Мои курсы')
         this.props.loadSubjects()
     }

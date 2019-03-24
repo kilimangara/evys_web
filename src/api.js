@@ -61,24 +61,29 @@ axiosInstance.interceptors.request.use(config => {
     return studentTokenAuth(config)
 })
 
+function camelizeResponse(response) {
+    let { data } = response
+    if (data instanceof Blob) return response
+    data = humps.camelizeKeys(data)
+    if (!data) return response
+    if (data.data) {
+        response.data = data.data
+        return response
+    }
+    if (data.error) {
+        response.data = data.error
+        return response
+    }
+    response.data = data
+    return response
+}
+
 axiosInstance.interceptors.response.use(
     response => {
-        let { data } = response
-        if (data instanceof Blob) return response
-        data = humps.camelizeKeys(data)
-        if (!data) return response
-        if (data.data) {
-            response.data = data.data
-            return response
-        }
-        if (data.error) {
-            response.data = data.error
-            return response
-        }
-        response.data = data
-        return response
+        return camelizeResponse(response)
     },
     error => {
+        error.response = camelizeResponse(error.response)
         if (error.response.status === 401) {
             if (__CURRENT_APP__ === ADMIN_APP) autoLogoutAdmin(error)
             else autoLogoutStudent(error)
@@ -310,9 +315,38 @@ export function deleteSubject(subjectId) {
     })
 }
 
+export function getSubjectStudents(subjectId, params) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students`,
+        params
+    })
+}
+
+export function getSubjectStudentTests(subjectId, studentId, params) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/student/${studentId}/tests`,
+        params
+    })
+}
+
+export function createSubjectStudentEvent(subjectId, studentId, data) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/student/${studentId}/events`,
+        data,
+        method: 'POST'
+    })
+}
+
 export function fetchCategories() {
     return axiosInstance.request({
         url: `/category`
+    })
+}
+
+export function searchSubjectthemes(subjectId, params) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/search_themes`,
+        params: params
     })
 }
 

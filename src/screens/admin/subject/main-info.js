@@ -8,6 +8,9 @@ import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import produce from 'immer'
 import Add from '@material-ui/icons/Add'
+import { FullWidthDownshift } from '../../../components/styled/common'
+import { deburr } from 'lodash'
+import Paper from '@material-ui/core/Paper'
 
 class MainInfo extends React.Component {
     state = {
@@ -35,6 +38,43 @@ class MainInfo extends React.Component {
         )
     }
 
+    getSuggestions = value => {
+        const inputValue = deburr(value.trim()).toLowerCase()
+        const inputLength = inputValue.length
+        let count = 0
+
+        return inputLength === 0
+            ? []
+            : this.props.categories.filter(suggestion => {
+                  const keep = count < 5 && suggestion.verboseName.slice(0, inputLength).toLowerCase() === inputValue
+
+                  if (keep) {
+                      count += 1
+                  }
+
+                  return keep
+              })
+    }
+
+    renderSuggestion = ({ suggestion, index, itemProps, highlightedIndex, selectedItem }) => {
+        const isHighlighted = highlightedIndex === index
+        const isSelected = (selectedItem || '').indexOf(suggestion.verboseName) > -1
+
+        return (
+            <MenuItem
+                {...itemProps}
+                key={suggestion.label}
+                selected={isHighlighted}
+                component="div"
+                style={{
+                    fontWeight: isSelected ? 500 : 400
+                }}
+            >
+                {suggestion.verboseName}
+            </MenuItem>
+        )
+    }
+
     deleteTag = index => () => {
         this.props.subjectUpdated(
             produce(this.props.subject, draft => {
@@ -44,9 +84,9 @@ class MainInfo extends React.Component {
     }
 
     fieldChanged = field => event => {
-        let value = event.target.value
+        let value = event && event.target && event.target.value
         if (field === 'categorySecret') {
-            const category = this.props.categories.find(category => category.categorySecret === event.target.value)
+            const category = this.props.categories.find(category => category.verboseName === event) // actually it's value, nevermind
             value = category.categorySecret
         }
         this.props.subjectUpdated(
@@ -68,23 +108,46 @@ class MainInfo extends React.Component {
                     fullWidth
                     margin={'normal'}
                 />
-                <TextField
-                    select
-                    variant="outlined"
-                    margin="normal"
-                    label={'Категория'}
-                    fullWidth
-                    value={subject.categorySecret || subject.category.categorySecret}
-                    onChange={this.fieldChanged('categorySecret')}
+                <FullWidthDownshift
+                    id="different-complex-2"
+                    initialInputValue={subject.categorySecret || subject.category.verboseName}
+                    onSelect={this.fieldChanged('categorySecret')}
                 >
-                    {(categories.length &&
-                        categories.map(category => (
-                            <MenuItem key={category.categorySecret} value={category.categorySecret}>
-                                {category.verboseName}
-                            </MenuItem>
-                        ))) ||
-                        []}
-                </TextField>
+                    {({
+                        getInputProps,
+                        getItemProps,
+                        getMenuProps,
+                        highlightedIndex,
+                        inputValue,
+                        isOpen,
+                        selectedItem
+                    }) => (
+                        <div style={{ width: '100%' }}>
+                            <TextField
+                                margin="normal"
+                                label={'Категория'}
+                                fullWidth
+                                variant={'outlined'}
+                                InputProps={getInputProps()}
+                            />
+                            <div {...getMenuProps()}>
+                                {isOpen ? (
+                                    <Paper square>
+                                        {this.getSuggestions(inputValue).map((suggestion, index) =>
+                                            this.renderSuggestion({
+                                                suggestion,
+                                                index,
+                                                itemProps: getItemProps({ item: suggestion.verboseName }),
+                                                highlightedIndex,
+                                                selectedItem
+                                            })
+                                        )}
+                                    </Paper>
+                                ) : null}
+                            </div>
+                        </div>
+                    )}
+                </FullWidthDownshift>
                 <form onSubmit={this.handleAddTag} style={{ position: 'relative' }}>
                     <TextField
                         onChange={this.changeLocalState('tag')}

@@ -67,12 +67,18 @@ class ThemeScreen extends ThemesRepository(withNav(React.Component)) {
     componentDidUpdate(prevProps) {
         if (this.props.theme !== prevProps.theme) {
             this.setState({ theme: this.props.theme })
-            this.changeNavigation({
-                header: `Тема ${this.props.theme.name}`,
-                backUrl: `/admin/subjects/${this.props.theme.subject}`
-            })
+            this.reloadNavigation()
+        }
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.reloadNavigation()
         }
     }
+
+    reloadNavigation = () =>
+        this.changeNavigation({
+            header: `Тема ${this.props.theme.name}`,
+            backUrl: `/admin/subjects/${this.props.theme.subject}`
+        })
 
     themeUpdated = theme => {
         this.setState({ theme })

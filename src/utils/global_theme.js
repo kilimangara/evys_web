@@ -27,6 +27,7 @@ export const studentTheme = {
     H2: '20px',
     H3: '18px',
     H4: '16px',
+    H5: '14px',
     THEME_GRADIENT_LEFT: '#3E3E3E',
     THEME_GRADIENT_RIGHT: '#535353',
     THEME_ACTIVE_GRADIENT_LEFT: '#7601C9',
