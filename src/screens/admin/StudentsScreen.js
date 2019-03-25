@@ -27,7 +27,7 @@ import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { Dialog } from '@material-ui/core'
 import { SubjectPicker } from './students/SubjectPicker'
-import { getSubjects } from '../../api'
+import { getSubject, getSubjects } from '../../api'
 import {
     Card,
     Container,
@@ -155,9 +155,11 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
 
     handleSubjectSave = subject => {
         const { selectedIds } = this.state
-        this.props.addStudentsToTariff(subject.id, selectedIds).then(() => {
-            this.props.enqueueSnackbar(`Ученики записаны на курс ${this.queryTariffName()}`)
-            this.setState({ selectedIds: [], modalOpened: false, searchValue: null })
+        getSubject(subject.id).then(({ data }) => {
+            this.props.addStudentsToTariff(data && data.tariff.id, selectedIds).then(() => {
+                this.props.enqueueSnackbar(`Ученики записаны на курс ${(data && data.tariff.name) || ''}`)
+                this.setState({ selectedIds: [], modalOpened: false, searchValue: null })
+            })
         })
     }
 
