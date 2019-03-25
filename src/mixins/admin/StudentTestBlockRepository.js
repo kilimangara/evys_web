@@ -23,25 +23,16 @@ export default superclass =>
 
         getTestBlock = () => {
             this.setState({ fetching: true })
-            this.props
-                .getTestBlock(this.testBlockId())
-                .then(({ data }) => {
-                    this.setState({ testBlock: data })
-                })
-                .catch(error => {
-                    this.setState({ fetching: true })
-                })
+            this.props.getTestBlock(this.testBlockId()).then(({ data }) => {
+                this.setState({ testBlock: data })
+            })
         }
 
         updateTestBlock = () => {
-            this.props
-                .updateTestBlock(this.testBlockId(), this.state.testBlock)
-                .then(({ data }) => {
-                    this.setState({ testBlock: data })
-                })
-                .catch(error => {
-                    this.setState({ fetching: true })
-                })
+            this.props.updateTestBlock(this.testBlockId(), this.state.testBlock).then(({ data }) => {
+                this.dirty = false
+                this.setState({ testBlock: data })
+            })
         }
 
         subjectId = () => this.props.match.params['subjectId']

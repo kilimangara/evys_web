@@ -41,6 +41,7 @@ class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
     }
 
     handleChangeCheckBox = testPackId => (event, checked) => {
+        this.dirty = true
         this.setState(
             produce(draft => {
                 const ts = draft.testBlock.testPacks.find(el => el.id === testPackId)
@@ -85,6 +86,11 @@ class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
                         Тест по теме '{this.state.testBlock.theme.name}'
                     </Typography>
                 </ToolbarTitle>
+                {this.dirty && (
+                    <Button color="primary" variant="contained" onClick={this.updateTestBlock}>
+                        Сохранить
+                    </Button>
+                )}
             </TableToolbar>
         )
     }

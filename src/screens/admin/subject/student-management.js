@@ -70,7 +70,7 @@ export const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...pro
 `
 
 export const ToolbarTitle = styled.div`
-    flex: 0 0 auto;
+    flex: 1 0 auto;
 `
 
 class StudentManagement extends Component {
