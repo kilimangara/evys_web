@@ -10,7 +10,9 @@ import {
     deleteSubject,
     getSubjectStudents,
     getSubjectStudentTests,
-    createSubjectStudentEvent
+    createSubjectStudentEvent,
+    getStudentTestBlock,
+    updateStudentTestBlock
 } from '../../api'
 import { merge } from 'lodash'
 import { chooseAccount } from './account'
@@ -42,6 +44,14 @@ export const loadSubjectStudentTest = (subjectId, studentId, params) => dispatch
 
 export const createStudentEvent = (subjectId, studentId, data) => dispatch => {
     return createSubjectStudentEvent(subjectId, studentId, data)
+}
+
+export const getTestBlock = testBlockId => dispatch => {
+    return getStudentTestBlock(testBlockId)
+}
+
+export const updateTestBlock = (testBlockId, data) => dispatch => {
+    return updateStudentTestBlock(testBlockId, data)
 }
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {

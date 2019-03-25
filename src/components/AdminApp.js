@@ -148,7 +148,13 @@ class App extends Component {
                         <ImageAssetPicker />
                     </Modal>
                     <div style={{ minHeight: 64 }} />
-                    <SnackbarProvider maxSnack={5}>
+                    <SnackbarProvider
+                        maxSnack={5}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right'
+                        }}
+                    >
                         <CommonWrapper>
                             <Switch>
                                 <Route

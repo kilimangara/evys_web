@@ -39,7 +39,7 @@ const NoTestsText = styled(Typography)`
     color: black;
 `
 
-class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
+class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
     state = {
         tests: [],
         fetching: false,
@@ -77,12 +77,16 @@ class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
                 <TableCell>{test.passed ? 'Пройдено' : 'Не пройдено'}</TableCell>
                 <TableCell>{startedAt}</TableCell>
                 <TableCell>
-                    <Button variant="outlined" color="primary">
+                    <Button variant="outlined" color="primary" onClick={this.goToTestBlock(test.id)}>
                         Проверить
                     </Button>
                 </TableCell>
             </TableRow>
         )
+    }
+
+    goToTestBlock = testBlockId => () => {
+        this.props.history.push(`/admin/subjects/${this.subjectId()}/students/${this.studentId()}/test/${testBlockId}`)
     }
 
     renderToolbar = () => {
@@ -162,4 +166,4 @@ class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
 
 const enhance = compose(withProviders(TestBlockProvider, NavigationProvider))
 
-export default enhance(StudentTestBlock)
+export default enhance(StudentTestBlocks)

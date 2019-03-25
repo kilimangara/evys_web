@@ -337,6 +337,20 @@ export function createSubjectStudentEvent(subjectId, studentId, data) {
     })
 }
 
+export function getStudentTestBlock(testBlockId) {
+    return axiosInstance.request({
+        url: `/admin2/test_block/${testBlockId}`
+    })
+}
+
+export function updateStudentTestBlock(testBlockId, data) {
+    return axiosInstance.request({
+        url: `/admin2/test_block/${testBlockId}`,
+        data,
+        method: 'PUT'
+    })
+}
+
 export function fetchCategories() {
     return axiosInstance.request({
         url: `/category`

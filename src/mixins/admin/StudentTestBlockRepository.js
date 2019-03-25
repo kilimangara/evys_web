@@ -1,4 +1,10 @@
-import { loadSubjectStudentTest, loadSubjectStudents, createStudentEvent } from '../../reducers/admin/subjects'
+import {
+    loadSubjectStudentTest,
+    loadSubjectStudents,
+    createStudentEvent,
+    getTestBlock,
+    updateTestBlock
+} from '../../reducers/admin/subjects'
 
 export default superclass =>
     class StudentTestBlockRepository extends superclass {
@@ -15,9 +21,34 @@ export default superclass =>
                 })
         }
 
+        getTestBlock = () => {
+            this.setState({ fetching: true })
+            this.props
+                .getTestBlock(this.testBlockId())
+                .then(({ data }) => {
+                    this.setState({ testBlock: data })
+                })
+                .catch(error => {
+                    this.setState({ fetching: true })
+                })
+        }
+
+        updateTestBlock = () => {
+            this.props
+                .updateTestBlock(this.testBlockId(), this.state.testBlock)
+                .then(({ data }) => {
+                    this.setState({ testBlock: data })
+                })
+                .catch(error => {
+                    this.setState({ fetching: true })
+                })
+        }
+
         subjectId = () => this.props.match.params['subjectId']
 
         studentId = () => this.props.match.params['studentId']
+
+        testBlockId = () => this.props.match.params['testBlockId']
 
         tests = () => this.state.tests
 
@@ -32,6 +63,8 @@ export class TestBlockProvider {
     static mapDispatchToProps = {
         loadSubjectStudentTest,
         loadSubjectStudents,
-        createStudentEvent
+        createStudentEvent,
+        getTestBlock,
+        updateTestBlock
     }
 }

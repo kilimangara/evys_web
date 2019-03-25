@@ -21,7 +21,8 @@ import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
 import StudentManagementScreen from './student-management'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
-import StudentTestBlockScreen from './student-test-blocks'
+import StudentTestBlocksScreen from './student-test-blocks'
+import StudentTestBlockScreen from './check-test-block'
 import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
 
@@ -222,6 +223,11 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 <Route
                     exact
                     path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
+                    component={StudentTestBlocksScreen}
+                />
+                <Route
+                    exact
+                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/test/:testBlockId(\d+)"
                     component={StudentTestBlockScreen}
                 />
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
