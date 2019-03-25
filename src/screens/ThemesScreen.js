@@ -70,12 +70,12 @@ class ThemesScreen extends Component {
                     />
                     <ThemesItemWrapper>
                         {themes &&
-                            themes.map(({ progress, theme, id, hidden }) => (
+                            themes.map(({ progress, theme, id }) => (
                                 <ThemeItem
                                     key={id}
                                     alias={theme.name}
                                     percent={progress}
-                                    hidden={hidden}
+                                    hidden={theme.isHidden}
                                     onClick={() =>
                                         this.handleCardClick(theme.type === 'Section' ? theme.id : id, theme.type)
                                     }
