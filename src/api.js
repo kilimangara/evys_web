@@ -324,14 +324,14 @@ export function getSubjectStudents(subjectId, params) {
 
 export function getSubjectStudentTests(subjectId, studentId, params) {
     return axiosInstance.request({
-        url: `/admin2/subject/${subjectId}/student/${studentId}/tests`,
+        url: `/admin2/subject/${subjectId}/students/${studentId}/tests`,
         params
     })
 }
 
 export function createSubjectStudentEvent(subjectId, studentId, data) {
     return axiosInstance.request({
-        url: `/admin2/subject/${subjectId}/student/${studentId}/events`,
+        url: `/admin2/subject/${subjectId}/students/${studentId}/events`,
         data,
         method: 'POST'
     })

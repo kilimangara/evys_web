@@ -19,6 +19,8 @@ export default superclass =>
 
         studentId = () => this.props.match.params['studentId']
 
+        tests = () => this.state.tests
+
         noTests = () => {
             return !this.state.tests.length && !this.state.fetching && this.state.currentPage === 1
         }

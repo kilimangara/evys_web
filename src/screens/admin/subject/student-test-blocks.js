@@ -14,7 +14,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
-import { withSnackbar } from 'notistack'
+import moment from 'moment'
 import { compose } from 'recompose'
 
 const Container = styled.div`
@@ -39,7 +39,7 @@ const NoTestsText = styled(Typography)`
     color: black;
 `
 
-class StudentTestBlock extends withNav(tudentTestBlockRepository(Component)) {
+class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
     state = {
         tests: [],
         fetching: false,
@@ -49,6 +49,7 @@ class StudentTestBlock extends withNav(tudentTestBlockRepository(Component)) {
 
     componentDidMount() {
         this.getStudentTests()
+        this.reloadNavigation()
     }
 
     componentDidUpdate(prevProps) {
@@ -69,10 +70,12 @@ class StudentTestBlock extends withNav(tudentTestBlockRepository(Component)) {
     }
 
     renderTest = (test, index) => {
+        const startedAt = test.startedAt ? moment(test.startedAt).fromNow() : 'Не начато'
         return (
             <TableRow key={test.id}>
                 <TableCell>{test.theme.name}</TableCell>
-                <TableCell align="center">{test.passed ? 'Пройдено' : 'Не пройдено'}</TableCell>
+                <TableCell>{test.passed ? 'Пройдено' : 'Не пройдено'}</TableCell>
+                <TableCell>{startedAt}</TableCell>
                 <TableCell>
                     <Button variant="outlined" color="primary">
                         Проверить
@@ -122,10 +125,11 @@ class StudentTestBlock extends withNav(tudentTestBlockRepository(Component)) {
                             <TableRow>
                                 <TableCell>Задание по теме</TableCell>
                                 <TableCell>Статус</TableCell>
+                                <TableCell>Начало</TableCell>
                                 <TableCell />
                             </TableRow>
                         </TableHead>
-                        <TableBody>{this.students().map(this.renderStudent)}</TableBody>
+                        <TableBody>{this.tests().map(this.renderTest)}</TableBody>
                     </Table>
                 </Card>
                 <div style={{ alignSelf: 'center' }}>
