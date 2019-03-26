@@ -66,3 +66,16 @@ export const NoStudentsText = styled(Typography)`
     text-align: center;
     color: black;
 `
+
+export const ToolbarContent = styled.div`
+    flex: 1 0 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+`
+
+export const ExportContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+`

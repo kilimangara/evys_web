@@ -27,10 +27,11 @@ import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { Dialog } from '@material-ui/core'
 import { SubjectPicker } from './students/SubjectPicker'
-import { getSubject, getSubjects } from '../../api'
+import { addStudent, getSubject, getSubjects, importStudents } from '../../api'
 import {
     Card,
     Container,
+    ExportContainer,
     NoStudentsText,
     NoStudentsWrapper,
     SearchCard,
@@ -38,8 +39,10 @@ import {
     SearchInput,
     Spacer,
     TableToolbar,
+    ToolbarContent,
     ToolbarTitle
 } from '../../components/styled/admin/Students'
+import { CenteredContent, H1, RowFlexed, VerticalCentered, WithHorizontalMargin } from '../../components/styled/common'
 
 class StudentsScreen extends StudentsRepository(withNav(Component)) {
     state = {
@@ -163,6 +166,28 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
         })
     }
 
+    uploadFile = e => {
+        e.preventDefault()
+        this.fileUploader.click()
+    }
+
+    onFileUpload = file => {
+        if (file) {
+            const body = new FormData()
+            const file = this.fileUploader.files[0]
+            body.append('file', file)
+            importStudents(body)
+                .then(response => {
+                    this.props.enqueueSnackbar('Профиль успешно сохранен', { variant: 'success' })
+                })
+                .catch(error => {
+                    this.props.enqueueSnackbar(error && error.response.data[0], { variant: 'error' })
+                })
+        }
+    }
+
+    createInputRef = element => (this.fileUploader = element)
+
     renderCreationItem = () => {
         const { phone, email, fullName } = this.state.newStudent
         return (
@@ -233,17 +258,29 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
             : 'Выбрать курс'
         return (
             <TableToolbar highlight={highlight}>
-                <ToolbarTitle>
-                    {highlight ? (
+                {highlight ? (
+                    <ToolbarTitle>
                         <Typography color="inherit" variant="subtitle1">
                             {selectedIds.length} выбрано
                         </Typography>
-                    ) : (
+                    </ToolbarTitle>
+                ) : (
+                    <ToolbarContent>
                         <Typography variant="h6" id="tableTitle">
                             Мои ученики
                         </Typography>
-                    )}
-                </ToolbarTitle>
+                        <ExportContainer>
+                            <Button variant={'raised'} onClick={this.uploadFile}>
+                                импортировать
+                            </Button>
+                            <WithHorizontalMargin margin={10}>
+                                <Button variant={'raised'} disabled>
+                                    ?
+                                </Button>
+                            </WithHorizontalMargin>
+                        </ExportContainer>
+                    </ToolbarContent>
+                )}
                 <Spacer />
                 {highlight && (
                     <Tooltip title={tooltipText}>
@@ -326,6 +363,13 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                         onSearchChange={this.handleSearchChange}
                     />
                 </Dialog>
+                <input
+                    type="file"
+                    accept=".xlsx"
+                    ref={this.createInputRef}
+                    style={{ display: 'none' }}
+                    onChange={this.onFileUpload}
+                />
             </Container>
         )
     }
