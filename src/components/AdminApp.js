@@ -29,6 +29,7 @@ import { SnackbarProvider } from 'notistack'
 import SettingsIcon from '@material-ui/icons/Settings'
 import styled from 'styled-components'
 import JivoApi from '../utils/jivo-api'
+import ZendeskApi from '../utils/zendesk-api'
 
 const LeftMenuIcon = styled.img`
   width: 36px
@@ -41,16 +42,16 @@ class App extends Component {
         this.state = {
             open: false
         }
-        JivoApi.initJivo()
+        // JivoApi.initJivo()
     }
 
     componentDidMount() {
-        console.log(window.jivo_api)
         if (!this.props.authenticated) return this.props.history.replace('/admin/login')
         else {
             if (!this.props.currentAccount) return this.props.history.replace('/admin/choose_account')
         }
         this.props.loadAccounts()
+        ZendeskApi.initChat()
     }
 
     goToExactPath = path => () => {
