@@ -3,7 +3,6 @@
     padding-left: 0;
     margin: 12px 0;
     border-radius: 4px;
-    outline-style: none;
 }
 .pagination > li {
     display: inline;
@@ -19,6 +18,7 @@
     text-decoration: none;
     background-color: #fff;
     border: 1px solid #ddd;
+    outline-style: none;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
@@ -53,7 +53,6 @@
     color: #fff;
     cursor: default;
     background-color: #03a9f4;
-    border-color: #03a9f4;
 }
 .pagination > .disabled > span,
 .pagination > .disabled > span:hover,

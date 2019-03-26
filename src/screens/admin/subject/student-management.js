@@ -108,8 +108,7 @@ class StudentManagement extends Component {
 
     onPageChanged = page => {
         const { query } = this.state
-        if (page.selected == 0) return
-        this.loadStudents(page.selected, query)
+        this.loadStudents(page.selected + 1, query)
     }
 
     searchStudents = () => {
@@ -209,7 +208,7 @@ class StudentManagement extends Component {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.state.totalPages}
-                        initialPage={this.state.currentPage}
+                        initialPage={1}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}

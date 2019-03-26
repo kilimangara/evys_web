@@ -130,8 +130,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
 
     onPageChanged = page => {
         const { query } = this.state
-        if (page.selected == 0) return
-        this.props.getStudents(page.selected, query)
+        this.props.getStudents(page.selected + 1, query)
     }
 
     newStudentFieldChanged = field => event => {
@@ -317,7 +316,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.props.totalPages}
-                        initialPage={this.props.currentPage}
+                        initialPage={1}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}

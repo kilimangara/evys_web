@@ -65,8 +65,7 @@ class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
         })
 
     onPageChanged = page => {
-        if (page.selected == 0) return
-        this.getStudentTests(page.selected)
+        this.getStudentTests(page.selected + 1)
     }
 
     renderTest = (test, index) => {
@@ -141,7 +140,7 @@ class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.state.totalPages}
-                        initialPage={this.state.currentPage}
+                        initialPage={1}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}
