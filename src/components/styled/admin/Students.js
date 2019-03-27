@@ -18,7 +18,8 @@ export const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
     background-color: white;
     padding: 4px;
-    box-shadow: ${({ disableShadow }) => (disableShadow ? '0 0' : '0 0 1px #bdbfc1, 0 1px #ced2d3;')}
+    box-shadow: ${({ disableShadow }) => (disableShadow ? '0 0' : '0 0 1px #bdbfc1, 0 1px #ced2d3')};
+    border: ${({ disableShadow }) => (disableShadow ? '0' : '1px solid rgba(0, 0, 0, 0.12)')};
     display: flex;
     align-items: center;
 `
