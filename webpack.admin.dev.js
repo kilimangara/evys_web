@@ -4,6 +4,7 @@ var path = require('path')
 var loaders = require('./webpack.loaders')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 const HOST = process.env.HOST || '127.0.0.1'
 const PORT = process.env.PORT || '3000'
@@ -68,6 +69,14 @@ module.exports = env => {
                 description: 'Создадим онлайн школу вместе с Evys.',
                 keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             })
+            // new CircularDependencyPlugin({
+            //     // exclude detection of files based on a RegExp
+            //     exclude: /a\.js|node_modules/,
+            //     // add errors to webpack instead of warnings
+            //     failOnError: true,
+            //     // set the current working directory for displaying module paths
+            //     cwd: process.cwd(),
+            // })
         ]
     }
 }

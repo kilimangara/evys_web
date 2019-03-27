@@ -492,6 +492,14 @@ export function addStudent(data) {
     })
 }
 
+export function importStudents(data) {
+    return axiosInstance.request({
+        url: '/admin2/students/import',
+        data,
+        method: 'POST'
+    })
+}
+
 export function loadTariff(page = 1) {
     return axiosInstance.request({
         url: '/admin2/tariffs',

@@ -25,69 +25,24 @@ import Tooltip from '@material-ui/core/Tooltip'
 import SaveButton from '../../components/common/SaveButton'
 import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
-
-const Card = styled.div`
-    margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background-color: white;
-    box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
-    padding: ${({ noPadding }) => (noPadding ? '0px' : '12px')};
-`
-
-const SearchCard = styled.div`
-    margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background-color: white;
-    box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
-    padding: 4px;
-    display: flex;
-    align-items: center;
-`
-
-const Container = styled.div`
-    display: flex;
-    padding: 24px 12px;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-`
-
-const SearchIconButton = styled(IconButton)`
-    padding: 10px;
-`
-
-const SearchInput = styled(InputBase)`
-    margin-left: 24px;
-    flex: 1;
-`
-
-const Spacer = styled.div`
-    flex: 1 1 100%;
-`
-
-const ToolbarTitle = styled.div`
-    flex: 0 0 auto;
-`
-
-const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
-    color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR : 'black')};
-    background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
-`
-
-const NoStudentsWrapper = styled.div`
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-`
-
-const NoStudentsText = styled(Typography)`
-    font-weight: 300;
-    font-size: 22px;
-    text-align: center;
-    color: black;
-`
+import { Dialog } from '@material-ui/core'
+import { SubjectPicker } from './students/SubjectPicker'
+import { addStudent, getSubject, getSubjects, importStudents } from '../../api'
+import {
+    Card,
+    Container,
+    ExportContainer,
+    NoStudentsText,
+    NoStudentsWrapper,
+    SearchCard,
+    SearchIconButton,
+    SearchInput,
+    Spacer,
+    TableToolbar,
+    ToolbarContent,
+    ToolbarTitle
+} from '../../components/styled/admin/Students'
+import { CenteredContent, H1, RowFlexed, VerticalCentered, WithHorizontalMargin } from '../../components/styled/common'
 
 class StudentsScreen extends StudentsRepository(withNav(Component)) {
     state = {
@@ -98,7 +53,10 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
             fullName: '',
             email: ''
         },
-        errors: {}
+        errors: {},
+        modalOpened: false,
+        subjects: [],
+        searchValue: null
     }
 
     componentDidMount() {
@@ -143,8 +101,12 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
 
     subscribeStudents = () => {
         const { selectedIds } = this.state
-        if (!this.hasTariffInQuery())
-            return this.props.enqueueSnackbar('Подписать учеников можно через раздел "Курсы"', { variant: 'error' })
+        if (!this.hasTariffInQuery()) {
+            getSubjects().then(res => {
+                this.setState({ modalOpened: true, subjects: res.data.results })
+            })
+            return
+        }
         this.props
             .addStudentsToTariff(this.queryTariffId(), selectedIds)
             .then(() => {
@@ -180,6 +142,50 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                     })
             })
     }
+
+    handleModalClose = () => this.setState({ modalOpened: false })
+
+    handleSubjectsSearch = e => {
+        getSubjects(1, this.state.searchValue).then(res => this.setState({ subjects: res.data.results }))
+    }
+
+    handleSearchChange = event => {
+        getSubjects(1, event.currentTarget.value).then(res =>
+            this.setState({ subjects: res.data.results, searchValue: event.currentTarget.value })
+        )
+    }
+
+    handleSubjectSave = subject => {
+        const { selectedIds } = this.state
+        getSubject(subject.id).then(({ data }) => {
+            this.props.addStudentsToTariff(data && data.tariff.id, selectedIds).then(() => {
+                this.props.enqueueSnackbar(`Ученики записаны на курс ${(data && data.tariff.name) || ''}`)
+                this.setState({ selectedIds: [], modalOpened: false, searchValue: null })
+            })
+        })
+    }
+
+    uploadFile = e => {
+        e.preventDefault()
+        this.fileUploader.click()
+    }
+
+    onFileUpload = file => {
+        if (file) {
+            const body = new FormData()
+            const file = this.fileUploader.files[0]
+            body.append('file', file)
+            importStudents(body)
+                .then(response => {
+                    this.props.enqueueSnackbar('Профиль успешно сохранен', { variant: 'success' })
+                })
+                .catch(error => {
+                    this.props.enqueueSnackbar(error && error.response.data[0], { variant: 'error' })
+                })
+        }
+    }
+
+    createInputRef = element => (this.fileUploader = element)
 
     renderCreationItem = () => {
         const { phone, email, fullName } = this.state.newStudent
@@ -251,17 +257,29 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
             : 'Выбрать курс'
         return (
             <TableToolbar highlight={highlight}>
-                <ToolbarTitle>
-                    {highlight ? (
+                {highlight ? (
+                    <ToolbarTitle>
                         <Typography color="inherit" variant="subtitle1">
                             {selectedIds.length} выбрано
                         </Typography>
-                    ) : (
+                    </ToolbarTitle>
+                ) : (
+                    <ToolbarContent>
                         <Typography variant="h6" id="tableTitle">
                             Мои ученики
                         </Typography>
-                    )}
-                </ToolbarTitle>
+                        <ExportContainer>
+                            <Button variant={'raised'} onClick={this.uploadFile}>
+                                импортировать
+                            </Button>
+                            <WithHorizontalMargin margin={10}>
+                                <Button variant={'raised'} disabled>
+                                    ?
+                                </Button>
+                            </WithHorizontalMargin>
+                        </ExportContainer>
+                    </ToolbarContent>
+                )}
                 <Spacer />
                 {highlight && (
                     <Tooltip title={tooltipText}>
@@ -330,11 +348,29 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
     }
 
     render() {
+        const { modalOpened, subjects, searchValue } = this.state
+
         return (
             <Container>
                 {this.renderIntro()}
                 {this.renderCreationItem()}
                 {this.renderBody()}
+                <Dialog open={modalOpened} onClose={this.handleModalClose}>
+                    <SubjectPicker
+                        subjects={subjects}
+                        onSubjectSearch={this.handleSubjectsSearch}
+                        onSubjectSave={this.handleSubjectSave}
+                        searchValue={searchValue}
+                        onSearchChange={this.handleSearchChange}
+                    />
+                </Dialog>
+                <input
+                    type="file"
+                    accept=".xlsx"
+                    ref={this.createInputRef}
+                    style={{ display: 'none' }}
+                    onChange={this.onFileUpload}
+                />
             </Container>
         )
     }
