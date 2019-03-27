@@ -19,10 +19,8 @@ import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
-import StudentManagementScreen from './student-management'
+import StudentsManagementScreen from './student-management'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
-import StudentTestBlocksScreen from './student-test-blocks'
-import StudentTestBlockScreen from './check-test-block'
 import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
 
@@ -212,24 +210,14 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                             )}
                         </div>
                         <div style={{ marginLeft: 16, marginTop: 8 }}>
-                            <Button variant="outlined" color="secondary" onClick={this.onSubjectDelete}>
+                            <Button variant="contained" color="secondary" onClick={this.onSubjectDelete}>
                                 Удалить курс
                             </Button>
                         </div>
                     </List>
                 </Card>
                 <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen} />
-                <Route exact path="/admin/subjects/:subjectId(\d+)/students" component={StudentManagementScreen} />
-                <Route
-                    exact
-                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
-                    component={StudentTestBlocksScreen}
-                />
-                <Route
-                    exact
-                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/test/:testBlockId(\d+)"
-                    component={StudentTestBlockScreen}
-                />
+                <Route exact path="/admin/subjects/:subjectId(\d+)/students" component={StudentsManagementScreen} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/billing" render={this.renderBillingInfo} />
             </Container>

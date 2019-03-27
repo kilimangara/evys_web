@@ -22,6 +22,7 @@ import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import SubjectScreen from '../screens/admin/subject'
 import ThemeScreen from '../screens/admin/theme'
+import OneStudentManageScreen from '../screens/admin/students'
 import { logoutAdmin } from '../reducers/admin/authorization'
 import { switchManager, pickAsset } from '../reducers/admin/assetManager'
 import { loadAccounts } from '../reducers/admin/account'
@@ -168,13 +169,16 @@ class App extends Component {
                                     }}
                                 />
                                 <Route exact path="/admin/subjects" component={SubjectsScreen} />
+                                <Route
+                                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
+                                    component={OneStudentManageScreen}
+                                />
                                 <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
                                 <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
                                 <Route path="/admin/students" component={StudentsScreen} />
                                 <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                                <Route exact path="/admin/storage/:themeId(\d+)/add_video" component={AddVideoScreen} />
+                                <Route path="/admin/storage/:themeId(\d+)/add_video" component={AddVideoScreen} />
                                 <Route
-                                    exact
                                     path="/admin/theme/:theme_id/theory/:theory_id(\d+)/watch"
                                     component={VideoScreen}
                                 />

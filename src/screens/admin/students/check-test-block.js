@@ -5,7 +5,7 @@ import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableCo
 import LinearProgress from '@material-ui/core/LinearProgress'
 import styled from 'styled-components'
 import { Card } from './index'
-import { TableToolbar, ToolbarTitle } from './student-management'
+import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -54,7 +54,7 @@ class StudentTestBlock extends withNav(StudentTestBlockRepository(Component)) {
     reloadNavigation = () =>
         this.changeNavigation({
             header: `Проверка задания`,
-            backUrl: `/admin/subjects/${this.subjectId()}/students/${this.studentId()}`
+            backUrl: `/admin/subjects/${this.subjectId()}/students/${this.studentId()}/tests`
         })
 
     renderTest = (testPack, index) => {

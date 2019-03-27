@@ -1,6 +1,5 @@
 import {
     loadSubjectStudentTest,
-    loadSubjectStudents,
     createStudentEvent,
     getTestBlock,
     updateTestBlock
@@ -53,7 +52,6 @@ export class TestBlockProvider {
 
     static mapDispatchToProps = {
         loadSubjectStudentTest,
-        loadSubjectStudents,
         createStudentEvent,
         getTestBlock,
         updateTestBlock

@@ -15,13 +15,13 @@ import InputBase from '@material-ui/core/InputBase'
 import SearchIcon from '@material-ui/icons/Search'
 import produce from 'immer'
 import Typography from '@material-ui/core/Typography'
-import Toolbar from '@material-ui/core/Toolbar'
 import { theme } from '../../../utils/global_theme'
 import Tooltip from '@material-ui/core/Tooltip'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { loadSubjectStudents } from '../../../reducers/admin/subjects'
 import { Card } from './index.js'
+import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
 
 const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
@@ -62,15 +62,6 @@ const NoStudentsText = styled(Typography)`
     font-size: 22px;
     text-align: center;
     color: black;
-`
-
-export const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
-    color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR : 'black')};
-    background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
-`
-
-export const ToolbarTitle = styled.div`
-    flex: 1 0 auto;
 `
 
 class StudentManagement extends Component {

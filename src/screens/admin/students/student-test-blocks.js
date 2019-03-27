@@ -5,7 +5,6 @@ import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableCo
 import LinearProgress from '@material-ui/core/LinearProgress'
 import styled from 'styled-components'
 import { Card } from './index'
-import { TableToolbar, ToolbarTitle } from './student-management'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -16,6 +15,7 @@ import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
 import moment from 'moment'
 import { compose } from 'recompose'
+import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
 
 const Container = styled.div`
     display: flex;
@@ -39,7 +39,7 @@ const NoTestsText = styled(Typography)`
     color: black;
 `
 
-class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
+class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     state = {
         tests: [],
         fetching: false,
@@ -49,20 +49,7 @@ class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
 
     componentDidMount() {
         this.getStudentTests()
-        this.reloadNavigation()
     }
-
-    componentDidUpdate(prevProps) {
-        if (this.props.location.pathname !== prevProps.location.pathname) {
-            this.reloadNavigation()
-        }
-    }
-
-    reloadNavigation = () =>
-        this.changeNavigation({
-            header: `Управление учениками`,
-            backUrl: `/admin/subjects/${this.subjectId()}/students`
-        })
 
     onPageChanged = page => {
         this.getStudentTests(page.selected + 1)
@@ -85,7 +72,7 @@ class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
     }
 
     goToTestBlock = testBlockId => () => {
-        this.props.history.push(`/admin/subjects/${this.subjectId()}/students/${this.studentId()}/test/${testBlockId}`)
+        this.props.history.push(`/admin/subjects/${this.subjectId()}/students/${this.studentId()}/tests/${testBlockId}`)
     }
 
     renderToolbar = () => {
@@ -163,6 +150,6 @@ class StudentTestBlocks extends withNav(StudentTestBlockRepository(Component)) {
     }
 }
 
-const enhance = compose(withProviders(TestBlockProvider, NavigationProvider))
+const enhance = compose(withProviders(TestBlockProvider))
 
 export default enhance(StudentTestBlocks)

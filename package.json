@@ -45,6 +45,7 @@
         "js-file-download": "^0.4.4",
         "katex": "^0.10.0",
         "lodash": "^4.17.4",
+        "material-ui-pickers": "^2.2.4",
         "moment": "^2.19.0",
         "notistack": "^0.4.2",
         "prop-types": "^15.6.0",

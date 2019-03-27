@@ -4,7 +4,11 @@ import {
     newSubject,
     removeSubject,
     updateSubject,
-    fetchSubjectCategories
+    fetchSubjectCategories,
+    loadSubjectStudents,
+    loadSubjectStudent,
+    loadStudentSubscription,
+    updateStudentSubcription
 } from '../../reducers/admin/subjects'
 import { pickBy } from 'lodash'
 
@@ -32,7 +36,35 @@ export default superclass =>
             return this.props.deleteSubject(this.subjectId())
         }
 
+        getStudentBySubject = () => {
+            return this.props.loadSubjectStudent(this.subjectId(), this.studentId()).then(({ data }) => {
+                this.setState({
+                    student: data
+                })
+            })
+        }
+
+        getStudentSubcription = () => {
+            return this.props.loadStudentSubscription(this.subjectId(), this.studentId()).then(({ data }) => {
+                this.setState({
+                    subscription: data
+                })
+            })
+        }
+
+        updateStudentSubcription = () => {
+            return this.props
+                .updateStudentSubcription(this.subjectId(), this.studentId(), this.state.subscription)
+                .then(({ data }) => {
+                    this.setState({
+                        subscription: data
+                    })
+                })
+        }
+
         subjectId = () => this.props.match.params['subjectId']
+
+        studentId = () => this.props.match.params['studentId']
 
         subject = () => this.props.subject
 
@@ -54,6 +86,9 @@ export class SubjectProvider {
         createSubject: newSubject,
         updateSubject,
         deleteSubject: removeSubject,
-        fetchSubjectCategories
+        fetchSubjectCategories,
+        loadSubjectStudent,
+        loadStudentSubscription,
+        updateStudentSubcription
     }
 }

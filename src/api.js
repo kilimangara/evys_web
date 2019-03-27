@@ -322,6 +322,26 @@ export function getSubjectStudents(subjectId, params) {
     })
 }
 
+export function getSubjectStudent(subjectId, studentId) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students/${studentId}`
+    })
+}
+
+export function getSubjectStudentSubscription(subjectId, studentId) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students/${studentId}/subscription`
+    })
+}
+
+export function updateSubjectStudentSubscription(subjectId, studentId, data) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students/${studentId}/subscription`,
+        method: 'POST',
+        data
+    })
+}
+
 export function getSubjectStudentTests(subjectId, studentId, params) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/students/${studentId}/tests`,
