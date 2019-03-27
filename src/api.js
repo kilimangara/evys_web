@@ -377,7 +377,7 @@ export function fetchCategories() {
     })
 }
 
-export function searchSubjectthemes(subjectId, params) {
+export function searchSubjectThemes(subjectId, params) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/search_themes`,
         params: params

@@ -52,9 +52,10 @@ export default superclass =>
             })
         }
 
-        updateStudentSubcription = () => {
+        updateStudentSubcription = data => {
+            const dataToSend = data || this.state.subscription
             return this.props
-                .updateStudentSubcription(this.subjectId(), this.studentId(), this.state.subscription)
+                .updateStudentSubcription(this.subjectId(), this.studentId(), dataToSend)
                 .then(({ data }) => {
                     this.setState({
                         subscription: data
