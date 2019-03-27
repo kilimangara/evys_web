@@ -18,6 +18,7 @@ export const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
     background-color: white;
     padding: 4px;
+    box-shadow: ${({ disableShadow }) => (disableShadow ? '0 0' : '0 0 1px #bdbfc1, 0 1px #ced2d3;')}
     display: flex;
     align-items: center;
 `
@@ -44,7 +45,7 @@ export const Spacer = styled.div`
 `
 
 export const ToolbarTitle = styled.div`
-    flex: 0 0 auto;
+    flex: 1 0 auto;
 `
 
 export const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`

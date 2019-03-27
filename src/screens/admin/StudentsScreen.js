@@ -21,6 +21,7 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import { theme } from '../../utils/global_theme'
 import Add from '@material-ui/icons/Add'
+import HelpIcon from '@material-ui/icons/HelpOutline'
 import Tooltip from '@material-ui/core/Tooltip'
 import SaveButton from '../../components/common/SaveButton'
 import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
@@ -264,29 +265,30 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                         </Typography>
                     </ToolbarTitle>
                 ) : (
-                    <ToolbarContent>
+                    <ToolbarTitle>
                         <Typography variant="h6" id="tableTitle">
                             Мои ученики
                         </Typography>
-                        <ExportContainer>
-                            <Button variant={'raised'} onClick={this.uploadFile}>
-                                импортировать
-                            </Button>
-                            <WithHorizontalMargin margin={10}>
-                                <Button variant={'raised'} disabled>
-                                    ?
-                                </Button>
-                            </WithHorizontalMargin>
-                        </ExportContainer>
-                    </ToolbarContent>
+                    </ToolbarTitle>
                 )}
                 <Spacer />
-                {highlight && (
+                {highlight ? (
                     <Tooltip title={tooltipText}>
                         <IconButton aria-label="Добавить" onClick={this.subscribeStudents}>
                             <Add />
                         </IconButton>
                     </Tooltip>
+                ) : (
+                    <ExportContainer>
+                        <Button variant={'contained'} color="primary" onClick={this.uploadFile}>
+                            Импортировать
+                        </Button>
+                        <WithHorizontalMargin margin={10}>
+                            <IconButton>
+                                <HelpIcon />
+                            </IconButton>
+                        </WithHorizontalMargin>
+                    </ExportContainer>
                 )}
             </TableToolbar>
         )

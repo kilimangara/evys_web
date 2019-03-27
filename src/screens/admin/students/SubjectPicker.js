@@ -11,7 +11,7 @@ import { SearchCard, SearchIconButton, SearchInput } from '../../../components/s
 
 export const SubjectPicker = ({ subjects, onSubjectSearch, searchValue, onSearchChange, onSubjectSave }) => (
     <SubjectPickerWrapper>
-        <SearchCard style={{ width: '100%' }}>
+        <SearchCard style={{ width: '100%' }} disableShadow>
             <SearchInput placeholder="Поиск учеников" value={searchValue} onChange={onSearchChange} />
             <SearchIconButton aria-label="Искать" onClick={onSubjectSearch}>
                 <SearchIcon />
