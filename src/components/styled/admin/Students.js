@@ -17,9 +17,16 @@ export const Card = styled.div`
 export const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
     background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
     padding: 4px;
     display: flex;
     align-items: center;
+`
+
+export const BorderlessSearchCard = styled.div`
+    border: none;
+    box-shadow: none;
 `
 
 export const Container = styled.div`

@@ -11,6 +11,7 @@ import Add from '@material-ui/icons/Add'
 import { FullWidthDownshift } from '../../../components/styled/common'
 import { deburr } from 'lodash'
 import Paper from '@material-ui/core/Paper'
+import { ImageLoader } from '../../../components/common/ImageLoader'
 
 class MainInfo extends React.Component {
     state = {
@@ -36,6 +37,10 @@ class MainInfo extends React.Component {
                 draft.tags.push(tag)
             })
         )
+    }
+
+    onImageChanged = image => {
+        this.setState({ image })
     }
 
     getSuggestions = value => {
@@ -169,6 +174,7 @@ class MainInfo extends React.Component {
                             <TagChip key={index} variant="outlined" label={`#${t}`} onDelete={this.deleteTag(index)} />
                         ))}
                 </div>
+                <ImageLoader width={'300px'} height={'300px'} onChange={this.onImageChanged} />
                 <div>
                     <SaveButton
                         ref={ref => (this.saveButton = ref)}
