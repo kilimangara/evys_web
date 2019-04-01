@@ -10,7 +10,8 @@ import {
     getTheoryVideos,
     createTheoryVideo,
     getTheme,
-    deleteTheme
+    deleteTheme,
+    searchSubjectThemes
 } from '../../api'
 
 import { chooseAccount } from './account'
@@ -41,6 +42,10 @@ export const saveTheory = (themeId, data) => dispatch => {
 
 export const addTheoryVideo = (theoryId, data) => dispatch => {
     return createTheoryVideo(theoryId, data)
+}
+
+export const searchThemes = (subjectId, params) => dispatch => {
+    return searchSubjectThemes(subjectId, params)
 }
 
 const initialState = {
