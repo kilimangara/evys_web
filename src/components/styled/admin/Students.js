@@ -86,3 +86,19 @@ export const ExportContainer = styled.div`
     flex-direction: row;
     align-items: center;
 `
+
+export const CourseImageBlock = styled.div`
+    flex: 1;
+    display: flex;
+    min-width: 450px;
+    max-width: 650px;
+    margin: 15px 0;
+    flex-direction: row;
+`
+
+export const FieldsBlock = styled.div`
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+`

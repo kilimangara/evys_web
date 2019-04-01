@@ -8,10 +8,18 @@ import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import produce from 'immer'
 import Add from '@material-ui/icons/Add'
-import { FullWidthDownshift } from '../../../components/styled/common'
+import {
+    FullWidthDownshift,
+    H3,
+    RowFlexed,
+    WithHorizontalMargin,
+    WithVerticalMargin
+} from '../../../components/styled/common'
 import { deburr } from 'lodash'
 import Paper from '@material-ui/core/Paper'
 import { ImageLoader } from '../../../components/common/ImageLoader'
+import { CourseImageBlock, FieldsBlock } from '../../../components/styled/admin/Students'
+import { SubjectProvider } from '../../../mixins/admin/SubjectRepository'
 
 class MainInfo extends React.Component {
     state = {
@@ -39,8 +47,17 @@ class MainInfo extends React.Component {
         )
     }
 
-    onImageChanged = image => {
-        this.setState({ image })
+    onImageChanged = async image => {
+        console.log(123312)
+        // this.setState({ image })
+        await this.props.subjectUpdated(
+            produce(this.props.subject, draft => {
+                draft.mainImage = image
+            })
+        )
+        const fd = new FormData()
+        fd['main_image'] = image
+        this.props.updateSubject(this.props.subjectId, fd)
     }
 
     getSuggestions = value => {
@@ -102,57 +119,73 @@ class MainInfo extends React.Component {
     }
 
     render() {
-        const { subject, categories } = this.props
+        const { subject, categories, onPhotoChange } = this.props
+        console.log(subject)
         return (
             <Card marginTop={12}>
-                <TextField
-                    onChange={this.fieldChanged('subject')}
-                    label={'Название'}
-                    variant="outlined"
-                    value={subject.subject}
-                    fullWidth
-                    margin={'normal'}
-                />
-                <FullWidthDownshift
-                    id="different-complex-2"
-                    initialInputValue={subject.categorySecret || subject.category.verboseName}
-                    onSelect={this.fieldChanged('categorySecret')}
-                >
-                    {({
-                        getInputProps,
-                        getItemProps,
-                        getMenuProps,
-                        highlightedIndex,
-                        inputValue,
-                        isOpen,
-                        selectedItem
-                    }) => (
-                        <div style={{ width: '100%' }}>
-                            <TextField
-                                margin="normal"
-                                label={'Категория'}
-                                fullWidth
-                                variant={'outlined'}
-                                InputProps={getInputProps()}
-                            />
-                            <div {...getMenuProps()}>
-                                {isOpen ? (
-                                    <Paper square>
-                                        {this.getSuggestions(inputValue).map((suggestion, index) =>
-                                            this.renderSuggestion({
-                                                suggestion,
-                                                index,
-                                                itemProps: getItemProps({ item: suggestion.verboseName }),
-                                                highlightedIndex,
-                                                selectedItem
-                                            })
-                                        )}
-                                    </Paper>
-                                ) : null}
-                            </div>
-                        </div>
-                    )}
-                </FullWidthDownshift>
+                <RowFlexed>
+                    <CourseImageBlock>
+                        <ImageLoader
+                            width={'400px'}
+                            height={'200px'}
+                            onChange={onPhotoChange}
+                            src={subject.category.image}
+                        />
+                        <WithHorizontalMargin margin={10}>
+                            {/*<H3 color={'#666'}>Выберите подходящее изображение для Вашего курса.</H3>*/}
+                        </WithHorizontalMargin>
+                    </CourseImageBlock>
+                    <FieldsBlock>
+                        <TextField
+                            onChange={this.fieldChanged('subject')}
+                            label={'Название'}
+                            variant="outlined"
+                            value={subject.subject}
+                            fullWidth
+                            margin={'normal'}
+                        />
+                        <FullWidthDownshift
+                            id="different-complex-2"
+                            initialInputValue={subject.categorySecret || subject.category.verboseName}
+                            onSelect={this.fieldChanged('categorySecret')}
+                        >
+                            {({
+                                getInputProps,
+                                getItemProps,
+                                getMenuProps,
+                                highlightedIndex,
+                                inputValue,
+                                isOpen,
+                                selectedItem
+                            }) => (
+                                <div style={{ width: '100%', marginTop: '20px' }}>
+                                    <TextField
+                                        margin="normal"
+                                        label={'Категория'}
+                                        fullWidth
+                                        variant={'outlined'}
+                                        InputProps={getInputProps()}
+                                    />
+                                    <div {...getMenuProps()}>
+                                        {isOpen ? (
+                                            <Paper square>
+                                                {this.getSuggestions(inputValue).map((suggestion, index) =>
+                                                    this.renderSuggestion({
+                                                        suggestion,
+                                                        index,
+                                                        itemProps: getItemProps({ item: suggestion.verboseName }),
+                                                        highlightedIndex,
+                                                        selectedItem
+                                                    })
+                                                )}
+                                            </Paper>
+                                        ) : null}
+                                    </div>
+                                </div>
+                            )}
+                        </FullWidthDownshift>
+                    </FieldsBlock>
+                </RowFlexed>
                 <form onSubmit={this.handleAddTag} style={{ position: 'relative' }}>
                     <TextField
                         onChange={this.changeLocalState('tag')}
@@ -174,7 +207,6 @@ class MainInfo extends React.Component {
                             <TagChip key={index} variant="outlined" label={`#${t}`} onDelete={this.deleteTag(index)} />
                         ))}
                 </div>
-                <ImageLoader width={'300px'} height={'300px'} onChange={this.onImageChanged} />
                 <div>
                     <SaveButton
                         ref={ref => (this.saveButton = ref)}
@@ -187,4 +219,4 @@ class MainInfo extends React.Component {
     }
 }
 
-export default withProviders()(MainInfo)
+export default withProviders(SubjectProvider)(MainInfo)
