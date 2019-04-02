@@ -96,6 +96,12 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
         this.setState({ subject })
     }
 
+    updateSubjectPhoto = image => {
+        const fd = new FormData()
+        fd.append('main_image', image)
+        this.props.updateSubject(this.subjectId(), fd)
+    }
+
     saveSubject = () => {
         return this.updateSubject()
             .then(() => this.setState({ errors: {} }))
@@ -114,6 +120,7 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 saveSubject={this.saveSubject}
                 fetching={this.props.subjectsFetching}
                 categories={this.state.categories}
+                onPhotoChange={this.updateSubjectPhoto}
             />
         )
     }

@@ -57,7 +57,10 @@ class SearchCoursesScreen extends SearchMixin(Component) {
                                         name={name}
                                         teacherName={owner}
                                         subscribeTo={null}
-                                        courseImage={subjects[0].category && subjects[0].category.image}
+                                        courseImage={
+                                            subjects[0].mainImage ||
+                                            (subjects[0].category && subjects[0].category.image)
+                                        }
                                         duration={duration}
                                         amount={amount}
                                         currency={currency}
