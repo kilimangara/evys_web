@@ -62,7 +62,7 @@ export class ImageLoader extends Component {
     createInputRef = element => (this.fileUploader = element)
 
     render() {
-        const { src, width, paddingTop, loading } = this.props
+        const { src, width, paddingTop, loading, height } = this.props
         const { hovered, uploadedImage } = this.state
         return (
             <ImageLoaderContainer
@@ -70,6 +70,7 @@ export class ImageLoader extends Component {
                 onMouseEnter={() => this.handleHover(true)}
                 onMouseLeave={() => this.handleHover(false)}
                 width={width}
+                height={height}
                 onDrop={this.onDrop}
                 onDragEnter={this.dragEnter}
                 onDragLeave={this.dragLeave}

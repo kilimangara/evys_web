@@ -55,7 +55,7 @@ class CoursesScreen extends CoursesMixin(Component) {
                                     percent={progress}
                                     teacherName={owner}
                                     subscribeTo={billingInfo.endsAt}
-                                    courseImage={subject.category.image}
+                                    courseImage={subject.mainImage || (subject.category && subject.category.image)}
                                     onClick={() => this.goToThemes(id)}
                                 />
                             ))}

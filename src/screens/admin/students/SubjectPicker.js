@@ -7,16 +7,21 @@ import {
     SubjectPickerListItem,
     SubjectPickerWrapper
 } from '../../../components/styled/admin/Subjects'
-import { SearchCard, SearchIconButton, SearchInput } from '../../../components/styled/admin/Students'
+import {
+    BorderlessSearchCard,
+    SearchCard,
+    SearchIconButton,
+    SearchInput
+} from '../../../components/styled/admin/Students'
 
 export const SubjectPicker = ({ subjects, onSubjectSearch, searchValue, onSearchChange, onSubjectSave }) => (
     <SubjectPickerWrapper>
-        <SearchCard style={{ width: '100%' }} disableShadow>
+        <BorderlessSearchCard style={{ width: '100%' }}>
             <SearchInput placeholder="Поиск учеников" value={searchValue} onChange={onSearchChange} />
             <SearchIconButton aria-label="Искать" onClick={onSubjectSearch}>
                 <SearchIcon />
             </SearchIconButton>
-        </SearchCard>
+        </BorderlessSearchCard>
         <SubjectPickerList>
             {subjects &&
                 subjects.map(subject => (

@@ -17,11 +17,18 @@ export const Card = styled.div`
 export const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
     background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
     padding: 4px;
     box-shadow: ${({ disableShadow }) => (disableShadow ? '0 0' : '0 0 1px #bdbfc1, 0 1px #ced2d3')};
     border: ${({ disableShadow }) => (disableShadow ? '0' : '1px solid rgba(0, 0, 0, 0.12)')};
     display: flex;
     align-items: center;
+`
+
+export const BorderlessSearchCard = styled.div`
+    border: none;
+    box-shadow: none;
 `
 
 export const Container = styled.div`
@@ -80,4 +87,20 @@ export const ExportContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+`
+
+export const CourseImageBlock = styled.div`
+    flex: 1;
+    display: flex;
+    min-width: 450px;
+    max-width: 650px;
+    margin: 15px 0;
+    flex-direction: row;
+`
+
+export const FieldsBlock = styled.div`
+    flex: 3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 `
