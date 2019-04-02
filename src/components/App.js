@@ -22,9 +22,9 @@ import CourseScreen from '../screens/courses/CourseScreen'
 import VideoStudyScreen from '../screens/VideoStudyScreen'
 import NotificationsScreen from '../screens/NotificationsScreen'
 import { NotificationsProvider } from '../mixins/student/NotificationsRepository'
-import startOfDay from 'date-fns/start_of_day'
-import endOfDay from 'date-fns/end_of_day'
-import addMonths from 'date-fns/add_months'
+import startOfDay from 'date-fns/startOfDay'
+import endOfDay from 'date-fns/endOfDay'
+import addMonths from 'date-fns/addMonths'
 
 class App extends Component {
     constructor(props) {

@@ -8,7 +8,14 @@ import {
     fetchCategories,
     putSubject,
     deleteSubject,
-    getSubjectStudents
+    getSubjectStudents,
+    getSubjectStudentTests,
+    createSubjectStudentEvent,
+    getStudentTestBlock,
+    updateStudentTestBlock,
+    getSubjectStudentSubscription,
+    updateSubjectStudentSubscription,
+    getSubjectStudent
 } from '../../api'
 import { merge } from 'lodash'
 import { chooseAccount } from './account'
@@ -32,6 +39,34 @@ export const deleteSubjectSuccess = createAction('subjects/delete-success')
 
 export const loadSubjectStudents = (subjectId, params) => dispatch => {
     return getSubjectStudents(subjectId, params)
+}
+
+export const loadSubjectStudentTest = (subjectId, studentId, params) => dispatch => {
+    return getSubjectStudentTests(subjectId, studentId, params)
+}
+
+export const createStudentEvent = (subjectId, studentId, data) => dispatch => {
+    return createSubjectStudentEvent(subjectId, studentId, data)
+}
+
+export const getTestBlock = testBlockId => dispatch => {
+    return getStudentTestBlock(testBlockId)
+}
+
+export const updateTestBlock = (testBlockId, data) => dispatch => {
+    return updateStudentTestBlock(testBlockId, data)
+}
+
+export const loadSubjectStudent = (subjectId, studentId) => dispatch => {
+    return getSubjectStudent(subjectId, studentId)
+}
+
+export const loadStudentSubscription = (subjectId, studentId) => dispatch => {
+    return getSubjectStudentSubscription(subjectId, studentId)
+}
+
+export const updateStudentSubscription = (subjectId, studentId, data) => dispatch => {
+    return updateSubjectStudentSubscription(subjectId, studentId, data)
 }
 
 export const loadSubjects = (page = 1, query = '') => dispatch => {

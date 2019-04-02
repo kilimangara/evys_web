@@ -322,18 +322,52 @@ export function getSubjectStudents(subjectId, params) {
     })
 }
 
+export function getSubjectStudent(subjectId, studentId) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students/${studentId}`
+    })
+}
+
+export function getSubjectStudentSubscription(subjectId, studentId) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students/${studentId}/subscription`
+    })
+}
+
+export function updateSubjectStudentSubscription(subjectId, studentId, data) {
+    return axiosInstance.request({
+        url: `/admin2/subject/${subjectId}/students/${studentId}/subscription`,
+        method: 'POST',
+        data
+    })
+}
+
 export function getSubjectStudentTests(subjectId, studentId, params) {
     return axiosInstance.request({
-        url: `/admin2/subject/${subjectId}/student/${studentId}/tests`,
+        url: `/admin2/subject/${subjectId}/students/${studentId}/tests`,
         params
     })
 }
 
 export function createSubjectStudentEvent(subjectId, studentId, data) {
     return axiosInstance.request({
-        url: `/admin2/subject/${subjectId}/student/${studentId}/events`,
+        url: `/admin2/subject/${subjectId}/students/${studentId}/events`,
         data,
         method: 'POST'
+    })
+}
+
+export function getStudentTestBlock(testBlockId) {
+    return axiosInstance.request({
+        url: `/admin2/test_block/${testBlockId}`
+    })
+}
+
+export function updateStudentTestBlock(testBlockId, data) {
+    return axiosInstance.request({
+        url: `/admin2/test_block/${testBlockId}`,
+        data,
+        method: 'PUT'
     })
 }
 
@@ -343,7 +377,7 @@ export function fetchCategories() {
     })
 }
 
-export function searchSubjectthemes(subjectId, params) {
+export function searchSubjectThemes(subjectId, params) {
     return axiosInstance.request({
         url: `/admin2/subject/${subjectId}/search_themes`,
         params: params

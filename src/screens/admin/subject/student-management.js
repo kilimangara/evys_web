@@ -15,20 +15,13 @@ import InputBase from '@material-ui/core/InputBase'
 import SearchIcon from '@material-ui/icons/Search'
 import produce from 'immer'
 import Typography from '@material-ui/core/Typography'
-import Toolbar from '@material-ui/core/Toolbar'
 import { theme } from '../../../utils/global_theme'
 import Tooltip from '@material-ui/core/Tooltip'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { loadSubjectStudents } from '../../../reducers/admin/subjects'
-
-const Card = styled.div`
-    margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background-color: white;
-    box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
-    padding: ${({ noPadding }) => (noPadding ? '0px' : '12px')};
-`
+import { Card } from './index.js'
+import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
 
 const SearchCard = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
@@ -71,15 +64,6 @@ const NoStudentsText = styled(Typography)`
     color: black;
 `
 
-const TableToolbar = styled(({ highlight, ...props }) => <Toolbar {...props} />)`
-    color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR : 'black')};
-    background-color: ${({ highlight }) => (highlight ? theme.ACCENT_COLOR_A(0.5) : 'white')};
-`
-
-const ToolbarTitle = styled.div`
-    flex: 0 0 auto;
-`
-
 class StudentManagement extends Component {
     state = {
         students: [],
@@ -115,12 +99,15 @@ class StudentManagement extends Component {
 
     onPageChanged = page => {
         const { query } = this.state
-        if (page.selected == 0) return
-        this.loadStudents(page.selected, query)
+        this.loadStudents(page.selected + 1, query)
     }
 
     searchStudents = () => {
         this.loadStudents(1, this.state.query)
+    }
+
+    goToStudent = studentId => () => {
+        this.props.history.push(`/admin/subjects/${this.subjectId()}/students/${studentId}`)
     }
 
     renderStudent = (student, index) => {
@@ -131,7 +118,7 @@ class StudentManagement extends Component {
                 <TableCell align="center">{student.progress}</TableCell>
                 <TableCell align="center">{student.academicPerformance}</TableCell>
                 <TableCell>
-                    <Button variant="outlined" color="primary">
+                    <Button variant="outlined" color="primary" onClick={this.goToStudent(student.id)}>
                         Подробнее
                     </Button>
                 </TableCell>
@@ -212,7 +199,7 @@ class StudentManagement extends Component {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.state.totalPages}
-                        initialPage={this.state.currentPage}
+                        initialPage={0}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}

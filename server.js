@@ -1,7 +1,6 @@
 var express = require('express')
 var compress = require('compression')
 var app = express()
-//serves the index.html
 
 app.use(compress())
 app.use('/dist', express.static(__dirname + '/dist'))
@@ -26,4 +25,4 @@ app.get('/login', function(req, res) {
 app.get('/app*', function(req, res) {
     res.sendFile('./dist/index_student.html', { root: __dirname })
 })
-app.listen(3000) //listens on port 3000 -> http://localhost:3000/
+app.listen(3000)
