@@ -23,6 +23,11 @@ import CreateEvent from './create-event'
 import { searchSubjectThemes } from '../../../api'
 import { debounce } from 'lodash'
 import { withSnackbar } from 'notistack'
+import TextField from '@material-ui/core/TextField'
+import { InlineDatePicker } from 'material-ui-pickers'
+import produce from 'immer'
+import startOfWeek from 'date-fns/startOfWeek'
+import startOfDay from 'date-fns/startOfDay'
 
 const Container = styled.div`
     display: flex;
@@ -55,10 +60,15 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
             currentPage: 0,
             totalPages: 0,
             searchOpened: false,
-            pickedTheme: null,
+            filters: {
+                theme: null,
+                dateFrom: startOfWeek(new Date(), { weekStartsOn: 1 }),
+                dateTo: new Date()
+            },
             themes: [],
             query: ''
         }
+        this.filterThemeField = React.createRef()
         this.findThemesDebounce = debounce(this.findThemes, 500, { leading: true })
     }
 
@@ -75,9 +85,11 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 
     themePicked = theme => {
-        this.setState({
-            pickedTheme: theme
-        })
+        this.setState(
+            produce(draft => {
+                draft.filters.theme = theme
+            })
+        )
         this.getStudentTests(1, theme.id)
         this.modalClose()
     }
@@ -87,8 +99,8 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 
     onPageChanged = page => {
-        const { pickedTheme } = this.state
-        const themeId = pickedTheme ? pickedTheme.id : undefined
+        const { theme } = this.state.filters
+        const themeId = theme ? theme.id : undefined
         this.getStudentTests(page.selected + 1, themeId)
     }
 
@@ -97,17 +109,29 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 
     modalOpen = () => {
+        this.filterThemeField.current.blur()
         this.setState({ searchOpened: true })
     }
 
     openEventCreation = () => {
-        if (!this.state.pickedTheme) return this.props.enqueueSnackbar(`Для начала выберите тему`, { variant: 'error' })
+        if (!this.state.filters.theme)
+            return this.props.enqueueSnackbar(`Для начала выберите тему`, { variant: 'error' })
 
         this.refs.eventCreate.show({
             studentId: this.studentId(),
             subjectId: this.subjectId(),
-            themeId: this.state.pickedTheme.id
+            themeId: this.state.filters.theme.id
         })
+    }
+
+    filterChanged = name => event => {
+        let value = null
+        value = startOfDay(event)
+        this.setState(
+            produce(draft => {
+                draft.filters[name] = value
+            })
+        )
     }
 
     renderTest = (test, index) => {
@@ -139,16 +163,6 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
                         Тестирования
                     </Typography>
                 </ToolbarTitle>
-                <Button variant="contained" margin="normal" color="primary" onClick={this.modalOpen}>
-                    {!!pickedTheme ? `Тема: ${pickedTheme.name}` : 'Выбрать тему'}
-                </Button>
-                {Boolean(pickedTheme) && (
-                    <WithHorizontalMargin margin={12}>
-                        <Button variant="contained" margin="normal" color="primary" onClick={this.openEventCreation}>
-                            Назначить задание
-                        </Button>
-                    </WithHorizontalMargin>
-                )}
             </TableToolbar>
         )
     }
@@ -207,7 +221,8 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 
     render() {
-        const { themes, query, searchOpened } = this.state
+        const { themes, query, searchOpened, filters } = this.state
+        console.log(this.state)
         return (
             <Container>
                 <Dialog open={searchOpened} onClose={this.modalClose}>
@@ -220,6 +235,49 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
                     />
                 </Dialog>
                 <CreateEvent ref="eventCreate" onCreated={event => console.log(event, 'CREEEATED')} />
+                <Card marginTop={12}>
+                    <Typography variant={'h6'}>Фильтры</Typography>
+                    <div style={{ display: 'flex' }}>
+                        <TextField
+                            inputRef={this.filterThemeField}
+                            inputProps={{
+                                onFocus: this.modalOpen
+                            }}
+                            label={'Выбор темы'}
+                            variant="outlined"
+                            value={filters.theme ? filters.theme.name : 'Нажмите, чтобы выбрать'}
+                            margin={'normal'}
+                        />
+
+                        <WithHorizontalMargin margin={12}>
+                            <InlineDatePicker
+                                onlyCalendar
+                                format={'MM.dd.yyyy'}
+                                margin={'normal'}
+                                variant="outlined"
+                                label="C"
+                                value={filters.dateFrom}
+                                onChange={this.filterChanged('dateFrom')}
+                            />
+                        </WithHorizontalMargin>
+                        <WithHorizontalMargin margin={12}>
+                            <InlineDatePicker
+                                onlyCalendar
+                                format={'MM.dd.yyyy'}
+                                margin={'normal'}
+                                variant="outlined"
+                                label="До"
+                                value={filters.dateTo}
+                                onChange={this.filterChanged('dateTo')}
+                            />
+                        </WithHorizontalMargin>
+                    </div>
+                    {Boolean(filters.theme) && (
+                        <Button variant="contained" margin="normal" color="primary" onClick={this.openEventCreation}>
+                            Назначить задание
+                        </Button>
+                    )}
+                </Card>
                 {this.renderIntro()}
                 {this.renderBody()}
             </Container>

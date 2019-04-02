@@ -17,6 +17,7 @@ import { PersistGate } from 'redux-persist/integration/react'
 import lightBlue from '@material-ui/core/colors/lightBlue'
 import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import DateFnsUtils from '@date-io/date-fns'
+import ruLocale from 'date-fns/locale/ru'
 
 import './screencss/PaginateCss.scss'
 import './screencss/Global.scss'
@@ -48,7 +49,7 @@ class Root extends Component {
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <MuiThemeProvider theme={muitheme}>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ruLocale}>
                             <JssProvider jss={jss} generateClassName={generateClassName}>
                                 <BrowserRouter>
                                     <Switch>

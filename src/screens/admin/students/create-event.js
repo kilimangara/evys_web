@@ -73,10 +73,10 @@ class CreateEvent extends React.Component {
         const { themeId, subjectId, studentId, data } = this.state
         createSubjectStudentEvent(subjectId, studentId, this.prepareData(themeId))
             .then(({ data }) => {
-                console.log('GOTOVO', data)
+                this.props.onCreated(data)
+                this.closeModal()
             })
             .catch(({ response }) => {
-                console.log('NE ZAEBIS', response.data)
                 this.setState({ errors: response.data })
             })
     }
