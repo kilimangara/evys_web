@@ -19,10 +19,6 @@ import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
 import CheckTestBlockScreen from './check-test-block'
 import StudentTestBlocksScreen from './student-test-blocks'
-import ThemePicker from './theme-picker'
-import Dialog from '@material-ui/core/Dialog'
-import { searchSubjectThemes } from '../../../api'
-import { debounce } from 'lodash'
 
 const Container = styled.div`
     display: flex;
@@ -61,32 +57,8 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
     constructor(props) {
         super(props)
         this.state = {
-            student: null,
-            searchOpened: false,
-            pickedTheme: null,
-            themes: [],
-            query: ''
+            student: null
         }
-        this.findThemesDebounce = debounce(this.findThemes, 500, { leading: true })
-    }
-
-    findThemes = query => {
-        if (!query) query = this.state.query
-        if (!query) return this.setState({ themes: [], query: '' })
-        searchSubjectThemes(this.subjectId(), { q: query }).then(({ data }) => this.setState({ themes: data }))
-    }
-
-    handleSearchChange = event => {
-        const query = event.target.value
-        this.setState({ query })
-        this.findThemesDebounce(query)
-    }
-
-    themePicked = theme => {
-        this.setState({
-            pickedTheme: theme
-        })
-        this.closeModal()
     }
 
     componentDidMount() {
@@ -121,14 +93,6 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
         }
     }
 
-    modalClose = () => {
-        this.setState({ searchOpened: false })
-    }
-
-    modalOpen = () => {
-        this.setState({ searchOpened: true })
-    }
-
     render() {
         const { student, searchOpened, themes, query, pickedTheme } = this.state
         if (!student)
@@ -139,15 +103,6 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
             )
         return (
             <Container>
-                <Dialog open={searchOpened} onClose={this.modalClose}>
-                    <ThemePicker
-                        list={themes}
-                        onSearch={this.findThemes}
-                        onPicked={this.themePicked}
-                        searchValue={query}
-                        onSearchChange={this.handleSearchChange}
-                    />
-                </Dialog>
                 <Card>
                     <List subheader={<ListHeader disableSticky>Ученик {student.fullName}</ListHeader>} component="nav">
                         <ListItem button onClick={this.goTo('tests')}>
@@ -156,19 +111,6 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                         <ListItem button onClick={this.goTo('subscription')}>
                             <ListText primary="Управление подпиской" />
                         </ListItem>
-                        <Divider />
-                        <div style={{ marginLeft: 16, marginTop: 8 }}>
-                            <ColoredButton variant="contained" margin="normal" color="primary" onClick={this.modalOpen}>
-                                {!!pickedTheme ? `Тема: ${pickedTheme.name}` : 'Выбрать тему'}
-                            </ColoredButton>
-                        </div>
-                        {Boolean(pickedTheme) && (
-                            <div style={{ marginLeft: 16, marginTop: 8 }}>
-                                <ColoredButton variant="contained" margin="normal" color="primary">
-                                    Назначить задание
-                                </ColoredButton>
-                            </div>
-                        )}
                     </List>
                 </Card>
                 <Route

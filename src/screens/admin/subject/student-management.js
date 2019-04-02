@@ -199,7 +199,7 @@ class StudentManagement extends Component {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.state.totalPages}
-                        initialPage={1}
+                        initialPage={0}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}

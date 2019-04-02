@@ -15,6 +15,8 @@ import { create } from 'jss'
 import { theme } from './utils/global_theme'
 import { PersistGate } from 'redux-persist/integration/react'
 import lightBlue from '@material-ui/core/colors/lightBlue'
+import { MuiPickersUtilsProvider } from 'material-ui-pickers'
+import DateFnsUtils from '@date-io/date-fns'
 
 import './screencss/PaginateCss.scss'
 import './screencss/Global.scss'
@@ -46,15 +48,17 @@ class Root extends Component {
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <MuiThemeProvider theme={muitheme}>
-                        <JssProvider jss={jss} generateClassName={generateClassName}>
-                            <BrowserRouter>
-                                <Switch>
-                                    <Route exact path="/admin/register" component={RegisterScreen} />
-                                    <Route exact path="/admin/login" component={LoginScreen} />
-                                    <Route path="/admin" component={AdminApp} />
-                                </Switch>
-                            </BrowserRouter>
-                        </JssProvider>
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <JssProvider jss={jss} generateClassName={generateClassName}>
+                                <BrowserRouter>
+                                    <Switch>
+                                        <Route exact path="/admin/register" component={RegisterScreen} />
+                                        <Route exact path="/admin/login" component={LoginScreen} />
+                                        <Route path="/admin" component={AdminApp} />
+                                    </Switch>
+                                </BrowserRouter>
+                            </JssProvider>
+                        </MuiPickersUtilsProvider>
                     </MuiThemeProvider>
                 </PersistGate>
             </Provider>

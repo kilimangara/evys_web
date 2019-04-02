@@ -16,6 +16,13 @@ import ReactPaginate from 'react-paginate'
 import moment from 'moment'
 import { compose } from 'recompose'
 import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
+import { WithHorizontalMargin } from '../../../components/styled/common'
+import ThemePicker from './theme-picker'
+import Dialog from '@material-ui/core/Dialog'
+import CreateEvent from './create-event'
+import { searchSubjectThemes } from '../../../api'
+import { debounce } from 'lodash'
+import { withSnackbar } from 'notistack'
 
 const Container = styled.div`
     display: flex;
@@ -40,19 +47,67 @@ const NoTestsText = styled(Typography)`
 `
 
 class StudentTestBlocks extends StudentTestBlockRepository(Component) {
-    state = {
-        tests: [],
-        fetching: false,
-        currentPage: 0,
-        totalPages: 0
+    constructor(props) {
+        super(props)
+        this.state = {
+            tests: [],
+            fetching: false,
+            currentPage: 0,
+            totalPages: 0,
+            searchOpened: false,
+            pickedTheme: null,
+            themes: [],
+            query: ''
+        }
+        this.findThemesDebounce = debounce(this.findThemes, 500, { leading: true })
+    }
+
+    findThemes = query => {
+        if (!query) query = this.state.query
+        if (!query) return this.setState({ themes: [], query: '' })
+        searchSubjectThemes(this.subjectId(), { q: query }).then(({ data }) => this.setState({ themes: data }))
+    }
+
+    handleSearchChange = event => {
+        const query = event.target.value
+        this.setState({ query })
+        this.findThemesDebounce(query)
+    }
+
+    themePicked = theme => {
+        this.setState({
+            pickedTheme: theme
+        })
+        this.getStudentTests(1, theme.id)
+        this.modalClose()
     }
 
     componentDidMount() {
-        this.getStudentTests()
+        this.getStudentTests(1)
     }
 
     onPageChanged = page => {
-        this.getStudentTests(page.selected + 1)
+        const { pickedTheme } = this.state
+        const themeId = pickedTheme ? pickedTheme.id : undefined
+        this.getStudentTests(page.selected + 1, themeId)
+    }
+
+    modalClose = () => {
+        this.setState({ searchOpened: false })
+    }
+
+    modalOpen = () => {
+        this.setState({ searchOpened: true })
+    }
+
+    openEventCreation = () => {
+        if (!this.state.pickedTheme) return this.props.enqueueSnackbar(`Для начала выберите тему`, { variant: 'error' })
+
+        this.refs.eventCreate.show({
+            studentId: this.studentId(),
+            subjectId: this.subjectId(),
+            themeId: this.state.pickedTheme.id
+        })
     }
 
     renderTest = (test, index) => {
@@ -76,6 +131,7 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 
     renderToolbar = () => {
+        const { pickedTheme } = this.state
         return (
             <TableToolbar highlight={false}>
                 <ToolbarTitle>
@@ -83,6 +139,16 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
                         Тестирования
                     </Typography>
                 </ToolbarTitle>
+                <Button variant="contained" margin="normal" color="primary" onClick={this.modalOpen}>
+                    {!!pickedTheme ? `Тема: ${pickedTheme.name}` : 'Выбрать тему'}
+                </Button>
+                {Boolean(pickedTheme) && (
+                    <WithHorizontalMargin margin={12}>
+                        <Button variant="contained" margin="normal" color="primary" onClick={this.openEventCreation}>
+                            Назначить задание
+                        </Button>
+                    </WithHorizontalMargin>
+                )}
             </TableToolbar>
         )
     }
@@ -127,7 +193,7 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.state.totalPages}
-                        initialPage={1}
+                        initialPage={0}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}
@@ -141,8 +207,19 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 
     render() {
+        const { themes, query, searchOpened } = this.state
         return (
             <Container>
+                <Dialog open={searchOpened} onClose={this.modalClose}>
+                    <ThemePicker
+                        list={themes}
+                        onSearch={this.findThemes}
+                        onPicked={this.themePicked}
+                        searchValue={query}
+                        onSearchChange={this.handleSearchChange}
+                    />
+                </Dialog>
+                <CreateEvent ref="eventCreate" onCreated={event => console.log(event, 'CREEEATED')} />
                 {this.renderIntro()}
                 {this.renderBody()}
             </Container>
@@ -150,6 +227,9 @@ class StudentTestBlocks extends StudentTestBlockRepository(Component) {
     }
 }
 
-const enhance = compose(withProviders(TestBlockProvider))
+const enhance = compose(
+    withProviders(TestBlockProvider),
+    withSnackbar
+)
 
 export default enhance(StudentTestBlocks)
