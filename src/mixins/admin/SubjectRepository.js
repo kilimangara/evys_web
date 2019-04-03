@@ -8,7 +8,7 @@ import {
     loadSubjectStudents,
     loadSubjectStudent,
     loadStudentSubscription,
-    updateStudentSubcription
+    updateStudentSubscription
 } from '../../reducers/admin/subjects'
 import { pickBy } from 'lodash'
 
@@ -55,7 +55,7 @@ export default superclass =>
         updateStudentSubcription = data => {
             const dataToSend = data || this.state.subscription
             return this.props
-                .updateStudentSubcription(this.subjectId(), this.studentId(), dataToSend)
+                .updateStudentSubscription(this.subjectId(), this.studentId(), dataToSend)
                 .then(({ data }) => {
                     this.setState({
                         subscription: data
@@ -90,6 +90,6 @@ export class SubjectProvider {
         fetchSubjectCategories,
         loadSubjectStudent,
         loadStudentSubscription,
-        updateStudentSubcription
+        updateStudentSubscription
     }
 }

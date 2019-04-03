@@ -178,7 +178,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
             body.append('file', file)
             importStudents(body)
                 .then(response => {
-                    this.props.enqueueSnackbar('Профиль успешно сохранен', { variant: 'success' })
+                    this.props.enqueueSnackbar('Импорт начался, обновите страницу через минуту', { variant: 'success' })
                 })
                 .catch(error => {
                     this.props.enqueueSnackbar(error && error.response.data[0], { variant: 'error' })

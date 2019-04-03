@@ -4,11 +4,14 @@ import withNav, { NavigationProvider } from '../../../mixins/admin/NavigatableCo
 import withProviders from '../../../utils/withProviders'
 import styled from 'styled-components'
 import List from '@material-ui/core/List'
+import Typography from '@material-ui/core/Typography'
 import ListItem from '@material-ui/core/ListItem'
 import ListSubheader from '@material-ui/core/ListSubheader'
 import ListItemText from '@material-ui/core/ListItemText'
 import Divider from '@material-ui/core/Divider'
 import Button from '@material-ui/core/Button'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import { theme } from '../../../utils/global_theme'
 import produce from 'immer'
 import LinearProgress from '@material-ui/core/LinearProgress'
@@ -19,6 +22,9 @@ import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
 import CheckTestBlockScreen from './check-test-block'
 import StudentTestBlocksScreen from './student-test-blocks'
+import { InlineDatePicker } from 'material-ui-pickers'
+import { ColumnFlexed, RowFlexed } from '../../../components/styled/common'
+import format from 'date-fns/format'
 
 const Container = styled.div`
     display: flex;
@@ -57,12 +63,14 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
     constructor(props) {
         super(props)
         this.state = {
-            student: null
+            student: null,
+            subscription: null
         }
     }
 
     componentDidMount() {
         this.getStudentBySubject()
+        this.getStudentSubcription()
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -93,6 +101,58 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
         }
     }
 
+    subscriptionChanged = field => value => {
+        this.setState(
+            produce(draft => {
+                draft.subscription[field] = value
+            })
+        )
+    }
+
+    saveSubscription = () => {
+        this.updateStudentSubcription().then(() => this.subButton.success())
+    }
+
+    renderSubscriptionCard = () => {
+        const { subscription } = this.state
+        if (!subscription)
+            return (
+                <div>
+                    <LinearProgress />
+                </div>
+            )
+        return (
+            <Card marginTop={12}>
+                <ColumnFlexed align="flex-start">
+                    <Typography variant="h6">
+                        Подписка с {format(new Date(subscription.startedAt), 'dd.MM.yyyy')}
+                    </Typography>
+                    <InlineDatePicker
+                        onlyCalendar
+                        format={'MM.dd.yyyy'}
+                        margin={'normal'}
+                        variant="outlined"
+                        label="Подписка до"
+                        value={subscription.endsAt}
+                        onChange={this.subscriptionChanged('endsAt')}
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                color="primary"
+                                checked={subscription.active}
+                                onChange={e => this.subscriptionChanged('active')(e.target.checked)}
+                                value="active"
+                            />
+                        }
+                        label="Доступ к курсу включен"
+                    />
+                    <SaveButton ref={ref => (this.subButton = ref)} onClick={this.saveSubscription} />
+                </ColumnFlexed>
+            </Card>
+        )
+    }
+
     render() {
         const { student, searchOpened, themes, query, pickedTheme } = this.state
         if (!student)
@@ -117,6 +177,11 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                     exact
                     path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/tests"
                     component={StudentTestBlocksScreen}
+                />
+                <Route
+                    exact
+                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/subscription"
+                    render={this.renderSubscriptionCard}
                 />
                 <Route
                     exact
