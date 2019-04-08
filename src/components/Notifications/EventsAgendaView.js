@@ -41,12 +41,7 @@ class EventsAgendaView extends Component {
                                 <WithVerticalMargin margin={'20px'}>
                                     <H3>{event.title}</H3>
                                 </WithVerticalMargin>
-                                <H5>
-                                    Тестовое описание будет находиться здесь, пока его не заменит поле описания с
-                                    сервера. Importantly, custom Hooks give you the power to constrain React API if
-                                    you’d like to type them more strictly in some way. React gives you the primitives,
-                                    but you can combine them in different ways than what we provide out of the box.
-                                </H5>
+                                <H5>{event.description || 'Без описания'}</H5>
                             </EventPaper>
                         ))}
                 </AgendaView>

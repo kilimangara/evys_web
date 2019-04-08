@@ -25,7 +25,10 @@ const formats = [
     'video',
     'formula',
     'imagewithstyle',
-    'alt', 'width', 'height', 'style'
+    'alt',
+    'width',
+    'height',
+    'style'
 ]
 
 class EvysQuill extends React.Component {
@@ -40,8 +43,8 @@ class EvysQuill extends React.Component {
                 ['bold', 'italic', 'underline', 'strike', 'blockquote'],
                 [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
                 ['clean'],
-                [{'image': {tooltip: 'Прикрепить фотографию'}}],
-                [{'formula': {tooltip: 'Формула в KaTex формате'}}]
+                [{ image: { tooltip: 'Прикрепить фотографию' } }],
+                [{ formula: { tooltip: 'Формула в KaTex формате' } }]
             ],
             handlers: {
                 image: value => {
@@ -76,15 +79,16 @@ class EvysQuill extends React.Component {
     }
 
     render() {
-        const { value } = this.props
+        const { value, readOnly } = this.props
         return (
             <ReactQuill
                 ref={ref => (this.quill = ref)}
                 value={value}
-                modules={this.modules}
+                readOnly={readOnly}
+                modules={!readOnly ? this.modules : { toolbar: null }}
                 formats={formats}
                 onChange={this.changeText}
-                theme={'snow'}
+                theme={!readOnly ? 'snow' : 'bubble'}
             />
         )
     }

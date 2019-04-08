@@ -42,8 +42,7 @@ class InvoicesScreen extends withNav(React.Component) {
     }
 
     onPageChanged = page => {
-        if (page.selected == 0) return
-        this.loadInvoices(page.selected)
+        this.loadInvoices(page.selected + 1)
     }
 
     loadInvoices(page = 1) {
@@ -103,7 +102,7 @@ class InvoicesScreen extends withNav(React.Component) {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={totalPages}
-                        initialPage={currentPage}
+                        initialPage={0}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}

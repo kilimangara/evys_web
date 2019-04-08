@@ -21,6 +21,7 @@ import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import { theme } from '../../utils/global_theme'
 import Add from '@material-ui/icons/Add'
+import HelpIcon from '@material-ui/icons/HelpOutline'
 import Tooltip from '@material-ui/core/Tooltip'
 import SaveButton from '../../components/common/SaveButton'
 import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
@@ -88,8 +89,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
 
     onPageChanged = page => {
         const { query } = this.state
-        if (page.selected === 0) return
-        this.props.getStudents(page.selected, query)
+        this.props.getStudents(page.selected + 1, query)
     }
 
     newStudentFieldChanged = field => event => {
@@ -178,7 +178,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
             body.append('file', file)
             importStudents(body)
                 .then(response => {
-                    this.props.enqueueSnackbar('Профиль успешно сохранен', { variant: 'success' })
+                    this.props.enqueueSnackbar('Импорт начался, обновите страницу через минуту', { variant: 'success' })
                 })
                 .catch(error => {
                     this.props.enqueueSnackbar(error && error.response.data[0], { variant: 'error' })
@@ -265,29 +265,30 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                         </Typography>
                     </ToolbarTitle>
                 ) : (
-                    <ToolbarContent>
+                    <ToolbarTitle>
                         <Typography variant="h6" id="tableTitle">
                             Мои ученики
                         </Typography>
-                        <ExportContainer>
-                            <Button variant={'raised'} onClick={this.uploadFile}>
-                                импортировать
-                            </Button>
-                            <WithHorizontalMargin margin={10}>
-                                <Button variant={'raised'} disabled>
-                                    ?
-                                </Button>
-                            </WithHorizontalMargin>
-                        </ExportContainer>
-                    </ToolbarContent>
+                    </ToolbarTitle>
                 )}
                 <Spacer />
-                {highlight && (
+                {highlight ? (
                     <Tooltip title={tooltipText}>
                         <IconButton aria-label="Добавить" onClick={this.subscribeStudents}>
                             <Add />
                         </IconButton>
                     </Tooltip>
+                ) : (
+                    <ExportContainer>
+                        <Button variant={'contained'} color="primary" onClick={this.uploadFile}>
+                            Импортировать
+                        </Button>
+                        <WithHorizontalMargin margin={10}>
+                            <IconButton>
+                                <HelpIcon />
+                            </IconButton>
+                        </WithHorizontalMargin>
+                    </ExportContainer>
                 )}
             </TableToolbar>
         )
@@ -319,11 +320,13 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                     {this.renderToolbar()}
                     <Table>
                         <TableHead>
-                            <TableCell padding="checkbox" />
-                            <TableCell align="left">Идентификатор</TableCell>
-                            <TableCell>Имя</TableCell>
-                            <TableCell>Телефон</TableCell>
-                            <TableCell align="right">Почта</TableCell>
+                            <TableRow>
+                                <TableCell padding="checkbox" />
+                                <TableCell align="left">Идентификатор</TableCell>
+                                <TableCell>Имя</TableCell>
+                                <TableCell>Телефон</TableCell>
+                                <TableCell align="right">Почта</TableCell>
+                            </TableRow>
                         </TableHead>
                         <TableBody>{this.students().map(this.renderStudent)}</TableBody>
                     </Table>
@@ -333,7 +336,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                         disableInitialCallback
                         style={{ marginTop: 12, alignSelf: 'center' }}
                         pageCount={this.props.totalPages}
-                        initialPage={this.props.currentPage}
+                        initialPage={0}
                         marginPagesDisplayed={1}
                         pageRangeDisplayed={4}
                         onPageChange={this.onPageChanged}

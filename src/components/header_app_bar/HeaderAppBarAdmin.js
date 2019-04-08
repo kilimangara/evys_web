@@ -120,7 +120,7 @@ class HeaderAppBarAdmin extends Component {
     render() {
         const { isLogged, youtubeSigned, history, profile, className, open } = this.props
         const rightComponent = isLogged ? (
-            <AppBarButton history={history} label={profile.username} accountId={profile.id} />
+            <AppBarButton history={history} label={profile.email} accountId={profile.id} />
         ) : (
             <AppBarButton register label={'Войти'} onPress={() => history.push('/admin/login')} />
         )

@@ -62,7 +62,7 @@ class AgendaView extends Component {
                     <AgendaDates>
                         {startDate &&
                             endDate &&
-                            `${format(startDate, 'DD.MM.YYYY')} - ${format(endDate, 'DD.MM.YYYY')}`}
+                            `${format(startDate, 'dd.MM.yyyy')} - ${format(endDate, 'dd.MM.yyyy')}`}
                     </AgendaDates>
                     <AgendaHeaderInfo />
                 </AgendaHeader>

@@ -13,10 +13,10 @@ class RegisterScreen extends AuthorizationMixin(Component) {
     constructor(props) {
         super(props)
         this.state = {
-            username: '',
+            accountName: '',
+            email: '',
             password: '',
             firstName: '',
-            email: '',
             passwordRepeat: '',
             passwordInconsistency: false,
             errors: {}
@@ -31,8 +31,8 @@ class RegisterScreen extends AuthorizationMixin(Component) {
         const { errors } = this.state
         if (field === 'password' || field === 'passwordRepeat') delete errors.passwordRepeat
         if (field === 'password') delete errors.password
-        if (field === 'username') delete errors.username
         if (field === 'email') delete errors.email
+        if (field === 'accountName') delete errors.accountName
 
         this.setState({ [field]: event.target.value, errors })
     }
@@ -43,20 +43,20 @@ class RegisterScreen extends AuthorizationMixin(Component) {
     }
 
     render() {
-        const { email, password, errors, username, firstName, passwordRepeat } = this.state
-
+        const { email, password, errors, accountName, firstName, passwordRepeat } = this.state
+        console.log(errors)
         return (
             <ColoredContainer backgroundColor={theme.BACKGROUND_DARK}>
                 <form onSubmit={this.handleRegister}>
                     <AuthCard>
                         <AuthCardContent>
                             <AuthField
-                                label="Логин"
-                                value={username}
-                                onChange={this.handleChange('username')}
+                                label="Название вашей онлайн-школы"
+                                value={accountName}
+                                onChange={this.handleChange('accountName')}
                                 margin={'normal'}
-                                error={!!this.getErrors('username')}
-                                helperText={this.getErrors('username')}
+                                error={!!this.getErrors('accountName')}
+                                helperText={this.getErrors('accountName')}
                                 fullWidth
                                 variant={'outlined'}
                             />

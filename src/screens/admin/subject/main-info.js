@@ -118,6 +118,12 @@ class MainInfo extends React.Component {
         )
     }
 
+    getSubjectImage = () => {
+        const { subject } = this.props
+        if (subject.mainImage) return subject.mainImage
+        return subject.category.image
+    }
+
     render() {
         const { subject, categories, onPhotoChange } = this.props
         console.log(subject)
@@ -129,7 +135,7 @@ class MainInfo extends React.Component {
                             width={'400px'}
                             height={'200px'}
                             onChange={onPhotoChange}
-                            src={subject.category.image}
+                            src={this.getSubjectImage()}
                         />
                         <WithHorizontalMargin margin={10}>
                             {/*<H3 color={'#666'}>Выберите подходящее изображение для Вашего курса.</H3>*/}

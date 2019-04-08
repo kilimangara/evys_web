@@ -11,7 +11,7 @@ class LoginScreen extends AuthorizationMixin(Component) {
     constructor(props) {
         super(props)
         this.state = {
-            username: '',
+            email: '',
             password: '',
             errors: {}
         }
@@ -21,8 +21,7 @@ class LoginScreen extends AuthorizationMixin(Component) {
         if (this.props.isLogged) this.props.history.push('/admin/choose_account')
     }
 
-    handleChange = e => {
-        let field = e.target.name === 'login' ? 'username' : 'password'
+    handleChange = field => e => {
         let obj = {}
         obj[field] = e.target.value
         obj.errors = omit(this.state.errors, [field])
@@ -35,19 +34,19 @@ class LoginScreen extends AuthorizationMixin(Component) {
     }
 
     render() {
-        const { username, password, loginFailed } = this.state
+        const { email, password, loginFailed } = this.state
         return (
             <ColoredContainer backgroundColor={theme.BACKGROUND_DARK}>
                 <form onSubmit={this.handlePress}>
                     <AuthCard>
                         <AuthCardContent>
                             <AuthField
-                                name="login"
-                                label="Логин"
-                                value={username}
+                                name="email"
+                                label="Почта"
+                                value={email}
                                 fullWidth
                                 margin={'normal'}
-                                onChange={e => this.handleChange(e)}
+                                onChange={this.handleChange('email')}
                                 variant="outlined"
                             />
                             <AuthField
@@ -59,7 +58,7 @@ class LoginScreen extends AuthorizationMixin(Component) {
                                 fullWidth
                                 margin={'normal'}
                                 type="password"
-                                onChange={e => this.handleChange(e)}
+                                onChange={this.handleChange('password')}
                                 variant="outlined"
                             />
                             <AuthButton type="submit" fullWidth variant="contained" color={theme.ACCENT_COLOR}>

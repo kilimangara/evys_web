@@ -19,6 +19,7 @@ import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
 import Warning from '@material-ui/icons/Warning'
 import ThemesScreen from '../theme/themes-list'
+import StudentsManagementScreen from './student-management'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
@@ -35,13 +36,13 @@ const Container = styled.div`
     align-items: stretch;
 `
 
-const ListHeader = styled(ListSubheader)`
+export const ListHeader = styled(ListSubheader)`
     font-weight: 600;
     font-size: 18px;
     color: black;
 `
 
-const ListText = styled(ListItemText)`
+export const ListText = styled(ListItemText)`
     & > span {
         padding-left: 20px;
     }
@@ -52,7 +53,7 @@ export const Card = styled.div`
     border: 1px solid rgba(0, 0, 0, 0.12);
     background-color: white;
     box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
-    padding: 12px;
+    padding: ${({ noPadding }) => (noPadding ? '0px' : '12px')};
 `
 
 const ColoredButton = styled(Button)`
@@ -80,10 +81,16 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
 
     componentDidUpdate(prevProps) {
         if (this.props.subject !== prevProps.subject) {
-            this.changeNavigation({ header: `Курс ${this.props.subject.subject}`, backUrl: '/admin/subjects' })
+            this.reloadNavigation()
             this.setState({ subject: this.props.subject })
         }
+        if (this.props.location.pathname !== prevProps.location.pathname) {
+            this.reloadNavigation()
+        }
     }
+
+    reloadNavigation = () =>
+        this.changeNavigation({ header: `Курс ${this.props.subject.subject}`, backUrl: '/admin/subjects' })
 
     subjectUpdated = subject => {
         this.setState({ subject })
@@ -139,6 +146,8 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/billing`)
             case 'themes':
                 return this.props.history.replace(`/admin/subjects/${this.subjectId()}/themes`)
+            case 'students':
+                return this.props.history.replace(`/admin/subjects/${this.subjectId()}/students`)
             case 'subscribe':
                 return this.props.history.push(
                     `/admin/students?tariff_id=${subject.tariff.id}&tariff_name=${subject.subject}`
@@ -187,6 +196,9 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                             <ListText primary="Информация для ученика" />
                             {!subject.tariff.canPublish ? <WarningIcon /> : null}
                         </ListItem>
+                        <ListItem button onClick={this.goTo('students')}>
+                            <ListText primary="Мои ученики" />
+                        </ListItem>
                         <ListItem button onClick={this.goTo('subscribe')}>
                             <ListText primary="Записать своих учеников" />
                         </ListItem>
@@ -205,13 +217,14 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                             )}
                         </div>
                         <div style={{ marginLeft: 16, marginTop: 8 }}>
-                            <Button variant="outlined" color="secondary" onClick={this.onSubjectDelete}>
+                            <Button variant="contained" color="secondary" onClick={this.onSubjectDelete}>
                                 Удалить курс
                             </Button>
                         </div>
                     </List>
                 </Card>
                 <Route exact path="/admin/subjects/:subjectId(\d+)/themes" component={ThemesScreen} />
+                <Route exact path="/admin/subjects/:subjectId(\d+)/students" component={StudentsManagementScreen} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)" render={this.renderMainInfo} />
                 <Route exact path="/admin/subjects/:subjectId(\d+)/billing" render={this.renderBillingInfo} />
             </Container>

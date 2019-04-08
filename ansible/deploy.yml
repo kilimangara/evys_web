@@ -33,7 +33,6 @@
 
       - name: Build Admin App
         when:
-            - git_result.changed == True
             - build_admin
         shell: npm run build-admin-prod
         args:
@@ -42,7 +41,6 @@
 
       - name: Build Student App
         when:
-            - git_result.changed == True
             - build_student
         shell: npm run build-prod
         args:

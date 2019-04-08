@@ -11,8 +11,8 @@ export const saveToken = createAction('authorization/saveToken')
 
 export const logoutAdmin = createAction('authorization/logoutAdmin')
 
-export const authorize = (username, password) => dispatch => {
-    const token = btoa(`${username}:${password}`)
+export const authorize = (email, password) => dispatch => {
+    const token = btoa(`${email}:${password}`)
     dispatch(saveToken(token))
     return loadProfile()(dispatch).catch(err => {
         if (err.response.status === 401) dispatch(saveToken(null))
@@ -21,8 +21,8 @@ export const authorize = (username, password) => dispatch => {
 }
 
 export const register = data => dispatch => {
-    const { username, password } = data
-    const token = btoa(`${username}:${password}`)
+    const { email, password } = data
+    const token = btoa(`${email}:${password}`)
     dispatch(saveToken(token))
     return createProfile(data)(dispatch).catch(err => {
         dispatch(saveToken(null))

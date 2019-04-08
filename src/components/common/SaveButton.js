@@ -6,7 +6,7 @@ import { theme } from '../../utils/global_theme'
 import pt from 'prop-types'
 
 const Container = styled.div`
-    margin: 8px;
+    margin: 8px 0px;
     position: relative;
 `
 
@@ -45,7 +45,12 @@ export default class SaveButton extends React.Component {
         const { success } = this.state
         return (
             <Container>
-                <CustomButton success={success ? 1 : 0} disabled={loading} type="contained" onClick={this.handleClick}>
+                <CustomButton
+                    success={success ? 1 : 0}
+                    disabled={loading}
+                    variant="contained"
+                    onClick={this.handleClick}
+                >
                     {success ? 'Успешно' : placeholder || 'Сохранить'}
                 </CustomButton>
                 {loading && <Progress size={24} />}

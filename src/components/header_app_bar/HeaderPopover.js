@@ -107,7 +107,7 @@ const mapStateToProps = ({ account, profile: { profileData } }) => ({
     accountId: profileData && profileData.id,
     userAccounts: account && account.accounts,
     currentAccount: account && account.currentAccount,
-    currentProfile: profileData && profileData.username
+    currentProfile: profileData && profileData.email
 })
 
 const mapActionsToProps = {
