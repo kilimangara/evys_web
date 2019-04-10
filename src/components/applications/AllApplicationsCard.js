@@ -45,8 +45,8 @@ export class AllApplicationCard extends Component {
                     <WithVerticalMargin margin={'10px'}>
                         <H4>{description}</H4>
                     </WithVerticalMargin>
-                    {contacts.split(/(?:\r\n|\r|\n)/g).map(el => (
-                        <H4>{el}</H4>
+                    {contacts.split(/(?:\r\n|\r|\n)/g).map((el, index) => (
+                        <H4 key={index}>{el}</H4>
                     ))}
                 </ApplicationDescription>
             </ApplicationCardWrapper>

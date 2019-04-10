@@ -18,11 +18,13 @@ import { withRouter } from 'react-router'
 import { theme } from '../../utils/global_theme'
 import withProviders from '../../utils/withProviders'
 import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
+import LinearProgress from '@material-ui/core/LinearProgress'
 
 class UserApplicationsScreen extends withNav(Component) {
     state = {
         applications: null
     }
+
     componentDidMount() {
         this.changeHeader('Мои приложения')
         getUserApplications().then(res => this.setState({ applications: res.data }))
@@ -42,23 +44,32 @@ class UserApplicationsScreen extends withNav(Component) {
 
     render() {
         const { applications } = this.state
+        if (!applications)
+            return (
+                <div>
+                    <LinearProgress color="primary" />
+                </div>
+            )
         return (
             <FullsizeCentered>
                 <AddAppFab onClick={this.goToMarketplace}>
                     <Add />
                 </AddAppFab>
-                {(applications || []).length ? (
+                {applications.length ? (
                     <HorizontalCentered>
                         <ApplicationsList>
-                            {applications.map(({ title, image, description, contacts, fullLoginUrl }) => (
-                                <UserApplicationCard
-                                    name={title}
-                                    imageSource={image}
-                                    description={description}
-                                    contacts={contacts}
-                                    onOpenApp={() => this.openApp(fullLoginUrl)}
-                                />
-                            ))}
+                            {applications.map(
+                                ({ application: { title, image, description, contacts }, fullLoginUrl, id }) => (
+                                    <UserApplicationCard
+                                        key={id}
+                                        name={title}
+                                        imageSource={image}
+                                        description={description}
+                                        contacts={contacts}
+                                        onOpenApp={() => this.openApp(fullLoginUrl)}
+                                    />
+                                )
+                            )}
                         </ApplicationsList>
                     </HorizontalCentered>
                 ) : (

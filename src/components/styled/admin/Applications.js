@@ -55,6 +55,7 @@ export const ApplicationCardWrapper = styled(Paper)`
     padding: 15px;
     margin: 24px;
     position: relative;
+    cursor: pointer;
 `
 
 export const HoverFade = transition.div`

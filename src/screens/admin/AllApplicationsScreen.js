@@ -38,6 +38,7 @@ class AllApplicationsScreen extends withNav(Component) {
                         <ApplicationsList>
                             {applications.map(({ title, image, description, contacts, installUrl, id }) => (
                                 <AllApplicationCard
+                                    key={id}
                                     name={title}
                                     imageSource={image}
                                     description={description}
