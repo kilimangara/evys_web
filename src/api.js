@@ -457,6 +457,26 @@ export function createTheoryVideo(theoryId, data) {
     })
 }
 
+export function getUserApplications() {
+    return axiosInstance.request({
+        url: '/admin2/installations'
+    })
+}
+
+export function getAllApplications() {
+    return axiosInstance.request({
+        url: '/admin2/applications'
+    })
+}
+
+export function installApp(data) {
+    return axiosInstance.request({
+        url: '/admin2/installations',
+        method: 'POST',
+        data
+    })
+}
+
 export function getAssets(page = 1, filtersObject = {}) {
     return axiosInstance.request({
         url: `/admin2/templates`,
