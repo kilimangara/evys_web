@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { ColumnFlexed } from '../common'
 import transition from 'styled-transition-group'
 import { Paper } from '../common'
+import Fab from '@material-ui/core/Fab'
 
 export const ApplicationsList = styled.div`
     display: flex;
@@ -94,4 +95,10 @@ export const HoverFill = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`
+
+export const AddAppFab = styled(Fab)`
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
 `

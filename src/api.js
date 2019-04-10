@@ -469,6 +469,14 @@ export function getAllApplications() {
     })
 }
 
+export function installApp(data) {
+    return axiosInstance.request({
+        url: '/admin2/installations',
+        method: 'POST',
+        data
+    })
+}
+
 export function getAssets(page = 1, filtersObject = {}) {
     return axiosInstance.request({
         url: `/admin2/templates`,

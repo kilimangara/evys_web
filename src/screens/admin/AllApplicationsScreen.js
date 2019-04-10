@@ -1,13 +1,14 @@
 import React, { Component } from 'react'
 import { ApplicationListWrapper, ApplicationsList } from '../../components/styled/admin/Applications'
 import { CenteredContent, H2, HorizontalCentered } from '../../components/styled/common'
-import { getAllApplications } from '../../api'
+import { getAllApplications, installApp } from '../../api'
 import { withRouter } from 'react-router'
 import { AllApplicationCard } from '../../components/applications/AllApplicationsCard'
 import withProviders from '../../utils/withProviders'
-import { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
+import { withSnackbar } from 'notistack'
 
-class AllApplicationsScreen extends Component {
+class AllApplicationsScreen extends withNav(Component) {
     state = {
         applications: null
     }
@@ -16,8 +17,15 @@ class AllApplicationsScreen extends Component {
         getAllApplications().then(res => this.setState({ applications: res.data }))
     }
 
-    handleAppInstall = url => {
-        this.props.history.push(url)
+    handleAppInstall = id => {
+        installApp({ applicationId: id })
+            .then(res => {
+                this.props.enqueueSnackbar('Приложение успешно установлено', { variant: 'success' })
+                getAllApplications().then(res => this.setState({ applications: res.data }))
+            })
+            .catch(err => {
+                this.props.enqueueSnackbar('При установке приложения произошла ошибка', { variant: 'error' })
+            })
     }
 
     render() {
@@ -28,21 +36,21 @@ class AllApplicationsScreen extends Component {
                 {(applications || []).length ? (
                     <HorizontalCentered>
                         <ApplicationsList>
-                            {applications.map(({ title, image, description, contacts, installUrl }) => (
+                            {applications.map(({ title, image, description, contacts, installUrl, id }) => (
                                 <AllApplicationCard
                                     name={title}
                                     imageSource={image}
                                     description={description}
                                     contacts={contacts}
                                     installUrl={installUrl}
-                                    onAppInstall={this.handleAppInstall}
+                                    onAppInstall={() => this.handleAppInstall(id)}
                                 />
                             ))}
                         </ApplicationsList>
                     </HorizontalCentered>
                 ) : (
                     <CenteredContent>
-                        <H2>Установленные приложения отсутствуют</H2>
+                        <H2>Приложения отсутствуют</H2>
                     </CenteredContent>
                 )}
             </div>
@@ -50,4 +58,4 @@ class AllApplicationsScreen extends Component {
     }
 }
 
-export default withProviders(NavigationProvider)(withRouter(AllApplicationsScreen))
+export default withProviders(NavigationProvider)(withSnackbar(withRouter(AllApplicationsScreen)))

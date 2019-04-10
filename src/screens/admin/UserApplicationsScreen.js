@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ApplicationsList } from '../../components/styled/admin/Applications'
+import { AddAppFab, ApplicationsList } from '../../components/styled/admin/Applications'
 import {
     CenteredContent,
     ColoredButton,
@@ -8,16 +8,18 @@ import {
     H2,
     HorizontalCentered,
     RowFlexed,
+    WithHorizontalMargin,
     WithVerticalMargin
 } from '../../components/styled/common'
+import Add from '@material-ui/icons/Add'
 import { getUserApplications } from '../../api'
 import { UserApplicationCard } from '../../components/applications/UserApplicationCard'
 import { withRouter } from 'react-router'
 import { theme } from '../../utils/global_theme'
 import withProviders from '../../utils/withProviders'
-import { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
+import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 
-class UserApplicationsScreen extends Component {
+class UserApplicationsScreen extends withNav(Component) {
     state = {
         applications: null
     }
@@ -27,17 +29,24 @@ class UserApplicationsScreen extends Component {
     }
 
     openApp = url => {
-        this.props.history.push(url)
+        window.open(url)
     }
 
     goToMarketplace = () => {
         this.props.history.push('/admin/marketplace')
     }
 
+    goToWiki = () => {
+        // this.props.history.push('')
+    }
+
     render() {
         const { applications } = this.state
         return (
             <FullsizeCentered>
+                <AddAppFab onClick={this.goToMarketplace}>
+                    <Add />
+                </AddAppFab>
                 {(applications || []).length ? (
                     <HorizontalCentered>
                         <ApplicationsList>
@@ -56,15 +65,30 @@ class UserApplicationsScreen extends Component {
                     <ColumnFlexed align={'center'}>
                         <H2>Установленные приложения отсутствуют</H2>
                         <WithVerticalMargin margin={'10px'}>
-                            <ColoredButton
-                                color={theme.ACCENT_COLOR}
-                                textColor={theme.CONTRAST_LIGHT}
-                                textHover={theme.CONTRAST_LIGHT}
-                                colorHover={theme.SECONDARY_LIGHT}
-                                onClick={this.goToMarketplace}
-                            >
-                                перейти в список приложений
-                            </ColoredButton>
+                            <RowFlexed>
+                                <WithHorizontalMargin margin={5}>
+                                    <ColoredButton
+                                        color={theme.ACCENT_COLOR}
+                                        textColor={theme.CONTRAST_LIGHT}
+                                        textHover={theme.CONTRAST_LIGHT}
+                                        colorHover={theme.SECONDARY_LIGHT}
+                                        onClick={this.goToWiki}
+                                    >
+                                        подробнее
+                                    </ColoredButton>
+                                </WithHorizontalMargin>
+                                <WithHorizontalMargin margin={5}>
+                                    <ColoredButton
+                                        color={theme.ACCENT_COLOR}
+                                        textColor={theme.CONTRAST_LIGHT}
+                                        textHover={theme.CONTRAST_LIGHT}
+                                        colorHover={theme.SECONDARY_LIGHT}
+                                        onClick={this.goToMarketplace}
+                                    >
+                                        перейти в список приложений
+                                    </ColoredButton>
+                                </WithHorizontalMargin>
+                            </RowFlexed>
                         </WithVerticalMargin>
                     </ColumnFlexed>
                 )}
