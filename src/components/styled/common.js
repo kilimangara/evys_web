@@ -222,6 +222,11 @@ export const FullsizeCentered = styled(CenteredContent)`
     height: 100%;
 `
 
+export const FullsizeBlock = styled.div`
+    width: 100%;
+    height: 100%;
+`
+
 export const SizedIconButton = styled(IconButton)`
     width: ${({ width }) => `${width}px`};
     margin: ${({ margin }) => `${margin}`};
