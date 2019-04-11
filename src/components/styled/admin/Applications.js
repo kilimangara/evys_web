@@ -4,6 +4,7 @@ import { ColumnFlexed } from '../common'
 import transition from 'styled-transition-group'
 import { Paper } from '../common'
 import Fab from '@material-ui/core/Fab'
+import { theme } from '../../../utils/global_theme'
 
 export const ApplicationsList = styled.div`
     display: flex;
@@ -56,6 +57,7 @@ export const ApplicationCardWrapper = styled(Paper)`
     margin: 24px;
     position: relative;
     cursor: pointer;
+    background: ${theme.CONTRAST_LIGHT};
 `
 
 export const HoverFade = transition.div`

@@ -4,6 +4,7 @@ import {
     CenteredContent,
     ColoredButton,
     ColumnFlexed,
+    FullsizeBlock,
     FullsizeCentered,
     H2,
     HorizontalCentered,
@@ -51,7 +52,7 @@ class UserApplicationsScreen extends withNav(Component) {
                 </div>
             )
         return (
-            <FullsizeCentered>
+            <FullsizeBlock>
                 <AddAppFab onClick={this.goToMarketplace}>
                     <Add />
                 </AddAppFab>
@@ -73,37 +74,39 @@ class UserApplicationsScreen extends withNav(Component) {
                         </ApplicationsList>
                     </HorizontalCentered>
                 ) : (
-                    <ColumnFlexed align={'center'}>
-                        <H2>Установленные приложения отсутствуют</H2>
-                        <WithVerticalMargin margin={'10px'}>
-                            <RowFlexed>
-                                <WithHorizontalMargin margin={5}>
-                                    <ColoredButton
-                                        color={theme.ACCENT_COLOR}
-                                        textColor={theme.CONTRAST_LIGHT}
-                                        textHover={theme.CONTRAST_LIGHT}
-                                        colorHover={theme.SECONDARY_LIGHT}
-                                        onClick={this.goToWiki}
-                                    >
-                                        подробнее
-                                    </ColoredButton>
-                                </WithHorizontalMargin>
-                                <WithHorizontalMargin margin={5}>
-                                    <ColoredButton
-                                        color={theme.ACCENT_COLOR}
-                                        textColor={theme.CONTRAST_LIGHT}
-                                        textHover={theme.CONTRAST_LIGHT}
-                                        colorHover={theme.SECONDARY_LIGHT}
-                                        onClick={this.goToMarketplace}
-                                    >
-                                        перейти в список приложений
-                                    </ColoredButton>
-                                </WithHorizontalMargin>
-                            </RowFlexed>
-                        </WithVerticalMargin>
-                    </ColumnFlexed>
+                    <FullsizeCentered>
+                        <ColumnFlexed align={'center'}>
+                            <H2>Установленные приложения отсутствуют</H2>
+                            <WithVerticalMargin margin={'10px'}>
+                                <RowFlexed>
+                                    <WithHorizontalMargin margin={5}>
+                                        <ColoredButton
+                                            color={theme.ACCENT_COLOR}
+                                            textColor={theme.CONTRAST_LIGHT}
+                                            textHover={theme.CONTRAST_LIGHT}
+                                            colorHover={theme.SECONDARY_LIGHT}
+                                            onClick={this.goToWiki}
+                                        >
+                                            подробнее
+                                        </ColoredButton>
+                                    </WithHorizontalMargin>
+                                    <WithHorizontalMargin margin={5}>
+                                        <ColoredButton
+                                            color={theme.ACCENT_COLOR}
+                                            textColor={theme.CONTRAST_LIGHT}
+                                            textHover={theme.CONTRAST_LIGHT}
+                                            colorHover={theme.SECONDARY_LIGHT}
+                                            onClick={this.goToMarketplace}
+                                        >
+                                            перейти в список приложений
+                                        </ColoredButton>
+                                    </WithHorizontalMargin>
+                                </RowFlexed>
+                            </WithVerticalMargin>
+                        </ColumnFlexed>
+                    </FullsizeCentered>
                 )}
-            </FullsizeCentered>
+            </FullsizeBlock>
         )
     }
 }
