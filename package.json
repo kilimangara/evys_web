@@ -42,6 +42,8 @@
         "create-react-class": "^15.6.2",
         "date-fns": "^2.0.0-alpha.27",
         "downshift": "^3.2.7",
+        "grapesjs": "^0.14.57",
+        "grapesjs-preset-webpage": "^0.1.10",
         "humps": "^2.0.1",
         "immer": "^1.9.3",
         "js-file-download": "^0.4.4",
