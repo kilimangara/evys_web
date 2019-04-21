@@ -65,7 +65,7 @@ const ApplicationCardHover = ({ onAppInstall, installUrl }) => (
                 colorHover={theme.SECONDARY_LIGHT}
                 onClick={() => onAppInstall(installUrl)}
             >
-                установить
+                Установить
             </ColoredButton>
         </HoverFill>
     </ApplicationCardHoverBlock>

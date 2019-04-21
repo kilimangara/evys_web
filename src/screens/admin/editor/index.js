@@ -17,6 +17,7 @@ class GrapeEditorDemo extends React.Component {
                 }
             }
         })
+        window.vEditor = editor
         const panelManager = editor.Panels
     }
 
