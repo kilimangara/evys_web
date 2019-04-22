@@ -50,8 +50,11 @@ export const Card = styled.div`
     margin-top: ${({ marginTop = 0 }) => `${marginTop}px`};
     border: 1px solid rgba(0, 0, 0, 0.12);
     background-color: white;
+    margin-left: ${({ marginLeft = 0 }) => `${marginLeft}px`};
     box-shadow: 0 0 1px #bdbfc1, 0 1px #ced2d3;
     padding: ${({ noPadding }) => (noPadding ? '0px' : '12px')};
+    flex: ${({ flex }) => (flex ? flex : '0')};
+    ${({ minWidth }) => (minWidth ? `min-width: ${minWidth};` : '')}
 `
 
 const ColoredButton = styled(Button)`
@@ -122,7 +125,7 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 </div>
             )
         return (
-            <Card marginTop={12}>
+            <Card marginLeft={24} minWidth={'250px'}>
                 <ColumnFlexed align="flex-start">
                     <Typography variant="h6">
                         Подписка с {format(new Date(subscription.startedAt), 'dd.MM.yyyy')}
@@ -155,6 +158,7 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
 
     render() {
         const { student, searchOpened, themes, query, pickedTheme } = this.state
+        console.log(student)
         if (!student)
             return (
                 <div>
@@ -163,25 +167,39 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
             )
         return (
             <Container>
-                <Card>
-                    <List subheader={<ListHeader disableSticky>Ученик {student.fullName}</ListHeader>} component="nav">
-                        <ListItem button onClick={this.goTo('tests')}>
-                            <ListText primary="Пройденные тесты" />
-                        </ListItem>
-                        <ListItem button onClick={this.goTo('subscription')}>
-                            <ListText primary="Управление подпиской" />
-                        </ListItem>
-                    </List>
-                </Card>
+                <RowFlexed style={{ justifyContent: 'space-between' }}>
+                    <Card>
+                        <List component="nav" subheader={<ListHeader disableSticky>Меню</ListHeader>}>
+                            <ListItem button onClick={this.goTo('tests')}>
+                                <ListText primary="Пройденные тесты" />
+                            </ListItem>
+                            <ListItem button onClick={this.goTo('transactions')}>
+                                <ListText primary="Оплаты" />
+                            </ListItem>
+                        </List>
+                    </Card>
+                    <Card marginLeft={24} flex={1}>
+                        <List
+                            component="nav"
+                            subheader={<ListHeader disableSticky>Ученик {student.fullName}</ListHeader>}
+                        >
+                            <ListItem>
+                                <ListItemText primary={`Телефон: ${student.phone}`} />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary={`Почта: ${student.email}`} />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary={`Прогресс: ${student.progress}`} />
+                            </ListItem>
+                        </List>
+                    </Card>
+                    {this.renderSubscriptionCard()}
+                </RowFlexed>
                 <Route
                     exact
                     path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/tests"
                     component={StudentTestBlocksScreen}
-                />
-                <Route
-                    exact
-                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/subscription"
-                    render={this.renderSubscriptionCard}
                 />
                 <Route
                     exact
