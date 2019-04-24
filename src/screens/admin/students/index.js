@@ -22,6 +22,7 @@ import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
 import CheckTestBlockScreen from './check-test-block'
 import StudentTestBlocksScreen from './student-test-blocks'
+import StudentTransactionsScreen from './transactions'
 import { InlineDatePicker } from 'material-ui-pickers'
 import { ColumnFlexed, RowFlexed } from '../../../components/styled/common'
 import format from 'date-fns/format'
@@ -97,9 +98,9 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                 return this.props.history.replace(
                     `/admin/subjects/${this.subjectId()}/students/${this.studentId()}/tests`
                 )
-            case 'subscription':
+            case 'transactions':
                 return this.props.history.replace(
-                    `/admin/subjects/${this.subjectId()}/students/${this.studentId()}/subscription`
+                    `/admin/subjects/${this.subjectId()}/students/${this.studentId()}/transactions`
                 )
         }
     }
@@ -205,6 +206,11 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
                     exact
                     path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/tests/:testBlockId(\d+)"
                     component={CheckTestBlockScreen}
+                />
+                <Route
+                    exact
+                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)/transactions"
+                    component={StudentTransactionsScreen}
                 />
             </Container>
         )
