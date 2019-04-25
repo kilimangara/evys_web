@@ -226,7 +226,11 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
     renderSearch = () => {
         return (
             <SearchCard marginTop={12}>
-                <SearchInput placeholder="Поиск учеников" value={this.state.query} onChange={this.onChangeSearch} />
+                <SearchInput
+                    placeholder="Поиск учеников"
+                    value={this.state.query || ''}
+                    onChange={this.onChangeSearch}
+                />
                 <SearchIconButton aria-label="Искать" onClick={this.searchStudents}>
                     <SearchIcon />
                 </SearchIconButton>

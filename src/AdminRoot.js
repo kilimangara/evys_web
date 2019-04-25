@@ -18,6 +18,7 @@ import lightBlue from '@material-ui/core/colors/lightBlue'
 import { MuiPickersUtilsProvider } from 'material-ui-pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import ruLocale from 'date-fns/locale/ru'
+import YandexMoneyApp from './screens/applications/yandex-money'
 
 import './screencss/PaginateCss.scss'
 import './screencss/Global.scss'
@@ -56,6 +57,7 @@ class Root extends Component {
                                         <Route exact path="/admin/register" component={RegisterScreen} />
                                         <Route exact path="/admin/login" component={LoginScreen} />
                                         <Route path="/admin" component={AdminApp} />
+                                        <Route path="/application/yandex_money" component={YandexMoneyApp} />
                                     </Switch>
                                 </BrowserRouter>
                             </JssProvider>

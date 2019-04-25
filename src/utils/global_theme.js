@@ -3,10 +3,12 @@ export const theme = {
     ACCENT_COLOR: '#03a9f4',
     ACCENT_COLOR_A: a => `rgba(3, 169, 244, ${a})`,
     SECONDARY: '#757575',
+    SECONDARY_LIGHT: '#D5D5D5',
     BACKGROUND_DARK: '#3B3A3F',
     CONTRAST_LIGHT: '#FFFFFF',
     TOOLBAR_COLOR: '#5e35b1',
-    CONTRAST_RIPPLE: 'rgba(255,255,255, .5)'
+    CONTRAST_RIPPLE: 'rgba(255,255,255, .5)',
+    TEXT_COLOR: '#212121'
 }
 
 export const studentTheme = {

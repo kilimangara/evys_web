@@ -157,12 +157,12 @@ export const WithCustomMargin = styled.div`
     margin: ${({ margin }) => margin};
 `
 
-export const ColoredButton = styled(({ color, textColor, textHover, ...props }) => <Button {...props} />)`
+export const ColoredButton = styled(({ color, textColor, colorHover, textHover, ...props }) => <Button {...props} />)`
     background-color: ${({ color, disabled }) =>
         disabled ? studentTheme.PRIMARY_LIGHT : color || studentTheme.ACCENT};
     color: ${({ textColor }) => textColor || studentTheme.PRIMARY};
     &:hover {
-        background-color: ${studentTheme.ACCENT_HOVER};
+        background-color: ${({ colorHover }) => colorHover || studentTheme.PRIMARY};
         color: ${({ textHover }) => textHover || studentTheme.BACKGROUND};
     }
 `
@@ -177,7 +177,7 @@ export const H5 = styled.div`
 `
 
 export const H4 = styled.div`
-    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
+    color: ${({ color, theme }) => color || theme.TEXT_COLOR || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H4} ${studentTheme.FONT};
 `
 
@@ -187,7 +187,7 @@ export const H3 = styled.div`
 `
 
 export const H2 = styled.div`
-    color: ${({ color }) => color || studentTheme.TEXT_COLOR};
+    color: ${({ color, theme }) => color || theme.TEXT_COLOR || studentTheme.TEXT_COLOR};
     font: ${studentTheme.H2} ${studentTheme.FONT};
 `
 
@@ -218,6 +218,11 @@ export const VerticalCentered = styled.div`
 `
 
 export const FullsizeCentered = styled(CenteredContent)`
+    width: 100%;
+    height: 100%;
+`
+
+export const FullsizeBlock = styled.div`
     width: 100%;
     height: 100%;
 `

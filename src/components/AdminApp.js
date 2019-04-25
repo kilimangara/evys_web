@@ -28,13 +28,15 @@ import { switchManager, pickAsset } from '../reducers/admin/assetManager'
 import { loadAccounts } from '../reducers/admin/account'
 import { SnackbarProvider } from 'notistack'
 import SettingsIcon from '@material-ui/icons/Settings'
-import styled from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 import JivoApi from '../utils/jivo-api'
 import ZendeskApi from '../utils/zendesk-api'
+import UserApplicationsScreen from '../screens/admin/UserApplicationsScreen'
+import AllApplicationsScreen from '../screens/admin/AllApplicationsScreen'
 
 const LeftMenuIcon = styled.img`
-  width: 36px
-  height: 36px
+    width: 36px;
+    height: 36px;
 `
 
 class App extends Component {
@@ -109,6 +111,12 @@ class App extends Component {
                         <ListItemText primary={'Настройки'} />
                     </ListItem>
                     <Divider />
+                    <ListItem button onClick={this.goToExactPath('/admin/installations')}>
+                        <ListItemIcon>
+                            <LeftMenuIcon src={'/frontend/images/applications-left-panel.svg'} />
+                        </ListItemIcon>
+                        <ListItemText primary={'Приложения'} />
+                    </ListItem>
                 </List>
             </div>
         )
@@ -117,77 +125,81 @@ class App extends Component {
     render() {
         const { authenticated, account, currentAccount, classes } = this.props
         return (
-            <div style={inlineStyles.root}>
-                <GoogleAuth />
-                <AppDrawer
-                    PaperProps={{ style: { zIndex: 2 } }}
-                    ModalProps={{ style: { zIndex: 2 } }}
-                    className={classNames(classes.drawer, {
-                        [classes.drawerOpen]: this.state.open,
-                        [classes.drawerClose]: !this.state.open
-                    })}
-                    classes={{
-                        paper: classNames({
+            <ThemeProvider theme={theme}>
+                <div style={inlineStyles.root}>
+                    <GoogleAuth />
+                    <AppDrawer
+                        PaperProps={{ style: { zIndex: 2 } }}
+                        ModalProps={{ style: { zIndex: 2 } }}
+                        className={classNames(classes.drawer, {
                             [classes.drawerOpen]: this.state.open,
                             [classes.drawerClose]: !this.state.open
-                        })
-                    }}
-                    open={this.state.open}
-                    variant={'permanent'}
-                >
-                    {this.drawerContent()}
-                </AppDrawer>
-                <HeaderAppBarAdmin
-                    {...this.props}
-                    onMenuPressed={this.handleMenuClick}
-                    open={this.state.open}
-                    className={classNames(classes.appBar, {
-                        [classes.appBarShift]: this.state.open
-                    })}
-                />
-                <AppContainer>
-                    <Modal ref={ref => (this.assetManager = ref)} onHide={this.imageAssetPickerClose}>
-                        <ImageAssetPicker />
-                    </Modal>
-                    <div style={{ minHeight: 64 }} />
-                    <SnackbarProvider
-                        maxSnack={5}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right'
+                        })}
+                        classes={{
+                            paper: classNames({
+                                [classes.drawerOpen]: this.state.open,
+                                [classes.drawerClose]: !this.state.open
+                            })
                         }}
+                        open={this.state.open}
+                        variant={'permanent'}
                     >
-                        <CommonWrapper>
-                            <Switch>
-                                <Route
-                                    exact
-                                    path="/admin"
-                                    render={() => {
-                                        if (!this.props.authenticated) return null
-                                        if (!this.props.currentAccount) return null
-                                        return <Redirect to="/admin/subjects" />
-                                    }}
-                                />
-                                <Route exact path="/admin/subjects" component={SubjectsScreen} />
-                                <Route
-                                    path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
-                                    component={OneStudentManageScreen}
-                                />
-                                <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
-                                <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
-                                <Route path="/admin/students" component={StudentsScreen} />
-                                <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                                <Route path="/admin/storage/:themeId(\d+)/add_video" component={AddVideoScreen} />
-                                <Route
-                                    path="/admin/theme/:theme_id/theory/:theory_id(\d+)/watch"
-                                    component={VideoScreen}
-                                />
-                                <Route path="/admin/settings" component={SettingsScreen} />
-                            </Switch>
-                        </CommonWrapper>
-                    </SnackbarProvider>
-                </AppContainer>
-            </div>
+                        {this.drawerContent()}
+                    </AppDrawer>
+                    <HeaderAppBarAdmin
+                        {...this.props}
+                        onMenuPressed={this.handleMenuClick}
+                        open={this.state.open}
+                        className={classNames(classes.appBar, {
+                            [classes.appBarShift]: this.state.open
+                        })}
+                    />
+                    <AppContainer>
+                        <Modal ref={ref => (this.assetManager = ref)} onHide={this.imageAssetPickerClose}>
+                            <ImageAssetPicker />
+                        </Modal>
+                        <div style={{ minHeight: 64 }} />
+                        <SnackbarProvider
+                            maxSnack={5}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'right'
+                            }}
+                        >
+                            <CommonWrapper>
+                                <Switch>
+                                    <Route
+                                        exact
+                                        path="/admin"
+                                        render={() => {
+                                            if (!this.props.authenticated) return null
+                                            if (!this.props.currentAccount) return null
+                                            return <Redirect to="/admin/subjects" />
+                                        }}
+                                    />
+                                    <Route exact path="/admin/subjects" component={SubjectsScreen} />
+                                    <Route
+                                        path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
+                                        component={OneStudentManageScreen}
+                                    />
+                                    <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
+                                    <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
+                                    <Route path="/admin/students" component={StudentsScreen} />
+                                    <Route path="/admin/choose_account" component={ChooseAccountScreen} />
+                                    <Route path="/admin/storage/:themeId(\d+)/add_video" component={AddVideoScreen} />
+                                    <Route
+                                        path="/admin/theme/:theme_id/theory/:theory_id(\d+)/watch"
+                                        component={VideoScreen}
+                                    />
+                                    <Route path="/admin/settings" component={SettingsScreen} />
+                                    <Route path="/admin/installations" component={UserApplicationsScreen} />
+                                    <Route path="/admin/marketplace" component={AllApplicationsScreen} />
+                                </Switch>
+                            </CommonWrapper>
+                        </SnackbarProvider>
+                    </AppContainer>
+                </div>
+            </ThemeProvider>
         )
     }
 }
