@@ -35,7 +35,7 @@ import Rating from 'react-rating'
 import StarBorderComponent from '@material-ui/icons/StarBorder'
 import StarComponent from '@material-ui/icons/Star'
 import { studentTheme } from '../../utils/global_theme'
-import { distanceInWords } from 'date-fns'
+import { formatDistance } from 'date-fns'
 import ruLocale from 'date-fns/locale/ru'
 import { sendComment } from '../../api'
 import { DEFAULT_AVATAR_IMAGE_URL } from '../../screens/ProfileScreen'
@@ -134,7 +134,7 @@ export class CommentsBlock extends Component {
                                             <CommentAuthorInfo>
                                                 <H4>
                                                     <ColoredText color={studentTheme.SECONDARY_TEXT_COLOR}>
-                                                        {distanceInWords(new Date(createdAt), new Date(), {
+                                                        {formatDistance(new Date(createdAt), new Date(), {
                                                             locale: ruLocale
                                                         })}{' '}
                                                         назад
