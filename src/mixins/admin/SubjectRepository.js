@@ -10,7 +10,7 @@ import {
     loadStudentSubscription,
     updateStudentSubscription
 } from '../../reducers/admin/subjects'
-import { pickBy } from 'lodash'
+import { pickBy, omit } from 'lodash'
 
 export default superclass =>
     class SubjectRepository extends superclass {
@@ -24,7 +24,10 @@ export default superclass =>
         updateSubject = () => {
             const { subject } = this.state
             const sendedTariff = { ...subject.tariff }
-            const sendedSubject = { ...subject, tariff: pickBy(sendedTariff, el => el != undefined && el != '') }
+            const sendedSubject = {
+                ...omit(subject, ['main_image']),
+                tariff: pickBy(sendedTariff, el => el != undefined && el != '')
+            }
             return this.props.updateSubject(this.subjectId(), sendedSubject)
         }
 
