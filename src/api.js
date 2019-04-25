@@ -623,10 +623,11 @@ export function getTransactions(params) {
     })
 }
 
-export function createStudentTransaction(studentId, data) {
+export function createStudentTransaction(student, data) {
     return axiosInstance.request({
         url: '/admin2/transactions',
-        data: { ...data, studentId }
+        data: { ...data, student },
+        method: 'POST'
     })
 }
 

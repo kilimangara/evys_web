@@ -14,7 +14,7 @@ import {
     SearchInput
 } from '../../../components/styled/admin/Students'
 
-export const SubjectPicker = ({ subjects, onSubjectSearch, searchValue, onSearchChange, onSubjectSave }) => (
+export const SubjectPicker = ({ subjects, onSubjectSearch, searchValue = '', onSearchChange, onSubjectSave }) => (
     <SubjectPickerWrapper>
         <BorderlessSearchCard style={{ width: '100%' }}>
             <SearchInput placeholder="Поиск учеников" value={searchValue} onChange={onSearchChange} />

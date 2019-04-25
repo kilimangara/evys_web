@@ -7,12 +7,14 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
+import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
 import IconButton from '@material-ui/core/IconButton'
 import MoreIcon from '@material-ui/icons/MoreVert'
 import CheckIcon from '@material-ui/icons/Check'
+import AddIcon from '@material-ui/icons/Add'
 import moment from 'moment'
 import { compose } from 'recompose'
 import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
@@ -23,10 +25,12 @@ import { debounce } from 'lodash'
 import { withSnackbar } from 'notistack'
 import TextField from '@material-ui/core/TextField'
 import { InlineDatePicker } from 'material-ui-pickers'
+import SaveButton from '../../../components/common/SaveButton'
 import produce from 'immer'
 import startOfWeek from 'date-fns/startOfWeek'
 import startOfDay from 'date-fns/startOfDay'
-import { getTransactions, createStudentTransaction } from '../../../api'
+import { getTransactions, createStudentTransaction, getPaymentVariants } from '../../../api'
+import Collapse from '@material-ui/core/Collapse'
 
 const Container = styled.div`
     display: flex;
@@ -41,6 +45,14 @@ class TransactionsScreen extends Component {
         this.state = {
             anchorEl: null,
             transactions: [],
+            paymentVariants: [],
+            showNewTransaction: false,
+            transaction: {
+                paymentGateway: null,
+                title: '',
+                amount: 0
+            },
+            errors: {},
             fetching: false,
             currentPage: 0,
             totalPages: 0,
@@ -54,6 +66,32 @@ class TransactionsScreen extends Component {
 
     componentDidMount() {
         this.getStudentTransactions(1)
+        this.loadPaymentVariants()
+    }
+
+    loadPaymentVariants = () => {
+        getPaymentVariants().then(({ data }) => {
+            this.setState({ paymentVariants: data })
+        })
+    }
+
+    addTransaction = () => {
+        const { transaction } = this.state
+        createStudentTransaction(this.studentId(), transaction)
+            .then(({ data }) => {
+                this.props.enqueueSnackbar('Счет выставлен', { variant: 'success' })
+                this.getStudentTransactions(this.state.currentPage)
+                this.setState({
+                    transaction: {
+                        paymentGateway: null,
+                        title: '',
+                        amount: 0
+                    }
+                })
+            })
+            .catch(({ response }) => {
+                this.setState({ errors: response.data })
+            })
     }
 
     getStudentTransactions = (page = 1) => {
@@ -85,6 +123,15 @@ class TransactionsScreen extends Component {
         }
     }
 
+    newTransactionChanged = field => event => {
+        this.setState(
+            produce(this.state, draft => {
+                draft.transaction[field] = event.target.value
+                delete draft.errors[field]
+            })
+        )
+    }
+
     filterChanged = name => event => {
         let value = null
         value = startOfDay(event)
@@ -95,7 +142,55 @@ class TransactionsScreen extends Component {
         )
     }
 
-    renderTest = (transaction, index) => {
+    renderCreationItem = () => {
+        console.log(this.state.transaction)
+        const { paymentGateway, title, amount } = this.state.transaction
+        return (
+            <Collapse in={this.state.showNewTransaction}>
+                <Card marginTop={12}>
+                    <Typography variant="h6">Создать счет</Typography>
+                    <TextField
+                        onChange={this.newTransactionChanged('title')}
+                        label={'Описание*'}
+                        variant="outlined"
+                        placeholder="Описание для ученика"
+                        value={title}
+                        fullWidth
+                        multiline
+                        margin={'normal'}
+                    />
+                    <TextField
+                        select
+                        variant="outlined"
+                        margin="normal"
+                        label="Вариант оплаты"
+                        fullWidth
+                        value={paymentGateway || ''}
+                        onChange={this.newTransactionChanged('paymentGateway')}
+                    >
+                        {this.state.paymentVariants.map(pg => (
+                            <MenuItem key={pg.id} value={pg.id}>
+                                {pg.title}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                    <TextField
+                        onChange={this.newTransactionChanged('amount')}
+                        label={'Стоимость'}
+                        variant="outlined"
+                        type="number"
+                        step={'0.01'}
+                        value={amount}
+                        fullWidth
+                        margin={'normal'}
+                    />
+                    <SaveButton onClick={this.addTransaction} />
+                </Card>
+            </Collapse>
+        )
+    }
+
+    renderTransaction = (transaction, index) => {
         const amountFormatted = new Intl.NumberFormat('ru', {
             style: 'currency',
             currency: 'RUB',
@@ -130,6 +225,14 @@ class TransactionsScreen extends Component {
                         Оплаты
                     </Typography>
                 </ToolbarTitle>
+                <Tooltip title={'Назначить оплату'}>
+                    <IconButton
+                        aria-label="Добавить"
+                        onClick={() => this.setState({ showNewTransaction: !this.state.showNewTransaction })}
+                    >
+                        <AddIcon />
+                    </IconButton>
+                </Tooltip>
             </TableToolbar>
         )
     }
@@ -150,7 +253,7 @@ class TransactionsScreen extends Component {
                                 <TableCell />
                             </TableRow>
                         </TableHead>
-                        <TableBody>{this.transactions().map(this.renderTest)}</TableBody>
+                        <TableBody>{this.transactions().map(this.renderTransaction)}</TableBody>
                     </Table>
                 </Card>
                 <Menu
@@ -160,7 +263,6 @@ class TransactionsScreen extends Component {
                     onClose={() => this.setState({ anchorEl: null })}
                 >
                     <MenuItem>Скопировать</MenuItem>
-                    <MenuItem>Отправить ученику</MenuItem>
                 </Menu>
                 <div style={{ alignSelf: 'center' }}>
                     <ReactPaginate
@@ -211,6 +313,7 @@ class TransactionsScreen extends Component {
                         </WithHorizontalMargin>
                     </div>
                 </Card>
+                {this.renderCreationItem()}
                 {this.renderBody()}
             </Container>
         )
