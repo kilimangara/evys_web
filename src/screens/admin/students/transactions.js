@@ -29,6 +29,7 @@ import SaveButton from '../../../components/common/SaveButton'
 import produce from 'immer'
 import startOfWeek from 'date-fns/startOfWeek'
 import startOfDay from 'date-fns/startOfDay'
+import format from 'date-fns/format'
 import { getTransactions, createStudentTransaction, getPaymentVariants } from '../../../api'
 import Collapse from '@material-ui/core/Collapse'
 
@@ -50,7 +51,8 @@ class TransactionsScreen extends Component {
             transaction: {
                 paymentGateway: null,
                 title: '',
-                amount: 0
+                amount: 0,
+                subject: this.subjectId()
             },
             errors: {},
             fetching: false,
@@ -59,7 +61,8 @@ class TransactionsScreen extends Component {
             searchOpened: false,
             filters: {
                 dateFrom: startOfWeek(new Date(), { weekStartsOn: 1 }),
-                dateTo: new Date()
+                dateTo: new Date(),
+                subjectId: this.subjectId()
             }
         }
     }
@@ -97,7 +100,9 @@ class TransactionsScreen extends Component {
     getStudentTransactions = (page = 1) => {
         const { filters } = this.state
         this.setState({ fetching: true })
-        getTransactions({ page, studentId: this.studentId(), ...filters })
+        const dateFrom = format(filters.dateFrom, 'yyyy-MM-dd')
+        const dateTo = format(filters.dateTo, 'yyyy-MM-dd')
+        getTransactions({ page, studentId: this.studentId(), ...filters, dateFrom, dateTo })
             .then(({ data }) => {
                 const { count, results } = data
                 this.setState({ transactions: results, totalPages: count, currentPage: page, fetching: false })
@@ -284,6 +289,7 @@ class TransactionsScreen extends Component {
 
     render() {
         const { filters } = this.state
+        console.log(filters)
         return (
             <Container>
                 <Card marginTop={12}>

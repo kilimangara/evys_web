@@ -49,6 +49,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
     state = {
         selectedIds: [],
         query: '',
+        inSearch: false,
         newStudent: {
             phone: '',
             fullName: '',
@@ -66,10 +67,12 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
     }
 
     searchStudents = () => {
+        this.setState({ inSearch: !!this.state.query })
         this.props.getStudents(1, this.state.query)
     }
 
     reloadStudents = () => {
+        this.setState({ inSearch: !!this.state.query })
         this.props.getStudents(this.props.currentPage, this.state.query)
     }
 
@@ -299,7 +302,6 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
     }
 
     renderIntro = () => {
-        if (!this.noStudents()) return null
         return (
             <NoStudentsWrapper>
                 <img style={{ height: 250, width: 190 }} src={'/frontend/images/no-students.svg'} />
@@ -316,40 +318,52 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
     }
 
     renderBody = () => {
-        if (this.noStudents()) return null
         return (
             <React.Fragment>
                 {this.renderSearch()}
-                <Card marginTop={12} noPadding>
-                    {this.renderToolbar()}
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell padding="checkbox" />
-                                <TableCell align="left">Идентификатор</TableCell>
-                                <TableCell>Имя</TableCell>
-                                <TableCell>Телефон</TableCell>
-                                <TableCell align="right">Почта</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>{this.students().map(this.renderStudent)}</TableBody>
-                    </Table>
-                </Card>
-                <div style={{ alignSelf: 'center' }}>
-                    <ReactPaginate
-                        disableInitialCallback
-                        style={{ marginTop: 12, alignSelf: 'center' }}
-                        pageCount={this.props.totalPages}
-                        initialPage={0}
-                        marginPagesDisplayed={1}
-                        pageRangeDisplayed={4}
-                        onPageChange={this.onPageChanged}
-                        previousLabel="<<"
-                        nextLabel=">>"
-                        containerClassName={'pagination'}
-                    />
-                </div>
+                {!this.noStudents() && (
+                    <React.Fragment>
+                        <Card marginTop={12} noPadding>
+                            {this.renderToolbar()}
+                            <Table>
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell padding="checkbox" />
+                                        <TableCell align="left">Идентификатор</TableCell>
+                                        <TableCell>Имя</TableCell>
+                                        <TableCell>Телефон</TableCell>
+                                        <TableCell align="right">Почта</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>{this.students().map(this.renderStudent)}</TableBody>
+                            </Table>
+                        </Card>
+                        <div style={{ alignSelf: 'center' }}>
+                            <ReactPaginate
+                                disableInitialCallback
+                                style={{ marginTop: 12, alignSelf: 'center' }}
+                                pageCount={this.props.totalPages}
+                                initialPage={0}
+                                marginPagesDisplayed={1}
+                                pageRangeDisplayed={4}
+                                onPageChange={this.onPageChanged}
+                                previousLabel="<<"
+                                nextLabel=">>"
+                                containerClassName={'pagination'}
+                            />
+                        </div>
+                    </React.Fragment>
+                )}
             </React.Fragment>
+        )
+    }
+
+    noStudents = () => {
+        return (
+            !this.props.students.length &&
+            !this.props.studentsFetching &&
+            this.props.currentPage === 1 &&
+            !this.state.inSearch
         )
     }
 
@@ -358,7 +372,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
 
         return (
             <Container>
-                {this.renderIntro()}
+                {this.noStudents() && this.renderIntro()}
                 {this.renderCreationItem()}
                 {this.renderBody()}
                 <Dialog open={modalOpened} onClose={this.handleModalClose}>
