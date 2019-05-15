@@ -248,13 +248,11 @@
             varying vec3 vNormal;
             varying float vDistortion1;
             varying float vDistortion2;
-            varying float vDistortion3;
 
             void main() {
                 vUv = uv;
                 vDistortion1 = pnoise(normal + u_time * 0.2 + u_timeOffset, vec3(10.));
                 vDistortion2 = pnoise(normal + u_time * 0.1 + u_timeOffset + 5., vec3(10.));
-                vDistortion3 = pnoise(normal * 1.2 + u_time * 0.3 + u_timeOffset - 5., vec3(10.));
 
                 vPos = position;
 
@@ -301,7 +299,6 @@
             varying vec3 vNormal;
             varying float vDistortion1;
             varying float vDistortion2;
-            varying float vDistortion3;
 
             void main() {
                 vec4 addedLights = vec4(0.0,0.0,0.0,1.0);
@@ -312,12 +309,10 @@
                 vec3 c1 = rgb(u_color1.r, u_color1.g, u_color1.b);
                 vec3 c2 = rgb(u_color2.r, u_color2.g, u_color2.b);
                 vec3 c3 = rgb(u_color3.r, u_color3.g, u_color3.b);
-                vec3 c4 = rgb(u_color4.r, u_color4.g, u_color4.b);
                 vec3 color = c1;
 
                 color = mix(color, c2, vDistortion1);
                 color = mix(color, c3, vDistortion2);
-                color = mix(color, c4, vDistortion3);
 
                 float dist = distance(vPos.xy, vec2(0.));
                 float area = smoothstep((u_radius * 0.6) - (u_radius * 0.6) / 5., (u_radius * 0.6), dist);
@@ -336,8 +331,8 @@
                 'use strict'
                 // prettier-ignore
                 var renderer, scene, camera, pixelRatio = Math.min(window.devicePixelRatio, 2),
-	geometry1, material1, mesh1,
-	fov = 45;
+                  	geometry1, material1, mesh1, backgroundScene, backgroundCamera,
+                  	fov = 45;
 
                 var mousePosition = {
                     x: 0.5,
@@ -349,9 +344,9 @@
                     'https://s3.amazonaws.com/jsfiddle1234/lensflare0.png'
                 )
 
-                var light = new THREE.PointLight(0xffffff, 35, 1000)
-                light.color.setHSL(0.85, 0.5, 0.9)
-                light.position.set(250, 0, 500)
+                var light = new THREE.PointLight(0xffffff, 1, 1000, 2)
+                light.color.setHSL(0.88, 1, 1)
+                light.position.set(0, 0, 1000)
 
                 var start = Date.now()
                 var fixedTime = 0,
@@ -382,26 +377,30 @@
                     isMobile = w < 800
                 }
 
+                function addLight(scene, h, s, l, x, y, z) {
+                    var light1 = new THREE.PointLight(0xffffff, 1, 1000, 2)
+                    light1.color.setHSL(h, s, l)
+                    light1.position.set(x, y, z)
+                    var lensflare = new THREE.Lensflare()
+                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 2500, 0, light1.color))
+                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 60, 0.6))
+                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 70, 0.7))
+                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 120, 0.9))
+                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 80, 1))
+                    light1.add(lensflare)
+                    scene.add(light1)
+                }
+
                 init()
 
                 function init() {
                     updateSize()
 
                     scene = new THREE.Scene()
-
-                    scene.background = new THREE.Color().setHSL(0.51, 0.4, 0.01)
                     scene.fog = new THREE.Fog(scene.background, 3500, 15000)
 
                     camera = new THREE.PerspectiveCamera(fov, w / h, 1, 500)
                     camera.position.z = isMobile ? 200 : 150
-
-                    // var controls = new THREE.FlyControls( camera );
-                    //
-                    // controls.movementSpeed = 2500;
-                    // controls.domElement = $container;
-                    // controls.rollSpeed = Math.PI / 6;
-                    // controls.autoForward = false;
-                    // controls.dragToLook = false;
 
                     var dirLight = new THREE.DirectionalLight(0xffffff, 0.05)
                     dirLight.position.set(0, -1, 0).normalize()
@@ -412,16 +411,15 @@
 
                     var lightsUniform = THREE.UniformsUtils.merge([THREE.UniformsLib['lights']])
 
-                    geometry1 = new THREE.IcosahedronGeometry(40, 3)
+                    geometry1 = new THREE.IcosahedronGeometry(34, 6)
                     material1 = new THREE.ShaderMaterial({
                         uniforms: {
+                            u_color3: { type: 'v3', value: new THREE.Vector3(0, 186, 240) },
                             u_color1: { type: 'v3', value: new THREE.Vector3(255, 0, 255) },
-                            u_color2: { type: 'v3', value: new THREE.Vector3(0, 186, 240) },
-                            u_color3: { type: 'v3', value: new THREE.Vector3(0, 244, 255) },
-                            u_color4: { type: 'v3', value: new THREE.Vector3(0, 244, 255) },
+                            u_color2: { type: 'v3', value: new THREE.Vector3(0, 244, 255) },
                             u_time: { type: 'f', value: 0 },
                             u_timeOffset: { type: 'f', value: 4.6 },
-                            lightIntensity: { type: 'f', value: 0.05 },
+                            lightIntensity: { type: 'f', value: 1.35 },
                             u_dimensions: {
                                 type: 'v2',
                                 value: new THREE.Vector2(w * pixelRatio, h * pixelRatio)
@@ -436,26 +434,18 @@
                     })
 
                     mesh1 = new THREE.Mesh(geometry1, material1)
-                    mesh1.position.set(0, 0, 0)
+                    mesh1.position.set(-35, 0, 0)
                     mesh1.scale.multiplyScalar(1.0)
                     mesh1.rotation.x = 0.0
                     mesh1.rotation.y = 0.0
                     mesh1.rotation.z = 1.6
-                    mesh1.castShadows = true
                     scene.add(mesh1)
 
                     scene.add(light)
-                    var lensflare = new THREE.Lensflare()
-                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 1500, 0, light.color))
-                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 60, 0.6))
-                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 70, 0.7))
-                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 120, 0.9))
-                    lensflare.addElement(new THREE.LensflareElement(textureFlare0, 70, 1))
-                    light.add(lensflare)
 
                     var pointColor = '#ffffff'
 
-                    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false })
+                    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
                     renderer.setPixelRatio(pixelRatio)
                     renderer.setSize(w, h)
 
@@ -474,6 +464,11 @@
                     }
 
                     isInited = true
+
+                    var backgroundTexture = new THREE.TextureLoader().load(
+                        'https://272507.selcdn.ru/evys_api_videos/bg_new.png'
+                    )
+                    scene.background = backgroundTexture
                     render()
                 }
 
@@ -493,6 +488,7 @@
                 }
 
                 function handleMouseMove(e) {
+                    if (!mousePosition.drag) return
                     mousePosition.x = e.pageX / w
                     mousePosition.y = e.pageY / h
                 }
@@ -509,8 +505,7 @@
                     if (isFocused) {
                         camX = ((mousePosition.x - 0.5) * (isMobile ? 120 : 80) - camera.position.x) * 0.05
                         camY = ((mousePosition.y - 0.5) * (isMobile ? 80 : 40) - camera.position.y) * 0.05
-                        console.log('MOUSEEE', camX, camY)
-                        fixedTime = 0.0003 * (Date.now() - start)
+                        fixedTime = 0.0008 * (Date.now() - start)
 
                         timeOffset += (Math.abs(camX) + Math.abs(camY)) / (isMobile ? 50 : 20)
                         dynamicTime = fixedTime + timeOffset
