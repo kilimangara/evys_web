@@ -25,7 +25,7 @@ export default superclass =>
             const { subject } = this.state
             const sendedTariff = { ...subject.tariff }
             const sendedSubject = {
-                ...omit(subject, ['main_image']),
+                ...omit(subject, ['mainImage']),
                 tariff: pickBy(sendedTariff, el => el != undefined && el != '')
             }
             return this.props.updateSubject(this.subjectId(), sendedSubject)
