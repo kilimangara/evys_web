@@ -27,10 +27,7 @@ import { getTestQuestion } from '../api'
 import ReactQuill from 'react-quill'
 import { studentTheme } from '../utils/global_theme'
 import { withSnackbar } from 'notistack'
-import { Controlled as CodeMirror } from 'react-codemirror2'
-import 'codemirror/mode/javascript/javascript'
-import 'codemirror/lib/codemirror.css'
-import 'codemirror/theme/dracula.css'
+import CodeMirror from '../components/codemirror'
 
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
@@ -127,17 +124,14 @@ class TestQuestionScreen extends TestsMixin(Component) {
 
     renderCodeMirror = () => {
         const { textAnswer } = this.state
+        console.log(textAnswer)
         return (
             <CenteredContent width={'85%'} direction={'column'} style={{ alignItems: 'center', marginTop: '18px' }}>
                 <CodeMirror
                     onBeforeChange={(editor, data, value) => {
                         this.setState({ textAnswer: value })
                     }}
-                    options={{
-                        mode: 'javascript',
-                        theme: 'dracula',
-                        lineNumbers: true
-                    }}
+                    canPickLanguage
                     value={textAnswer}
                 />
                 <ColoredButton
@@ -158,12 +152,12 @@ class TestQuestionScreen extends TestsMixin(Component) {
         if (question.type === 'PROGRAMMING') return this.renderCodeMirror()
         return question.answers.map(answer => (
             <AnswerBlank
-                key={question.content}
-                correct={answerSent && correct !== null && selectedAnswer === question.content ? correct : null}
-                selected={question.content === selectedAnswer}
-                onClick={() => (answerSent ? this.getNextQuestion() : this.selectAnswer(question.content))}
+                key={answer.content}
+                correct={answerSent && correct !== null && selectedAnswer === answer.content ? correct : null}
+                selected={answer.content === selectedAnswer}
+                onClick={() => (answerSent ? this.getNextQuestion() : this.selectAnswer(answer.content))}
             >
-                <AnswerText>{question.content}</AnswerText>
+                <AnswerText>{answer.content}</AnswerText>
             </AnswerBlank>
         ))
     }
