@@ -206,7 +206,7 @@ class TestCases extends TestCaseRepository(React.Component) {
 
     deleteAnswer = answerId => () => {
         const { selectedTestCase, selectedTest } = this.state
-        this.deleteAnswer(test.id, answerId).then(() => {
+        this.props.removeAnswer(selectedTest, answerId).then(() => {
             this.setState(
                 produce(this.state, draft => {
                     const testCase = draft.testCases.find(el => el.id === selectedTestCase)
@@ -215,7 +215,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                     if (!test) return
                     const answerIndex = test.answers.findIndex(el => el.id === answerId)
                     if (answerIndex === -1) return
-                    test.answers.splice(index, 1)
+                    test.answers.splice(answerIndex, 1)
                 })
             )
         })
