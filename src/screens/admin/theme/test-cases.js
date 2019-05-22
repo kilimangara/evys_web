@@ -24,13 +24,15 @@ import Sortable from 'sortablejs'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import green from '@material-ui/core/colors/green'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
+import FormGroup from '@material-ui/core/FormGroup'
 
 const SaveCheckIcon = styled(Check)`
     color: ${green[500]};
 `
 
 const ListItemContainer = styled.div`
-    padding-left: 8px;
     flex: 1 1 auto;
     display: flex;
     align-items: center;
@@ -157,6 +159,13 @@ class TestCases extends TestCaseRepository(React.Component) {
         if (!testCase) return null
         const test = testCase.tests.find(el => el.id === selectedTest)
         return test
+    }
+
+    testTypeChanged = event => {
+        const { value, checked } = event.target
+        let testType = 'A'
+        if (checked) testType = value
+        this.testChanged('type')(testType)
     }
 
     testChanged = field => event => {
@@ -323,6 +332,33 @@ class TestCases extends TestCaseRepository(React.Component) {
         if (!test) return null
         return (
             <div>
+                <FormControl variant="outlined">
+                    <FormLabel component="legend">Тип вопроса</FormLabel>
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color={'primary'}
+                                    checked={test.type === 'PROGRAMMING'}
+                                    value="PROGRAMMING"
+                                    onChange={this.testTypeChanged}
+                                />
+                            }
+                            label="Задача с программированием"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color={'primary'}
+                                    checked={test.type === 'MULTI'}
+                                    value="MULTI"
+                                    onChange={this.testTypeChanged}
+                                />
+                            }
+                            label="Мульти-ответы"
+                        />
+                    </FormGroup>
+                </FormControl>
                 <TextField
                     onChange={this.testChanged('name')}
                     label={'Название вопроса'}
