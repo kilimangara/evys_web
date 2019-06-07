@@ -477,6 +477,13 @@ export function installApp(data) {
     })
 }
 
+export function uninstallApp(appId) {
+    return axiosInstance.request({
+        url: `/admin2/installations/${appId}`,
+        method: 'DELETE'
+    })
+}
+
 export function getAssets(page = 1, filtersObject = {}) {
     return axiosInstance.request({
         url: `/admin2/templates`,
@@ -600,6 +607,27 @@ export function deleteTest(testCaseId, testId) {
     return axiosInstance.request({
         url: `/admin2/test_case/${testCaseId}/test/${testId}`,
         method: 'DELETE'
+    })
+}
+
+export function getPaymentVariants() {
+    return axiosInstance.request({
+        url: '/admin2/payment_gateways'
+    })
+}
+
+export function getTransactions(params) {
+    return axiosInstance.request({
+        url: '/admin2/transactions',
+        params
+    })
+}
+
+export function createStudentTransaction(student, data) {
+    return axiosInstance.request({
+        url: '/admin2/transactions',
+        data: { ...data, student },
+        method: 'POST'
     })
 }
 

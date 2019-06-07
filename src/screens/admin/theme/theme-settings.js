@@ -52,7 +52,16 @@ export default class ThemeSettings extends Component {
     }
 
     render() {
-        const { name, num, isHidden, testsModelType, endRange, repetitionRange, requiredRepeats } = this.state.theme
+        const {
+            name,
+            num,
+            isHidden,
+            testsModelType,
+            endRange,
+            repetitionRange,
+            requiredRepeats,
+            questionsOrder
+        } = this.state.theme
         return (
             <Card marginTop={12}>
                 <TextField
@@ -81,6 +90,18 @@ export default class ThemeSettings extends Component {
                     margin="normal"
                     type={'number'}
                 />
+                <TextField
+                    select
+                    variant="outlined"
+                    margin="normal"
+                    label="Порядок вопросов"
+                    fullWidth
+                    value={questionsOrder}
+                    onChange={this.saveToState('questionsOrder')}
+                >
+                    <MenuItem value={'random'}>Случайный</MenuItem>
+                    <MenuItem value={'num'}>По очереди</MenuItem>
+                </TextField>
                 <TextField
                     select
                     variant="outlined"

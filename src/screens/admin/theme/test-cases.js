@@ -24,13 +24,15 @@ import Sortable from 'sortablejs'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import green from '@material-ui/core/colors/green'
+import FormControl from '@material-ui/core/FormControl'
+import FormLabel from '@material-ui/core/FormLabel'
+import FormGroup from '@material-ui/core/FormGroup'
 
 const SaveCheckIcon = styled(Check)`
     color: ${green[500]};
 `
 
 const ListItemContainer = styled.div`
-    padding-left: 8px;
     flex: 1 1 auto;
     display: flex;
     align-items: center;
@@ -159,6 +161,13 @@ class TestCases extends TestCaseRepository(React.Component) {
         return test
     }
 
+    testTypeChanged = event => {
+        const { value, checked } = event.target
+        let testType = 'A'
+        if (checked) testType = value
+        this.testChanged('type')(testType)
+    }
+
     testChanged = field => event => {
         const { selectedTestCase, selectedTest } = this.state
         let value = event
@@ -197,7 +206,7 @@ class TestCases extends TestCaseRepository(React.Component) {
 
     deleteAnswer = answerId => () => {
         const { selectedTestCase, selectedTest } = this.state
-        this.deleteAnswer(test.id, answerId).then(() => {
+        this.props.removeAnswer(selectedTest, answerId).then(() => {
             this.setState(
                 produce(this.state, draft => {
                     const testCase = draft.testCases.find(el => el.id === selectedTestCase)
@@ -206,7 +215,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                     if (!test) return
                     const answerIndex = test.answers.findIndex(el => el.id === answerId)
                     if (answerIndex === -1) return
-                    test.answers.splice(index, 1)
+                    test.answers.splice(answerIndex, 1)
                 })
             )
         })
@@ -323,6 +332,33 @@ class TestCases extends TestCaseRepository(React.Component) {
         if (!test) return null
         return (
             <div>
+                <FormControl variant="outlined">
+                    <FormLabel component="legend">Тип вопроса</FormLabel>
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color={'primary'}
+                                    checked={test.type === 'PROGRAMMING'}
+                                    value="PROGRAMMING"
+                                    onChange={this.testTypeChanged}
+                                />
+                            }
+                            label="Задача с программированием"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color={'primary'}
+                                    checked={test.type === 'MULTI'}
+                                    value="MULTI"
+                                    onChange={this.testTypeChanged}
+                                />
+                            }
+                            label="Мульти-ответы"
+                        />
+                    </FormGroup>
+                </FormControl>
                 <TextField
                     onChange={this.testChanged('name')}
                     label={'Название вопроса'}

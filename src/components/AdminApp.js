@@ -110,13 +110,13 @@ class App extends Component {
                         </ListItemIcon>
                         <ListItemText primary={'Настройки'} />
                     </ListItem>
+                    <Divider />
                     <ListItem button onClick={this.goToExactPath('/admin/installations')}>
                         <ListItemIcon>
                             <LeftMenuIcon src={'/frontend/images/applications-left-panel.svg'} />
                         </ListItemIcon>
                         <ListItemText primary={'Приложения'} />
                     </ListItem>
-                    <Divider />
                 </List>
             </div>
         )

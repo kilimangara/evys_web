@@ -18,11 +18,15 @@ app.get('/admin*', function(req, res) {
     res.sendFile('./dist/index_admin.html', { root: __dirname })
 })
 
+app.get('/application*', function(req, res) {
+    res.sendFile('./dist/index_admin.html', { root: __dirname })
+})
+
 app.get('/login', function(req, res) {
     res.sendFile('./dist/index_student.html', { root: __dirname })
 })
 
-app.get('/app*', function(req, res) {
+app.get('/app/*', function(req, res) {
     res.sendFile('./dist/index_student.html', { root: __dirname })
 })
 app.listen(3000)

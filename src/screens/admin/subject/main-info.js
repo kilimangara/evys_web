@@ -19,7 +19,7 @@ import { deburr } from 'lodash'
 import Paper from '@material-ui/core/Paper'
 import { ImageLoader } from '../../../components/common/ImageLoader'
 import { CourseImageBlock, FieldsBlock } from '../../../components/styled/admin/Students'
-import { SubjectProvider } from '../../../mixins/admin/SubjectRepository'
+import { updateSubject } from '../../../reducers/admin/subjects'
 
 class MainInfo extends React.Component {
     state = {
@@ -48,8 +48,6 @@ class MainInfo extends React.Component {
     }
 
     onImageChanged = async image => {
-        console.log(123312)
-        // this.setState({ image })
         await this.props.subjectUpdated(
             produce(this.props.subject, draft => {
                 draft.mainImage = image
@@ -57,7 +55,7 @@ class MainInfo extends React.Component {
         )
         const fd = new FormData()
         fd['main_image'] = image
-        this.props.updateSubject(this.props.subjectId, fd)
+        this.props.updateSubject(this.props.subject.id, fd)
     }
 
     getSuggestions = value => {
@@ -126,7 +124,6 @@ class MainInfo extends React.Component {
 
     render() {
         const { subject, categories, onPhotoChange } = this.props
-        console.log(subject)
         return (
             <Card marginTop={12}>
                 <RowFlexed>
@@ -222,6 +219,14 @@ class MainInfo extends React.Component {
                 </div>
             </Card>
         )
+    }
+}
+
+class SubjectProvider {
+    static mapStateToProps = null
+
+    static mapDispatchToProps = {
+        updateSubject
     }
 }
 

@@ -157,10 +157,7 @@ class SubjectScreen extends SubjectRepository(withNav(React.Component)) {
 
     changeVisibility = () => {
         const { subject } = this.state
-        this.state = produce(this.state, draft => {
-            draft.subject.tariff.hidden = !draft.subject.tariff.hidden
-        })
-        this.saveSubject()
+        this.props.updateSubject(this.subjectId(), { tariff: { hidden: !subject.tariff.hidden } })
     }
 
     onSubjectDelete = () => {

@@ -13,20 +13,37 @@ import {
     WithVerticalMargin
 } from '../../components/styled/common'
 import Add from '@material-ui/icons/Add'
-import { getUserApplications } from '../../api'
+import { getUserApplications, uninstallApp } from '../../api'
 import { UserApplicationCard } from '../../components/applications/UserApplicationCard'
 import { withRouter } from 'react-router'
 import { theme } from '../../utils/global_theme'
 import withProviders from '../../utils/withProviders'
 import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
+import LinearProgress from '@material-ui/core/LinearProgress'
+import produce from 'immer'
+import { compose } from 'recompose'
+import { withSnackbar } from 'notistack'
 
 class UserApplicationsScreen extends withNav(Component) {
     state = {
         applications: null
     }
+
     componentDidMount() {
         this.changeHeader('Мои приложения')
         getUserApplications().then(res => this.setState({ applications: res.data }))
+    }
+
+    uninstallApp = appId => {
+        uninstallApp(appId).then(() => {
+            this.props.enqueueSnackbar('Приложение удалено')
+            this.setState(
+                produce(draft => {
+                    const appIndex = draft.applications.findIndex(el => el.id === appId)
+                    if (appIndex !== -1) draft.applications.splice(appIndex, 1)
+                })
+            )
+        })
     }
 
     openApp = url => {
@@ -43,21 +60,29 @@ class UserApplicationsScreen extends withNav(Component) {
 
     render() {
         const { applications } = this.state
+        if (!applications)
+            return (
+                <div>
+                    <LinearProgress color="primary" />
+                </div>
+            )
         return (
             <FullsizeBlock>
                 <AddAppFab onClick={this.goToMarketplace}>
                     <Add />
                 </AddAppFab>
-                {(applications || []).length ? (
+                {applications.length ? (
                     <HorizontalCentered>
                         <ApplicationsList>
                             {applications.map(
-                                ({ application: { title, image, description, contacts, fullLoginUrl } }) => (
+                                ({ application: { title, image, description, contacts }, fullLoginUrl, id }) => (
                                     <UserApplicationCard
+                                        key={id}
                                         name={title}
                                         imageSource={image}
                                         description={description}
                                         contacts={contacts}
+                                        onUninstallApp={() => this.uninstallApp(id)}
                                         onOpenApp={() => this.openApp(fullLoginUrl)}
                                     />
                                 )
@@ -102,4 +127,10 @@ class UserApplicationsScreen extends withNav(Component) {
     }
 }
 
-export default withProviders(NavigationProvider)(withRouter(UserApplicationsScreen))
+const enhance = compose(
+    withProviders(NavigationProvider),
+    withRouter,
+    withSnackbar
+)
+
+export default enhance(UserApplicationsScreen)

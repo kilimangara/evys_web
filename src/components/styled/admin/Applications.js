@@ -56,6 +56,7 @@ export const ApplicationCardWrapper = styled(Paper)`
     padding: 15px;
     margin: 24px;
     position: relative;
+    cursor: pointer;
     background: ${theme.CONTRAST_LIGHT};
 `
 
@@ -95,6 +96,7 @@ export const HoverFill = styled.div`
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 `

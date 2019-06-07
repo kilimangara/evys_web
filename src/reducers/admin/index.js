@@ -8,6 +8,7 @@ import subjects from './subjects'
 import tariffs from './tariffs'
 import themes from './themes'
 import navigation from './navigation'
+import application from './application'
 
 export default {
     account,
@@ -19,5 +20,6 @@ export default {
     subjects,
     students,
     themes,
-    navigation
+    navigation,
+    application
 }

@@ -28,7 +28,9 @@ const formats = [
     'alt',
     'width',
     'height',
-    'style'
+    'style',
+    'code',
+    'code-block'
 ]
 
 class EvysQuill extends React.Component {
@@ -40,7 +42,7 @@ class EvysQuill extends React.Component {
             container: [
                 [{ header: '1' }, { header: '2' }, { font: [] }],
                 [{ size: [] }],
-                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                ['bold', 'italic', 'underline', 'strike', 'blockquote', 'code-block'],
                 [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
                 ['clean'],
                 [{ image: { tooltip: 'Прикрепить фотографию' } }],

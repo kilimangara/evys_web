@@ -27,6 +27,7 @@ import { getTestQuestion } from '../api'
 import ReactQuill from 'react-quill'
 import { studentTheme } from '../utils/global_theme'
 import { withSnackbar } from 'notistack'
+import CodeMirror from '../components/codemirror'
 
 class TestQuestionScreen extends TestsMixin(Component) {
     state = {
@@ -121,8 +122,68 @@ class TestQuestionScreen extends TestsMixin(Component) {
 
     quillWorks = value => this.setState({ value })
 
+    renderCodeMirror = () => {
+        const { textAnswer } = this.state
+        console.log(textAnswer)
+        return (
+            <CenteredContent width={'85%'} direction={'column'} style={{ alignItems: 'center', marginTop: '18px' }}>
+                <CodeMirror
+                    onBeforeChange={(editor, data, value) => {
+                        this.setState({ textAnswer: value })
+                    }}
+                    canPickLanguage
+                    value={textAnswer}
+                />
+                <ColoredButton
+                    color={studentTheme.ACCENT}
+                    textColor={studentTheme.PRIMARY_LIGHT}
+                    style={{ width: '180px', margin: '12px 0' }}
+                    onClick={() => this.sendAnswer(textAnswer)}
+                    disabled={!textAnswer}
+                >
+                    отправить
+                </ColoredButton>
+            </CenteredContent>
+        )
+    }
+
+    renderManyAnswers = () => {
+        const { question, selectedAnswer, answerSent, correct } = this.state
+        if (question.type === 'PROGRAMMING') return this.renderCodeMirror()
+        return question.answers.map(answer => (
+            <AnswerBlank
+                key={answer.content}
+                correct={answerSent && correct !== null && selectedAnswer === answer.content ? correct : null}
+                selected={answer.content === selectedAnswer}
+                onClick={() => (answerSent ? this.getNextQuestion() : this.selectAnswer(answer.content))}
+            >
+                <AnswerText>{answer.content}</AnswerText>
+            </AnswerBlank>
+        ))
+    }
+
+    renderOneAnswer = () => {
+        const { testAnswer, question } = this.state
+        if (question.type === 'PROGRAMMING') return this.renderCodeMirror()
+        return (
+            <CenteredContent width={'40%'} direction={'column'} style={{ alignItems: 'center', marginTop: '18px' }}>
+                <H3>Введите ответ:</H3>
+                <StudentInput onChange={this.onTextAnswerChange} />
+                <ColoredButton
+                    color={studentTheme.ACCENT}
+                    textColor={studentTheme.PRIMARY_LIGHT}
+                    style={{ width: '180px', margin: '12px 0' }}
+                    onClick={() => this.sendAnswer(textAnswer)}
+                    disabled={!textAnswer}
+                >
+                    отправить
+                </ColoredButton>
+            </CenteredContent>
+        )
+    }
+
     render() {
-        const { question, selectedAnswer, correct, answerSent, textAnswer, testFinished } = this.state
+        const { question, selectedAnswer, correct, answerSent, testFinished } = this.state
         return testFinished ? (
             <FullsizeCentered>
                 <ColumnFlexed align={'center'}>
@@ -162,48 +223,8 @@ class TestQuestionScreen extends TestsMixin(Component) {
                 </AnimatedQuestion>
                 <TextFade in={!!question} timeout={200} unmountOnExit>
                     <QuestionsBlock>
-                        {question &&
-                            question.answers &&
-                            (question.answers.length > 1 ? (
-                                question.answers.map(question => {
-                                    return (
-                                        <AnswerBlank
-                                            key={question.content}
-                                            correct={
-                                                answerSent && correct !== null && selectedAnswer === question.content
-                                                    ? correct
-                                                    : null
-                                            }
-                                            selected={question.content === selectedAnswer}
-                                            onClick={() =>
-                                                answerSent
-                                                    ? this.getNextQuestion()
-                                                    : this.selectAnswer(question.content)
-                                            }
-                                        >
-                                            <AnswerText>{question.content}</AnswerText>
-                                        </AnswerBlank>
-                                    )
-                                })
-                            ) : (
-                                <CenteredContent
-                                    width={'40%'}
-                                    direction={'column'}
-                                    style={{ alignItems: 'center', marginTop: '18px' }}
-                                >
-                                    <H3>Введите ответ:</H3>
-                                    <StudentInput onChange={e => this.onTextAnswerChange(e)} />
-                                    <ColoredButton
-                                        color={studentTheme.ACCENT}
-                                        textColor={studentTheme.PRIMARY_LIGHT}
-                                        style={{ width: '180px', margin: '12px 0' }}
-                                        onClick={() => this.sendAnswer(textAnswer)}
-                                        disabled={!textAnswer}
-                                    >
-                                        отправить
-                                    </ColoredButton>
-                                </CenteredContent>
-                            ))}
+                        {question && question.answers && question.answers.length > 1 && this.renderManyAnswers()}
+                        {question && question.answers && question.answers.length <= 1 && this.renderOneAnswer()}
                     </QuestionsBlock>
                 </TextFade>
             </HorizontalCentered>

@@ -126,13 +126,14 @@ class BillingPlanScreen extends BillingProvider(withNav(React.Component)) {
     }
 
     canPay = () => {
-        const { changed } = this.state
-        return changed
+        const { changed, billingPlan } = this.state
+        return changed || (billingPlan.expiresAt && !changed)
     }
 
     paymentText = () => {
         const { billingPlan, changed } = this.state
-        if (billingPlan.toPay) return `Оплатить ${billingPlan.toPay} ₽`
+        if (billingPlan.expiresAt && !changed) return 'Продлить подписку'
+        if (billingPlan.toPay && changed) return `Оплатить ${billingPlan.toPay} ₽`
         if (!changed) return 'Выберите свой тарифный план'
         return `Повысить тариф`
     }

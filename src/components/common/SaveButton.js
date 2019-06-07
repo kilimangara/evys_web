@@ -48,6 +48,7 @@ export default class SaveButton extends React.Component {
                 <CustomButton
                     success={success ? 1 : 0}
                     disabled={loading}
+                    color="primary"
                     variant="contained"
                     onClick={this.handleClick}
                 >

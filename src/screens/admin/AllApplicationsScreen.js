@@ -32,12 +32,13 @@ class AllApplicationsScreen extends withNav(Component) {
         const { applications } = this.state
 
         return (
-            <div>
+            <React.Fragment>
                 {(applications || []).length ? (
                     <HorizontalCentered>
                         <ApplicationsList>
                             {applications.map(({ title, image, description, contacts, installUrl, id }) => (
                                 <AllApplicationCard
+                                    key={id}
                                     name={title}
                                     imageSource={image}
                                     description={description}
@@ -53,7 +54,7 @@ class AllApplicationsScreen extends withNav(Component) {
                         <H2>Приложения отсутствуют</H2>
                     </CenteredContent>
                 )}
-            </div>
+            </React.Fragment>
         )
     }
 }

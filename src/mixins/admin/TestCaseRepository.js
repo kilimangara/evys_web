@@ -57,10 +57,6 @@ export default superclass =>
             })
         }
 
-        deleteAnswer = (testId, answerId) => {
-            return this.props.removeAnswer(testId, answerId)
-        }
-
         deleteTestCase = testCaseId => {
             return this.props.removeTestCase(this.themeId(), testCaseId).then(this.loadTestCases)
         }
