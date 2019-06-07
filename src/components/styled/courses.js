@@ -116,6 +116,8 @@ export const OutdatedWrapper = styled.div`
     z-index: 5;
     left: 0;
     top: 0;
+    pointer-events: none;
+    cursor: auto;
     background-color: rgba(50, 50, 50, 0.5);
 `
 

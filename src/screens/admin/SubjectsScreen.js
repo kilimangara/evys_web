@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
-import { connect } from 'react-redux'
-import GridList from '@material-ui/core/GridList'
 import Fab from '@material-ui/core/Fab'
 import Add from '@material-ui/icons/Add'
 import Modal from 'reboron/ScaleModal'

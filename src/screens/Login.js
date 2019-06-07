@@ -9,7 +9,6 @@ import {
     WithVerticalMargin
 } from '../components/styled/common'
 import { studentTheme } from '../utils/global_theme'
-import ReactCodeInput from 'react-code-input'
 import AuthorisationMixin, { AuthorizationProvider } from '../mixins/student/AuthorizationRepository'
 import { ElementCountdown } from '../components/common/ElementCountdown'
 import withProviders from '../utils/withProviders'

@@ -9,17 +9,13 @@ import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
-import styled from 'styled-components'
 import StudentsRepository, { StudentsProvider } from '../../mixins/admin/StudentsRepository'
 import withProviders from '../../utils/withProviders'
 import { withSnackbar } from 'notistack'
 import Checkbox from '@material-ui/core/Checkbox'
-import InputBase from '@material-ui/core/InputBase'
 import SearchIcon from '@material-ui/icons/Search'
 import produce from 'immer'
 import Typography from '@material-ui/core/Typography'
-import Toolbar from '@material-ui/core/Toolbar'
-import { theme } from '../../utils/global_theme'
 import Add from '@material-ui/icons/Add'
 import HelpIcon from '@material-ui/icons/HelpOutline'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -28,7 +24,7 @@ import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { Dialog } from '@material-ui/core'
 import { SubjectPicker } from './students/SubjectPicker'
-import { addStudent, getSubject, getSubjects, importStudents } from '../../api'
+import { getSubject, getSubjects, importStudents } from '../../api'
 import {
     Card,
     Container,
@@ -40,10 +36,9 @@ import {
     SearchInput,
     Spacer,
     TableToolbar,
-    ToolbarContent,
     ToolbarTitle
 } from '../../components/styled/admin/Students'
-import { CenteredContent, H1, RowFlexed, VerticalCentered, WithHorizontalMargin } from '../../components/styled/common'
+import { WithHorizontalMargin } from '../../components/styled/common'
 
 class StudentsScreen extends StudentsRepository(withNav(Component)) {
     state = {
@@ -80,7 +75,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
         this.setState({ query: event.target.value })
     }
 
-    onChangeSelected = student => (event, checked) => {
+    onChangeSelected = student => () => {
         this.setState(
             produce(this.state, draft => {
                 const idIndex = draft.selectedIds.findIndex(el => el === student.id)

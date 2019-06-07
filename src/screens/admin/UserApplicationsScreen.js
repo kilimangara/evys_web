@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { AddAppFab, ApplicationsList } from '../../components/styled/admin/Applications'
 import {
-    CenteredContent,
     ColoredButton,
     ColumnFlexed,
     FullsizeBlock,

@@ -35,8 +35,8 @@ export const ThemeItem = ({ alias, percent, onClick, hidden }) => (
         borderRadius={'15px'}
         boxShadow={getThemeItemBoxShadow(percent)}
         style={{ margin: '24px' }}
-        clickable
-        onClick={onClick}
+        clickable={!hidden}
+        onClick={!hidden && onClick}
     >
         <ThemeWrapper>
             {hidden && (
