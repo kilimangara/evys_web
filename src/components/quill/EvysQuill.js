@@ -7,6 +7,7 @@ import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/imageResize', ImageResize)
 
 import 'react-quill/dist/quill.snow.css'
+import 'react-quill/dist/quill.bubble.css'
 
 const formats = [
     'header',
