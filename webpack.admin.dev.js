@@ -17,7 +17,8 @@ module.exports = env => {
         output: {
             publicPath: '/',
             path: path.resolve('./dist'),
-            filename: 'admin_bundle_dev.js'
+            filename: 'admin_bundle_dev.js',
+            chunkFilename: '[contenthash].admin_bundle_dev.js'
         },
         resolve: {
             extensions: ['.js', '.jsx', '.coffee']
@@ -46,7 +47,12 @@ module.exports = env => {
             port: PORT,
             host: HOST
         },
-
+        optimization: {
+            splitChunks: {
+                chunks: 'all',
+                minChunks: 2
+            }
+        },
         plugins: [
             new webpack.ProvidePlugin({
                 'window.Quill': 'quill/dist/quill.js',

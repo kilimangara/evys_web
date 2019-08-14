@@ -9,11 +9,13 @@ var HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-assets
 
 module.exports = env => {
     return {
+        mode: 'production',
         entry: ['./src/admin_index.js'],
         output: {
             publicPath: '/dist/',
             path: path.resolve('./dist/'),
-            filename: '[hash].admin_bundle.js'
+            filename: '[hash].admin_bundle.js',
+            chunkFilename: '[contenthash].admin_bundle.js'
             // Чанки ломают css
             // filename: '[name].chunkhash.bundle.js',
             // chunkFilename: '[name].chunkhash.bundle.js'
@@ -24,19 +26,12 @@ module.exports = env => {
         module: {
             rules: loaders
         },
-        // optimization: {
-        //     runtimeChunk: 'single',
-        //     splitChunks: {
-        //         cacheGroups: {
-        //             vendor: {
-        //                 test: /node_modules/,
-        //                 chunks: 'initial',
-        //                 name: 'vendor',
-        //                 enforce: true
-        //             }
-        //         }
-        //     }
-        // },
+        optimization: {
+            splitChunks: {
+                chunks: 'all',
+                minChunks: 2
+            }
+        },
         plugins: [
             new ExtractTextPlugin({
                 filename: '[hash].styles_admin.css'

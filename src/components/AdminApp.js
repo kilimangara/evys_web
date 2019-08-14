@@ -1,11 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router'
 import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
-import SubjectsScreen from '../screens/admin/SubjectsScreen'
-import StudentsScreen from '../screens/admin/StudentsScreen'
-import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
-import SettingsScreen from '../screens/admin/settings'
+// import SubjectsScreen from '../screens/admin/SubjectsScreen'
+const SubjectsScreen = lazy(() => import('../screens/admin/SubjectsScreen'))
+// import StudentsScreen from '../screens/admin/StudentsScreen'
+const StudentsScreen = lazy(() => import('../screens/admin/StudentsScreen'))
+// import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
+const ChooseAccountScreen = lazy(() => import('../screens/admin/ChooseAccountScreen'))
+// import SettingsScreen from '../screens/admin/settings'
+const SettingsScreen = lazy(() => import('../screens/admin/settings'))
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import Modal from 'reboron/ScaleModal'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -31,8 +35,15 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import styled, { ThemeProvider } from 'styled-components'
 import JivoApi from '../utils/jivo-api'
 import ZendeskApi from '../utils/zendesk-api'
-import UserApplicationsScreen from '../screens/admin/UserApplicationsScreen'
-import AllApplicationsScreen from '../screens/admin/AllApplicationsScreen'
+import LinearProgress from '@material-ui/core/LinearProgress'
+// import UserApplicationsScreen from '../screens/admin/UserApplicationsScreen'
+// import AllApplicationsScreen from '../screens/admin/AllApplicationsScreen'
+const AllApplicationsScreen = lazy(() =>
+    import(/* webpackChunkName: "AllApplicationsScreenAdmin" */ '../screens/admin/AllApplicationsScreen')
+)
+const UserApplicationsScreen = lazy(() =>
+    import(/* webpackChunkName: "UserApplicationScreenAdmin" */ '../screens/admin/UserApplicationsScreen')
+)
 
 const LeftMenuIcon = styled.img`
     width: 36px;
@@ -167,34 +178,45 @@ class App extends Component {
                             }}
                         >
                             <CommonWrapper>
-                                <Switch>
-                                    <Route
-                                        exact
-                                        path="/admin"
-                                        render={() => {
-                                            if (!this.props.authenticated) return null
-                                            if (!this.props.currentAccount) return null
-                                            return <Redirect to="/admin/subjects" />
-                                        }}
-                                    />
-                                    <Route exact path="/admin/subjects" component={SubjectsScreen} />
-                                    <Route
-                                        path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
-                                        component={OneStudentManageScreen}
-                                    />
-                                    <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
-                                    <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
-                                    <Route path="/admin/students" component={StudentsScreen} />
-                                    <Route path="/admin/choose_account" component={ChooseAccountScreen} />
-                                    <Route path="/admin/storage/:themeId(\d+)/add_video" component={AddVideoScreen} />
-                                    <Route
-                                        path="/admin/theme/:theme_id/theory/:theory_id(\d+)/watch"
-                                        component={VideoScreen}
-                                    />
-                                    <Route path="/admin/settings" component={SettingsScreen} />
-                                    <Route path="/admin/installations" component={UserApplicationsScreen} />
-                                    <Route path="/admin/marketplace" component={AllApplicationsScreen} />
-                                </Switch>
+                                <Suspense
+                                    fallback={
+                                        <div>
+                                            <LinearProgress />
+                                        </div>
+                                    }
+                                >
+                                    <Switch>
+                                        <Route
+                                            exact
+                                            path="/admin"
+                                            render={() => {
+                                                if (!this.props.authenticated) return null
+                                                if (!this.props.currentAccount) return null
+                                                return <Redirect to="/admin/subjects" />
+                                            }}
+                                        />
+                                        <Route exact path="/admin/subjects" component={SubjectsScreen} />
+                                        <Route
+                                            path="/admin/subjects/:subjectId(\d+)/students/:studentId(\d+)"
+                                            component={OneStudentManageScreen}
+                                        />
+                                        <Route path="/admin/subjects/:subjectId(\d+)" component={SubjectScreen} />
+                                        <Route path="/admin/themes/:themeId(\d+)" component={ThemeScreen} />
+                                        <Route path="/admin/students" component={StudentsScreen} />
+                                        <Route path="/admin/choose_account" component={ChooseAccountScreen} />
+                                        <Route
+                                            path="/admin/storage/:themeId(\d+)/add_video"
+                                            component={AddVideoScreen}
+                                        />
+                                        <Route
+                                            path="/admin/theme/:theme_id/theory/:theory_id(\d+)/watch"
+                                            component={VideoScreen}
+                                        />
+                                        <Route path="/admin/settings" component={SettingsScreen} />
+                                        <Route path="/admin/installations" component={UserApplicationsScreen} />
+                                        <Route path="/admin/marketplace" component={AllApplicationsScreen} />
+                                    </Switch>
+                                </Suspense>
                             </CommonWrapper>
                         </SnackbarProvider>
                     </AppContainer>
