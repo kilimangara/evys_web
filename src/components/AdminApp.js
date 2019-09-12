@@ -188,8 +188,8 @@ class App extends Component {
                                             exact
                                             path="/admin"
                                             render={() => {
-                                                if (!this.props.authenticated) return null
-                                                if (!this.props.currentAccount) return null
+                                                if (!this.props.authenticated) return () => null
+                                                if (!this.props.currentAccount) return () => null
                                                 return <Redirect to="/admin/subjects" />
                                             }}
                                         />
@@ -288,7 +288,7 @@ const styles = theme => ({
 
 const mapStateToProps = state => ({
     account: state.profile.profileData || {},
-    authenticated: Boolean(state.authorization.token),
+    authenticated: Boolean(state.authorization.token) || state.authorization.type == 'session',
     currentAccount: state.account.currentAccount,
     account: state.account.accounts.find(el => el.permalink === state.account.currentAccount),
     assetOpened: state.assetManager.managerOpened

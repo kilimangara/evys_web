@@ -160,7 +160,7 @@ class HeaderAppBarAdmin extends Component {
 }
 
 const mapStateToProps = state => ({
-    isLogged: Boolean(state.authorization.token),
+    isLogged: Boolean(state.authorization.token) || state.authorization.type == 'session',
     profile: state.profile.profileData,
     youtubeSigned: state.youtube.signedIn,
     navigation: state.navigation

@@ -52,7 +52,7 @@ export default superclass =>
 
 export class AuthorizationProvider {
     static mapStateToProps = state => ({
-        isLogged: state.authorization.token
+        isLogged: Boolean(state.authorization.token) || state.authorization.type == 'session'
     })
 
     static mapDispatchToProps = {
