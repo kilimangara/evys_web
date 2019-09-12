@@ -32,8 +32,7 @@ import {
     WithVerticalMargin
 } from '../styled/common'
 import Rating from 'react-rating'
-import StarBorderComponent from '@material-ui/icons/StarBorder'
-import StarComponent from '@material-ui/icons/Star'
+import Icon from '@material-ui/core/Icon'
 import { studentTheme } from '../../utils/global_theme'
 import { formatDistance } from 'date-fns'
 import ruLocale from 'date-fns/locale/ru'
@@ -81,12 +80,12 @@ export class CommentsBlock extends Component {
                                     initialRating={userComment ? userComment.rate : chosenRating ? chosenRating : 0}
                                     emptySymbol={
                                         <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
-                                            <StarBorderComponent />
+                                            <Icon>star_border</Icon>
                                         </ColoredIconButton>
                                     }
                                     fullSymbol={
                                         <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
-                                            <StarComponent />
+                                            <Icon>star</Icon>
                                         </ColoredIconButton>
                                     }
                                     onClick={this.handleRatingClick}
@@ -149,12 +148,12 @@ export class CommentsBlock extends Component {
                                                 initialRating={rate}
                                                 emptySymbol={
                                                     <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
-                                                        <StarBorderComponent />
+                                                        <Icon>star_border</Icon>
                                                     </ColoredIconButton>
                                                 }
                                                 fullSymbol={
                                                     <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
-                                                        <StarComponent />
+                                                        <Icon>star</Icon>
                                                     </ColoredIconButton>
                                                 }
                                                 readonly

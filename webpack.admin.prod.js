@@ -5,7 +5,7 @@ var loaders = require('./webpack.loaders')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CompressionPlugin = require('compression-webpack-plugin')
-var HtmlWebpackChangeAssetsExtensionPlugin = require('html-webpack-change-assets-extension-plugin')
+var ManifestPlugin = require('webpack-manifest-plugin')
 
 module.exports = env => {
     return {
@@ -15,7 +15,7 @@ module.exports = env => {
             publicPath: '/dist/',
             path: path.resolve('./dist/'),
             filename: '[hash].admin_bundle.js',
-            chunkFilename: '[contenthash].admin_bundle.js'
+            chunkFilename: '[contenthash].[name].js'
             // Чанки ломают css
             // filename: '[name].chunkhash.bundle.js',
             // chunkFilename: '[name].chunkhash.bundle.js'
@@ -28,8 +28,13 @@ module.exports = env => {
         },
         optimization: {
             splitChunks: {
-                chunks: 'all',
-                minChunks: 2
+                cacheGroups: {
+                    vendor1: {
+                        test: /[\\/]node_modules[\\/](katex|codemirror)[\\/]/,
+                        name: 'vendor1',
+                        chunks: 'all'
+                    }
+                }
             }
         },
         plugins: [
@@ -59,7 +64,8 @@ module.exports = env => {
                 test: /\.js$/,
                 threshold: 10240,
                 minRatio: 0.8
-            })
+            }),
+            new ManifestPlugin()
         ]
     }
 }

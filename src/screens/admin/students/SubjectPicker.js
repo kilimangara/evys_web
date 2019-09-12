@@ -1,7 +1,7 @@
 import React from 'react'
 import { ColumnFlexed, H4, RowFlexed } from '../../../components/styled/common'
 
-import SearchIcon from '@material-ui/icons/Search'
+import Icon from '@material-ui/core/Icon'
 import {
     SubjectPickerList,
     SubjectPickerListItem,
@@ -19,7 +19,7 @@ export const SubjectPicker = ({ subjects, onSubjectSearch, searchValue = '', onS
         <BorderlessSearchCard style={{ width: '100%' }}>
             <SearchInput placeholder="Поиск учеников" value={searchValue} onChange={onSearchChange} />
             <SearchIconButton aria-label="Искать" onClick={onSubjectSearch}>
-                <SearchIcon />
+                <Icon>search</Icon>
             </SearchIconButton>
         </BorderlessSearchCard>
         <SubjectPickerList>

@@ -15,13 +15,11 @@ import withProviders from '../../utils/withProviders'
 import { withSnackbar } from 'notistack'
 import Checkbox from '@material-ui/core/Checkbox'
 import InputBase from '@material-ui/core/InputBase'
-import SearchIcon from '@material-ui/icons/Search'
+import Icon from '@material-ui/core/Icon'
 import produce from 'immer'
 import Typography from '@material-ui/core/Typography'
 import Toolbar from '@material-ui/core/Toolbar'
 import { theme } from '../../utils/global_theme'
-import Add from '@material-ui/icons/Add'
-import HelpIcon from '@material-ui/icons/HelpOutline'
 import Tooltip from '@material-ui/core/Tooltip'
 import SaveButton from '../../components/common/SaveButton'
 import accountBlockedHOC from '../../mixins/admin/AccountBlockedHOC'
@@ -235,7 +233,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                     onChange={this.onChangeSearch}
                 />
                 <SearchIconButton aria-label="Искать" onClick={this.searchStudents}>
-                    <SearchIcon />
+                    <Icon>search</Icon>
                 </SearchIconButton>
             </SearchCard>
         )
@@ -282,7 +280,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                 {highlight ? (
                     <Tooltip title={tooltipText}>
                         <IconButton aria-label="Добавить" onClick={this.subscribeStudents}>
-                            <Add />
+                            <Icon>add</Icon>
                         </IconButton>
                     </Tooltip>
                 ) : (
@@ -292,7 +290,7 @@ class StudentsScreen extends StudentsRepository(withNav(Component)) {
                         </Button>
                         <WithHorizontalMargin margin={10}>
                             <IconButton>
-                                <HelpIcon />
+                                <Icon>help_outline</Icon>
                             </IconButton>
                         </WithHorizontalMargin>
                     </ExportContainer>

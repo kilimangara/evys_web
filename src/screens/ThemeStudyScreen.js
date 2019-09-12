@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BorderedImage, CenteredContent, HorizontalCentered, Loader } from '../components/styled/common'
 import { ThemeStudyTextBlock } from '../components/styled/themes'
 import { ThemeStudyTheoryItem } from '../components/themes/ThemeStudyTheoryItem'
-import DescriptionIcon from '@material-ui/icons/Description'
+import Icon from '@material-ui/core/Icon'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
 import { withSnackbar } from 'notistack'
@@ -77,7 +77,7 @@ class ThemeStudyScreen extends Component {
                         />
                     ))}
                 {theory && theory.files && (
-                    <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<DescriptionIcon />} />
+                    <ThemeStudyTheoryItem alias={'Текстовый файл'} iconComponent={<Icon>description</Icon>} />
                 )}
             </HorizontalCentered>
         )

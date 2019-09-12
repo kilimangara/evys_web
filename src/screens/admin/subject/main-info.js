@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
 import produce from 'immer'
-import Add from '@material-ui/icons/Add'
+import Icon from '@material-ui/core/Icon'
 import {
     FullWidthDownshift,
     H3,
@@ -200,7 +200,7 @@ class MainInfo extends React.Component {
                     />
                     <div style={{ position: 'absolute', right: 12, top: 20 }}>
                         <IconButton type="submit">
-                            <Add />
+                            <Icon>add</Icon>
                         </IconButton>
                     </div>
                 </form>

@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import { Button, IconButton } from '@material-ui/core'
 import HeaderPopover from './HeaderPopover'
 import { AppToolbar, ColoredMenuIcon, ToolbarGroup } from '../styled/layout'
-import MenuIcon from '@material-ui/icons/Menu'
-import ArrowBackIcon from '@material-ui/icons/ArrowBack'
+import Icon from '@material-ui/core/Icon'
 import { theme } from '../../utils/global_theme'
 import { ColoredIconButton } from '../styled/common'
 import AppBar from '@material-ui/core/AppBar'
@@ -82,7 +81,7 @@ class HeaderAppBarAdmin extends Component {
                     rippleColor={theme.CONTRAST_RIPPLE}
                     onClick={this.props.onMenuPressed}
                 >
-                    <MenuIcon />
+                    <Icon>menu</Icon>
                 </ColoredIconButton>
             </div>
         )
@@ -143,7 +142,7 @@ class HeaderAppBarAdmin extends Component {
                                         rippleColor={theme.CONTRAST_RIPPLE}
                                         onClick={this.navigationClickWrapper}
                                     >
-                                        <ArrowBackIcon />
+                                        <Icon>arrow_back</Icon>
                                     </ColoredIconButton>
                                 )}
                                 {this.headerText() && <HeaderText component={'span'}>{this.headerText()}</HeaderText>}

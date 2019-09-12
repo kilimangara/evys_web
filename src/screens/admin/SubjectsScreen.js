@@ -3,7 +3,7 @@ import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableCompo
 import { connect } from 'react-redux'
 import GridList from '@material-ui/core/GridList'
 import Fab from '@material-ui/core/Fab'
-import Add from '@material-ui/icons/Add'
+import Icon from '@material-ui/core/Icon'
 import Modal from 'reboron/ScaleModal'
 import SubjectCreation from '../../components/subjects/SubjectCreation'
 import { Subject } from '../../components/subjects/Subject'
@@ -131,7 +131,7 @@ class SubjectsScreen extends SubjectRepository(withNav(Component)) {
             <div style={styles.container}>
                 {this.renderBody()}
                 <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
-                    <Add />
+                    <Icon>add</Icon>
                 </Fab>
                 <Modal ref={ref => (this.modal = ref)}>
                     <SubjectCreation onSubjectSave={this.onSubjectSave} />

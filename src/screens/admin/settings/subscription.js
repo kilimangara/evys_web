@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography'
 import Slider from '@material-ui/lab/Slider'
 import { pick, debounce } from 'lodash'
 import Divider from '@material-ui/core/Divider'
-import InfoIcon from '@material-ui/icons/HelpOutline'
+import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import { withStyles } from '@material-ui/core/styles'
@@ -167,7 +167,7 @@ class BillingPlanScreen extends BillingProvider(withNav(React.Component)) {
                             <SliderValue component="span"> {personalStudents}</SliderValue>
                             <Tooltip title={`Стоимость 25 учеников - ${billingPlan.studentPrice} ₽/мес`}>
                                 <IconButtonForHelp>
-                                    <InfoIcon fontSize={'small'} />
+                                    <Icon fontSize={'small'}>info_outline</Icon>
                                 </IconButtonForHelp>
                             </Tooltip>
                         </div>

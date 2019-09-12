@@ -4,7 +4,8 @@ var path = require('path')
 var loaders = require('./webpack.loaders')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-const CircularDependencyPlugin = require('circular-dependency-plugin')
+var CircularDependencyPlugin = require('circular-dependency-plugin')
+var ManifestPlugin = require('webpack-manifest-plugin')
 
 const HOST = process.env.HOST || '127.0.0.1'
 const PORT = process.env.PORT || '3000'
@@ -18,7 +19,7 @@ module.exports = env => {
             publicPath: '/',
             path: path.resolve('./dist'),
             filename: 'admin_bundle_dev.js',
-            chunkFilename: '[contenthash].admin_bundle_dev.js'
+            chunkFilename: '[contenthash].[name].admin_bundle_dev.js'
         },
         resolve: {
             extensions: ['.js', '.jsx', '.coffee']
@@ -49,8 +50,13 @@ module.exports = env => {
         },
         optimization: {
             splitChunks: {
-                chunks: 'all',
-                minChunks: 2
+                cacheGroups: {
+                    vendor1: {
+                        test: /[\\/]node_modules[\\/](katex|codemirror)[\\/]/,
+                        name: 'vendor1',
+                        chunks: 'all'
+                    }
+                }
             }
         },
         plugins: [
@@ -74,7 +80,8 @@ module.exports = env => {
                 filename: 'index_admin.html',
                 description: 'Создадим онлайн школу вместе с Evys.',
                 keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
-            })
+            }),
+            new ManifestPlugin()
             // new CircularDependencyPlugin({
             //     // exclude detection of files based on a RegExp
             //     exclude: /a\.js|node_modules/,

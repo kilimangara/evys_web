@@ -1,7 +1,7 @@
 import React from 'react'
 import { ColumnFlexed, H4, RowFlexed } from '../../../components/styled/common'
 
-import SearchIcon from '@material-ui/icons/Search'
+import Icon from '@material-ui/core/Icon'
 import {
     SubjectPickerList,
     SubjectPickerListItem,
@@ -14,7 +14,7 @@ const ThemePicker = ({ list = [], onSearch, query, onSearchChange, onPicked }) =
         <SearchCard style={{ width: '100%' }} disableShadow>
             <SearchInput placeholder="Поиск тем" value={query} onChange={onSearchChange} />
             <SearchIconButton aria-label="Искать" onClick={onSearch}>
-                <SearchIcon />
+                <Icon>search</Icon>
             </SearchIconButton>
         </SearchCard>
         <SubjectPickerList>

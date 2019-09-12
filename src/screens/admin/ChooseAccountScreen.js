@@ -4,7 +4,7 @@ import Modal from 'reboron/ScaleModal'
 import CreateAccount from '../../components/accounts/CreateAccount'
 import withNav, { NavigationProvider } from '../../mixins/admin/NavigatableComponent'
 import Fab from '@material-ui/core/Fab'
-import Add from '@material-ui/icons/Add'
+import Icon from '@material-ui/core/Icon'
 import { AccountsProvider } from '../../mixins/admin/AccountsRepository'
 import withProviders from '../../utils/withProviders'
 import Table from '@material-ui/core/Table'
@@ -79,7 +79,7 @@ class ChooseAccountScreen extends withNav(Component) {
                     </Table>
                 </Card>
                 <Fab style={styles.fabStyle} onClick={this.floatingButtonClicked}>
-                    <Add />
+                    <Icon>add</Icon>
                 </Fab>
                 <Modal ref={ref => (this.modal = ref)}>
                     <CreateAccount onAccountSave={this.onAccountSave} />

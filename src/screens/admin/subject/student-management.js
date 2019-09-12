@@ -12,7 +12,7 @@ import styled from 'styled-components'
 import withProviders from '../../../utils/withProviders'
 import Checkbox from '@material-ui/core/Checkbox'
 import InputBase from '@material-ui/core/InputBase'
-import SearchIcon from '@material-ui/icons/Search'
+import Icon from '@material-ui/core/Icon'
 import produce from 'immer'
 import Typography from '@material-ui/core/Typography'
 import { theme } from '../../../utils/global_theme'
@@ -131,7 +131,7 @@ class StudentManagement extends Component {
             <SearchCard marginTop={12}>
                 <SearchInput placeholder="Поиск учеников" value={this.state.query} onChange={this.onChangeSearch} />
                 <SearchIconButton aria-label="Искать" onClick={this.searchStudents}>
-                    <SearchIcon />
+                    <Icon>search</Icon>
                 </SearchIconButton>
             </SearchCard>
         )

@@ -17,7 +17,7 @@ import {
 import { ColoredIcon, H2, H3, RowFlexed } from '../styled/common'
 import { declOfNum } from '../../utils/utilFunctions'
 import { studentTheme } from '../../utils/global_theme'
-import CheckIcon from '@material-ui/icons/Check'
+import Icon from '@material-ui/core/Icon'
 
 export class CourseThemesTree extends Component {
     makeTreeFromThemes = themes => {
@@ -50,21 +50,21 @@ export class CourseThemesTree extends Component {
                             <ThemeTheory>
                                 {hasTheory && (
                                     <ColoredIcon color={studentTheme.TEXT_COLOR}>
-                                        <CheckIcon />
+                                        <Icon>check</Icon>
                                     </ColoredIcon>
                                 )}
                             </ThemeTheory>
                             <ThemeVideo>
                                 {mediaCount > 0 && (
                                     <ColoredIcon color={studentTheme.TEXT_COLOR}>
-                                        <CheckIcon />
+                                        <Icon>check</Icon>
                                     </ColoredIcon>
                                 )}
                             </ThemeVideo>
                             <ThemeTest>
                                 {testsCount > 0 && (
                                     <ColoredIcon color={studentTheme.TEXT_COLOR}>
-                                        <CheckIcon />
+                                        <Icon>check</Icon>
                                     </ColoredIcon>
                                 )}
                             </ThemeTest>

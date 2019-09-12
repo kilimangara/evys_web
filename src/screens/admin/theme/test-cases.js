@@ -8,11 +8,7 @@ import TestCaseRepository, { TestCaseProvider } from '../../../mixins/admin/Test
 import List from '@material-ui/core/List'
 import { ListHeader, ListText } from './index'
 import ListItem from '@material-ui/core/ListItem'
-import Add from '@material-ui/icons/Add'
-import Delete from '@material-ui/icons/Delete'
-import Edit from '@material-ui/icons/Edit'
-import ListIcon from '@material-ui/icons/List'
-import Check from '@material-ui/icons/Check'
+import Icon from '@material-ui/core/Icon'
 import IconButton from '@material-ui/core/IconButton'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Button from '@material-ui/core/Button'
@@ -27,6 +23,10 @@ import green from '@material-ui/core/colors/green'
 import FormControl from '@material-ui/core/FormControl'
 import FormLabel from '@material-ui/core/FormLabel'
 import FormGroup from '@material-ui/core/FormGroup'
+
+const Check = function() {
+    return <Icon>check</Icon>
+}
 
 const SaveCheckIcon = styled(Check)`
     color: ${green[500]};
@@ -117,7 +117,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                 <div style={{ width: '100%' }}>
                     <div style={{ display: 'flex' }}>
                         <ListItemContainer>
-                            <ListIcon className={'sortable-handle'} />
+                            <Icon className={'sortable-handle'}>list</Icon>
                             <div style={{ width: 12 }} />
                             <Typography component={'span'}>{`${testCase.description}`}</Typography>
                             {testCase.tests.map(this.renderVariants(testCase.id))}
@@ -128,10 +128,10 @@ class TestCases extends TestCaseRepository(React.Component) {
                             </IconButton>
                         )}
                         <IconButton>
-                            <Add />
+                            <Icon>add</Icon>
                         </IconButton>
                         <IconButton onClick={this.onDeleteTestCase(testCase.id)}>
-                            <Delete />
+                            <Icon>delete</Icon>
                         </IconButton>
                     </div>
                     {showTestCase && this.renderQuestionItem()}
@@ -244,7 +244,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                     />
                 </ListItemContainer>
                 <IconButton onClick={this.deleteAnswer(answer.id)}>
-                    <Delete />
+                    <Icon>delete</Icon>
                 </IconButton>
             </ListItem>
         )
@@ -290,7 +290,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                     />
                 </ListItemContainer>
                 <IconButton type="submit">
-                    <Add />
+                    <Icon>add</Icon>
                 </IconButton>
             </ListItem>
         )
@@ -320,7 +320,7 @@ class TestCases extends TestCaseRepository(React.Component) {
                     />
                 </ListItemContainer>
                 <IconButton onClick={this.addAnswer}>
-                    <Add />
+                    <Icon>add</Icon>
                 </IconButton>
             </ListItem>
         )

@@ -12,7 +12,6 @@ const ChooseAccountScreen = lazy(() => import('../screens/admin/ChooseAccountScr
 const SettingsScreen = lazy(() => import('../screens/admin/settings'))
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import Modal from 'reboron/ScaleModal'
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
 import pt from 'prop-types'
 import GoogleAuth from './youtube/GoogleAuth'
@@ -31,7 +30,6 @@ import { logoutAdmin } from '../reducers/admin/authorization'
 import { switchManager, pickAsset } from '../reducers/admin/assetManager'
 import { loadAccounts } from '../reducers/admin/account'
 import { SnackbarProvider } from 'notistack'
-import SettingsIcon from '@material-ui/icons/Settings'
 import styled, { ThemeProvider } from 'styled-components'
 import JivoApi from '../utils/jivo-api'
 import ZendeskApi from '../utils/zendesk-api'
@@ -99,7 +97,7 @@ class App extends Component {
                 <AppToolbar inverse>
                     <div style={{ flex: 1 }} />
                     <IconButton onClick={this.handleMenuClick}>
-                        <ChevronLeftIcon />
+                        <Icon>chevron_left</Icon>
                     </IconButton>
                 </AppToolbar>
                 <List>

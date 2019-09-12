@@ -4,6 +4,7 @@ var path = require('path')
 var loaders = require('./webpack.loaders')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var ManifestPlugin = require('webpack-manifest-plugin')
 
 const HOST = process.env.HOST || '127.0.0.1'
 const PORT = process.env.PORT || '3000'
@@ -66,7 +67,8 @@ module.exports = env => {
                     css: ['styles.css'],
                     js: ['app_bundle_dev.js']
                 }
-            })
+            }),
+            new ManifestPlugin()
         ]
     }
 }

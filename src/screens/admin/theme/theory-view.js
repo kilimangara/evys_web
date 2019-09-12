@@ -3,12 +3,11 @@ import SaveButton from '../../../components/common/SaveButton'
 import List from '@material-ui/core/List'
 import { ListHeader, ListText, Card } from './index'
 import ListItem from '@material-ui/core/ListItem'
-import ListIcon from '@material-ui/icons/List'
+import Icon from '@material-ui/core/Icon'
 import EvysQuill from '../../../components/quill/EvysQuill'
 import styled from 'styled-components'
 import { BorderedImage } from '../../../components/styled/common'
 import IconButton from '@material-ui/core/IconButton'
-import Delete from '@material-ui/icons/Delete'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import Typography from '@material-ui/core/Typography'
@@ -82,7 +81,7 @@ class TheoryView extends React.Component {
                             <VideoName component={'span'}>{video.name}</VideoName>
                         </ListItemContainer>
                         <IconButton>
-                            <Delete />
+                            <Icon>delete</Icon>
                         </IconButton>
                     </div>
                 </div>

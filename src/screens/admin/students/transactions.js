@@ -12,9 +12,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import ReactPaginate from 'react-paginate'
 import IconButton from '@material-ui/core/IconButton'
-import MoreIcon from '@material-ui/icons/MoreVert'
-import CheckIcon from '@material-ui/icons/Check'
-import AddIcon from '@material-ui/icons/Add'
+import Icon from '@material-ui/core/Icon'
 import moment from 'moment'
 import { compose } from 'recompose'
 import { ToolbarTitle, TableToolbar } from '../../../components/styled/student-admin'
@@ -208,7 +206,7 @@ class TransactionsScreen extends Component {
                 <TableCell>{transaction.title}</TableCell>
                 <TableCell>{transaction.paymentTitle}</TableCell>
                 <TableCell>{amountFormatted}</TableCell>
-                <TableCell>{transaction.paidAt ? <CheckIcon /> : null}</TableCell>
+                <TableCell>{transaction.paidAt ? <Icon>check</Icon> : null}</TableCell>
                 <TableCell>
                     <IconButton
                         aria-owns={anchorEl ? 'transaction-options' : undefined}
@@ -235,7 +233,7 @@ class TransactionsScreen extends Component {
                         aria-label="Добавить"
                         onClick={() => this.setState({ showNewTransaction: !this.state.showNewTransaction })}
                     >
-                        <AddIcon />
+                        <Icon>add</Icon>
                     </IconButton>
                 </Tooltip>
             </TableToolbar>

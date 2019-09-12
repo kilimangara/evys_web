@@ -11,8 +11,7 @@ import {
     WithVerticalMargin
 } from '../styled/common'
 import Rating from 'react-rating'
-import StarBorderComponent from '@material-ui/icons/StarBorder'
-import StarComponent from '@material-ui/icons/Star'
+import Icon from '@material-ui/core/Icon'
 import React from 'react'
 import { declOfNum } from '../../utils/utilFunctions'
 
@@ -31,12 +30,12 @@ export const CourseHeaderContent = ({ title, subtitle, ratingCount, rating, buye
                                 initialRating={rating}
                                 emptySymbol={
                                     <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
-                                        <StarBorderComponent />
+                                        <Icon>star_border</Icon>
                                     </ColoredIconButton>
                                 }
                                 fullSymbol={
                                     <ColoredIconButton color={'gold'} style={{ padding: 0 }}>
-                                        <StarComponent />
+                                        <Icon>star</Icon>
                                     </ColoredIconButton>
                                 }
                                 readonly

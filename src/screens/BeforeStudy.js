@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import { CurrentCourseItem } from '../components/themes/CurrentCourseItem'
 import { DataCard } from '../components/BeforeStudy/DataCard'
 import { BeforeStudyWrapper, CardsBlock, ThemeNameBlock } from '../components/styled/BeforeStudy'
-import VideoIcon from '@material-ui/icons/Videocam'
-import DescriptionIcon from '@material-ui/icons/Description'
+import Icon from '@material-ui/core/Icon'
 import { CenteredContent, H1, Loader } from '../components/styled/common'
-import CheckboxIcon from '@material-ui/icons/CheckBox'
 import withProviders from '../utils/withProviders'
 import { CoursesProvider } from '../mixins/student/CoursesRepository'
 import { withRouter } from 'react-router'
@@ -65,8 +63,8 @@ class BeforeStudy extends Component {
                         name={'Теория'}
                         iconsBlock={
                             <div>
-                                {!!theme && !!theme.theory && !!theme.theory.videos && <VideoIcon />}
-                                <DescriptionIcon />
+                                {!!theme && !!theme.theory && !!theme.theory.videos && <Icon>videocam</Icon>}
+                                <Icon>description</Icon>
                             </div>
                         }
                         onClick={() => this.goToTheory()}
@@ -75,7 +73,7 @@ class BeforeStudy extends Component {
                         name={'Практика'}
                         iconsBlock={
                             <div>
-                                <CheckboxIcon />
+                                <Icon>check_box</Icon>
                             </div>
                         }
                         onClick={() => this.goToPractice()}

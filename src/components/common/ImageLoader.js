@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { ImageCoverContainer, ImageLoaderContainer } from '../styled/ImageLoader'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload'
+import Icon from '@material-ui/core/Icon'
 import Dropzone from 'react-dropzone'
 import { BorderedImage, FilledImage, Loader, LoaderWrapper } from '../styled/common'
 
@@ -89,7 +89,7 @@ export class ImageLoader extends Component {
                     />
                 )}
                 <ImageCoverContainer hovered={hovered} onClick={this.uploadFile}>
-                    <CloudUploadIcon style={{ color: 'white' }} />
+                    <Icon style={{ color: 'white' }}>cloud_upload</Icon>
                 </ImageCoverContainer>
                 <input
                     type="file"

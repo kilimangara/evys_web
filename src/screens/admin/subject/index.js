@@ -17,12 +17,16 @@ import { Route } from 'react-router'
 import MainInfo from './main-info'
 import BillingInfo from './billing-info'
 import Chip from '@material-ui/core/Chip'
-import Warning from '@material-ui/icons/Warning'
+import Icon from '@material-ui/core/Icon'
 import ThemesScreen from '../theme/themes-list'
 import StudentsManagementScreen from './student-management'
 import accountBlockedHOC from '../../../mixins/admin/AccountBlockedHOC'
 import { compose } from 'recompose'
 import { withSnackbar } from 'notistack'
+
+const Warning = function(props) {
+    return <Icon {...props}>warning</Icon>
+}
 
 const WarningIcon = styled(Warning)`
     color: red;

@@ -1,13 +1,13 @@
 import { ColoredIcon, ColoredText, H2, H3, Paper, RowFlexed } from '../styled/common'
 import { CourseResultsBlock, CourseResultsTitle, CourseResultsWrapper, ResultBlock } from '../styled/courses'
 import React from 'react'
-import CheckIcon from '@material-ui/icons/Check'
+import Icon from '@material-ui/core/Icon'
 import { studentTheme } from '../../utils/global_theme'
 
 const Result = ({ resultText }) => (
     <ResultBlock>
         <ColoredIcon color={studentTheme.TEXT_COLOR}>
-            <CheckIcon />
+            <Icon>check</Icon>
         </ColoredIcon>
         <H3>{resultText}</H3>
     </ResultBlock>

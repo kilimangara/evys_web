@@ -12,7 +12,7 @@ import {
     WithHorizontalMargin,
     WithVerticalMargin
 } from '../../components/styled/common'
-import Add from '@material-ui/icons/Add'
+import Icon from '@material-ui/core/Icon'
 import { getUserApplications, uninstallApp } from '../../api'
 import { UserApplicationCard } from '../../components/applications/UserApplicationCard'
 import { withRouter } from 'react-router'
@@ -69,7 +69,7 @@ class UserApplicationsScreen extends withNav(Component) {
         return (
             <FullsizeBlock>
                 <AddAppFab onClick={this.goToMarketplace}>
-                    <Add />
+                    <Icon>add</Icon>
                 </AddAppFab>
                 {applications.length ? (
                     <HorizontalCentered>
