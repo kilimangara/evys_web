@@ -43,7 +43,5 @@ export const persistor = persistStore(store)
 
 console.log(store)
 
-if (__DEV__) global.store = store
-
 // export store
 // export persistor

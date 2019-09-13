@@ -2,7 +2,7 @@
 var webpack = require('webpack')
 var path = require('path')
 var loaders = require('./webpack.loaders')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CircularDependencyPlugin = require('circular-dependency-plugin')
 var ManifestPlugin = require('webpack-manifest-plugin')
@@ -22,7 +22,7 @@ module.exports = env => {
             chunkFilename: '[contenthash].[name].admin_bundle_dev.js'
         },
         resolve: {
-            extensions: ['.js', '.jsx', '.coffee']
+            extensions: ['.js', '.jsx', '.coffee', '.scss', '.sass']
         },
         module: {
             rules: loaders
@@ -71,8 +71,9 @@ module.exports = env => {
             new webpack.NoEmitOnErrorsPlugin(),
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
-            new ExtractTextPlugin({
-                filename: 'styles_admin.css'
+            new MiniCssExtractPlugin({
+                filename: '[name].css',
+                chunkFilename: '[id].css'
             }),
             new HtmlWebpackPlugin({
                 template: './public/index_admin.html',
@@ -80,8 +81,7 @@ module.exports = env => {
                 filename: 'index_admin.html',
                 description: 'Создадим онлайн школу вместе с Evys.',
                 keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
-            }),
-            new ManifestPlugin()
+            })
             // new CircularDependencyPlugin({
             //     // exclude detection of files based on a RegExp
             //     exclude: /a\.js|node_modules/,

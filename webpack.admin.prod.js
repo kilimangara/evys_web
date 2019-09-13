@@ -2,7 +2,7 @@
 var webpack = require('webpack')
 var path = require('path')
 var loaders = require('./webpack.loaders')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CompressionPlugin = require('compression-webpack-plugin')
 var ManifestPlugin = require('webpack-manifest-plugin')
@@ -38,8 +38,9 @@ module.exports = env => {
             }
         },
         plugins: [
-            new ExtractTextPlugin({
-                filename: '[hash].styles_admin.css'
+            new MiniCssExtractPlugin({
+                filename: '[name].[hash].css',
+                chunkFilename: '[id].[name].[hash].css'
             }),
             new webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify('production'),

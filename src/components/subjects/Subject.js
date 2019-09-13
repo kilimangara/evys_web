@@ -10,6 +10,7 @@ const DEFAULT_IMG_SRC = 'http://golos-vremeni.ru/media/cache/ad/f6/93/0b/e0/55/a
 const Wrapper = styled(HoverPaper)`
     height: 300px;
     width: 350px;
+    cursor: pointer;
     background: ${({ image }) => `url(${image}) no-repeat center center`};
     background-size: cover;
 `

@@ -2,7 +2,7 @@
 var webpack = require('webpack')
 var path = require('path')
 var loaders = require('./webpack.loaders')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
+var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ManifestPlugin = require('webpack-manifest-plugin')
 
@@ -54,8 +54,9 @@ module.exports = env => {
             new webpack.NoEmitOnErrorsPlugin(),
             new webpack.NamedModulesPlugin(),
             new webpack.HotModuleReplacementPlugin(),
-            new ExtractTextPlugin({
-                filename: 'styles.css'
+            new MiniCssExtractPlugin({
+                filename: '[name].css',
+                chunkFilename: '[id].css'
             }),
             new HtmlWebpackPlugin({
                 template: './public/index.html',

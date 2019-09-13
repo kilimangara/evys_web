@@ -18,7 +18,7 @@ class LoginScreen extends AuthorizationMixin(Component) {
     }
 
     componentDidMount() {
-        if (this.props.isLogged) this.props.history.push('/admin')
+        if (this.props.isLogged) this.props.history.push('/admin/subjects')
     }
 
     handleChange = field => e => {

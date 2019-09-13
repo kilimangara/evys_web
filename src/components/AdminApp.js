@@ -2,14 +2,14 @@ import React, { Component, lazy, Suspense } from 'react'
 import { connect } from 'react-redux'
 import { Route, Switch, Redirect } from 'react-router'
 import HeaderAppBarAdmin from './header_app_bar/HeaderAppBarAdmin'
-// import SubjectsScreen from '../screens/admin/SubjectsScreen'
-const SubjectsScreen = lazy(() => import('../screens/admin/SubjectsScreen'))
-// import StudentsScreen from '../screens/admin/StudentsScreen'
-const StudentsScreen = lazy(() => import('../screens/admin/StudentsScreen'))
-// import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
-const ChooseAccountScreen = lazy(() => import('../screens/admin/ChooseAccountScreen'))
-// import SettingsScreen from '../screens/admin/settings'
-const SettingsScreen = lazy(() => import('../screens/admin/settings'))
+import SubjectsScreen from '../screens/admin/SubjectsScreen'
+// const SubjectsScreen = lazy(() => import('../screens/admin/SubjectsScreen'))
+import StudentsScreen from '../screens/admin/StudentsScreen'
+// const StudentsScreen = lazy(() => import('../screens/admin/StudentsScreen'))
+import ChooseAccountScreen from '../screens/admin/ChooseAccountScreen'
+// const ChooseAccountScreen = lazy(() => import('../screens/admin/ChooseAccountScreen'))
+import SettingsScreen from '../screens/admin/settings'
+// const SettingsScreen = lazy(() => import('../screens/admin/settings'))
 import { Hidden, Icon, List, ListItem, ListItemIcon, ListItemText, Divider } from '@material-ui/core'
 import Modal from 'reboron/ScaleModal'
 import ImageAssetPicker from './template_assets/ImageAssetPicker'
@@ -34,14 +34,14 @@ import styled, { ThemeProvider } from 'styled-components'
 import JivoApi from '../utils/jivo-api'
 import ZendeskApi from '../utils/zendesk-api'
 import LinearProgress from '@material-ui/core/LinearProgress'
-// import UserApplicationsScreen from '../screens/admin/UserApplicationsScreen'
-// import AllApplicationsScreen from '../screens/admin/AllApplicationsScreen'
-const AllApplicationsScreen = lazy(() =>
-    import(/* webpackChunkName: "AllApplicationsScreenAdmin" */ '../screens/admin/AllApplicationsScreen')
-)
-const UserApplicationsScreen = lazy(() =>
-    import(/* webpackChunkName: "UserApplicationScreenAdmin" */ '../screens/admin/UserApplicationsScreen')
-)
+import UserApplicationsScreen from '../screens/admin/UserApplicationsScreen'
+import AllApplicationsScreen from '../screens/admin/AllApplicationsScreen'
+// const AllApplicationsScreen = lazy(() =>
+//     import(/* webpackChunkName: "AllApplicationsScreenAdmin" */ '../screens/admin/AllApplicationsScreen')
+// )
+// const UserApplicationsScreen = lazy(() =>
+//     import(/* webpackChunkName: "UserApplicationScreenAdmin" */ '../screens/admin/UserApplicationsScreen')
+// )
 
 const LeftMenuIcon = styled.img`
     width: 36px;

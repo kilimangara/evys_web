@@ -101,7 +101,7 @@ class ThemesScreen extends ThemesRepository(Component) {
     }
 
     renderTheme = (theme, index) => {
-        const visibilityComponent = !theme.isHidden ? <Icon /> : <VisibilityOff />
+        const visibilityComponent = !theme.isHidden ? <Visibility /> : <VisibilityOff />
         const type = theme.type === 'Section' ? 'Раздел' : 'Тема'
         return (
             <ListItem key={theme.id} divider className="test-cases-for-filter">

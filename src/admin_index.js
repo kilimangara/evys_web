@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader'
 import { init, captureMessage } from '@sentry/browser'
 import { authorize } from './reducers/admin/authorization'
 import { loadAccounts, chooseAccount } from './reducers/admin/account'
+import { store, persistor } from './store'
 import katex from 'katex'
 import 'katex/dist/katex.css'
 import moment from 'moment'
@@ -27,6 +28,7 @@ const render = () =>
 
 async function startApp() {
     try {
+        // persistor.flush()
         await store.dispatch(authorize())
         const accounts = await store.dispatch(loadAccounts())
         if (accounts.length == 1) store.dispatch(chooseAccount(accounts[0].permalink))
