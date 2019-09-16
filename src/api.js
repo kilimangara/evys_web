@@ -251,6 +251,13 @@ export function getEvents(params) {
 
 // admin methods
 
+export function logoutAdminSession() {
+    return axiosInstance.request({
+        url: '/admin2/logout',
+        method: 'POST'
+    })
+}
+
 export function getAccounts() {
     return axiosInstance.request({
         url: '/admin2/accounts'

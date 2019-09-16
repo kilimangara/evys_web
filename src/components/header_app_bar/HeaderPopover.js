@@ -3,7 +3,7 @@ import Popover from '@material-ui/core/Popover'
 import { withStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { chooseAccount } from '../../reducers/admin/account'
-import { logoutAdmin } from '../../reducers/admin/authorization'
+import { logoutAdminSession } from '../../reducers/admin/authorization'
 
 const HeaderPopover = ({
     open,
@@ -40,7 +40,7 @@ const HeaderPopover = ({
                 className={classes.clickableContent}
                 onClick={() => {
                     onClose()
-                    logoutAdmin()
+                    logoutAdminSession()
                     history.push('/admin/login')
                 }}
             >

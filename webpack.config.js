@@ -63,11 +63,7 @@ module.exports = env => {
                 title: 'Evys.Школа',
                 filename: 'index_student.html',
                 description: 'Образовательная платформа Evys',
-                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить',
-                files: {
-                    css: ['styles.css'],
-                    js: ['app_bundle_dev.js']
-                }
+                keywords: 'Evys.ru платформа объединяющая тех, кто учит и тех, кто хочет учить'
             }),
             new ManifestPlugin()
         ]

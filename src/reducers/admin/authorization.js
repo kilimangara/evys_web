@@ -3,7 +3,7 @@ import produce from 'immer'
 import { loadProfile, successLoadProfile, createProfile } from './profile'
 import { btoa } from 'Base64'
 
-import { getProfileInfo } from '../../api'
+import { getProfileInfo, logoutAdminSession as logoutSession } from '../../api'
 
 const spread = produce(Object.assign)
 
@@ -11,6 +11,10 @@ export const saveToken = createAction('authorization/saveToken')
 
 export const logoutAdmin = createAction('authorization/logoutAdmin')
 export const setAuthType = createAction('authorization/setType')
+
+export const logoutAdminSession = () => dispatch => {
+    return logoutSession().then(() => dispatch(logoutAdmin()))
+}
 
 export const authorize = (email, password) => dispatch => {
     let authType = 'session'
